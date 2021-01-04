@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_width="@dimen/_140sdp"
+        android:id="@+id/imageView"
+        android:scaleType="fitXY"
+        android:src="@drawable/defpizzaimg"
+        android:layout_margin="@dimen/_5sdp"
+        android:layout_height="@dimen/_140sdp"/>
+
+    <TextView
+        android:id="@+id/txt_text"
+        android:layout_width="wrap_content"
+        android:visibility="gone"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

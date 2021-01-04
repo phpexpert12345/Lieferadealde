@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        app:cardElevation="@dimen/_5sdp"
+        android:id="@+id/rl_header"
+        android:layout_height="@dimen/dp_50">
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        android:background="@color/colorPrimary">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_50"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dp_10"
+            app:tint="@color/colorBlack"
+            android:src="@drawable/ic_back_arrow" />
+
+        <TextView
+            android:id="@+id/tvUpdateProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:text="@string/update_profile_txt"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/sp_15" />
+
+
+    </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btn_submit"
+        android:layout_below="@+id/rl_header"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorWhite"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dp_10"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:gravity="center">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profile_image"
+                    android:layout_width="@dimen/dp_80"
+                    android:layout_height="@dimen/dp_80"
+                    android:src="@drawable/ic_profile" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/edt_customer_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_45"
+                    android:layout_marginStart="@dimen/dp_20"
+                    android:layout_marginEnd="@dimen/dp_20"
+                    android:background="@drawable/edit_box_with_gray"
+                    android:inputType="number"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/sp_15"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:id="@+id/edt_first_name"
+                        android:layout_width="@dimen/_130sdp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="10dp"
+                        android:hint="First Name"
+                        android:inputType="textPersonName"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        app:met_floatingLabel="highlight"
+                        app:met_floatingLabelPadding="2dp"
+                        app:met_floatingLabelTextSize="15sp" />
+
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:id="@+id/edt_last_name"
+                        android:layout_width="@dimen/_130sdp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="10dp"
+                        android:hint="Last Name"
+                        android:inputType="textPersonName"
+                        android:maxLength="20"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        app:met_floatingLabel="highlight"
+                        app:met_floatingLabelPadding="2dp"
+                        app:met_floatingLabelTextSize="15sp" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:id="@+id/edt_house_no"
+                        android:layout_width="@dimen/_130sdp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="10dp"
+                        android:hint="House No"
+                        android:inputType="textPersonName"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        app:met_floatingLabel="highlight"
+                        app:met_floatingLabelPadding="2dp"
+                        app:met_floatingLabelTextSize="15sp" />
+
+
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:id="@+id/edt_flat_name"
+                        android:layout_width="@dimen/_130sdp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="10dp"
+                        android:hint="Flat Name"
+                        android:inputType="textPersonName"
+                        android:maxLength="20"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        app:met_floatingLabel="highlight"
+                        app:met_floatingLabelPadding="2dp"
+                        app:met_floatingLabelTextSize="15sp" />
+
+                </LinearLayout>
+
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/edt_floor"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:hint="Building/House Number"
+                    android:inputType="text"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:visibility="gone"
+                    app:met_floatingLabel="highlight"
+                    app:met_floatingLabelPadding="2dp"
+                    app:met_floatingLabelTextSize="15sp" />
+
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/edt_street_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:hint="Street Name"
+                    android:inputType="textMultiLine"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    app:met_floatingLabel="highlight"
+                    app:met_floatingLabelPadding="2dp"
+                    app:met_floatingLabelTextSize="15sp" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/edt_zip_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:hint="Postal Code"
+                    android:inputType="textMultiLine"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    app:met_floatingLabel="highlight"
+                    app:met_floatingLabelPadding="2dp"
+                    app:met_floatingLabelTextSize="15sp" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/edt_city"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:hint="City/Town"
+                    android:inputType="textPostalAddress"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:visibility="gone"
+                    app:met_floatingLabel="highlight"
+                    app:met_floatingLabelPadding="2dp"
+                    app:met_floatingLabelTextSize="15sp" />
+
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/edt_state"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:hint="Country"
+                    android:inputType="textPostalAddress"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:visibility="gone"
+                    app:met_floatingLabel="highlight"
+                    app:met_floatingLabelPadding="2dp"
+                    app:met_floatingLabelTextSize="15sp" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/edt_city_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:hint="Mobile Number"
+                    android:inputType="phone"
+                    android:visibility="gone"
+                    android:maxLength="15"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    app:met_floatingLabel="highlight"
+                    app:met_floatingLabelPadding="2dp"
+                    app:met_floatingLabelTextSize="15sp" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/edt_phone_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:hint="Mobile Number"
+                    android:inputType="phone"
+                    android:maxLength="15"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    app:met_floatingLabel="highlight"
+                    app:met_floatingLabelPadding="2dp"
+                    app:met_floatingLabelTextSize="15sp" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dp_10"
+        android:background="@color/colorPrimary"
+        android:fontFamily="@font/roboto_bold"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:text="@string/submit_txt"
+        android:textAllCaps="true"
+        android:textColor="@color/colorWhite"
+        android:textSize="17sp" />
+
+</RelativeLayout>

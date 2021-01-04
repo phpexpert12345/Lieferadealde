@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/tool_activity"
+        android:layout_width="match_parent"
+        app:cardElevation="@dimen/_5sdp"
+        android:layout_height="@dimen/dp_50">
+        <RelativeLayout
+            android:id="@+id/rl_header"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50"
+            android:background="@color/colorPrimary">
+
+            <ImageView
+                android:id="@+id/img_back"
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/dp_10"
+                android:src="@drawable/ic_back_arrow"
+                app:tint="@color/colorBlack"/>
+
+            <TextView
+                android:id="@+id/tvMyOrder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="My Order"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                android:textSize="@dimen/sp_15" />
+            <RelativeLayout
+                android:id="@+id/cart_count_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/dp_10"
+                android:background="?attr/actionBarItemBackground"
+                android:gravity="center"
+                android:minHeight="?attr/actionBarSize"
+                android:minWidth="20dp"
+                android:paddingEnd="5dp"
+                android:paddingStart="10dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/hotlist_bell"
+                    android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_30"
+                    android:layout_margin="0dp"
+                    android:gravity="center"
+                    android:tint="@color/colorBlack"
+                    android:src="@drawable/vector_cart" />
+
+                <TextView
+                    android:id="@+id/tv_cart_item_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@id/hotlist_bell"
+                    android:layout_alignTop="@id/hotlist_bell"
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/cart_count"
+                    android:gravity="center"
+                    android:minWidth="17sp"
+                    android:paddingBottom="1dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="0dp"
+                    android:text="0"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+<RelativeLayout
+    android:layout_below="@+id/tool_activity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/rlt_orderid"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/txt_view_ordernumber"
+            android:layout_width="wrap_content"
+            android:text="Order ID : "
+            android:textSize="@dimen/_12ssp"
+            android:layout_alignParentLeft="true"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/txt_view_orderstatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="Order ID : "
+            android:textColor="@color/colorPrimaryone"
+            android:textSize="@dimen/_12ssp" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlt_sub_total"
+        android:layout_below="@+id/rlt_orderid"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:background="@color/color_lighteGray"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:gravity="center"
+        android:layout_height="@dimen/_30sdp">
+
+        <TextView
+            android:id="@+id/tvSubTotal"
+            android:layout_width="wrap_content"
+            android:text="Sub Total"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:textSize="@dimen/_12ssp"
+            android:layout_alignParentLeft="true"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/txt_view_sub_total_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:text="22.00"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_12ssp" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlt_total"
+        android:layout_below="@+id/rlt_sub_total"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:background="@color/color_lighteGray"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:gravity="center"
+        android:layout_height="@dimen/_30sdp">
+
+        <TextView
+            android:id="@+id/tvTotal"
+            android:layout_width="wrap_content"
+            android:text="Total"
+            android:textSize="@dimen/_12ssp"
+            android:layout_alignParentLeft="true"
+            android:textStyle="bold"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:textColor="@color/colorBlack"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/txt_view_total_price"
+            android:layout_width="wrap_content"
+            android:text="22.00"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_alignParentRight="true"
+            android:textSize="@dimen/_12ssp"
+            android:textColor="@color/colorBlack"
+            android:layout_height="wrap_content"/>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlt_menu"
+        android:layout_below="@+id/rlt_total"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/txt_vie_menu"
+            android:layout_width="wrap_content"
+            android:text="Menu"
+            android:textSize="@dimen/_12ssp"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/txt_view_sunmenu"
+            android:layout_below="@+id/txt_vie_menu"
+            android:layout_width="wrap_content"
+            android:text="Pizza Selection"
+            android:textSize="@dimen/_12ssp"
+            android:textColor="@color/colorBlack"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/txt_pizza_section_cuisine"
+            android:layout_below="@+id/txt_view_sunmenu"
+            android:layout_width="wrap_content"
+            android:text="Pizza Selection"
+            android:textSize="@dimen/_10ssp"
+            android:layout_height="wrap_content"/>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlt_sub_menu"
+        android:layout_below="@+id/rlt_menu"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/txt_view_sub_menu"
+            android:layout_width="wrap_content"
+            android:text="Pizza Selection"
+            android:textSize="@dimen/_12ssp"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/txt_view_sub_menu_one"
+            android:layout_below="@+id/txt_view_sub_menu"
+            android:layout_width="wrap_content"
+            android:text="Pizza Selection"
+            android:textSize="@dimen/_12ssp"
+            android:textColor="@color/colorBlack"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/txt_sub_sub_menu_cuisine"
+            android:layout_below="@+id/txt_view_sub_menu_one"
+            android:layout_width="wrap_content"
+            android:text="Pizza Selection"
+            android:textSize="@dimen/_10ssp"
+            android:layout_height="wrap_content"/>
+
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/txt_btn_track"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:text="Track"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/_15ssp"
+        android:background="@color/colorPrimaryone"
+        android:layout_height="@dimen/_35sdp"/>
+</RelativeLayout>
+
+</RelativeLayout>

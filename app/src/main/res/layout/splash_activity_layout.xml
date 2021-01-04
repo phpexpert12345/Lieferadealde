@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/_50sdp"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:layout_height="wrap_content">
+  </LinearLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/img_view_pager"
+        android:layout_width="match_parent"
+        android:visibility="visible"
+        android:layout_height="match_parent"/>
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:id="@+id/banner_progress"
+        android:layout_centerInParent="true"
+        android:visibility="visible"
+        android:layout_height="wrap_content"/>
+
+  <com.google.android.material.tabs.TabLayout
+      android:id="@+id/tl_tut"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:background="@android:color/transparent"
+      app:tabBackground="@drawable/tutorial_dot_selector"
+      app:tabGravity="center"
+      android:layout_centerHorizontal="true"
+      android:layout_above="@+id/btn_getstarted"
+      android:layout_margin="@dimen/dp_10"
+      app:tabIndicatorHeight="@dimen/dp_0" />
+
+  <com.viewpagerindicator.CirclePageIndicator
+        android:id="@+id/indicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_getstarted"
+        android:layout_centerHorizontal="true"
+      android:visibility="gone"
+        android:padding="10dip"
+        android:layout_marginBottom="@dimen/dp_20"
+        app:centered="true"
+        app:fillColor="@color/colorGreenLiteh"
+        app:snap="false" />
+
+  <androidx.appcompat.widget.AppCompatButton
+      android:visibility="gone"
+      android:id="@+id/btn_getstarted"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentEnd="true"
+      android:layout_centerVertical="true"
+      android:text="@string/get_started"
+      android:padding="@dimen/dp_20"
+      android:gravity="center"
+      android:layout_alignParentBottom="true"
+      android:textStyle="bold"
+      android:textAllCaps="true"
+      android:background="@drawable/normal_button_effect"
+      android:textColor="@color/colorWhite"
+      android:textSize="@dimen/sp_15" />
+
+    <!--<TextView
+        android:id="@+id/btn_getstarted"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_35sdp"
+        android:text="@string/get_started"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/_35sdp"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginRight="@dimen/_20sdp"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/_18ssp"
+        android:background="@color/colorPrimaryone" />-->
+
+</RelativeLayout>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/llFull"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/cv_RecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <RadioButton
+            android:visibility="gone"
+            android:id="@+id/rbitem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:padding="5dp"
+            android:focusable="false"
+            android:buttonTint="@color/colorGreenLiteh"/>
+
+        <CheckBox
+            android:visibility="visible"
+            android:id="@+id/cbitem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:buttonTint="@color/colorGreenLiteh"/>
+
+        <TextView
+            android:id="@+id/txtitemname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:padding="5dp"
+            android:textSize="@dimen/sp_13"/>
+
+        <TextView
+            android:id="@+id/txtprice"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text=""
+            android:textAlignment="textEnd"
+            android:padding="5dp"
+            android:textSize="@dimen/sp_13"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/gray"
+        android:layout_height="@dimen/dp_1"/>
+</LinearLayout>

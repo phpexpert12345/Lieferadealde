@@ -1,0 +1,146 @@
+<resources>
+    <string name="app_name">Lieferadeal.de</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="no_of_items">No of Items</string>
+
+
+    <string name="pickup_location">Enter location</string>
+    <string name="drop_off">Dropoff location</string>
+    <string name="MAP_API_KEY">AIzaSyAfySREHfRw2x8bEFT6b7Nc4z3Te80LiyI</string>
+    <string name="valid_date_in_history">Please enter valid date</string>
+    <string name="select_time">Select Time</string>
+
+
+    <string name="usr_name">    User Name (Email Address)</string>
+    <string name="usr_pass">Password</string>
+    <string name="login">Login</string>
+    <string name="signup">Sign Up</string>
+    <string name="remember_me">Remember Me</string>
+    <string name="forgot_pass">Forgot password</string>
+    <string name="create_new_acc">Create a new Account</string>
+    <string name="login_in_ur_app">Login into your Account</string>
+
+    <string name="my_account_txt">My Account</string>
+    <string name="my_order_txt">My Order</string>
+    <string name="my_profile">My Profile</string>
+    <string name="profile_setting_txt">Profile Setting</string>
+    <string name="change_pwd_txt">Change Password</string>
+    <string name="track_order_txt">Track Status</string>
+    <string name="track_order">Track Order</string>
+    <string name="order_issue">Order Issue</string>
+    <string name="reviwe_rating_txt">Review &amp; Rating></string>
+    <string name="privacy_policy">Privacy &amp; Policy</string>
+    <string name="publish_review_txt">Publish Review</string>
+    <string name="write_review_txt">Write A Review</string>
+    <string name="enter_old_pwd">Enter old password</string>
+    <string name="enter_new_pwd">Enter new pwd</string>
+    <string name="enter_new_confirm_pwd">Enter your new confirm password</string>
+    <string name="order_tracking_txt">Order Tracking</string>
+    <string name="enter_order_number_txt">Enter order number</string>
+    <string name="review_rating_txt">Review &amp; Rating</string>
+    <string name="my_addresss_txt">My Address</string>
+    <string name="loyal_points">Loyalty Points </string>
+    <string name="my_tickets">My Ticket</string>
+    <string name="help_center">Help Center</string>
+    <string name="help">Help &amp; Support</string>
+    <string name="update_profile_txt">Update Profile</string>
+    <string name="submit_txt">Submit</string>
+    <string name="Sign_In"><u>Sign In</u></string>
+
+    <string name="nav_item_home">Home</string>
+    <!--Before Login Item-->
+    <string name="nav_item_login">Login</string>
+    <string name="nav_item_register">Register</string>
+    <string name="nav_item_term_cond">Terms &amp; Conditions</string>
+    <string name="nav_item_faq">FAQ</string>
+    <string name="nav_item_location">Location</string>
+    <string name="action_search">search</string>
+    <string name="nav_item_my_account">My Account</string>
+
+    <!--After Login-->
+
+    <string name="nav_item_my_order">My Order</string>
+    <string name="nav_item_setting">Profile Setting</string>
+    <string name="nav_item_change_pwd">Change Password</string>
+    <string name="nav_item_track_order">Track Order</string>
+    <string name="nav_item_order_issue">Order Issue</string>
+    <string name="nav_item_logout">Logout</string>
+    <string name="share_using">Share with</string>
+    <string name="old_pwd_txt">Old Password</string>
+    <string name="new_pwd_txt">New Password</string>
+    <string name="confirm_pwd_txt">Confirm Password</string>
+    <string name="deliver_note">When placing an order,you will receive a confirmation,Liferdeal status message, and a request to review the restaurant via email or otherwise (such as push message).</string>
+
+    <string name="note2"> Sign up to recive message containing information restaurants ,special offers,and discount vouchers. </string>
+
+    <string name="note3"> Paying with paypal is free.Uoy will redirected to the secure(SSL)pages of Paypal.Here you will be able to complete the Paypal payment for your order. </string>
+    <string name="note4">By clicking on ORDER AND PAY you to agree with the contents of the shooping cart,the data you filled out, our privacy statement,and terms of use.</string>
+
+    <string name="note5">To aid the prevention of the spread of the COVID 19,the courier will ring your door bell and leave your order at door.</string>
+    <string name="get_started">Get Started</string>
+    <string name="search_restaurant">Search for restaurants</string>
+    <string name="restaurant_details">Restaurant Details</string>
+    <string name="add_extra_topping">Add Extra Topping</string>
+    <string name="add_to_cart">Add To Cart</string>
+    <string name="no_extra_topping">No Extra Topping for This</string>
+    <string name="view_cart">View Cart</string>
+    <string name="cart">Cart</string>
+    <string name="instructions">Instructions</string>
+    <string name="applyCoupon">Apply Coupon</string>
+    <string name="couponCode">Coupon Code</string>
+    <string name="apply">Apply</string>
+    <string name="couponId">Enter Coupon.</string>
+    <string name="dineIn">DineIn</string>
+    <string name="zero">€0.0</string>
+    <string name="deliveryFees">€0.0</string>
+    <string name="password_security">Password Security</string>
+    <string name="when_would_you_like_your_food">when would you like your food</string>
+    <string name="asap">ASAP</string>
+    <string name="later">Later</string>
+    <string name="delivery_schedule">Delivery Schedule</string>
+    <string name="please_select_payment_type">please select payment type</string>
+    <string name="credit_debit_card">Credit/Debit Card</string>
+    <string name="paypal">Paypal</string>
+    <string name="cash_on_delivery">Cash on Delivery</string>
+    <string name="pay_later">Pay Later</string>
+    <string name="make_payment">Make a Payment</string>
+    <string name="allergy_instruction">allergy instruction</string>
+    <string name="enter_instruction">Enter special instruction</string>
+    <string name="do_you_have_an_allergy">Do you have an allergy</string>
+    <string name="pay">Pay</string>
+    <string name="thanku">Thank you</string>
+    <string name="your_booking">Your Booking confirmation has been nsuccessfully sent to restaurant.</string>
+    <string name="got_to">Go to Home</string>
+    <string-array name="navigation_drawer_items_array">
+
+        <!--Before Login Item-->
+
+        <item>@string/nav_item_home</item>
+        <item>@string/nav_item_login</item>
+        <item>@string/nav_item_register</item>
+        <item>@string/nav_item_term_cond</item>
+        <item>@string/nav_item_faq</item>
+        <item>@string/nav_item_location</item>
+
+        <!--After Login Item -->
+
+        <item>@string/nav_item_my_account</item>
+        <item>@string/nav_item_my_order</item>
+        <item>@string/nav_item_setting</item>
+        <item>@string/nav_item_change_pwd</item>
+        <item>@string/nav_item_track_order</item>
+        <item>@string/nav_item_order_issue</item>
+        <item>@string/nav_item_logout</item>
+
+
+    </string-array>
+</resources>

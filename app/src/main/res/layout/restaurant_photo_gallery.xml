@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/tool_activity"
+        android:layout_width="match_parent"
+        app:cardElevation="@dimen/_5sdp"
+        android:layout_height="@dimen/dp_50">
+
+        <RelativeLayout
+            android:id="@+id/rl_header"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50"
+            android:background="@color/colorPrimary">
+
+            <ImageView
+                android:id="@+id/img_back"
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/dp_10"
+                android:src="@drawable/ic_back_arrow"
+                app:tint="@color/colorBlack"/>
+
+            <TextView
+                android:id="@+id/txt_header_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text=""
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                android:textSize="@dimen/sp_18" />
+            <RelativeLayout
+                android:id="@+id/cart_count_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/dp_10"
+                android:background="?attr/actionBarItemBackground"
+                android:gravity="center"
+                android:minHeight="?attr/actionBarSize"
+                android:minWidth="20dp"
+                android:paddingEnd="5dp"
+                android:paddingStart="10dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/hotlist_bell"
+                    android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_30"
+                    android:layout_margin="0dp"
+                    android:gravity="center"
+                    android:tint="@color/colorBlack"
+                    android:src="@drawable/vector_cart" />
+
+                <TextView
+                    android:id="@+id/tv_cart_item_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@id/hotlist_bell"
+                    android:layout_alignTop="@id/hotlist_bell"
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/cart_count"
+                    android:gravity="center"
+                    android:minWidth="17sp"
+                    android:paddingBottom="1dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="0dp"
+                    android:text="0"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_below="@+id/tool_activity"
+        android:elevation="6dp"
+        android:minHeight="?attr/actionBarSize"
+        app:tabTextColor="@color/colorBlack"
+        app:tabSelectedTextColor="@color/colorWhite"
+        android:layout_height="@dimen/_40sdp"/>
+
+    <LinearLayout
+        android:id="@+id/llTab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorGrayLite"
+        android:paddingTop="@dimen/dp_10"
+        android:paddingBottom="@dimen/dp_10"
+        android:layout_below="@id/tool_activity"
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvTabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+    
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/pager"
+        android:layout_below="@+id/llTab"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@+id/tool_activity"
+        android:id="@+id/rest_food_gallery"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:id="@+id/banner_progress"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:layout_height="wrap_content"/>
+</RelativeLayout>

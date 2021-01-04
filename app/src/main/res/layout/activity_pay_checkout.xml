@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:fitsSystemWindows="true">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/rl_header"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:elevation="@dimen/_5sdp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:background="@color/colorWhite">
+
+            <RelativeLayout
+                android:id="@+id/rl_back"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_50"
+                    android:src="@drawable/ic_back_arrow" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tvPayment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Payment"
+                android:textColor="@color/colorBlack"
+                android:textSize="15sp" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_below="@+id/rl_header"
+        android:layout_marginTop="@dimen/dp_10"
+        android:fontFamily="@font/roboto_bold"
+        android:text="Amount to be paid"
+        android:textColor="@color/colorGreen"
+        android:textSize="20sp"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvToPayPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_below="@+id/tv"
+        android:fontFamily="@font/roboto_bold"
+        android:text="0.00"
+        android:textColor="@color/colorGreen"
+        android:textSize="32sp"/>
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_above="@+id/buttonMakePayment"
+        android:layout_below="@+id/tvToPayPrice"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewOrderTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:elevation="5dp"
+                app:cardCornerRadius="5dp"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorGrayLite"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/txtSelectPaymentType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_semi_bold"
+                        android:text="@string/when_would_you_like_your_food"
+                        android:textColor="@color/colorRed"
+                        android:textSize="@dimen/sp_18" />
+
+                    <RadioGroup
+                        android:id="@+id/rgFood"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <com.google.android.material.radiobutton.MaterialRadioButton
+                            android:id="@+id/radioButtonASAP"
+                            android:layout_width="@dimen/dp_0"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorBlack"
+                            android:layout_weight="1"
+                            android:textSize="@dimen/sp_15"
+                            android:text="@string/asap" />
+
+                        <com.google.android.material.radiobutton.MaterialRadioButton
+                            android:id="@+id/radioButtonLater"
+                            android:layout_width="@dimen/dp_0"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="@dimen/sp_15"
+                            android:layout_weight="1"
+                            android:text="@string/later" />
+
+                    </RadioGroup>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/textViewDeliverySchedule"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_delivery"
+                        android:drawablePadding="10dp"
+                        android:fontFamily="@font/montserrat_semi_bold"
+                        android:gravity="center_vertical"
+                        android:text="@string/delivery_schedule"
+                        android:textColor="@color/colorRed"
+                        android:textSize="18sp"
+                        android:visibility="gone"
+                        app:drawableTint="@color/colorRed" />
+<!--
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerViewDeliverySchedule"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/delivery_time_list_item_row" />-->
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewGallery"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:elevation="5dp"
+                app:cardCornerRadius="5dp"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tvSelectPayment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="10dp"
+                        android:fontFamily="@font/montserrat_semi_bold"
+                        android:gravity="center_vertical"
+                        android:padding="10dp"
+                        android:text="@string/please_select_payment_type"
+                        android:textColor="@color/colorRed"
+                        android:textSize="18sp"
+                        app:drawableTint="@color/colorRed" />
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardViewCreditDebitCard"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:elevation="5dp"
+                        app:cardCornerRadius="5dp"
+                        app:cardUseCompatPadding="true">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/colorGrayLite"
+                            android:orientation="vertical"
+                            android:padding="10dp">
+
+                            <RadioButton
+                                android:id="@+id/radioButtonCreditDebitCard"
+                                android:layout_width="wrap_content"
+                                android:layout_height="50dp"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerVertical="true"
+                                android:drawableEnd="@drawable/ic_debit_credit_card"
+                                android:drawablePadding="10dp"
+                                android:gravity="center_vertical" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/txtCreditDebitCard"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:fontFamily="@font/montserrat_medium"
+                                android:text="@string/credit_debit_card" />
+
+                        </RelativeLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardViewPaypal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:elevation="5dp"
+                        app:cardCornerRadius="5dp"
+                        app:cardUseCompatPadding="true">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/colorGrayLite"
+                            android:padding="10dp">
+
+                            <RadioButton
+                                android:id="@+id/radioButtonPaypal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="50dp"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerVertical="true"
+                                android:drawableEnd="@drawable/ic_paypal"
+                                android:drawablePadding="10dp"
+                                android:gravity="center_vertical" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/txtPaypal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:fontFamily="@font/montserrat_medium"
+                                android:text="@string/paypal" />
+
+
+                        </RelativeLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardViewCashOnDelivery"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:elevation="5dp"
+                        app:cardCornerRadius="5dp"
+                        app:cardUseCompatPadding="true">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/colorGrayLite"
+                            android:padding="10dp">
+
+                            <RadioButton
+                                android:checked="true"
+                                android:id="@+id/radioButtonCashOnDelivery"
+                                android:layout_width="wrap_content"
+                                android:layout_height="50dp"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerVertical="true"
+                                android:drawableEnd="@drawable/ic_cash_on_delivery"
+                                android:drawablePadding="10dp" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/textViewCashOnDelivery"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:fontFamily="@font/montserrat_medium"
+                                android:gravity="center_vertical"
+                                android:text="@string/cash_on_delivery" />
+
+                        </RelativeLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardViewPayLater"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:elevation="5dp"
+                        android:visibility="gone"
+                        app:cardCornerRadius="5dp"
+                        app:cardUseCompatPadding="true">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:visibility="gone"
+                            android:layout_height="match_parent"
+                            android:background="@color/colorGrayLite"
+                            android:padding="10dp">
+
+                            <RadioButton
+                                android:id="@+id/radioButtonPayLater"
+                                android:layout_width="wrap_content"
+                                android:layout_height="50dp"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerVertical="true"
+                                android:drawableEnd="@drawable/ic_pay_later"
+                                android:drawablePadding="10dp" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:fontFamily="@font/montserrat_medium"
+                                android:gravity="center_vertical"
+                                android:text="@string/pay_later" />
+
+                        </RelativeLayout>
+                    </androidx.cardview.widget.CardView>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txtNoteText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="@string/allergy_instruction" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/editTextInstruction"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhite"
+                    android:gravity="start|top"
+                    android:hint=""
+                    android:inputType="textMultiLine"
+                    android:minLines="2" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/textViewAllergy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="10dp"
+                android:text="@string/do_you_have_an_allergy"
+                android:textColor="@color/colorRed" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonMakePayment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/make_payment"
+        android:fontFamily="@font/roboto_medium"
+        android:padding="10dp"
+        android:textSize="18sp"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

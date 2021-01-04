@@ -1,0 +1,76 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Drop Shadow Stack -->
+    <item>
+        <shape>
+            <padding android:top="@dimen/dp_2" />
+
+            <solid android:color="#00CCCCCC" />
+            <corners
+                android:bottomLeftRadius="@dimen/dp_0"
+                android:bottomRightRadius="@dimen/dp_0"
+                android:topLeftRadius="@dimen/dp_8"
+                android:topRightRadius="@dimen/dp_8" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <padding android:top="@dimen/dp_2" />
+
+            <solid android:color="#10CCCCCC" />
+            <corners
+                android:bottomLeftRadius="@dimen/dp_0"
+                android:bottomRightRadius="@dimen/dp_0"
+                android:topLeftRadius="@dimen/dp_8"
+                android:topRightRadius="@dimen/dp_8" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <padding android:top="@dimen/dp_2" />
+
+            <solid android:color="#20CCCCCC" />
+            <corners
+                android:bottomLeftRadius="@dimen/dp_0"
+                android:bottomRightRadius="@dimen/dp_0"
+                android:topLeftRadius="@dimen/dp_8"
+                android:topRightRadius="@dimen/dp_8" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <padding android:top="@dimen/dp_2" />
+
+            <solid android:color="#30CCCCCC" />
+            <corners
+                android:bottomLeftRadius="@dimen/dp_0"
+                android:bottomRightRadius="@dimen/dp_0"
+                android:topLeftRadius="@dimen/dp_8"
+                android:topRightRadius="@dimen/dp_8" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <padding android:top="@dimen/dp_2" />
+
+            <solid android:color="#50CCCCCC" />
+            <corners
+                android:bottomLeftRadius="@dimen/dp_0"
+                android:bottomRightRadius="@dimen/dp_0"
+                android:topLeftRadius="@dimen/dp_8"
+                android:topRightRadius="@dimen/dp_8" />
+        </shape>
+    </item>
+
+    <!-- Background -->
+    <item>
+        <shape>
+            <solid android:color="@color/colorGreenLiteh" />
+            <corners
+                android:bottomLeftRadius="@dimen/dp_0"
+                android:bottomRightRadius="@dimen/dp_0"
+                android:topLeftRadius="@dimen/dp_8"
+                android:topRightRadius="@dimen/dp_8" />
+        </shape>
+    </item>
+
+</layer-list>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_marginTop="@dimen/_15sdp"
+            android:fontFamily="@font/roboto_bold"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/thanku"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/sp_18"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+        <View
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@color/color_lighteGray"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp">
+
+        </View>
+        <ImageView
+            android:layout_marginTop="@dimen/_20sdp"
+            android:background="@drawable/thank_u"
+            android:layout_gravity="center"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="@dimen/dp_50">
+
+        </ImageView>
+        <TextView
+            android:id="@+id/tvMsg"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:fontFamily="@font/roboto_medium"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/your_booking"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_13sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+        <TextView
+            android:id="@+id/tvBookingNo"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:fontFamily="@font/roboto_bold"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Your booking number is 74647347"
+            android:textColor="@color/colorGreenLite"
+            android:textSize="@dimen/_13sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+        <TextView
+            android:id="@+id/tvBookingDate"
+            android:fontFamily="@font/roboto_bold"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp_10"
+            android:gravity="center"
+            android:text="Booking  Date : 02 Jan,2021 13:50"
+            android:textColor="@color/colorGreenLite"
+            android:textSize="@dimen/_13sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+        <TextView
+            android:id="@+id/tvNote"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:fontFamily="@font/montserrat_semi_bold"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Note: If 10 minute late for the booking the table will be \n  re-allocated"
+            android:textColor="@color/colorRed"
+            android:textSize="@dimen/_9sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+        <Button
+            android:id="@+id/btnHome"
+            android:textAllCaps="false"
+            android:fontFamily="@font/roboto_bold"
+            android:textColor="@color/colorWhite"
+            android:text="@string/got_to"
+            android:layout_margin="@dimen/_25sdp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp">
+
+        </Button>
+
+    </LinearLayout>
+
+</RelativeLayout>

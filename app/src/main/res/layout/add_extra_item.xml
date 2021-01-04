@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:background="@color/quantum_white_100"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/cv_RecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/dp_5"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <RadioButton
+                android:visibility="gone"
+                android:id="@+id/rbitem"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:padding="5dp"
+                android:focusable="false"
+                android:buttonTint="@color/colorGreenLiteh"
+                />
+
+            <CheckBox
+                android:visibility="visible"
+                android:id="@+id/cbitem"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_20"
+                android:layout_weight="0.3"
+                android:padding="5dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:buttonTint="@color/colorGreenLiteh"
+                />
+
+            <TextView
+                android:id="@+id/txtitemname"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.0"
+                android:text="TextView"
+                android:textColor="@color/colorTextPrimary"
+                android:fontFamily="@font/roboto_regular"
+                android:padding="5dp"
+                android:textSize="@dimen/sp_13"/>
+
+            <TextView
+                android:id="@+id/txtprice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:text=""
+                android:textColor="@color/colorBlack"
+                android:fontFamily="@font/roboto_bold"
+                android:textAlignment="textEnd"
+                android:padding="5dp"
+                android:textSize="@dimen/sp_14"/>
+
+        </LinearLayout>
+
+    <View
+        android:layout_below="@+id/cv_RecyclerView"
+        android:layout_width="match_parent"
+        android:layout_marginStart="@dimen/dp_20"
+        android:layout_marginEnd="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_5"
+        android:background="@color/gray"
+        android:layout_height="@dimen/_1sdp"/>
+
+</RelativeLayout>

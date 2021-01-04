@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F4F9FD">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/rl_header"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:elevation="@dimen/_5sdp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50"
+            android:background="@color/colorPrimary">
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_50"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/dp_10"
+                android:src="@drawable/ic_back_arrow" />
+
+            <TextView
+                android:id="@+id/tv_faq"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Refer a Friend"
+                android:fontFamily="@font/roboto_medium"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/sp_15" />
+
+            <RelativeLayout
+                android:id="@+id/cart_count_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/dp_10"
+                android:background="?attr/actionBarItemBackground"
+                android:gravity="center"
+                android:minWidth="20dp"
+                android:minHeight="?attr/actionBarSize"
+                android:paddingStart="10dp"
+                android:paddingEnd="5dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/hotlist_bell"
+                    android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_30"
+                    android:layout_margin="0dp"
+                    android:gravity="center"
+                    android:src="@drawable/vector_cart"
+                    android:tint="@color/colorBlack" />
+
+                <TextView
+                    android:id="@+id/tv_cart_item_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/hotlist_bell"
+                    android:layout_alignEnd="@id/hotlist_bell"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="0dp"
+                    android:background="@drawable/cart_count"
+                    android:gravity="center"
+                    android:minWidth="17sp"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="0dp"
+                    android:paddingRight="5dp"
+                    android:paddingBottom="1dp"
+                    android:text="0"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@+id/rl_header"
+        android:layout_marginTop="@dimen/dp_30">
+
+        <TextView
+            android:id="@+id/refercodemsg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Get one friend to order from Foodie Liferadeal and earn a 5 points! "
+            android:fontFamily="@font/roboto_regular"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:lineSpacingExtra="@dimen/dp_3"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/sp_18" />
+
+        <TextView
+            android:id="@+id/txtlpoints"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textStyle="bold"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/sp_18" />
+
+
+        <TextView
+            android:id="@+id/tvRefferalCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Referal Code"
+            android:textColor="@color/colorBlack"
+            android:gravity="center"
+            android:fontFamily="@font/roboto_bold"
+            android:layout_marginTop="@dimen/dp_20"
+            android:textSize="@dimen/sp_15" />
+
+
+        <TextView
+            android:id="@+id/refercode"
+            android:layout_width="@dimen/dp_150"
+            android:layout_height="@dimen/dp_40"
+            android:text="214355"
+            android:layout_gravity="center"
+            android:fontFamily="@font/roboto_bold"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/circle_background"
+            android:textColor="#fff"
+            android:gravity="center"
+            android:textSize="@dimen/sp_15" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="15dp"
+                android:background="@color/colorPrimary"
+                android:layout_weight=".1"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Share Your Code"
+                android:layout_weight=".1"
+                android:layout_marginLeft="10dp"
+                android:textColor="#8d8d8d"
+                android:textSize="@dimen/_10ssp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_weight=".1"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/colorPrimary"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp">
+
+            <ImageView
+                android:id="@+id/watsapp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/whatsapp"/>
+
+            <ImageView
+                android:id="@+id/facebook"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="40dp"
+                android:background="@drawable/facebook"/>
+
+            <ImageView
+                android:id="@+id/twitter"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="40dp"
+                android:background="@drawable/twitter"/>
+
+            <ImageView
+                android:id="@+id/share"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="40dp"
+                android:background="@drawable/share"/>
+
+
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
+
+            <RelativeLayout
+                android:id="@+id/rrfrnd"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="20dp">
+
+
+                <LinearLayout
+                    android:id="@+id/bal2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight=".15">
+
+                        <TextView
+                            android:id="@+id/joinfriends"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="You have referred"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="@dimen/sp_16" />
+
+                        <TextView
+                            android:id="@+id/earnpoints"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="0 Friend"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorRed"
+                            android:textSize="@dimen/_15ssp" />
+
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/ic_refer_friend"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlt_btn_got_to_home"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimaryone"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:text="Go to Home"
+            android:textStyle="bold"
+            android:padding="@dimen/dp_10"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/_15ssp"
+            android:gravity="center"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

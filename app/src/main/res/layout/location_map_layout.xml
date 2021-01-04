@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/tool_activity"
+        android:layout_width="match_parent"
+        app:cardElevation="@dimen/_5sdp"
+        android:layout_height="@dimen/dp_50">
+
+        <RelativeLayout
+            android:id="@+id/rl_header"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50"
+            android:background="@color/colorPrimary">
+
+            <ImageView
+                android:id="@+id/img_back"
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/dp_10"
+                android:src="@drawable/ic_back_arrow"
+                app:tint="@color/colorBlack" />
+
+            <LinearLayout
+                android:id="@+id/search_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:layout_toRightOf="@+id/img_back"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/search"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="@dimen/dp_10"
+                    android:drawableRight="@drawable/location"
+                    android:gravity="center"
+                    android:hint="Search Address"
+                    android:imeOptions="actionSearch"
+                    android:singleLine="true"
+                    android:text=""
+                    android:fontFamily="@font/roboto_regular"
+                    android:textColor="@color/colorBlack"
+                    android:textColorHint="@color/belowline_color"
+                    android:textSize="@dimen/sp_13"
+                    android:visibility="visible" />
+
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/cart_count_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/dp_10"
+                android:background="?attr/actionBarItemBackground"
+                android:gravity="center"
+                android:minWidth="20dp"
+                android:minHeight="?attr/actionBarSize"
+                android:paddingStart="10dp"
+                android:paddingEnd="5dp"
+                android:visibility="gone">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/hotlist_bell"
+                    android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_30"
+                    android:layout_margin="0dp"
+                    android:gravity="center"
+                    android:src="@drawable/vector_cart"
+                    android:tint="@color/colorBlack" />
+
+                <TextView
+                    android:id="@+id/tv_cart_item_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/hotlist_bell"
+                    android:layout_alignEnd="@id/hotlist_bell"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="0dp"
+                    android:background="@drawable/cart_count"
+                    android:gravity="center"
+                    android:minWidth="17sp"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="0dp"
+                    android:paddingRight="5dp"
+                    android:paddingBottom="1dp"
+                    android:text="0"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <fragment
+        android:id="@+id/map"
+        android:layout_below="@+id/tool_activity"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_navigation"
+        />
+
+    <LinearLayout
+        android:id="@+id/lnr_confirm_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/_20sdp"
+        android:layout_above="@+id/bottom_navigation"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvConfirmLocation"
+            android:layout_width="match_parent"
+            android:text="Confirm Location"
+            android:background="@color/colorPrimaryone"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/_13ssp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_height="@dimen/_35sdp"/>
+
+    </LinearLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="@dimen/dp_70"
+        android:layout_gravity="bottom"
+        android:background="@drawable/bg_with_eleveation"
+        app:contentInsetEnd="0dp"
+        app:contentInsetLeft="0dp"
+        app:contentInsetRight="0dp"
+        app:contentInsetStart="0dp"
+        app:elevation="@dimen/dp_10"
+        app:itemBackground="@drawable/bg_item_color_state"
+        app:itemIconTint="@drawable/item_color_state"
+        app:itemTextColor="@drawable/item_color_state"
+        app:labelVisibilityMode="labeled"
+        app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
+        app:menu="@menu/bottom_navigation_main" />
+
+</RelativeLayout>

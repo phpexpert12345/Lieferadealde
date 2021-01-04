@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fillViewport="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.cardview.widget.CardView
+            app:cardBackgroundColor="@color/quantum_white_100"
+            android:layout_margin="10dp"
+            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:layout_height="160dp">
+            <RelativeLayout
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tvApply"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="@string/applyCoupon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                </TextView>
+                <ImageView
+                    android:id="@+id/ivClose"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/ic_close"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp">
+
+                </ImageView>
+                <EditText
+                    android:textColor="@color/colorBlack"
+                    android:textColorHint="@color/gray"
+                    android:background="@null"
+                    android:id="@+id/etCouponCode"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:layout_marginTop="30dp"
+                    android:hint="@string/couponCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp">
+
+                </EditText>
+                <View
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@+id/etCouponCode"
+                    android:background="@color/gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp">
+
+                </View>
+
+                <Button
+                    android:id="@+id/btnApply"
+                    android:textColor="@color/quantum_white_100"
+                    android:textAllCaps="false"
+                    android:fontFamily="@font/montserrat_semi_bold"
+                    android:text="@string/apply"
+                    android:layout_marginTop="25dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/etCouponCode"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp">
+
+                </Button>
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+</ScrollView>

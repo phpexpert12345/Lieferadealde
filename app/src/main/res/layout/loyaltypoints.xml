@@ -1,0 +1,930 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        app:cardElevation="@dimen/_5sdp"
+        android:layout_height="@dimen/dp_50">
+
+    <RelativeLayout
+        android:id="@+id/rl_header"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        android:background="@color/colorPrimary">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_50"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dp_10"
+            android:src="@drawable/ic_back_arrow"
+            app:tint="@color/colorBlack"/>
+
+        <TextView
+            android:id="@+id/tvHead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="Loyality Poits"
+            android:textColor="@color/colorBlack"
+            android:fontFamily="@font/roboto_medium"
+            android:textSize="@dimen/sp_15" />
+
+    </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcv_loyality_points_list"
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:visibility="gone"
+        android:layout_height="match_parent"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="10dp"
+            android:weightSum="3">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_weight="0.5"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/signin_logo"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:scaleType="fitXY"
+                    android:layout_gravity="center"
+                    android:src="@drawable/freesignup" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.4"
+                android:orientation="vertical"
+                android:layout_marginRight="2dp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <TextView
+                        android:id="@+id/tvFreeSignUp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="2.2"
+                        android:gravity="start"
+                        android:text="Free Sign Up"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_12ssp"
+                        android:textStyle="bold" />
+
+
+                </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/layout">
+
+
+                    <TextView
+                        android:id="@+id/tv_loyality_des"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:maxLines="2"
+                        android:text="Free sign up with us to get"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_10ssp" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:orientation="vertical"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:gravity="center">
+
+
+                <LinearLayout
+                    android:layout_width="70dp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_margin="5dp"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/tv_free_signup_points"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="8.00"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorRed"
+                        android:textSize="@dimen/_15ssp" />
+                    <TextView
+                        android:id="@+id/tvPoint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Points"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:textColor="@color/colorRed"
+                        android:textSize="@dimen/_8ssp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="10dp"
+            android:weightSum="3">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_weight="0.5"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/place_order_logo"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:scaleType="fitXY"
+                    android:layout_gravity="center"
+                    android:src="@drawable/placefstorder" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.4"
+                android:orientation="vertical"
+                android:layout_marginRight="2dp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <TextView
+                        android:id="@+id/tvPlaceFirstOrder"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="2.2"
+                        android:gravity="start"
+                        android:text="Place First Order"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_12ssp"
+                        android:textStyle="bold" />
+
+
+                </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/layout">
+
+
+                    <TextView
+                        android:id="@+id/tvPlaceOrderToGet"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:maxLines="2"
+                        android:text="Place first order from us to get"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_10ssp" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:orientation="vertical"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:gravity="center">
+
+
+                <LinearLayout
+                    android:layout_width="70dp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_margin="5dp"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/tv_place_fst_order_points"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="8.00"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorRed"
+                        android:textSize="@dimen/_15ssp" />
+                    <TextView
+                        android:id="@+id/tvPointt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Points"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:textColor="@color/colorRed"
+                        android:textSize="@dimen/_8ssp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="10dp"
+            android:weightSum="3">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_weight="0.5"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/post_review_point_logo"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:scaleType="fitXY"
+                    android:layout_gravity="center"
+                    android:src="@drawable/placefstorder" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.4"
+                android:orientation="vertical"
+                android:layout_marginRight="2dp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <TextView
+                        android:id="@+id/tvPostingaReview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="2.2"
+                        android:gravity="start"
+                        android:text="Posting a Review"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_12ssp"
+                        android:textStyle="bold" />
+
+
+                </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/layout">
+
+
+                    <TextView
+                        android:id="@+id/tvPostingReviewGet"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:maxLines="2"
+                        android:text="Posting a review to get"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_10ssp" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:orientation="vertical"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:gravity="center">
+
+
+                <LinearLayout
+                    android:layout_width="70dp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_margin="5dp"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/tv_item_points"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="8.00"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorRed"
+                        android:textSize="@dimen/_15ssp" />
+                    <TextView
+                        android:id="@+id/tvPointtt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Points"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:textColor="@color/colorRed"
+                        android:textSize="@dimen/_8ssp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="10dp"
+            android:weightSum="3">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_weight="0.5"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/place_ordering_group_logo"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:scaleType="fitXY"
+                    android:layout_gravity="center"
+                    android:src="@drawable/groupordering" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.4"
+                android:orientation="vertical"
+                android:layout_marginRight="2dp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <TextView
+                        android:id="@+id/tvGroupOrdering"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="2.2"
+                        android:gravity="start"
+                        android:text="Group Ordering"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_12ssp"
+                        android:textStyle="bold" />
+
+
+                </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/layout">
+
+
+                    <TextView
+                        android:id="@+id/tvPlaceGroupOrdering"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="2"
+                        android:text="Place group ordering to get"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_10ssp" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:orientation="vertical"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:gravity="center">
+
+
+                <LinearLayout
+                    android:layout_width="70dp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_margin="5dp"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/tv_place_point_order"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="8.00"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorRed"
+                        android:textSize="@dimen/_15ssp" />
+                    <TextView
+                        android:id="@+id/tvPointtttt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Points"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:textColor="@color/colorRed"
+                        android:textSize="@dimen/_8ssp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="10dp"
+            android:weightSum="3">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_weight="0.5"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/birthday_celebrate_point"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:scaleType="fitXY"
+                    android:layout_gravity="center"
+                    android:src="@drawable/bdcelebrate" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.4"
+                android:orientation="vertical"
+                android:layout_marginRight="2dp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <TextView
+                        android:id="@+id/tvBirthdayCelebration"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="2.2"
+                        android:gravity="start"
+                        android:text="Birthday Celebration"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_12ssp"
+                        android:textStyle="bold" />
+
+
+                </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/layout">
+
+
+                    <TextView
+                        android:id="@+id/tvBirthdayCelebrationPlaceOrder"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:maxLines="2"
+                        android:text="Birthday celebration and place orders from us to get"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_10ssp" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:orientation="vertical"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:gravity="center">
+
+
+                <LinearLayout
+                    android:layout_width="70dp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_margin="5dp"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/tv_bday_celebrate_points"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="8.00"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorRed"
+                        android:textSize="@dimen/_15ssp" />
+                    <TextView
+                        android:id="@+id/tvPointttt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Points"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:textColor="@color/colorRed"
+                        android:textSize="@dimen/_8ssp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="10dp"
+            android:weightSum="3">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_weight="0.5"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/social_media_sharing_logo"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:scaleType="fitXY"
+                    android:layout_gravity="center"
+                    android:src="@drawable/socialshare" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.4"
+                android:orientation="vertical"
+                android:layout_marginRight="2dp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <TextView
+                        android:id="@+id/tvSocialSharing"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="2.2"
+                        android:gravity="start"
+                        android:text="Social Sharing"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_12ssp"
+                        android:textStyle="bold" />
+
+
+                </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/layout">
+
+
+                    <TextView
+                        android:id="@+id/tvSharingFb"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:maxLines="2"
+                        android:text="Sharing with Facebook, Twitter, Whatsapp, etc to get"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_10ssp" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:orientation="vertical"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:gravity="center">
+
+
+                <LinearLayout
+                    android:layout_width="70dp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_margin="5dp"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/tv_social_media_points"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="8.00"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorRed"
+                        android:textSize="@dimen/_15ssp" />
+                    <TextView
+                        android:id="@+id/tvPointttttt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Points"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:textColor="@color/colorRed"
+                        android:textSize="@dimen/_8ssp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="10dp"
+            android:weightSum="3">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_weight="0.5"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/refer_point_logo"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:scaleType="fitXY"
+                    android:layout_gravity="center"
+                    android:src="@drawable/referfrnd" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.4"
+                android:orientation="vertical"
+                android:layout_marginRight="2dp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <TextView
+                        android:id="@+id/tvSpendEarn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="2.2"
+                        android:gravity="start"
+                        android:text="Spend Earn"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_12ssp"
+                        android:textStyle="bold" />
+
+
+                </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/layout">
+
+
+                    <TextView
+                        android:id="@+id/tvEarnPoint"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:maxLines="2"
+                        android:text="Earn 1 point for every GBP 1 spent with Us"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_10ssp" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:orientation="vertical"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:gravity="center">
+
+
+                <LinearLayout
+                    android:layout_width="70dp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_margin="5dp"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/tv_refer_points"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="8.00"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorRed"
+                        android:textSize="@dimen/_15ssp" />
+                    <TextView
+                        android:id="@+id/tvPointtttttt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Points"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:textColor="@color/colorRed"
+                        android:textSize="@dimen/_8ssp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="10dp"
+            android:visibility="gone"
+            android:weightSum="3">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_weight="0.5"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/spend_more_logo"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:scaleType="fitXY"
+                    android:layout_gravity="center"
+                    android:src="@drawable/referearn" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.4"
+                android:orientation="vertical"
+                android:layout_marginRight="2dp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="2.2"
+                        android:gravity="start"
+                        android:text="Traditional Fish &amp; CHIPS"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_12ssp"
+                        android:textStyle="bold" />
+
+
+                </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/layout">
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:maxLines="2"
+                        android:text="Roasted slicedsdf gsdggdgdgds"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_10ssp" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:orientation="vertical"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:gravity="center">
+
+
+                <LinearLayout
+                    android:layout_width="70dp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_margin="5dp"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/tv_spen_more_points"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="8.00"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorRed"
+                        android:textSize="@dimen/_15ssp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Points"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:textColor="@color/colorRed"
+                        android:textSize="@dimen/_8ssp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

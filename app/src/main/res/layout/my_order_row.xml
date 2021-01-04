@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/_5sdp"
+        android:layout_marginLeft="@dimen/_5sdp"
+        android:layout_marginTop="5dp">
+
+        <RelativeLayout
+            android:id="@+id/rl_restaurant_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_1sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:background="@color/colorWhite">
+
+            <RelativeLayout
+                android:id="@+id/h"
+                android:layout_width="match_parent"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_height="wrap_content">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/rlt_image_card_view"
+                    android:layout_width="wrap_content"
+                    app:cardCornerRadius="@dimen/_5sdp"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:id="@+id/rlt_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <LinearLayout
+                            android:id="@+id/image"
+                            android:layout_width="@dimen/_70sdp"
+                            android:layout_height="@dimen/_70sdp"
+                            android:layout_gravity="center"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:id="@+id/iv_restaurant_logo"
+                                android:layout_width="@dimen/dp_80"
+                                android:layout_height="@dimen/dp_80"
+                                android:scaleType="fitXY"
+                                android:layout_gravity="center"
+                                android:src="@drawable/defpizzaimg" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/lnr_discount_avail"
+                            android:layout_below="@+id/image"
+                            android:layout_width="@dimen/_70sdp"
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:visibility="gone"
+                            android:background="@drawable/circle_background"
+                            android:layout_height="@dimen/_20sdp">
+
+                            <TextView
+                                android:id="@+id/txt_discount_avail"
+                                android:layout_width="match_parent"
+                                android:textColor="@color/colorWhite"
+                                android:text=""
+                                android:textSize="@dimen/_12ssp"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:layout_height="wrap_content"/>
+
+                        </LinearLayout>
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
+
+
+
+                <RelativeLayout
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_toEndOf="@+id/rlt_image_card_view">
+
+                    <RelativeLayout
+                        android:id="@+id/lnr_tv_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/tv_restaurant_name"
+                            android:layout_width="@dimen/_150sdp"
+                            android:layout_height="wrap_content"
+                            android:text="Free hjdgjgffhdj"
+                            android:maxLines="2"
+                            android:layout_marginEnd="10dp"
+                            android:textColor="@color/colorBlack"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/sp_13" />
+
+                        <TextView
+                            android:id="@+id/tv_address"
+                            android:layout_width="@dimen/_150sdp"
+                            android:layout_height="wrap_content"
+                            android:text="Free hjdgjgffhdj"
+                            android:maxLines="2"
+                            android:layout_marginEnd="10dp"
+                            android:textColor="@color/colorBlack"
+                            android:layout_below="@+id/tv_restaurant_name"
+                            android:textSize="@dimen/sp_11" />
+
+                        <RelativeLayout
+                            android:id="@+id/rlt_order_id"
+                            android:layout_below="@+id/tv_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_alignParentLeft="true"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:text="Order Id : "
+                                    android:textSize="@dimen/sp_10"
+                                    android:layout_height="wrap_content"/>
+
+                                <TextView
+                                    android:id="@+id/txt_viewoderid"
+                                    android:layout_width="wrap_content"
+                                    android:text="234567"
+                                    android:textSize="@dimen/sp_10"
+                                    android:layout_height="wrap_content"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_alignParentRight="true"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:id="@+id/txt_view_orderprice"
+                                    android:layout_width="wrap_content"
+                                    android:text="20.00"
+                                    android:textSize="@dimen/sp_13"
+                                    android:textStyle="bold"
+                                    android:layout_height="wrap_content"/>
+
+                            </LinearLayout>
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/rlt_date_time"
+                            android:layout_below="@+id/rlt_order_id"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_height="wrap_content">
+                                <TextView
+                                    android:id="@+id/txt_date_time"
+                                    android:layout_width="wrap_content"
+                                    android:text="2020-12-09 05:30 AM"
+                                    android:textSize="@dimen/sp_10"
+                                    android:layout_height="wrap_content"/>
+                            </LinearLayout>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/rlt_order_status"
+                            android:layout_below="@+id/rlt_date_time"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_alignParentLeft="true"
+                                android:layout_height="wrap_content">
+                                <TextView
+                                    android:id="@+id/txt_order_status"
+                                    android:layout_width="wrap_content"
+                                    android:text="Pending"
+                                    android:textColor="@color/colorPrimaryone"
+                                    android:textSize="@dimen/sp_13"
+                                    android:layout_height="wrap_content"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_alignParentRight="true"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:id="@+id/txt_btn_cancel"
+                                    android:layout_width="@dimen/_50sdp"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:background="@color/colorRed"
+                                    android:gravity="center"
+                                    android:text="Cancel"
+                                    android:textColor="@color/colorWhite"
+                                    android:textSize="@dimen/_10ssp" />
+
+                                <View
+                                    android:layout_width="@dimen/_2sdp"
+                                    android:layout_height="@dimen/_20sdp"/>
+                                <TextView
+                                    android:id="@+id/txt_btn_track"
+                                    android:layout_width="@dimen/_50sdp"
+                                    android:text="Track"
+                                    android:background="@color/colorPrimaryone"
+                                    android:textColor="@color/colorWhite"
+                                    android:layout_gravity="center"
+                                    android:textSize="@dimen/_10ssp"
+                                    android:gravity="center"
+                                    android:layout_height="@dimen/_20sdp"/>
+
+                            </LinearLayout>
+
+                        </RelativeLayout>
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

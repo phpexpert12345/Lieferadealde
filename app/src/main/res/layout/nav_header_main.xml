@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_210sdp"
+    android:background="@color/colorWhite"
+    android:orientation="vertical"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="@color/colorGreenLiteh"
+        android:layout_height="@dimen/_160sdp">
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:contentDescription="@string/nav_header_desc"
+       android:background="@drawable/ic_profile" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hello!"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_15ssp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:textStyle="bold"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="View information"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:background="@drawable/ic_edit"
+                android:backgroundTint="@color/colorWhite"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btn_signn"
+            android:layout_width="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/signijnxh"
+            android:backgroundTint="@color/colorRed"
+            android:layout_height="@dimen/_35sdp"/>
+        <View
+            android:layout_width="@dimen/_10sdp"
+            android:layout_toRightOf="@+id/btn_sign"
+            android:layout_toLeftOf="@+id/btn_signup"
+            android:layout_centerInParent="true"
+            android:layout_height="@dimen/_35sdp"/>
+
+        <Button
+            android:id="@+id/btn_signupp"
+            android:layout_width="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:background="@drawable/cretaaccxh"
+            android:layout_height="@dimen/_35sdp"/>
+    </LinearLayout>
+</LinearLayout>

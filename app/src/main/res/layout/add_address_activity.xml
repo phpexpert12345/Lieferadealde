@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/colorWhite">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:id="@+id/rl_header"
+        app:cardElevation="@dimen/_5sdp"
+        android:layout_height="@dimen/_40sdp">
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:background="@color/colorWhite">
+        <RelativeLayout
+            android:id="@+id/rl_back"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_50"
+                android:src="@drawable/ic_back_arrow"
+                android:layout_centerInParent="true"/>
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/tvHead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlack"
+            android:textSize="15sp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Add Address"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rl_header"
+        android:layout_above="@+id/btn_submit">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp_10"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvAddNewAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
+                android:padding="@dimen/dp_10"
+                android:textSize="15sp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Add New Address"
+                android:layout_centerInParent="true"/>
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/edit_add_tittle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint=""
+                app:met_floatingLabel="highlight"
+                app:met_floatingLabelPadding="2dp"
+                app:met_floatingLabelTextSize="15sp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:inputType="textPostalAddress"
+                android:layout_marginTop="@dimen/_10sdp"/>
+            <!-- <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="Address Title"
+                 android:textColor="@color/colorTextLite"
+                 android:textSize="15sp"
+                 android:layout_marginTop="@dimen/_20sdp"
+                 android:layout_marginLeft="@dimen/_20sdp"
+                 android:fontFamily="@font/roboto_medium"/>
+             <androidx.cardview.widget.CardView
+                 android:layout_width="match_parent"
+                 android:layout_height="@dimen/_40sdp"
+                 android:layout_marginRight="@dimen/_20sdp"
+                 android:layout_marginTop="@dimen/_5sdp"
+                 android:layout_marginLeft="@dimen/_20sdp"
+                 app:cardCornerRadius="@dimen/_4sdp">
+                 <EditText
+                     android:id="@+id/edit_add_tittle"
+                     android:layout_width="match_parent"
+                     android:layout_height="match_parent"
+                     android:hint="Address Title"
+                     android:layout_marginRight="@dimen/_5sdp"
+                     android:layout_marginLeft="@dimen/_5sdp"
+                     android:textSize="15sp"
+                     android:singleLine="true"
+                     android:background="@null"/>
+             </androidx.cardview.widget.CardView>-->
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/edit_flat_no"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint=""
+                app:met_floatingLabel="highlight"
+                app:met_floatingLabelPadding="2dp"
+                app:met_floatingLabelTextSize="15sp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:inputType="textPostalAddress"
+                android:layout_marginTop="@dimen/_15sdp"/>
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/edit_flat_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint=""
+                app:met_floatingLabel="highlight"
+                app:met_floatingLabelPadding="2dp"
+                app:met_floatingLabelTextSize="15sp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:inputType="textPostalAddress"
+                android:layout_marginTop="@dimen/_15sdp"/>
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/edit_address"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint=""
+                app:met_floatingLabel="highlight"
+                android:visibility="gone"
+                app:met_floatingLabelPadding="2dp"
+                app:met_floatingLabelTextSize="15sp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:inputType="textPostalAddress"
+                android:layout_marginTop="@dimen/_15sdp"/>
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/edit_street_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint=""
+                app:met_floatingLabel="highlight"
+                app:met_floatingLabelPadding="2dp"
+                app:met_floatingLabelTextSize="15sp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:inputType="textPostalAddress"/>
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/edit_city"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint=""
+                app:met_floatingLabel="highlight"
+                app:met_floatingLabelPadding="2dp"
+                app:met_floatingLabelTextSize="15sp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:inputType="textPostalAddress"/>
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/edit_zipcode"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint=""
+                app:met_floatingLabel="highlight"
+                app:met_floatingLabelPadding="2dp"
+                app:met_floatingLabelTextSize="15sp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:inputType="text"/>
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/edit_mobile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint=""
+                app:met_floatingLabel="highlight"
+                app:met_floatingLabelPadding="2dp"
+                app:met_floatingLabelTextSize="15sp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:maxLength="14"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:inputType="number"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/roboto_medium"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:background="@color/colorPrimaryone"
+        android:layout_alignParentBottom="true"
+        android:padding="@dimen/dp_20"
+        android:text="Add Address"
+        android:textColor="@color/colorWhite"/>
+
+    <ProgressBar
+        android:id="@+id/pbLoad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_centerInParent="true"/>
+</RelativeLayout>

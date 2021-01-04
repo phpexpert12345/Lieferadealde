@@ -1,0 +1,120 @@
+apply plugin: 'com.android.application'
+
+android {
+    useLibrary 'org.apache.http.legacy'
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
+
+    defaultConfig {
+        applicationId "com.app.liferdeal"
+        minSdkVersion 23
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            debuggable false
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            debuggable true
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    packagingOptions {
+        exclude 'org/apache/http/version.properties'
+        exclude 'org/apache/http/client/version.properties'
+    }
+}
+
+ext {
+    butterknife_version = '10.2.1'
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.navigation:navigation-fragment:2.3.2'
+    implementation 'androidx.navigation:navigation-ui:2.3.2'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation project(path: ':lib')
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    // for ssp and sdp font size
+    implementation 'com.intuit.ssp:ssp-android:1.0.4'
+    implementation 'com.intuit.sdp:sdp-android:1.0.4'
+    implementation 'com.squareup.retrofit2:retrofit:2.7.2'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.1'
+    implementation 'com.squareup.retrofit2:converter-gson:2.7.2'
+    implementation 'com.thoughtbot:expandablerecyclerview:1.3'
+    implementation 'com.github.JakeWharton:ViewPagerIndicator:2.4.1@aar'
+    implementation 'com.google.android.libraries.places:places:2.4.0'
+    implementation 'com.rengwuxian.materialedittext:library:2.1.4'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation 'androidx.vectordrawable:vectordrawable-animated:1.1.0'
+
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.6.0'
+
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+
+    implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.gms:play-services-location:17.1.0'
+
+
+    implementation 'com.google.android.gms:play-services-vision:20.1.1'
+
+    implementation 'com.google.dagger:dagger:2.24'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.24'
+
+    implementation 'com.stripe:stripe-android:11.1.4'
+
+    implementation('org.apache.httpcomponents:httpmime:4.3.6') {
+
+        exclude module: 'httpclient'
+    }
+    implementation 'org.apache.httpcomponents:httpclient-android:4.3.5'
+    implementation 'android.arch.persistence.room:runtime:1.1.1'
+    annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
+
+    implementation "com.jakewharton:butterknife:${butterknife_version}"
+    annotationProcessor "com.jakewharton:butterknife-compiler:${butterknife_version}"
+    implementation 'com.timehop.stickyheadersrecyclerview:library:0.4.3@aar'
+
+    implementation 'com.shuhart.stickyheader:stickyheader:1.0.5'
+
+    //implementation "com.stripe:stripeterminal:1.0.17"
+    //for stripe payment gateway
+    //implementation 'com.stripe:stripe-android:16.1.1'
+    implementation 'com.stripe:stripe-android:6.1.2'
+
+    //You have to add this line
+    implementation 'com.paypal.sdk:paypal-android-sdk:2.16.0'
+
+
+}

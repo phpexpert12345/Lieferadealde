@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+
+
+
+    tools:context=".ui.activity.cart.StripePaymentActivity">
+    <!-- <com.stripe.android.view.MaskedCardView
+
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content">
+
+     </com.stripe.android.view.MaskedCardView>
+     <com.stripe.android.view.CardNumberEditText
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content">
+
+     </com.stripe.android.view.CardNumberEditText>
+     <com.stripe.android.view.CardInputWidget
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content">
+
+     </com.stripe.android.view.CardInputWidget>-->
+     <com.stripe.android.view.CardMultilineWidget
+        android:layout_centerInParent="true"
+         android:id="@+id/card_details"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content">
+
+     </com.stripe.android.view.CardMultilineWidget>
+
+    <Button
+        android:textSize="@dimen/_15sdp"
+        android:fontFamily="@font/montserrat_semi_bold"
+        android:text="@string/pay"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/card_details"
+        android:layout_gravity="center"
+        android:id="@+id/btnPay"
+        android:layout_width="@dimen/dp_180"
+        android:layout_height="@dimen/dp_65">
+
+    </Button>
+
+
+</RelativeLayout>
