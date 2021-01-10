@@ -37,8 +37,10 @@ import com.app.liferdeal.model.restaurant.ShippingCartModel;
 import com.app.liferdeal.model.restaurant.TicketListDataModel;
 import com.app.liferdeal.model.restaurant.TimeListModel;
 import com.app.liferdeal.model.splash.SplashModel;
+import com.app.liferdeal.ui.activity.cart.AlergyMain;
 import com.app.liferdeal.ui.activity.cart.LoginMainData;
 import com.app.liferdeal.ui.activity.cart.StripeModel;
+import com.app.liferdeal.ui.activity.my_review.ReviewMain;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
@@ -86,6 +88,12 @@ public interface ApiInterface {
                                                     @Field("description") String platform);
 
     @FormUrlEncoded
+    @POST("phpexpert_restaurant_allery_info.php")
+    Observable<AlergyMain> allergyFromServer(@Field("api_key") String userEmail,
+                                             @Field("lang_code") String password,
+                                             @Field("resid") String resid);
+
+    @FormUrlEncoded
     @POST("phpexpert_search.php")
     Observable<RestaurantMainModel> getSearchRestData(@Field("full_address") String fulladdress,
                                                       @Field("current_city") String currentcity,
@@ -95,7 +103,7 @@ public interface ApiInterface {
                                                       @Field("lang_code") String langCode,
                                                       @Field("current_lat") String lat,
                                                       @Field("current_long") String longitude,
-                                                      @Field("cuisine") String cuisine);
+                                                      @Field("cuisine[]") String cuisine);
 
     @GET("phpexpert_website_information.php")
     Observable<PhpInitialInfoModel> getSplashData();
@@ -209,11 +217,11 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("couponCode.php")
-    Observable<RmVerifyCouponCodeResponse> getCouponCode(@Field("branch_id") String api_key,
-                                                         @Field("api_key") String lang_code,
-                                                         @Field("lang_code") String subTotal,
-                                                         @Field("subTotal") String resid,
-                                                         @Field("CouponCode") String restaurant_locality);
+    Observable<RmVerifyCouponCodeResponse> getCouponCode(@Field("resid") String resid,
+                                                         @Field("api_key") String api_key,
+                                                         @Field("lang_code") String lang_code,
+                                                         @Field("subTotal") String subTotal,
+                                                         @Field("CouponCode") String couponcode);
 
     @Multipart
     @POST("phpexpert_customer_profite_update.php")
@@ -266,6 +274,13 @@ public interface ApiInterface {
                                                    @Field("resid") String resid,
                                                    @Field("restaurant_locality") String restaurant_locality,
                                                    @Field("Order_Type") String Order_Type
+    );
+
+    @FormUrlEncoded
+    @POST("phpexpert_CustomerReview.php")
+    Observable<ReviewMain> getReviewData(@Field("api_key") String api_key,
+                                         @Field("lang_code") String lang_code,
+                                         @Field("CustomerId") String CustomerId
     );
 
     @FormUrlEncoded

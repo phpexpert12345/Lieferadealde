@@ -67,6 +67,7 @@ public class WriteAReviewActivity extends AppCompatActivity implements View.OnCl
 
         customerId = prefsHelper.getPref(Constants.CUSTOMER_ID);
         restid = getIntent().getStringExtra("clickRestId");
+        Log.e("REST=",restid.toString());
         iv_back.setOnClickListener(this);
         btn_submit.setOnClickListener(this);
     }

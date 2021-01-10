@@ -1302,6 +1302,17 @@ public class LanguageResponse {
     @SerializedName("successfull_logout")
     @Expose
     private String successfullLogout;
+    @SerializedName("search_location")
+    @Expose
+    private String searchLocation;
+
+    public String getSearchLocation() {
+        return searchLocation;
+    }
+
+    public void setSearchLocation(String searchLocation) {
+        this.searchLocation = searchLocation;
+    }
 
     public String getSuccessfullLogout() {
         return successfullLogout;

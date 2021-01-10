@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,15 +18,22 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.liferdeal.R;
 import com.app.liferdeal.model.restaurant.RestaurantMainModel;
+import com.app.liferdeal.ui.Database.Database;
+import com.app.liferdeal.ui.activity.cart.ThankyouPageActivity;
 import com.app.liferdeal.ui.activity.login.SignInActivity;
+import com.app.liferdeal.ui.activity.restaurant.AddExtraActivity;
 import com.app.liferdeal.ui.activity.restaurant.GPSTracker;
 import com.app.liferdeal.ui.activity.restaurant.RestaurantDetails;
 import com.app.liferdeal.util.Constants;
@@ -62,9 +71,10 @@ public class RestaurantMainAdapter extends RecyclerView.Adapter<RestaurantMainAd
 
     @Override
     public void onBindViewHolder(@NonNull RestaurantMainAdapter.Holder holder, final int position) {
+        //holder.clearView();
         if (listCategory.get(position).getRestaurantOrderAvailable().equalsIgnoreCase("false")) {
             holder.lnr_open_close.setBackgroundResource(R.drawable.circle_grey);
-
+            //Toast.makeText(mContext,listCategory.get(0).getTable_booking_limit(),Toast.LENGTH_LONG).show();
             holder.tv_restaurant_total_review.setTextColor(mContext.getResources().getColor(R.color.backlightgray));
             holder.tv_item_discount_open_close.setTextColor(mContext.getResources().getColor(R.color.backlightgray));
             holder.tv_restaurant_name.setTextColor(mContext.getResources().getColor(R.color.backlightgray));
@@ -76,10 +86,50 @@ public class RestaurantMainAdapter extends RecyclerView.Adapter<RestaurantMainAd
             holder.txt_rest_min_order.setTextColor(mContext.getResources().getColor(R.color.backlightgray));
             holder.txt_rest_free_order.setTextColor(mContext.getResources().getColor(R.color.backlightgray));
             holder.txt_discount_avail.setTextColor(mContext.getResources().getColor(R.color.backlightgray));
+            holder.txt_discount_avail.setBackground(mContext.getResources().getDrawable(R.drawable.background_close_rest));
             //holder.llTopLayout.setBackgroundColor(mContext.getResources().getColor(R.color.dark_gray));
-            holder.kidred.setColorFilter(mContext.getResources().getColor(R.color.backlightgray));
-            holder.petred.setColorFilter(mContext.getResources().getColor(R.color.backlightgray));
-            holder.minorder.setColorFilter(mContext.getResources().getColor(R.color.backlightgray));
+            //holder.kidred.setColorFilter(mContext.getResources().getColor(R.color.backlightgray));
+            //holder.petred.setColorFilter(mContext.getResources().getColor(R.color.backlightgray));
+            //holder.minorder.setColorFilter(mContext.getResources().getColor(R.color.backlightgray));
+            Drawable drawable = holder.ratingBar.getProgressDrawable();
+            drawable.setColorFilter(Color.parseColor("#E8E9E8E8"), PorterDuff.Mode.SRC_ATOP);
+//            holder.kidred.set
+            holder.kidred1.setVisibility(View.VISIBLE);
+            holder.petred1.setVisibility(View.VISIBLE);
+            holder.minorder1.setVisibility(View.VISIBLE);
+
+            holder.kidred.setVisibility(View.GONE);
+            holder.petred.setVisibility(View.GONE);
+            holder.minorder.setVisibility(View.GONE);
+
+
+         /*   Drawable mIcon= ContextCompat.getDrawable(mContext, R.drawable.timer);
+            mIcon.setColorFilter(ContextCompat.getColor(mContext, R.color.backlightgray), PorterDuff.Mode.MULTIPLY);
+            holder.kidred.setImageDrawable(mIcon);
+
+
+            Drawable mIcon1= ContextCompat.getDrawable(mContext, R.drawable.bike);
+            mIcon1.setColorFilter(ContextCompat.getColor(mContext, R.color.backlightgray), PorterDuff.Mode.MULTIPLY);
+            holder.petred.setImageDrawable(mIcon1);
+
+            Drawable mIcon2= ContextCompat.getDrawable(mContext, R.drawable.outline);
+            mIcon2.setColorFilter(ContextCompat.getColor(mContext, R.color.backlightgray), PorterDuff.Mode.MULTIPLY);
+            holder.minorder.setImageDrawable(mIcon2);*/
+
+
+
+          /*  Drawable unwrappedDrawable = AppCompatResources.getDrawable(mContext, R.drawable.timer);
+            Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
+            DrawableCompat.setTint(wrappedDrawable, mContext.getResources().getColor(R.color.backlightgray));
+
+            Drawable unwrappedDrawable1 = AppCompatResources.getDrawable(mContext, R.drawable.bike);
+            Drawable wrappedDrawable1 = DrawableCompat.wrap(unwrappedDrawable1);
+            DrawableCompat.setTint(wrappedDrawable1, mContext.getResources().getColor(R.color.backlightgray));
+
+            Drawable unwrappedDrawable2 = AppCompatResources.getDrawable(mContext, R.drawable.outline);
+            Drawable wrappedDrawable2 = DrawableCompat.wrap(unwrappedDrawable2);
+            DrawableCompat.setTint(wrappedDrawable2, mContext.getResources().getColor(R.color.backlightgray));*/
+
         } else {
             //holder.llTopLayout.setBackgroundColor(mContext.getResources().getColor(R.color.colorWhite));
             holder.tv_restaurant_total_review.setTextColor(mContext.getResources().getColor(R.color.colorBlack));
@@ -93,9 +143,55 @@ public class RestaurantMainAdapter extends RecyclerView.Adapter<RestaurantMainAd
             holder.txt_rest_min_order.setTextColor(mContext.getResources().getColor(R.color.colorBlack));
             holder.txt_rest_free_order.setTextColor(mContext.getResources().getColor(R.color.colorBlack));
             holder.txt_discount_avail.setTextColor(mContext.getResources().getColor(R.color.colorWhite));
-            holder.kidred.setColorFilter(mContext.getResources().getColor(R.color.colorBlack));
-            holder.petred.setColorFilter(mContext.getResources().getColor(R.color.colorBlack));
-            holder.minorder.setColorFilter(mContext.getResources().getColor(R.color.colorBlack));
+            holder.txt_discount_avail.setBackground(mContext.getResources().getDrawable(R.drawable.green_bg_top_round_corner));
+
+
+            holder.kidred1.setVisibility(View.GONE);
+            holder.petred1.setVisibility(View.GONE);
+            holder.minorder1.setVisibility(View.GONE);
+
+            holder.kidred.setVisibility(View.VISIBLE);
+            holder.petred.setVisibility(View.VISIBLE);
+            holder.minorder.setVisibility(View.VISIBLE);
+
+
+            //holder.kidred.setColorFilter(mContext.getResources().getColor(R.color.colorBlack));
+            //holder.petred.setColorFilter(mContext.getResources().getColor(R.color.colorBlack));
+            //holder.minorder.setColorFilter(mContext.getResources().getColor(R.color.colorBlack));
+
+         /*   Drawable mIcon= ContextCompat.getDrawable(mContext, R.drawable.timer);
+            mIcon.setColorFilter(ContextCompat.getColor(mContext, R.color.colorBlack), PorterDuff.Mode.MULTIPLY);
+            holder.kidred.setImageDrawable(mIcon);
+
+
+            Drawable mIcon1= ContextCompat.getDrawable(mContext, R.drawable.bike);
+            mIcon1.setColorFilter(ContextCompat.getColor(mContext, R.color.colorBlack), PorterDuff.Mode.MULTIPLY);
+            holder.petred.setImageDrawable(mIcon1);
+
+            Drawable mIcon2= ContextCompat.getDrawable(mContext, R.drawable.outline);
+            mIcon2.setColorFilter(ContextCompat.getColor(mContext, R.color.colorBlack), PorterDuff.Mode.MULTIPLY);
+            holder.minorder.setImageDrawable(mIcon2);*/
+
+
+            Drawable drawable = holder.ratingBar.getProgressDrawable();
+            drawable.setColorFilter(Color.parseColor("#EC7734"), PorterDuff.Mode.SRC_ATOP);
+
+
+
+
+
+
+        /*    Drawable unwrappedDrawable = AppCompatResources.getDrawable(mContext, R.drawable.timer);
+            Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
+            DrawableCompat.setTint(wrappedDrawable, mContext.getResources().getColor(R.color.colorBlack));
+
+            Drawable unwrappedDrawable1 = AppCompatResources.getDrawable(mContext, R.drawable.bike);
+            Drawable wrappedDrawable1 = DrawableCompat.wrap(unwrappedDrawable1);
+            DrawableCompat.setTint(wrappedDrawable1, mContext.getResources().getColor(R.color.colorBlack));
+
+            Drawable unwrappedDrawable2 = AppCompatResources.getDrawable(mContext, R.drawable.outline);
+            Drawable wrappedDrawable2 = DrawableCompat.wrap(unwrappedDrawable2);
+            DrawableCompat.setTint(wrappedDrawable2, mContext.getResources().getColor(R.color.colorBlack));*/
 
             //holder.llTopLayout.setBackgroundColor(mContext.getResources().getColor(R.color.dark_gray));
         }
@@ -111,8 +207,8 @@ public class RestaurantMainAdapter extends RecyclerView.Adapter<RestaurantMainAd
         } else {
             holder.lnr_sponsered.setVisibility(View.INVISIBLE);
         }
-        if (!listCategory.get(position).getRatingAvg().equalsIgnoreCase("0")) {
-            holder.tv_restaurant_total_review.setText("(" + listCategory.get(position).getRatingAvg() + " Reviews)");
+        if (!listCategory.get(position).getRatingAvg().equalsIgnoreCase("0") && !listCategory.get(position).getRatingAvg().equalsIgnoreCase("")) {
+            holder.tv_restaurant_total_review.setText("(" + listCategory.get(position).getRatingAvg() + ")");
         }
 
         if (listCategory.get(position).getRestaurantTimeStatus1().contains("open") ||
@@ -120,7 +216,7 @@ public class RestaurantMainAdapter extends RecyclerView.Adapter<RestaurantMainAd
             if (listCategory.get(position).getRestaurantOrderAvailable().equalsIgnoreCase("false")) {
                 holder.tv_item_discount_open_close.setTextColor(mContext.getResources().getColor(R.color.colorWhite));
             } else {
-                holder.lnr_open_close.setBackgroundResource(R.drawable.circle_background);
+                holder.lnr_open_close.setBackgroundColor(Color.parseColor(listCategory.get(position).getRestaurantTimeStatusColorCode()));
                 holder.tv_item_discount_open_close.setTextColor(mContext.getResources().getColor(R.color.colorWhite));
             }
             holder.tv_item_discount_open_close.setText(listCategory.get(position).getRestaurantTimeStatus1());
@@ -129,7 +225,7 @@ public class RestaurantMainAdapter extends RecyclerView.Adapter<RestaurantMainAd
             if (listCategory.get(position).getRestaurantOrderAvailable().equalsIgnoreCase("false")) {
                 holder.tv_item_discount_open_close.setTextColor(mContext.getResources().getColor(R.color.colorWhite));
             } else {
-                holder.lnr_open_close.setBackgroundResource(R.drawable.circle_back_orange);
+                holder.lnr_open_close.setBackgroundColor(Color.parseColor(listCategory.get(position).getRestaurantTimeStatusColorCode()));
                 holder.tv_item_discount_open_close.setTextColor(mContext.getResources().getColor(R.color.colorWhite));
             }
             holder.tv_item_discount_open_close.setText(listCategory.get(position).getRestaurantTimeStatus1());
@@ -139,7 +235,7 @@ public class RestaurantMainAdapter extends RecyclerView.Adapter<RestaurantMainAd
             if (listCategory.get(position).getRestaurantOrderAvailable().equalsIgnoreCase("false")) {
                 holder.tv_item_discount_open_close.setTextColor(mContext.getResources().getColor(R.color.colorWhite));
             } else {
-                holder.lnr_open_close.setBackgroundResource(R.drawable.circle_back_red);
+                holder.lnr_open_close.setBackgroundColor(Color.parseColor(listCategory.get(position).getRestaurantTimeStatusColorCode()));
                 holder.tv_item_discount_open_close.setTextColor(mContext.getResources().getColor(R.color.colorWhite));
             }
             holder.tv_item_discount_open_close.setText(listCategory.get(position).getRestaurantTimeStatus1());
@@ -157,8 +253,8 @@ public class RestaurantMainAdapter extends RecyclerView.Adapter<RestaurantMainAd
         String jj = hh.getSymbol();
         holder.tv_restaurant_address.setText(listCategory.get(position).getRestaurantAddress());
         holder.txt_view_timer.setText(listCategory.get(position).getRestaurantAvarageDeliveryTime());
-        holder.txt_rest_free_order.setText(jj + " " + dotToCommaClass.changeDot(listCategory.get(position).getRestaurantDeliverycharge()));
-        holder.txt_rest_min_order.setText(dotToCommaClass.changeDot(listCategory.get(position).getRestaurantMinimumorder()));
+        holder.txt_rest_free_order.setText(jj + dotToCommaClass.changeDot(listCategory.get(position).getRestaurantDeliverycharge()));
+        holder.txt_rest_min_order.setText(jj + dotToCommaClass.changeDot(listCategory.get(position).getRestaurantMinimumorder()));
         //holder.tv_restaurant_miles.setText("(" + listCategory.get(position).getRestaurantDeliveryDistance() + ")");
 
         com.app.liferdeal.ui.activity.restaurant.GPSTracker gpsTracker = new GPSTracker(mContext);
@@ -184,20 +280,6 @@ public class RestaurantMainAdapter extends RecyclerView.Adapter<RestaurantMainAd
             @Override
             public void onClick(View v) {
                 if (listCategory.get(position).getRestaurantOrderAvailable().equalsIgnoreCase("true")) {
-                    Intent i = new Intent(mContext, RestaurantDetails.class);
-                    i.putExtra("RESTID", listCategory.get(position).getId());
-                    i.putExtra("RESTName", listCategory.get(position).getRestaurantName());
-                    i.putExtra("RESTCOVER", listCategory.get(position).getRestaurantCover());
-                    i.putExtra("RESTCUSINE", listCategory.get(position).getRestaurantCuisine());
-                    i.putExtra("RESTLOGO", listCategory.get(position).getRestaurantLogo());
-                    i.putExtra("RESTADDRESS", listCategory.get(position).getRestaurantAddress());
-                    i.putExtra("RESTISOPEN", listCategory.get(position).getRestaurantTimeStatus1());
-                    i.putExtra("RATINGBARDATA", listCategory.get(position).getRatingValue());
-                    i.putExtra("LOCATIONDISTANCE", distanceCalculate);
-                    i.putExtra("HMDLVRYAVAIL", listCategory.get(position).getHomeDeliveryAvailable());
-                    i.putExtra("PCKAVAILABLE", listCategory.get(position).getPickupAvailable());
-                    i.putExtra("DINAVAILABLE", listCategory.get(position).getDineInAvailable());
-                    i.putExtra("RESDELORAVAIL", listCategory.get(position).getRestaurantDeliverycharge().toString());
 
                     //for deliver,pickup and dinein
                     SharedPreferencesData sharedPreferencesData = new SharedPreferencesData(mContext);
@@ -212,7 +294,33 @@ public class RestaurantMainAdapter extends RecyclerView.Adapter<RestaurantMainAd
                     sharedPreferencesData.setSharedPreferenceData(Constants.FORDELIVERY, Constants.FORCASHONDELIVERY, listCategory.get(position).getRestaurantOnlycashonAvailable());
                     sharedPreferencesData.setSharedPreferenceData(Constants.FORDELIVERY, Constants.PAYPALPAY, listCategory.get(position).getPayPaypalAvailable());
                     sharedPreferencesData.setSharedPreferenceData(Constants.FORDELIVERY, Constants.CARDPAY, listCategory.get(position).getRestaurantCardacceptAvailable());
-                    Log.e("Response=",listCategory.get(position).getRestaurantOnlycashonAvailable()+"  "+listCategory.get(position).getPayPaypalAvailable()+"   "+listCategory.get(position).getRestaurantCardacceptAvailable());
+                    sharedPreferencesData.setSharedPreferenceData(Constants.FORDELIVERY, Constants.RESTAURANTID, listCategory.get(position).getId());
+
+                    Log.e("Response=", listCategory.get(position).getRestaurantOnlycashonAvailable() + "  " + listCategory.get(position).getPayPaypalAvailable() + "   " + listCategory.get(position).getRestaurantCardacceptAvailable());
+
+                    if (sharedPreferencesData.getSharedPreferenceData(Constants.PRICEPREFERENCE, Constants.FORRESTIDCHANGE).equalsIgnoreCase(listCategory.get(position).getId())) {
+
+                    } else {
+                        AddExtraActivity.cart_Item_number = 0;
+                        Database database = new Database(mContext);
+                        database.delete();
+                    }
+                    Intent i = new Intent(mContext, RestaurantDetails.class);
+                    i.putExtra("RESTID", listCategory.get(position).getId());
+                    i.putExtra("RESTName", listCategory.get(position).getRestaurantName());
+                    i.putExtra("RESTCOVER", listCategory.get(position).getRestaurantCover());
+                    i.putExtra("RESTCUSINE", listCategory.get(position).getRestaurantCuisine());
+                    i.putExtra("RESTLOGO", listCategory.get(position).getRestaurantLogo());
+                    i.putExtra("RESTADDRESS", listCategory.get(position).getRestaurantAddress());
+                    i.putExtra("RESTISOPEN", listCategory.get(position).getRestaurantTimeStatus1());
+                    i.putExtra("RATINGBARDATA", listCategory.get(position).getRatingValue());
+                    i.putExtra("LOCATIONDISTANCE", distanceCalculate);
+                    i.putExtra("HMDLVRYAVAIL", listCategory.get(position).getHomeDeliveryAvailable());
+                    i.putExtra("PCKAVAILABLE", listCategory.get(position).getPickupAvailable());
+                    i.putExtra("DINAVAILABLE", listCategory.get(position).getDineInAvailable());
+                    i.putExtra("RESDELORAVAIL", listCategory.get(position).getRestaurantDeliverycharge().toString());
+                    i.putExtra("TABLEBOOKINGLIMIT", listCategory.get(position).getTable_booking_limit());
+                    i.putExtra("color", listCategory.get(position).getRestaurantTimeStatusColorCode());
                     mContext.startActivity(i);
 
                 } else {
@@ -257,6 +365,9 @@ public class RestaurantMainAdapter extends RecyclerView.Adapter<RestaurantMainAd
 
     @Override
     public int getItemCount() {
+        if (listCategory == null) {
+            listCategory = new ArrayList<>();
+        }
         return listCategory.size();
     }
 
@@ -264,7 +375,7 @@ public class RestaurantMainAdapter extends RecyclerView.Adapter<RestaurantMainAd
         public CardView card_subCategory;
         private TextView tv_restaurant_total_review, tv_item_discount_open_close, tv_restaurant_name, tv_restaurant_cusine_name, tvSponsored,
                 tv_restaurant_address, tv_restaurant_miles, txt_view_timer, txt_rest_min_order, txt_rest_free_order, txt_discount_avail;
-        private ImageView iv_restaurant_logo, kidred, petred, minorder;
+        private ImageView iv_restaurant_logo, kidred, petred, minorder, kidred1, petred1, minorder1;
         private RatingBar ratingBar;
         private LinearLayout lnr_open_close, lnr_sponsered, llTopLayout;
 
@@ -289,6 +400,44 @@ public class RestaurantMainAdapter extends RecyclerView.Adapter<RestaurantMainAd
             kidred = itemView.findViewById(R.id.kidred);
             petred = itemView.findViewById(R.id.petred);
             minorder = itemView.findViewById(R.id.minorder);
+
+            kidred1 = itemView.findViewById(R.id.kidred1);
+            petred1 = itemView.findViewById(R.id.petred1);
+            minorder1 = itemView.findViewById(R.id.minorder1);
+        }
+
+        public void clearView() {
+            lnr_open_close.setBackgroundResource(R.drawable.circle_grey);
+            tv_restaurant_total_review.setTextColor(mContext.getResources().getColor(R.color.backlightgray));
+            tv_item_discount_open_close.setTextColor(mContext.getResources().getColor(R.color.backlightgray));
+            tv_restaurant_name.setTextColor(mContext.getResources().getColor(R.color.backlightgray));
+            tv_restaurant_cusine_name.setTextColor(mContext.getResources().getColor(R.color.backlightgray));
+            tvSponsored.setTextColor(mContext.getResources().getColor(R.color.backlightgray));
+            tv_restaurant_address.setTextColor(mContext.getResources().getColor(R.color.backlightgray));
+            tv_restaurant_miles.setTextColor(mContext.getResources().getColor(R.color.backlightgray));
+            txt_view_timer.setTextColor(mContext.getResources().getColor(R.color.backlightgray));
+            txt_rest_min_order.setTextColor(mContext.getResources().getColor(R.color.backlightgray));
+            txt_rest_free_order.setTextColor(mContext.getResources().getColor(R.color.backlightgray));
+            txt_discount_avail.setTextColor(mContext.getResources().getColor(R.color.backlightgray));
+            //llTopLayout.setBackgroundColor(mContext.getResources().getColor(R.color.dark_gray));
+            //kidred.setColorFilter(mContext.getResources().getColor(R.color.backlightgray));
+            //petred.setColorFilter(mContext.getResources().getColor(R.color.backlightgray));
+            //minorder.setColorFilter(mContext.getResources().getColor(R.color.backlightgray));
+            Drawable drawable = ratingBar.getProgressDrawable();
+            drawable.setColorFilter(Color.parseColor("#E8E9E8E8"), PorterDuff.Mode.SRC_ATOP);
+//            kidred.set
+
+        /*    Drawable unwrappedDrawable = AppCompatResources.getDrawable(mContext, R.drawable.timer);
+            Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
+            DrawableCompat.setTint(wrappedDrawable, mContext.getResources().getColor(R.color.backlightgray));
+
+            Drawable unwrappedDrawable1 = AppCompatResources.getDrawable(mContext, R.drawable.bike);
+            Drawable wrappedDrawable1 = DrawableCompat.wrap(unwrappedDrawable1);
+            DrawableCompat.setTint(wrappedDrawable1, mContext.getResources().getColor(R.color.backlightgray));
+
+            Drawable unwrappedDrawable2 = AppCompatResources.getDrawable(mContext, R.drawable.outline);
+            Drawable wrappedDrawable2 = DrawableCompat.wrap(unwrappedDrawable2);
+            DrawableCompat.setTint(wrappedDrawable2, mContext.getResources().getColor(R.color.backlightgray));*/
         }
     }
 

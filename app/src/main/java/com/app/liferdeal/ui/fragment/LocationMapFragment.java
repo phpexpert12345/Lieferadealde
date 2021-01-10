@@ -11,8 +11,12 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -39,6 +43,8 @@ import com.app.liferdeal.util.CommonMethods;
 import com.app.liferdeal.util.Constants;
 import com.app.liferdeal.util.GPSTracker;
 import com.app.liferdeal.util.PrefsHelper;
+import com.app.liferdeal.util.SharedPreferencesData;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
@@ -51,14 +57,22 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class LocationMapFragment extends AppCompatActivity implements OnMapReadyCallback, LocationListener, View.OnClickListener,
         BottomNavigationView.OnNavigationItemSelectedListener {
@@ -78,6 +92,7 @@ public class LocationMapFragment extends AppCompatActivity implements OnMapReady
     private ProgressDialog progressDialog;
     private LinearLayout lnr_confirm_location;
     private ImageView img_back;
+//    private TextView edt_search;
 
     @BindView(R.id.bottom_navigation)
     BottomNavigationView bottomNavigation;
@@ -103,7 +118,6 @@ public class LocationMapFragment extends AppCompatActivity implements OnMapReady
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.location_map_layout);
         ButterKnife.bind(this);
@@ -132,8 +146,9 @@ public class LocationMapFragment extends AppCompatActivity implements OnMapReady
 //        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 //        mapFragment.getMapAsync(this);
 
-        ed_search = findViewById(R.id.search);
+//        ed_search = findViewById(R.id.search);
         search = findViewById(R.id.search);
+//        edt_search = findViewById(R.id.edt_search);
         tvConfirmLocation = findViewById(R.id.tvConfirmLocation);
         lnr_confirm_location = findViewById(R.id.lnr_confirm_location);
         img_back = findViewById(R.id.img_back);
@@ -141,11 +156,17 @@ public class LocationMapFragment extends AppCompatActivity implements OnMapReady
         currentLatitude = trackerObj.getLatitude();
         currentLongitude = trackerObj.getLongitude();
 
-        search.setHint(model.getSearchForLocation());
-        ed_search.setHint(model.getSearchForLocation());
-        tvConfirmLocation.setHint(model.getConfirmLocation());
+//        edt_search.setText(model.getSearchForLocation());
+//        ed_search.setHint(model.getSearchForLocation());
+        try {
+            search.setText("" + model.getSearchForLocation());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        tvConfirmLocation.setText(model.getConfirmLocation());
 
-        ed_search.setOnClickListener(this);
+//        ed_search.setOnClickListener(this);
+        search.setOnClickListener(this);
         lnr_confirm_location.setOnClickListener(this);
         img_back.setOnClickListener(this);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
@@ -218,14 +239,15 @@ public class LocationMapFragment extends AppCompatActivity implements OnMapReady
     Location currentLocation;
     FusedLocationProviderClient fusedLocationProviderClient;
     private static final int REQUEST_CODE = 101;
+    MarkerOptions markerOptions;
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
         LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-        MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("I am here!");
+        markerOptions = new MarkerOptions().position(latLng);
         googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 5));
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17.0f));
         googleMap.addMarker(markerOptions);
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
@@ -236,10 +258,10 @@ public class LocationMapFragment extends AppCompatActivity implements OnMapReady
                 googleMap.clear();
                 markerOptions.position(latLng);
                 googleMap.addMarker(markerOptions);
-                getAddressFromCurrentLatLong(latLng.latitude+"",latLng.longitude+"");
+                latLongSelected = latLng;
+                getAddressFromCurrentLatLong(latLng.latitude + "", latLng.longitude + "");
             }
         });
-
     }
 
     @Override
@@ -253,116 +275,81 @@ public class LocationMapFragment extends AppCompatActivity implements OnMapReady
         }
     }
 
-//    @Override
-//    public void onMapReady(GoogleMap googleMaps) {
-//        mMap = googleMaps;
-////        googleMap = googleMaps;
-////        Geocoder geocoder;
-////        List<Address> addresses = null;
-//        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-////
-////        // RestaurantModel restaurantModel = new RestaurantModel();
-////        try {
-////           /* lat = Double.parseDouble(HomeFragment.restaurantModel.getRestaurant_LatitudePoint());
-////            longs = Double.parseDouble(HomeFragment.restaurantModel.getRestaurant_LongitudePoint());*/
-////
-////          /*  lat = Double.parseDouble(latitude);
-////            longs = Double.parseDouble(longitude);*/
-////
-////        } catch (NullPointerException e) {
-////            e.printStackTrace();
-////
-////        }
-////
-////        System.out.println("===== lat is :" + currentLatitude + " " + "long :" + currentLongitude);
-////        LatLng latLong = new LatLng(currentLatitude, currentLongitude);
-////        // LatLng currentLatLong = new LatLng(currentLatitude, currentLongitude);
-////        // LatLng currentLatLong = new LatLng(28.5463658 ,-82.2084836);
-////        geocoder = new Geocoder(this, Locale.getDefault());
-//        try {
-////            addresses = geocoder.getFromLocation(currentLatitude, currentLongitude, 1);
-////            //  String address = addresses.get(0).getAddressLine(0);
-////            //   System.out.println("===== addresss " + address);
-////            //    String city = addresses.get(0).getLocality();
-//////            String state = addresses.get(0).getAdminArea();
-//////            String country = addresses.get(0).getCountryName();
-//////            String postalCode = addresses.get(0).getPostalCode();
-////            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-////                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-////                    != PackageManager.PERMISSION_GRANTED) {
-////                // TODO: Consider calling
-////                //    ActivityCompat#requestPermissions
-////                // here to request the missing permissions, and then overriding
-////                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-////                //                                          int[] grantResults)
-////                // to handle the case where the user grants the permission. See the documentation
-////                // for ActivityCompat#requestPermissions for more details.
-////                return;
-////            }
-////            googleMap.setMyLocationEnabled(true);
-////            googleMap.setTrafficEnabled(false);
-////            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLong, 15.0f));
-////            googleMap.getUiSettings().setCompassEnabled(false);
-////            googleMap.getUiSettings().setZoomControlsEnabled(false);
-////            googleMap.getUiSettings().setMyLocationButtonEnabled(false);
-////            googleMap.getUiSettings().setMapToolbarEnabled(false);
-////            googleMap.getUiSettings().setZoomControlsEnabled(false);
-////            //googleMaps.addMarker(new MarkerOptions().position(latLong).title((""+getIntent().getStringExtra("resturtantaddress"))));
-////            secondMarker = googleMaps.addMarker(new MarkerOptions().position(latLong));//.title((address)));
-////            // startNavigation(secondMarker, currentLatLong, latLong );
-////
-////            //   googleMaps.moveCamera(CameraUpdateFactory.newLatLngZoom(latLong, 17));
-//
-////            mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-////
-////            //Initialize Google Play Services
-////            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-////                if (ContextCompat.checkSelfPermission(this,
-////                        Manifest.permission.ACCESS_FINE_LOCATION)
-////                        == PackageManager.PERMISSION_GRANTED) {
-////                    //Location Permission already granted
-////                    buildGoogleApiClient();
-////                    mMap.setMyLocationEnabled(true);
-////                } else {
-////                    //Request Location Permission
-////                    checkLocationPermission();
-////                }
-////            } else {
-////                buildGoogleApiClient();
-////                mMap.setMyLocationEnabled(true);
-////            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    protected synchronized void buildGoogleApiClient() {
-//        mGoogleApiClient = new GoogleApiClient.Builder(this)
-//                .addConnectionCallbacks(this)
-//                .addOnConnectionFailedListener(this)
-//                .addApi(LocationServices.API)
-//                .build();
-//        mGoogleApiClient.connect();
-//    }
+    int AUTOCOMPLETE_REQUEST_CODE = 1;
+
+    public void addressClicked() {
+
+
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), prefsHelper.getPref(Constants.google_map_key));
+        }
+        List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG);
+
+// Start the autocomplete intent.
+        Intent intent = new Autocomplete.IntentBuilder(
+                AutocompleteActivityMode.OVERLAY, fields)
+                .build(getApplicationContext());
+        startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
+        /*layoutLocation.setVisibility(View.VISIBLE);
+        if (!Places.isInitialized()) {
+            Places.initialize(getContext(), getResources().getString(R.string.api_key));
+        }
+
+
+// Initialize the AutocompleteSupportFragment.
+
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+                getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+
+
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                // TODO: Get info about the selected place.
+                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
+                tv_address.setText(place.getName());
+                layoutLocation.setVisibility(View.GONE);
+
+            }
+
+            @Override
+            public void onError(Status status) {
+                // TODO: Handle the error.
+                Log.i(TAG, "An error occurred: " + status);
+                layoutLocation.setVisibility(View.GONE);
+            }
+        });*/
+    }
 
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.search:
-                Intent addressIntent = new Intent(this, SearchAddressGooglePlacesActivity.class);
-                addressIntent.putExtra("chooser", getResources().getString(R.string.pickup_location));
-                startActivityForResult(addressIntent, 18);
-                overridePendingTransition(R.anim.mainfadein, R.anim.splashfadeout);
+                addressClicked();
+                //Intent addressIntent = new Intent(this, SearchAddressGooglePlacesActivity.class);
+                //addressIntent.putExtra("chooser", getResources().getString(R.string.pickup_location));
+                //startActivityForResult(addressIntent, 18);
+                //overridePendingTransition(R.anim.mainfadein, R.anim.splashfadeout);
                 break;
 
             case R.id.lnr_confirm_location:
                 //  initiateRestFragment();
-                Intent i = new Intent(LocationMapFragment.this, MainActivity.class);
-                i.putExtra("SEARCHADDRESS", mPICKUP_ADDRESS);
-                startActivity(i);
-                finish();
+
+                if (mPICKUP_ADDRESS==null||mPICKUP_ADDRESS.equalsIgnoreCase("")){
+                    Toast.makeText(getApplicationContext(),model.getConfirmLocation(),Toast.LENGTH_LONG).show();
+
+                }else{
+                    saveSelectedAddress(latLongSelected);
+                    Intent i = new Intent(LocationMapFragment.this, MainActivity.class);
+                    i.putExtra("SEARCHADDRESS", mPICKUP_ADDRESS);
+                    startActivity(i);
+                    finish();
+                }
+
                 break;
 
             case R.id.img_back:
@@ -372,6 +359,52 @@ public class LocationMapFragment extends AppCompatActivity implements OnMapReady
             default:
                 break;
         }
+    }
+
+    private SharedPreferencesData sharedPreferencesData;
+
+    private void saveSelectedAddress(LatLng latitudeString) {
+        sharedPreferencesData = new SharedPreferencesData(getApplicationContext());
+
+        Geocoder geocoder;
+        List<Address> addresses = null;
+        geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            addresses = geocoder.getFromLocation(latitudeString.latitude, latitudeString.longitude, 1);
+            String address = addresses.get(0).getAddressLine(0);
+            System.out.println("===== addresss " + address);
+            String city = addresses.get(0).getLocality();
+            String state = addresses.get(0).getAdminArea();
+            String country = addresses.get(0).getCountryName();
+            String postalCode = addresses.get(0).getPostalCode();
+            String adminArea = addresses.get(0).getAdminArea();
+            String street = addresses.get(0).getSubLocality();
+
+
+            sharedPreferencesData.setSharedPreferenceData(Constants.PRICEPREFERENCE, Constants.ADDRESSTITLE, address);
+            sharedPreferencesData.setSharedPreferenceData(Constants.PRICEPREFERENCE, Constants.HOUSENO, adminArea);
+            sharedPreferencesData.setSharedPreferenceData(Constants.PRICEPREFERENCE, Constants.STREETNAME, street);
+            sharedPreferencesData.setSharedPreferenceData(Constants.PRICEPREFERENCE, Constants.CITYNAME, city);
+            sharedPreferencesData.setSharedPreferenceData(Constants.PRICEPREFERENCE, Constants.POSTALCODE, postalCode);
+            sharedPreferencesData.setSharedPreferenceData(Constants.PRICEPREFERENCE, Constants.POSTALCODE, postalCode);
+            sharedPreferencesData.setSharedPreferenceData(Constants.PRICEPREFERENCE, Constants.FIRSTTIMELOGINPAGE, "FirstTimeLogin");
+            prefsHelper.savePref(Constants.SAVE_FULL_ADDRESS, address);
+            //initiateRestFragment();
+            //prefsHelper.savePref(Constants.SAVE_FULL_ADDRESS, address);
+            //prefsHelper.savePref(Constants.SAVE_CITY_NAME, city);
+            //prefsHelper.savePref(Constants.SAVE_STATE, state);
+            //prefsHelper.savePref(Constants.SAVE_COUNTRY, country);
+            //prefsHelper.savePref(Constants.SAVE_POSTAL_CODE, postalCode);
+
+            //  showProgress();
+            //  initiateRestFragment();
+            mPICKUP_ADDRESS = address;
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+
     }
 
     @Override
@@ -458,6 +491,7 @@ public class LocationMapFragment extends AppCompatActivity implements OnMapReady
     }
 
     private String formattedAddress = "", locationName = "", mPICKUP_ADDRESS = "";
+    LatLng latLongSelected;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -483,11 +517,31 @@ public class LocationMapFragment extends AppCompatActivity implements OnMapReady
                 googleMap.clear();
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
                 secondMarker = googleMap.addMarker(new MarkerOptions().position(latLng));//.title((address)));
-
                 getAddressFromCurrentLatLong(latitudeString, logitudeString);
 
                 System.out.println("onActivityResult latitudeString...." + latitudeString + "...logitudeString..." + logitudeString);
 
+            }
+        } else if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Place place = Autocomplete.getPlaceFromIntent(data);
+                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
+                //tv_address.setText(place.getName());
+
+
+                latLongSelected = place.getLatLng();
+                googleMap.clear();
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 12));
+                secondMarker = googleMap.addMarker(new MarkerOptions().position(place.getLatLng()));//.title((address)));
+                //getAddressFromCurrentLatLong(latLng.latitude + "", latLng.longitude + "");
+                search.setText(place.getAddress());
+                mPICKUP_ADDRESS = place.getAddress();
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                // TODO: Handle the error.
+                Status status = Autocomplete.getStatusFromIntent(data);
+                Log.i(TAG, status.getStatusMessage());
+            } else if (resultCode == RESULT_CANCELED) {
+                // The user canceled the operation.
             }
         }
     }
@@ -513,7 +567,7 @@ public class LocationMapFragment extends AppCompatActivity implements OnMapReady
 
             //  showProgress();
             //  initiateRestFragment();
-            mPICKUP_ADDRESS=address;
+            mPICKUP_ADDRESS = address;
 
         } catch (Exception ex) {
             ex.printStackTrace();

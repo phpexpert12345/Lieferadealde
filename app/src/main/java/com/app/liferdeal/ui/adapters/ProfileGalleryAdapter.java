@@ -31,6 +31,7 @@ import com.app.liferdeal.model.restaurant.GalleryPhoto;
 import com.app.liferdeal.model.restaurant.RestaurantGalleryModel;
 import com.app.liferdeal.ui.activity.restaurant.RestaurantPhotoGallery;
 import com.app.liferdeal.ui.fragment.restaurant.TabFragment1;
+import com.app.liferdeal.ui.fragment.restaurant.TabFragment3;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
@@ -38,16 +39,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProfileGalleryAdapter extends RecyclerView.Adapter<ProfileGalleryAdapter.MyViewHolder> {
-
-
     //  private List<RestaurantGalleryModel.FoodGalleryList> profileGalleryModelList;
     private List<GalleryPhoto> profileGalleryModelList;
     private List<GalleryPhoto> galleryPhotoList;
     private Context mContext;
-    private TabFragment1 mProfileGallery;
+    private TabFragment3 mProfileGallery;
 
     // public ProfileGalleryAdapter(Context context, List<RestaurantGalleryModel.FoodGalleryList> profileGalleryModelList) {
-    public ProfileGalleryAdapter(Context context, List<GalleryPhoto> profileGalleryModelList, TabFragment1 tabFragment1) {
+    public ProfileGalleryAdapter(Context context, List<GalleryPhoto> profileGalleryModelList, TabFragment3 tabFragment1) {
         this.profileGalleryModelList = profileGalleryModelList;
         this.mContext = context;
         this.mProfileGallery = tabFragment1;
@@ -64,6 +63,7 @@ public class ProfileGalleryAdapter extends RecyclerView.Adapter<ProfileGalleryAd
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
+
         // holder.txt_text.setText(profileGalleryModelList.get(position).getTabName());
         //galleryPhotoList = profileGalleryModelList.get(position).getGalleryPhoto();
         String profileGalleryImage = profileGalleryModelList.get(position).getFoodPhoto();
@@ -78,12 +78,13 @@ public class ProfileGalleryAdapter extends RecyclerView.Adapter<ProfileGalleryAd
 
             }
         });
-
     }
 
     @Override
     public int getItemCount() {
-
+        if (profileGalleryModelList == null) {
+            profileGalleryModelList = new ArrayList<>();
+        }
         return profileGalleryModelList.size();
     }
 
@@ -94,13 +95,8 @@ public class ProfileGalleryAdapter extends RecyclerView.Adapter<ProfileGalleryAd
 
         public MyViewHolder(View view) {
             super(view);
-
             image = view.findViewById(R.id.imageView);
             txt_text = view.findViewById(R.id.txt_text);
-
         }
     }
-
-
-
 }

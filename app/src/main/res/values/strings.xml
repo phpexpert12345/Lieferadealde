@@ -120,6 +120,10 @@
     <string name="thanku">Thank you</string>
     <string name="your_booking">Your Booking confirmation has been nsuccessfully sent to restaurant.</string>
     <string name="got_to">Go to Home</string>
+    <string name="cancel">Cancel</string>
+    <string name="done">Done</string>
+    <string name="orderId">Order ID -</string>
+    <string name="assonasposible">As soon as possible</string>
     <string-array name="navigation_drawer_items_array">
 
         <!--Before Login Item-->

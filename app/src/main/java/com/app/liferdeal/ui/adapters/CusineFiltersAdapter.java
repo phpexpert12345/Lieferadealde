@@ -73,11 +73,11 @@ public class CusineFiltersAdapter extends RecyclerView.Adapter<CusineFiltersAdap
         holder.txtitemname.setOnClickListener(view -> {
             if (selectedList[position]) {
                 selected_cusines_id.remove(listCategory.get(position).getId());
-                selected_cusines.remove(holder.txtitemname.getText().toString());
+                selected_cusines.remove(listCategory.get(position).getSeoUrlCall());
                 selectedList[position] = false;
             } else {
                 selected_cusines_id.add(listCategory.get(position).getId());
-                selected_cusines.add(holder.txtitemname.getText().toString());
+                selected_cusines.add(listCategory.get(position).getSeoUrlCall());
                 selectedList[position] = true;
             }
             if (mClickListener != null) {
@@ -88,11 +88,11 @@ public class CusineFiltersAdapter extends RecyclerView.Adapter<CusineFiltersAdap
         holder.ivHorizontal.setOnClickListener(view -> {
             if (selectedList[position]) {
                 selected_cusines_id.remove(listCategory.get(position).getId());
-                selected_cusines.remove(holder.txtitemname.getText().toString());
+                selected_cusines.remove(listCategory.get(position).getSeoUrlCall());
                 selectedList[position] = false;
             } else {
                 selected_cusines_id.add(listCategory.get(position).getId());
-                selected_cusines.add(holder.txtitemname.getText().toString());
+                selected_cusines.add(listCategory.get(position).getSeoUrlCall());
                 selectedList[position] = true;
             }
             if (mClickListener != null) {
@@ -103,6 +103,9 @@ public class CusineFiltersAdapter extends RecyclerView.Adapter<CusineFiltersAdap
 
     @Override
     public int getItemCount() {
+        if (listCategory == null) {
+            listCategory = new ArrayList<>();
+        }
         return listCategory.size();
     }
 

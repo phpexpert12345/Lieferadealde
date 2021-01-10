@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@color/gray"
+    android:background="@color/colorWhite"
     android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
@@ -142,7 +142,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:text=""
+                android:text="Delivery Address"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/_12sdp"
                 android:textStyle="bold"/>
@@ -154,14 +154,20 @@
                 android:textSize="@dimen/_9sdp"/>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ipStreet"
+                android:hint="Street and house number"
+                android:textColorHint="@color/colorBlack"
+                android:theme="@style/MyHintStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:background="@color/colorWhite"
+                    android:textColor="@color/colorBlack"
                     android:id="@+id/deleviry_add"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="" />
+                  />
             </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -173,6 +179,10 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ipPostCode"
+                    android:hint="Postcode"
+                    android:textColorHint="@color/colorBlack"
+                    android:theme="@style/MyHintStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/_5sdp"
@@ -183,10 +193,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint=""
-                        android:textColor="@color/colorBlack"/>
+                        android:textColor="@color/colorBlack"
+                        android:background="@color/colorWhite"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ipCityName"
+                    android:hint="Cityname"
+                    android:textColorHint="@color/colorBlack"
+                    android:theme="@style/MyHintStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_5sdp"
@@ -198,7 +213,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint=""
-                        android:textColor="@color/colorBlack">
+                        android:textColor="@color/colorBlack"
+                        android:background="@color/colorWhite">
 
                     </com.google.android.material.textfield.TextInputEditText>
 
@@ -206,11 +222,17 @@
             </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ipCompany"
+                android:hint="Company name"
+                android:textColorHint="@color/colorBlack"
+                android:theme="@style/MyHintStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:textColor="@color/colorBlack"
+                    android:background="@color/colorWhite"
                     android:id="@+id/edit_company_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -218,11 +240,17 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ipNote"
+                android:hint="Add a note for delivery"
+                android:textColorHint="@color/colorBlack"
+                android:theme="@style/MyHintStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:textColor="@color/colorBlack"
+                    android:background="@color/colorWhite"
                     android:id="@+id/edit_add_note"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_50sdp"
@@ -240,11 +268,17 @@
                 android:textStyle="bold"/>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ipFullName"
+                android:hint="Full Name"
+                android:textColorHint="@color/colorBlack"
+                android:theme="@style/MyHintStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:textColor="@color/colorBlack"
+                    android:background="@color/colorWhite"
                     android:id="@+id/edit_full_name"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_50sdp"
@@ -252,11 +286,17 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ipEmail"
+                android:hint="Email Address"
+                android:textColorHint="@color/colorBlack"
+                android:theme="@style/MyHintStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:textColor="@color/colorBlack"
+                    android:background="@color/colorWhite"
                     android:id="@+id/edit_email_add"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_50sdp"
@@ -264,11 +304,17 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ipMobile"
+                android:hint="Mobile Number"
+                android:textColorHint="@color/colorBlack"
+                android:theme="@style/MyHintStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:textColor="@color/colorBlack"
+                    android:background="@color/colorWhite"
                     android:id="@+id/edit_mobile_no"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_50sdp"
@@ -452,28 +498,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/dp_70"
                 android:background="@color/gray"
                 android:lineSpacingExtra="@dimen/dp_3"
                 android:padding="@dimen/dp_5"
                 android:text="@string/note5"
                 android:textSize="@dimen/sp_11"/>
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/btn_order_placed"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:background="@color/colorRed"
-                android:gravity="center"
-                android:padding="@dimen/_10sdp"
-                android:fontFamily="@font/roboto_bold"
-                android:text="Order an pay(24.0$)"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/_12sdp"/>
         </LinearLayout>
-
-
     </ScrollView>
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/btn_order_placed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@color/colorRed"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:padding="@dimen/_10sdp"
+        android:fontFamily="@font/roboto_bold"
+        android:text="Order an pay(24.0$)"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/_12sdp"/>
 
 </RelativeLayout>

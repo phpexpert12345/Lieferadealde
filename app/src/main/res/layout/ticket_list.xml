@@ -33,6 +33,7 @@
                 android:textSize="@dimen/sp_15" />
 
             <RelativeLayout
+                android:visibility="invisible"
                 android:id="@+id/cart_count_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -85,6 +86,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rl_header"
+        android:layout_marginStart="@dimen/dp_10"
+        android:layout_marginEnd="@dimen/dp_10"
         android:layout_marginTop="@dimen/_5sdp"
         android:background="@color/gray"
         android:orientation="horizontal"
@@ -98,8 +101,8 @@
             android:gravity="center"
             android:text="Ticket Number"
             android:textColor="@color/colorBlack"
-            android:textSize="@dimen/_11sdp"
-            android:textStyle="bold"/>
+            android:textSize="@dimen/_10sdp"
+            android:fontFamily="@font/roboto_medium"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvOrderNo"
@@ -109,8 +112,8 @@
             android:gravity="center"
             android:text="Order Number"
             android:textColor="@color/colorBlack"
-            android:textSize="@dimen/_11sdp"
-            android:textStyle="bold"/>
+            android:textSize="@dimen/_10sdp"
+           android:fontFamily="@font/roboto_medium"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvStatus"
@@ -120,27 +123,41 @@
             android:gravity="center"
             android:text="Status"
             android:textColor="@color/colorBlack"
-            android:textSize="@dimen/_11sdp"
-            android:textStyle="bold"/>
+            android:textSize="@dimen/_10sdp"
+            android:fontFamily="@font/roboto_medium"/>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyler_view_ticket"
         android:layout_width="match_parent"
+        android:layout_marginStart="@dimen/dp_10"
+        android:layout_marginEnd="@dimen/dp_10"
         android:layout_height="wrap_content"
         android:layout_below="@+id/header_layout"/>
 
-    <RelativeLayout
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnAddAddress"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="wrap_content"
+            android:text="+"
+            android:background="@drawable/button_rounded_outline"
+            android:layout_alignParentEnd="true"
+            android:layout_above="@+id/tvGoHome"
+            android:layout_margin="@dimen/dp_10"
+            android:textColor="@color/colorGreenLite"
+            android:textSize="@dimen/_30ssp"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvGoHome"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/_12sdp"
-        android:gravity="right">
+        android:padding="@dimen/dp_15"
+        android:gravity="center"
+        android:background="@color/colorGreenLite"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/sp_15"
+        android:fontFamily="@font/roboto_medium"
+        android:text="Go to Home"/>
 
-        <ImageView
-            android:id="@+id/img_add_ticket"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="@dimen/_50sdp"
-            android:src="@drawable/addbtn"/>
-    </RelativeLayout>
 </RelativeLayout>

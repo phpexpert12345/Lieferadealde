@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fillViewport="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:background="@color/colorWhite"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_300sdp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_margin="@dimen/_10sdp"
+                    android:id="@+id/tvTextHead"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="@string/action_search"
+                    android:textColor="@color/colorBlack"
+                    android:layout_width="@dimen/dp_0"
+                    android:textSize="@dimen/sp_15"
+                    android:layout_weight=".9"
+                    android:layout_height="wrap_content">
+
+                </TextView>
+
+                <ImageView
+                    android:id="@+id/imvBack"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:background="@drawable/down_arrow"
+                    android:layout_gravity="center"
+                    android:layout_weight=".1"
+                    android:layout_width="@dimen/dp_10"
+                    android:layout_height="@dimen/_20sdp">
+
+                </ImageView>
+            </LinearLayout>
+
+            <TextView
+                android:layout_margin="@dimen/_10sdp"
+                android:id="@+id/tvText"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/action_search"
+                android:textColor="@color/dark_gray"
+                android:textSize="@dimen/sp_13"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </TextView>
+
+        </LinearLayout>
+
+        <ProgressBar
+            android:visibility="gone"
+            android:id="@+id/progressBar"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </ProgressBar>
+
+    </RelativeLayout>
+</ScrollView>

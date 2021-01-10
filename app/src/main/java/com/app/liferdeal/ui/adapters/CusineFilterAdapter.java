@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.app.liferdeal.R;
 import com.app.liferdeal.model.restaurant.CusineFilterModel;
 import com.app.liferdeal.model.restaurant.SubItemsRecord;
+import com.app.liferdeal.util.SharedPreferencesData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +26,11 @@ public class CusineFilterAdapter extends RecyclerView.Adapter<CusineFilterAdapte
     ArrayList<String> selected_cusines;
     ArrayList<Integer> selected_cusines_id;
     private CusineFilterAdapterInterface cusineFilterAdapterInterface;
+    private SharedPreferencesData sharedPreferencesData;
 
     public interface CusineFilterAdapterInterface {
         void getClickData(ArrayList<Integer> extraId, ArrayList<String> extraName);
+
     }
 
     public CusineFilterAdapter(Context context, List<CusineFilterModel.CuisineList> listSubCategory, CusineFilterAdapterInterface cusineFilterAdapterInterface1) {
@@ -35,10 +38,12 @@ public class CusineFilterAdapter extends RecyclerView.Adapter<CusineFilterAdapte
         this.listCategory = listSubCategory;
         this.selected_cusines = new ArrayList<>();
         this.selected_cusines_id = new ArrayList<>();
-        //  this.listFilterSubCategory = listFilterSubCategory;
+        //this.listFilterSubCategory = listFilterSubCategory;
         cusineFilterAdapterInterface = cusineFilterAdapterInterface1;
+        sharedPreferencesData=new SharedPreferencesData(context);
 
     }
+
 
     @NonNull
     @Override
@@ -53,14 +58,15 @@ public class CusineFilterAdapter extends RecyclerView.Adapter<CusineFilterAdapte
         holder.cbitem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (holder.cbitem.isChecked()) {
+                if(holder.cbitem.isChecked()) {
                     System.out.println("==== checkbox is click");
                     selected_cusines_id.add(listCategory.get(position).getId());
-                    selected_cusines.add(holder.txtitemname.getText().toString());
+                    selected_cusines.add(listCategory.get(position).getSeoUrlCall());
                     cusineFilterAdapterInterface.getClickData(selected_cusines_id, selected_cusines);
+
                 } else {
                     selected_cusines_id.remove(listCategory.get(position).getId());
-                    selected_cusines.remove(holder.txtitemname.getText().toString());
+                    selected_cusines.remove(listCategory.get(position).getSeoUrlCall());
                     cusineFilterAdapterInterface.getClickData(selected_cusines_id, selected_cusines);
                 }
             }

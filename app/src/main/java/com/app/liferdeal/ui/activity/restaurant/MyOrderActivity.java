@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -27,6 +28,8 @@ import com.app.liferdeal.util.PrefsHelper;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -44,10 +47,14 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
     private TextView txt_view_for_no_data, tvHead;
     private LanguageResponse model=new LanguageResponse();
 
+   /* @BindView(R.id.cart_count_layout)
+    RelativeLayout cart_count_layout;*/
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_order_activity);
+        ButterKnife.bind(this);
         if (App.retrieveLangFromGson(MyOrderActivity.this) != null) {
             model = App.retrieveLangFromGson(MyOrderActivity.this);
         }
@@ -64,7 +71,7 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
             txt_view_for_no_data = findViewById(R.id.txt_view_for_no_data);
             tvHead = findViewById(R.id.tvHead);
 
-            tvHead.setText(model.getMyOrder());
+            tvHead.setText(model.getMyOrder().trim());
 
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
             rcv_rest_list.setLayoutManager(mLayoutManager);
@@ -85,7 +92,6 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.img_back:
                 finish();
                 break;
-
             default:
                 break;
         }

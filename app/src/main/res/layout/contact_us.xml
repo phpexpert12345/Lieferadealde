@@ -33,6 +33,7 @@
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/sp_18"/>
             <RelativeLayout
+                android:visibility="invisible"
                 android:id="@+id/cart_count_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -185,7 +186,9 @@
         </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ipYourName"
             android:layout_width="match_parent"
+            android:hint="Your name"
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -198,12 +201,13 @@
                 android:drawableTint="@color/colorPrimaryone"
                 android:textSize="@dimen/sp_13"
                 android:drawableLeft="@drawable/ic_user"
-                android:textColorHint="@color/dark_gray"
-                android:hint="Your name" />
+                android:textColorHint="@color/dark_gray" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
+            android:id="@+id/ipEmail"
+            android:hint="Email Address"
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -216,12 +220,13 @@
                 android:textSize="@dimen/sp_13"
                 android:drawableTint="@color/colorPrimaryone"
                 android:drawableLeft="@drawable/ic_email"
-                android:textColorHint="@color/dark_gray"
-                android:hint="Email Address" />
+                android:textColorHint="@color/dark_gray" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
+            android:id="@+id/ipMobileNo"
+            android:hint="Mobile Number"
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -233,12 +238,13 @@
                 android:drawablePadding="@dimen/_20sdp"
                 android:maxLength="10"
                 android:drawableTint="@color/colorPrimaryone"
-                android:drawableStart="@drawable/ic_call"
-                android:hint="Mobile Number" />
+                android:drawableStart="@drawable/ic_call" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
+            android:id="@+id/ipMsg"
+            android:hint="Message"
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -249,7 +255,7 @@
                 android:drawableStart="@drawable/messageicon"
                 android:drawablePadding="@dimen/_20sdp"
                 android:drawableTint="@color/colorPrimaryone"
-                android:hint="Message" />
+                 />
         </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>

@@ -10,11 +10,11 @@ public class DotToCommaClass {
         this.context=context;
     }
     public String changeDot(String string){
-        prefsHelper=new PrefsHelper(context);
-        if (prefsHelper.getPref(Constants.LNG_CODE).toString().equalsIgnoreCase("de")){
+        //prefsHelper=new PrefsHelper(context);
+        //if (prefsHelper.getPref(Constants.LNG_CODE).toString().equalsIgnoreCase("de")){
             string=string.replace(".",",");
 
-        }
+       // }
         return string;
     }
 }

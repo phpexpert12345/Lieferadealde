@@ -33,10 +33,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.app.liferdeal.R;
+import com.app.liferdeal.application.App;
+import com.app.liferdeal.model.LanguageResponse;
 import com.app.liferdeal.model.restaurant.GalleryPhoto;
 import com.app.liferdeal.model.restaurant.RestaurantGalleryModel;
 import com.app.liferdeal.network.retrofit.ApiInterface;
 import com.app.liferdeal.ui.activity.restaurant.RestaurantPhotoGallery;
+import com.app.liferdeal.ui.adapters.PhotoProfileGalleryAdapter;
 import com.app.liferdeal.ui.adapters.ProfileGalleryAdapter;
 import com.app.liferdeal.ui.adapters.ProfileViewGalleryMediaAdapter;
 import com.app.liferdeal.util.PrefsHelper;
@@ -46,20 +49,47 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
-public class TabFragment1  extends Fragment {
+public class TabFragment1 extends Fragment {
 
     private PrefsHelper prefsHelper;
     private ProgressDialog progressDialog;
     private ApiInterface apiInterface;
     private RecyclerView rest_food_gallery;
     private ProgressBar banner_progress;
-    private String clickRestId="";
+    private String clickRestId = "";
     private TextView txt_view_for_no_data;
     private List<RestaurantGalleryModel.FoodGalleryList> mlist;
     private List<GalleryPhoto> mListParty;
     private List<GalleryPhoto> mListPhoto;
+    private LanguageResponse model = new LanguageResponse();
+
+    private String title;
+    private int page;
+    private static List<GalleryPhoto> photoData1;
+    private static int position1;
+
+    // newInstance constructor for creating fragment with arguments
+    public static TabFragment1 newInstance(List<GalleryPhoto> photoData, int position) {
+        TabFragment1 fragmentFirst = new TabFragment1();
+        Bundle args = new Bundle();
+        fragmentFirst.setArguments(args);
+        photoData1 = photoData;
+        position1 = position;
+        return fragmentFirst;
+    }
+
+    public TabFragment1(List<GalleryPhoto> photoData, int position) {
+        photoData1 = photoData;
+        position1 = position;
+    }
+
+    public TabFragment1() {
+
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,62 +98,74 @@ public class TabFragment1  extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.tab_frag_one, container, false);;
+        View view = inflater.inflate(R.layout.tab_frag_one, container, false);
+        if (App.retrieveLangFromGson(getActivity()) != null) {
+            model = App.retrieveLangFromGson(getActivity());
+        }
         init(view);
         return view;
     }
 
-    private void init(View v)
-    {
+    private void init(View v) {
+//        Log.e("DATACHECK=", photoData1.get(1).getGalleryPhoto().get(0).getFoodPhoto());
         prefsHelper = new PrefsHelper(getActivity());
         selectPackageDialog = new Dialog(getActivity());
         rest_food_gallery = v.findViewById(R.id.rest_food_gallery);
         banner_progress = v.findViewById(R.id.banner_progress);
         txt_view_for_no_data = v.findViewById(R.id.txt_view_for_no_data);
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(),2);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
         rest_food_gallery.setLayoutManager(mLayoutManager);
         rest_food_gallery.setItemAnimator(new DefaultItemAnimator());
         rest_food_gallery.setHasFixedSize(true);
-       // clickRestId = getIntent().getStringExtra("clickRestId");
+        // clickRestId = getIntent().getStringExtra("clickRestId");
         System.out.println("==== clickRestId in rest gallery activity : " + clickRestId);
         Gson gson = new Gson();
 
-        String gson1 =  getArguments().getString("MListdata");
+       /* String gson1 = getArguments().getString("MListdata");
         Type type = new TypeToken<List<RestaurantGalleryModel.FoodGalleryList>>() {
         }.getType();
 
-       mlist =  gson.fromJson(gson1, type);
+        mlist = gson.fromJson(gson1, type);
 
-       //////////////////////////////////////////////
+        //////////////////////////////////////////////
 
-        String gsonparty =  getArguments().getString("mListPartyData");
+        String gsonparty = getArguments().getString("mListPartyData");
         Type typeparty = new TypeToken<List<GalleryPhoto>>() {
         }.getType();
 
-        mListParty =  gson.fromJson(gsonparty, typeparty);
-        if (mListParty.size()>0)
-        {
+        mListParty = gson.fromJson(gsonparty, typeparty);
+        if (mListParty.size() > 0) {
             banner_progress.setVisibility(View.VISIBLE);
             setAdapterPhotoGallery();
-        }
-        else
-        {
+        } else {
             txt_view_for_no_data.setText("Sorry! No image available");
             txt_view_for_no_data.setVisibility(View.VISIBLE);
+        }*/
+        if (photoData1.size() > 0) {
+            if (photoData1.get(0).getError().equalsIgnoreCase("1")) {
+                txt_view_for_no_data.setText(model.getNOPICTUREUPLOADEDYET());
+                txt_view_for_no_data.setVisibility(View.VISIBLE);
+            } else {
+                banner_progress.setVisibility(View.VISIBLE);
+                setAdapterPhotoGallery();
+                txt_view_for_no_data.setVisibility(View.GONE);
+            }
+        } else {
+            txt_view_for_no_data.setText(model.getNOPICTUREUPLOADEDYET());
+            txt_view_for_no_data.setVisibility(View.VISIBLE);
         }
-
-
     }
 
-    private void setAdapterPhotoGallery(){
-        ProfileGalleryAdapter adapterCategory = new ProfileGalleryAdapter(getActivity(),mListParty, TabFragment1.this);
+    private void setAdapterPhotoGallery() {
+        PhotoProfileGalleryAdapter adapterCategory = new PhotoProfileGalleryAdapter(getActivity(), photoData1, TabFragment1.this);
         rest_food_gallery.setAdapter(adapterCategory);
         banner_progress.setVisibility(View.GONE);
         // adapterCategory.notifyDataSetChanged();
-       // hideProgress();
+        // hideProgress();
     }
 
     private Dialog selectPackageDialog;
+
     public void ShowSelectPackagePopup(String imageUrl) {
         selectPackageDialog.setContentView(R.layout.profilefullviewpopup);
         ImageView image = selectPackageDialog.findViewById(R.id.image);

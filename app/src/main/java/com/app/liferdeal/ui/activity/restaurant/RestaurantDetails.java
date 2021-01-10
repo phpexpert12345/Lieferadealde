@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,6 +38,7 @@ import com.app.liferdeal.network.retrofit.ApiInterface;
 import com.app.liferdeal.network.retrofit.RFClient;
 import com.app.liferdeal.ui.Database.Database;
 import com.app.liferdeal.ui.activity.cart.CartActivity;
+import com.app.liferdeal.ui.activity.login.SignInActivity;
 import com.app.liferdeal.ui.adapters.Restaurant_Details_quick;
 import com.app.liferdeal.ui.adapters.SectionDetailAdapter;
 import com.app.liferdeal.ui.interfaces.Section;
@@ -44,7 +46,9 @@ import com.app.liferdeal.ui.interfaces.SelectMenuItem;
 import com.app.liferdeal.util.Constants;
 import com.app.liferdeal.util.DotToCommaClass;
 import com.app.liferdeal.util.PrefsHelper;
+import com.app.liferdeal.util.SharedPreferencesData;
 import com.bumptech.glide.Glide;
+import com.paypal.android.sdk.payments.LoginActivity;
 import com.shuhart.stickyheader.StickyAdapter;
 import com.shuhart.stickyheader.StickyHeaderItemDecorator;
 
@@ -93,7 +97,7 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
     private RecyclerView rcv_rest_details_list, quickrecycler;
     private ApiInterface apiInterface;
     private ProgressDialog progressDialog;
-    private String clickRestId, clickRestName, LOCATIONDISTANCE, RESTCOVER, RESTLOGO, RESTADDRESS, RESTISOPEN, SIZEITEMID, tempExtraItemidWithSizeIdd, globTempExtraItemidWithSizeIdd, getRatingValue;
+    private String restourantBookLimit, clickRestId, clickRestName, LOCATIONDISTANCE, RESTCOVER, RESTLOGO, RESTADDRESS, RESTISOPEN, SIZEITEMID, tempExtraItemidWithSizeIdd, globTempExtraItemidWithSizeIdd, getRatingValue;
     private RelativeLayout rl_cart, rl_cart1, rl_cartt;
     private LinearLayout img_view_gallery, lnr_rest_menyu_details, lnr_bookatable, lnr_view_rating;
     private Database database;
@@ -109,10 +113,12 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
     private Boolean[] selectedItem;
     private int selectedPos = 0;
     private List<RestaurantDetailsModel.RestaurantMencategory> listnew;
-    private String globcategoryImage = "", globRestId = "";
+    private String globcategoryImage = "", globRestId = "", colorCode;
     private int globSelectedCatId;
     private ArrayList<String> itemCount = new ArrayList<>();
     private LanguageResponse model = new LanguageResponse();
+
+    private SharedPreferencesData sharedPreferencesData;
 
     DotToCommaClass dotToCommaClass;
 
@@ -129,6 +135,7 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
 
     private void init() {
 //        try {
+        sharedPreferencesData = new SharedPreferencesData(getApplicationContext());
         dotToCommaClass = new DotToCommaClass(getApplicationContext());
         prefsHelper = new PrefsHelper(this);
 
@@ -201,6 +208,7 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
         restDeliveryAvail = getIntent().getStringExtra("RESDELORAVAIL");*/
 
         //Log.e("DATA=",homeDelAvailable+"    "+pickUpAvailable+"    "+dineInAvailable+"     "+restDeliveryAvail);
+        restourantBookLimit = getIntent().getStringExtra("TABLEBOOKINGLIMIT");
         clickRestId = getIntent().getStringExtra("RESTID");
         clickRestName = getIntent().getStringExtra("RESTName");
         RESTCOVER = getIntent().getStringExtra("RESTCOVER");
@@ -211,6 +219,7 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
         SIZEITEMID = getIntent().getStringExtra("SIZEITEMID");
         LOCATIONDISTANCE = getIntent().getStringExtra("LOCATIONDISTANCE");
         RESTCUSINE = getIntent().getStringExtra("RESTCUSINE");
+        colorCode = getIntent().getStringExtra("color");
         tvDistance.setText(LOCATIONDISTANCE);
         tempExtraItemidWithSizeIdd = getIntent().getStringExtra("tempExtraItemidWithSizeIdd");
         System.out.println("==== tempExtraItemidWithSizeIdd : " + tempExtraItemidWithSizeIdd);
@@ -219,6 +228,9 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
             globTempExtraItemidWithSizeIdd = globTempExtraItemidWithSizeIdd.replace("]", "");
             System.out.println("==== globTempExtraItemidWithSizeIdd : " + globTempExtraItemidWithSizeIdd);
         }
+
+        sharedPreferencesData.createNewSharedPreferences(Constants.PRICEPREFERENCE);
+        sharedPreferencesData.setSharedPreferenceData(Constants.PRICEPREFERENCE, Constants.FORRESTIDCHANGE, clickRestId);
 
         tvCusineName.setText(RESTCUSINE);
         txt_rest_name.setText(clickRestName);
@@ -237,15 +249,17 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
         Glide.with(this).load(Uri.parse(RESTLOGO)).into(rset_logo);
 
         if (RESTISOPEN.contains("open") || RESTISOPEN.contains("Offen bei")) {
-            tv_item_discount_cost.setBackgroundResource(R.drawable.circle_background);
+//            tv_item_discount_cost.setBackgroundResource(R.drawable.circle_background);
             tv_item_discount_cost.setText(RESTISOPEN);
         } else if (RESTISOPEN.contains("Preorder") || RESTISOPEN.contains("Jetzt offen")) {
-            tv_item_discount_cost.setBackgroundResource(R.drawable.circle_back_orange);
+//            tv_item_discount_cost.setBackgroundResource(R.drawable.circle_back_orange);
             tv_item_discount_cost.setText(RESTISOPEN);
         } else if (RESTISOPEN.contains("closed") || RESTISOPEN.contains("Jetzt geschlossen")) {
-            tv_item_discount_cost.setBackgroundResource(R.drawable.circle_back_red);
+//            tv_item_discount_cost.setBackgroundResource(R.drawable.circle_back_red);
             tv_item_discount_cost.setText(RESTISOPEN);
         }
+
+        tv_item_discount_cost.setBackgroundColor(Color.parseColor(colorCode));
 
         getRestSearchDetailsData();
         getAllMenu();
@@ -414,9 +428,7 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
             tv_TotalPrice.setText("€" + dotToCommaClass.changeDot(String.format("%.2f", totalPrice)));
 
         } catch (Exception e) {
-
             Toast.makeText(this, "" + e, Toast.LENGTH_SHORT).show();
-
         }
     }
 
@@ -493,6 +505,7 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
                 writerating.putExtra("RESTLOGO", RESTLOGO);
                 writerating.putExtra("RESTISOPEN", RESTISOPEN);
                 writerating.putExtra("RATINGVAL", getRatingValue);
+                writerating.putExtra("color", colorCode);
 
                 startActivity(writerating);
                 break;
@@ -509,9 +522,19 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
                 break;
 
             case R.id.lnr_bookatable:
-                Intent booktable = new Intent(RestaurantDetails.this, RestaurantBookTable.class);
-                booktable.putExtra("clickRestId", clickRestId);
-                startActivity(booktable);
+                if (prefsHelper.isLoggedIn()) {
+                    Intent booktable = new Intent(RestaurantDetails.this, RestaurantBookTable.class);
+                    booktable.putExtra("clickRestId", clickRestId);
+                    booktable.putExtra("RESTBOOKLIMIT", restourantBookLimit);
+                    startActivity(booktable);
+                } else {
+                    Intent booktable = new Intent(RestaurantDetails.this, SignInActivity.class);
+                    booktable.putExtra("clickRestId", clickRestId);
+                    booktable.putExtra("RESTBOOKLIMIT", restourantBookLimit);
+                    booktable.putExtra("from", "table");
+                    startActivity(booktable);
+                }
+
                 break;
 
             case R.id.cart_count_layout:
@@ -574,10 +597,9 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
                         //  setAdapterCategory(searchResult.getRestaurantMencategory());
                         if (searchResult.getRestaurantMencategory().size() > 0)
                             if (searchResult.getRestaurantMencategory().get(0).getError() == 1) {
-                                Toast.makeText(RestaurantDetails.this, "There is no Details", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RestaurantDetails.this, searchResult.getRestaurantMencategory().get(0).getError_msg(), Toast.LENGTH_SHORT).show();
                                 hideProgress();
                             } else {
-
                                 setAdapterCategoryForQuick(searchResult.getRestaurantMencategory());
                             }
 
@@ -712,7 +734,7 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
     }
 
     @Override
-    public void getClickMenuData(int itemId, String itemName, String amt) {
+    public void getClickMenuData(int itemId, String itemName, String amt,String subcatItemDetails) {
         System.out.println("===== item name : " + itemId);
         subPizzaItemId = itemId;
         System.out.println("===== subPizzaItemId name : " + subPizzaItemId);
@@ -740,7 +762,7 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
             price = price * qunt;
             database.update_item(String.valueOf(subPizzaItemId), qunt, price);
         } else {
-            database.InsertItem(String.valueOf(itemId), itemName, "0", "0", "0", "0", Double.parseDouble(amt), 1);
+            database.InsertItem(String.valueOf(itemId), itemName, "0", "0", "0", "0", Double.parseDouble(amt), 1,subcatItemDetails);
             AddExtraActivity.cart_Item_number = AddExtraActivity.cart_Item_number + 1;
         }
         tvTotalItemCnt.setText("" + AddExtraActivity.cart_Item_number + " Items");
@@ -752,6 +774,7 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
     @OnClick(R.id.img_restmenu_info)
     public void onClickInfo() {
         Intent intent = new Intent(RestaurantDetails.this, InfoRestMenuActivity.class);
+        intent.putExtra("RESTID", clickRestId);
         startActivity(intent);
     }
 
@@ -766,9 +789,22 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
 
     @OnClick(R.id.tv_cart_item_count1)
     public void cart_count_layout1Clicked(View view) {
-        //Toast.makeText(getApplicationContext(),"Cart test",Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(getApplicationContext(), CartActivity.class);
-        startActivity(intent);
+        //Toast.makeText(getApplicationContext(),"Called From Cart",Toast.LENGTH_LONG).show();
+        SQLiteDatabase db = database.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM item_table", null);
+        //    Cursor cursor1 = db.rawQuery("SELECT * FROM deal_item_table", null);
+        if (cursor.moveToNext()) {
+            Intent intent = new Intent(RestaurantDetails.this, CartActivity.class);
+            intent.putExtra("RESTID", clickRestId);
+            intent.putExtra("RESTName", clickRestName);
+            intent.putExtra("RESTLOGO", RESTLOGO);
+            intent.putExtra("subPizzaItemId", "" + subPizzaItemId);
+            intent.putExtra("SIZEITEMID", "" + SIZEITEMID);
+            intent.putExtra("globTempExtraItemidWithSizeIdd", "" + globTempExtraItemidWithSizeIdd);
+            startActivity(intent);
+        } else {
+            /// showCustomDialog1decline("Cart is empty,please add item in cart.");
+        }
     }
 
     public class SectionAdapter extends StickyAdapter<RecyclerView.ViewHolder, RecyclerView.ViewHolder> {

@@ -37,8 +37,10 @@ import com.app.liferdeal.network.retrofit.ApiInterface;
 import com.app.liferdeal.network.retrofit.RFClient;
 import com.app.liferdeal.ui.activity.MainActivity;
 import com.app.liferdeal.ui.adapters.splashadapter.SplashViewPagerAdapter;
+import com.app.liferdeal.ui.fragment.LocationMapFragment;
 import com.app.liferdeal.util.Constants;
 import com.app.liferdeal.util.PrefsHelper;
+import com.app.liferdeal.util.SharedPreferencesData;
 import com.google.android.material.tabs.TabLayout;
 import com.viewpagerindicator.CirclePageIndicator;
 
@@ -133,6 +135,7 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
 
     private void init() {
         try {
+            sharedPreferencesData = new SharedPreferencesData(getApplicationContext());
             context = SplashActivity.this;
             //FirebaseCrashlytics.getInstance();
             mInstance = this;
@@ -159,7 +162,7 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
             mImageViewPager = findViewById(R.id.img_view_pager);
             banner_progress = findViewById(R.id.banner_progress);
             // slideImagesArray = populateList();
-            getSplashImageData();
+
             btn_get_started.setOnClickListener(this);
             //   displayLocationSettingsRequest(SplashActivity.this);
 
@@ -181,13 +184,34 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
         return list;
     }*/
 
+    SharedPreferencesData sharedPreferencesData;
+
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_getstarted:
-                Intent i = new Intent(SplashActivity.this, MainActivity.class);
+                if (sharedPreferencesData != null) {
+                    String firstTime = sharedPreferencesData.getSharedPreferenceData(Constants.PRICEPREFERENCE, Constants.FIRSTTIMELOGINPAGE);
+                    if (firstTime.equalsIgnoreCase("")) {
+                        sharedPreferencesData.createNewSharedPreferences(Constants.PRICEPREFERENCE);
+                        //sharedPreferencesData.setSharedPreferenceData(Constants.PRICEPREFERENCE, Constants.FIRSTTIMELOGINPAGE, "FirstTimeLogin");
+                        Intent intent1 = new Intent(SplashActivity.this, LocationMapFragment.class);
+                        intent1.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivity(intent1);
+                        finish();
+                    } else {
+
+                        Intent i = new Intent(SplashActivity.this, MainActivity.class);
+                        startActivity(i);
+                        finish();
+                    }
+                }
+
+
+               /* Intent i = new Intent(SplashActivity.this, MainActivity.class);
                 startActivity(i);
-                finish();
+                finish();*/
                 break;
 
             default:
@@ -392,7 +416,6 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
                     @Override
                     public void onNext(PhpInitialInfoModel searchResult) {
                         //  showProgress();
-                        btn_get_started.setVisibility(View.VISIBLE);
                         prefsHelper.savePref(Constants.API_KEY, searchResult.getApiKey());
                         prefsHelper.savePref(Constants.APP_LOGO, searchResult.getAppLogo());
                         prefsHelper.savePref(Constants.APP_TOP_LOGO_ICON, searchResult.getAppTopHomeIcon());
@@ -403,6 +426,7 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
                         prefsHelper.savePref(Constants.google_map_key, searchResult.getAppGoogleKey());
                         prefsHelper.savePref(Constants.LNG_CODE, searchResult.getAppDefaultLanguage());
                         getLanguageData(searchResult.getApiKey(), searchResult.getAppDefaultLanguage());
+                        getSplashImageData(searchResult.getApiKey(), searchResult.getAppDefaultLanguage());
 //                        Log.e("AppCurrency=",searchResult.getAppCurrency());
                         //Toast.makeText(getApplicationContext(),searchResult.getAppCurrency()+"====Other"+searchResult.getLangName(),Toast.LENGTH_LONG).show();
                     }
@@ -422,10 +446,9 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
-    private void getSplashImageData() {
-
+    private void getSplashImageData(String apiKey, String appDefaultLanguage) {
         apiInterface = RFClient.getClient().create(ApiInterface.class);
-        Observable<SplashModel> observable = apiInterface.getSplashImageData("foodkey", Constants.LNG_CODE, "1");
+        Observable<SplashModel> observable = apiInterface.getSplashImageData(apiKey, appDefaultLanguage, "1");
 
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -439,6 +462,13 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
                     public void onNext(SplashModel searchResult) {
                         //  showProgress();
                         //Toast.makeText(getApplicationContext(),"slide Array called",Toast.LENGTH_LONG).show();
+
+                        btn_get_started.setVisibility(View.VISIBLE);
+                        try {
+                            btn_get_started.setText(searchResult.getSplashBannersList().get(0).getGetStartedText());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         slideImagesArray = searchResult.getSplashBannersList();
                         mImageViewPager.setAdapter(new SplashViewPagerAdapter(SplashActivity.this, slideImagesArray));
                         try {

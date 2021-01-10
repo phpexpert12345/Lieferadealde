@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fillViewport="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <LinearLayout
+            android:background="@color/colorWhite"
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_230sdp">
+            <RelativeLayout
+                android:background="@color/gray"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                >
+
+
+
+                <TextView
+                    android:id="@+id/tvCancel"
+                    android:textSize="@dimen/_13sdp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_gravity="center"
+                    android:textColor="@color/blueback"
+                    android:text="@string/cancel"
+                    android:fontFamily="@font/montserrat_semi_bold"
+                    android:textAllCaps="false"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent" />
+
+                <TextView
+                    android:id="@+id/tvDone"
+                    android:textSize="@dimen/_13sdp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:textColor="@color/blueback"
+                    android:text="@string/done"
+                    android:fontFamily="@font/montserrat_semi_bold"
+                    android:textAllCaps="false"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent" />
+
+            </RelativeLayout>
+            <com.contrarywind.view.WheelView
+                android:id="@+id/wvSessionType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </com.contrarywind.view.WheelView>
+        </LinearLayout>
+
+
+        <ProgressBar
+            android:visibility="gone"
+            android:id="@+id/progressBar"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </ProgressBar>
+
+    </RelativeLayout>
+</ScrollView>

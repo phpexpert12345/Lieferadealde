@@ -7,6 +7,7 @@
     <color name="colorAccent">#7cca4f</color>
 
     <color name="colorRed">#FF1334</color>
+    <color name="colorOrangeDark">#FF4500</color>
     <color name="colorGreen">#02BF67</color>
     <color name="humbergerIconColor">#00CCCC</color>
     <color name="colorGrayDark">#A2A2A2</color>
@@ -35,10 +36,5 @@
     <color name="color_lighteGray">#E8E9E8E8</color>
     <color name="gray">#D6D6D6</color>
     <color name="dark_gray">#9C9C9E</color>
-
-
-
-
-
 
 </resources>

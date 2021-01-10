@@ -88,7 +88,6 @@
         android:orientation="vertical"
         android:layout_height="match_parent">
 
-
         <RelativeLayout
             android:id="@+id/rlt_main"
             android:layout_width="match_parent"
@@ -99,8 +98,12 @@
                 android:layout_width="match_parent"
                 android:scaleType="fitXY"
                 android:src="@drawable/banner"
-                android:layout_height="match_parent"
-                />
+                android:layout_height="match_parent"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="match_parent"
+                app:srcCompat="@drawable/light_black"
+                android:layout_height="match_parent"/>
 
             <ImageView
                 android:id="@+id/img_backk"
@@ -124,7 +127,6 @@
                 android:layout_marginBottom="@dimen/_20sdp"
                 android:background="@drawable/edit_back_without_border">
 
-
                 <ImageView
                     android:id="@+id/rset_logo"
                     android:layout_alignParentLeft="true"
@@ -132,17 +134,15 @@
                     android:layout_height="wrap_content"
                     android:scaleType="fitXY"
                     android:layout_gravity="center"
-                    android:src="@drawable/defpizzaimg"
-                    />
+                    android:src="@drawable/defpizzaimg"/>
             </LinearLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="@dimen/_50sdp"
                 android:layout_marginLeft="@dimen/_20sdp"
-                android:layout_toRightOf="@+id/image"
+                android:layout_marginRight="@dimen/_20sdp"
+                android:layout_toEndOf="@+id/image"
+                android:layout_marginTop="@dimen/dp_30"
                 android:orientation="vertical"
                 android:layout_height="wrap_content">
 
@@ -157,28 +157,10 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="Rest name"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/roboto_bold"
                         android:visibility="visible"
                         android:textSize="@dimen/_15ssp"
                         android:textColor="#fff" />
-                    <LinearLayout
-                        android:layout_width="@dimen/_50sdp"
-                        android:gravity="center"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="@dimen/_20sdp"
-                        android:background="@drawable/circle_background"
-                        android:layout_height="@dimen/_15sdp">
-                        <TextView
-                            android:id="@+id/tv_item_discount_cost"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Open"
-                            android:gravity="center"
-                            android:layout_gravity="center"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="@dimen/_8ssp"
-                            android:textStyle="normal" />
-                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -201,14 +183,34 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_3sdp"
                         android:text="( 199 )"
-                        android:textColor="@color/colorBlack"
+                        android:fontFamily="@font/roboto_medium"
+                        android:textColor="@color/colorWhite"
                         android:textSize="@dimen/_10ssp" />
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/dp_5"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_item_discount_cost"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:padding="@dimen/dp_5"
+                        android:fontFamily="@font/roboto_bold"
+                        android:background="@drawable/circle_background"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/sp_11" />
+                </LinearLayout>
 
             </LinearLayout>
-
 
         </RelativeLayout>
 
@@ -216,6 +218,9 @@
             android:id="@+id/rcv_rest_details_list"
             android:layout_below="@+id/rlt_main"
             android:layout_width="match_parent"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:layout_marginTop="-15dp"
             android:layout_height="match_parent"/>
 
         <TextView

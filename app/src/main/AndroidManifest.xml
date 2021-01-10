@@ -3,23 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.app.liferdeal">
 
-    <uses-feature android:name="android.hardware.camera.flash" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.GET_TASKS" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-
-    <uses-permission android:name="android.permission.CAMERA" />
-
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
-
     <application
         android:name=".application.App"
         android:allowBackup="true"
@@ -28,9 +11,10 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@drawable/liefradeal_app"
         android:supportsRtl="true"
+        android:hardwareAccelerated="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.activity.ThankuActivity"/>
+        <activity android:name=".ui.activity.ThankuActivity" />
         <activity android:name=".ui.activity.cart.paypal.PaypalActivity" />
         <activity android:name=".ui.activity.cart.StripePaymentActivity" />
         <activity android:name=".ui.activity.splash.SplashScreenActivity">
@@ -234,18 +218,41 @@
             android:launchMode="singleTask"
             android:screenOrientation="locked"
             android:theme="@style/AppTheme.NoActionBar" />
-
-      <!--  <activity
-            android:name=".ui.activity.restaurant.TableTimeListActivity"
+        <activity
+            android:name=".ui.activity.my_review.MyReviewActivity"
             android:launchMode="singleTask"
             android:screenOrientation="locked"
             android:theme="@style/AppTheme.NoActionBar" />
--->
+
+        <!--  <activity
+              android:name=".ui.activity.restaurant.TableTimeListActivity"
+              android:launchMode="singleTask"
+              android:screenOrientation="locked"
+              android:theme="@style/AppTheme.NoActionBar" />
+  -->
 
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/MAP_API_KEY" />
     </application>
+
+    <uses-feature android:name="android.hardware.camera.flash" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
 
 </manifest>

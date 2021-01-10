@@ -5,24 +5,24 @@
         android:id="@+id/action_home"
         android:enabled="true"
         android:icon="@drawable/logo_m"
-        android:title="Home"
+        android:title=""
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_filter"
         android:enabled="true"
         android:icon="@drawable/ic_filter"
-        android:title="Filter"
+        android:title=""
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_location"
         android:enabled="true"
         android:icon="@drawable/location"
-        android:title="Location"
+        android:title=""
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_profile"
         android:enabled="true"
         android:icon="@drawable/ic_profile"
-        android:title="Profile"
+        android:title=""
         app:showAsAction="ifRoom" />
 </menu>

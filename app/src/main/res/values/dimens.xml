@@ -100,6 +100,7 @@
     <dimen name="dp_600">600dp</dimen>
 
 
+    <dimen name="sp_6">6sp</dimen>
     <dimen name="sp_8">8sp</dimen>
     <dimen name="sp_9">9sp</dimen>
     <dimen name="sp_10">10sp</dimen>

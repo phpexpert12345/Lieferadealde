@@ -1,11 +1,15 @@
 package com.app.liferdeal.ui.activity.restaurant;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,8 +21,14 @@ import com.app.liferdeal.model.restaurant.MYOrderTrackDetailModel;
 import com.app.liferdeal.network.retrofit.ApiInterface;
 import com.app.liferdeal.network.retrofit.RFClient;
 import com.app.liferdeal.util.Constants;
+import com.app.liferdeal.util.DotToCommaClass;
 import com.app.liferdeal.util.PrefsHelper;
 
+import java.util.Currency;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -27,7 +37,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class OrderTrackActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private TextView txt_view_ordernumber, txt_orderdattime, txt_delivered_city, tvMyOrder, tvFoodItems,txt_vie_menu,txt_view_sub_menu,
+    private TextView txt_view_ordernumber, txt_orderdattime, txt_delivered_city, tvMyOrder, tvFoodItems, txt_vie_menu, txt_view_sub_menu,
             txt_view_sub_menu_one;
 
     private PrefsHelper prefsHelper;
@@ -37,10 +47,51 @@ public class OrderTrackActivity extends AppCompatActivity implements View.OnClic
     private String strordernumber = "";
     private LanguageResponse model;
 
+    @BindView(R.id.tvFoodName)
+    TextView tvFoodName;
+    @BindView(R.id.txtPrice)
+    TextView txtPrice;
+
+    @BindView(R.id.viewSquare1)
+    View viewSquare1;
+
+    @BindView(R.id.viewSquare2)
+    View viewSquare2;
+
+    @BindView(R.id.viewSquare3)
+    View viewSquare3;
+
+    @BindView(R.id.viewLine1)
+    View viewLine1;
+
+    @BindView(R.id.viewLine2)
+    View viewLine2;
+
+    @BindView(R.id.rlt_sub_menu)
+    RelativeLayout rlt_sub_menu;
+    @BindView(R.id.rvWriteAReview)
+    RelativeLayout rvWriteAReview;
+
+
+    @BindView(R.id.txtConfirmed)
+    TextView txtConfirmed;
+    @BindView(R.id.txtConfirmedDate)
+    TextView txtConfirmedDate;
+    @BindView(R.id.txtDelivered)
+    TextView txtDelivered;
+    @BindView(R.id.txtDeliveredDate)
+    TextView txtDeliveredDate;
+    @BindView(R.id.tvWrite)
+    TextView tvWrite;
+
+    private String currencySymbol;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_order_activity_track);
+        ButterKnife.bind(this);
+
         model = new LanguageResponse();
         if (App.retrieveLangFromGson(OrderTrackActivity.this) != null) {
             model = App.retrieveLangFromGson(OrderTrackActivity.this);
@@ -50,7 +101,13 @@ public class OrderTrackActivity extends AppCompatActivity implements View.OnClic
 
     private void init() {
         try {
+            dotToCommaClass = new DotToCommaClass(getApplicationContext());
+
             prefsHelper = new PrefsHelper(this);
+            Currency hh = Currency.getInstance("" + prefsHelper.getPref(Constants.APP_CURRENCY));
+            currencySymbol = hh.getSymbol();
+
+
             progressDialog = new ProgressDialog(this);
             img_back = findViewById(R.id.img_back);
 
@@ -65,9 +122,10 @@ public class OrderTrackActivity extends AppCompatActivity implements View.OnClic
 
             tvMyOrder.setText(model.getMyOrder());
             txt_orderdattime.setText(model.getSubtotal());
-            tvFoodItems.setText(model.getFoodItems()+"-");
-            txt_vie_menu.setText(model.getDeliveredTo()+"-");
-            txt_view_sub_menu.setText(model.getOrderComplete()+"-");
+            tvFoodItems.setText(model.getFoodItems() + "-");
+            txt_vie_menu.setText(model.getDeliveredTo() + "-");
+            txt_view_sub_menu.setText(model.getOrderComplete() + "-");
+            tvWrite.setText(model.getWriteAReview());
 
             strordernumber = getIntent().getStringExtra("orderid");
             img_back.setOnClickListener(this);
@@ -93,6 +151,8 @@ public class OrderTrackActivity extends AppCompatActivity implements View.OnClic
 
     private String currency, menuprice, itemname;
     private long quantity;
+    DotToCommaClass dotToCommaClass;
+    String restId;
 
     private void getOrderDetails() {
 
@@ -113,6 +173,15 @@ public class OrderTrackActivity extends AppCompatActivity implements View.OnClic
                         // showProgress();
                        /* setAdapterCategory(searchResult.getOrders().getOrderViewResult());
                         banner_progress.setVisibility(View.GONE);*/
+
+                        if (searchResult.getOrderTrackHistory().get(0).getOrderStatus().equalsIgnoreCase("Delivered")) {
+                            rvWriteAReview.setVisibility(View.VISIBLE);
+                        } else {
+                            rvWriteAReview.setVisibility(View.GONE);
+                        }
+
+
+                        restId = searchResult.getOrderDetailItem().get(0).getResid().toString();
                         String orderno = searchResult.getOrderDetailItem().get(0).getOrderIdentifyno().toString();
                         String orderstatusmsg = searchResult.getOrderDetailItem().get(0).getOrderStatusMsg().toString();
                         String subtotal = searchResult.getOrderDetailItem().get(0).getSubTotal().toString();
@@ -121,6 +190,30 @@ public class OrderTrackActivity extends AppCompatActivity implements View.OnClic
                         String resuestatdate = searchResult.getOrderDetailItem().get(0).getRequestAtDate().toString();
                         String resuestattime = searchResult.getOrderDetailItem().get(0).getRequestAtTime().toString();
                         String customercity = searchResult.getOrderDetailItem().get(0).getCustomerCity().toString();
+
+                        String firstStatus = "", secondStatus = "", thirdStatus = "";
+                        String firstDate = "", secondDate = "", thirdDate = "";
+                        //Toast.makeText(getApplicationContext(),searchResult.getOrderTrackHistory().get(0).getOrderStatus(),Toast.LENGTH_LONG).show();
+
+                        if (searchResult.getOrderTrackHistory() != null && searchResult.getOrderTrackHistory().get(0) != null) {
+                            firstStatus = searchResult.getOrderTrackHistory().get(0).getOrderStatus();
+                            firstDate = searchResult.getOrderTrackHistory().get(0).getOrderStatusDate() + " " + searchResult.getOrderTrackHistory().get(0).getOrderStatusTime();
+                        } else {
+                            firstStatus = "";
+                        }
+                        if (searchResult.getOrderTrackHistory() != null && searchResult.getOrderTrackHistory().size() > 1) {
+                            secondStatus = searchResult.getOrderTrackHistory().get(1).getOrderStatus();
+                            secondDate = searchResult.getOrderTrackHistory().get(1).getOrderStatusDate() + " " + searchResult.getOrderTrackHistory().get(1).getOrderStatusTime();
+                        } else {
+                            secondStatus = "";
+                        }
+                        if (searchResult.getOrderTrackHistory() != null && searchResult.getOrderTrackHistory().size() > 2) {
+                            thirdStatus = searchResult.getOrderTrackHistory().get(2).getOrderStatus();
+                            thirdDate = searchResult.getOrderTrackHistory().get(2).getOrderStatusDate() + " " + searchResult.getOrderTrackHistory().get(2).getOrderStatusTime();
+                        } else {
+                            thirdStatus = "";
+                        }
+                        // String itemsName = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getItemsName();
 
                      /*   currency = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getCurrency().toString();
                         menuprice = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getMenuprice().toString();
@@ -135,7 +228,7 @@ public class OrderTrackActivity extends AppCompatActivity implements View.OnClic
                              quantity = searchResult.getOrderFoodItem().get(i).getQuantity();
                         }
 */
-                        setTextData(orderno, orderstatusmsg, subtotal, orderpricetotal, restname, resuestatdate, resuestattime, customercity, currency, menuprice, itemname, quantity);
+                        setTextData(orderno, orderstatusmsg, subtotal, orderpricetotal, restname, resuestatdate, resuestattime, customercity, currency, menuprice, itemname, quantity, firstStatus, secondStatus, thirdStatus, firstDate, secondDate, thirdDate);
                         //  String orderpricetotal = searchResult.getOrderPrice().toString();
 
                     }
@@ -166,11 +259,62 @@ public class OrderTrackActivity extends AppCompatActivity implements View.OnClic
         progressDialog.dismiss();
     }
 
-    private void setTextData(String orderno, String orderstatusmsg, String subtotal, String orderpricetotal, String restname, String resuestatdate, String resuestattime, String customercity, String currency, String menuprice, String itemname, long quantity) {
-        txt_view_ordernumber.setText(model.getOrderID() + orderno);
-        txt_orderdattime.setText(resuestatdate + " " + resuestattime);
-        txt_view_sub_menu_one.setText(resuestatdate + " " + resuestattime);
-        txt_delivered_city.setText(customercity);
 
+    @BindView(R.id.rlConfirmed)
+    RelativeLayout rlConfirmed;
+    @BindView(R.id.rlDelivered)
+    RelativeLayout rlDelivered;
+
+    private void setTextData(String orderno, String orderstatusmsg, String subtotal, String orderpricetotal, String restname, String resuestatdate, String resuestattime, String customercity, String currency, String menuprice, String itemname, long quantity, String firstStatus, String secondStatus, String thirdStatus, String firstDate, String secondDate, String thirdDate) {
+        txt_view_ordernumber.setText(model.getOrderID() + " : " + orderno);
+        txt_orderdattime.setText(resuestatdate + " " + resuestattime);
+        //txt_view_sub_menu_one.setText(resuestatdate + " " + resuestattime);
+        txt_delivered_city.setText(customercity);
+        tvFoodName.setText(itemname);
+        txtPrice.setText(currencySymbol + dotToCommaClass.changeDot(subtotal));
+
+        if (!firstStatus.equalsIgnoreCase("")) {
+            txt_view_sub_menu.setText(firstStatus);
+            txt_view_sub_menu_one.setText(firstDate);
+            rlt_sub_menu.setVisibility(View.VISIBLE);
+            viewSquare1.setVisibility(View.VISIBLE);
+        } else {
+            rlt_sub_menu.setVisibility(View.GONE);
+            viewSquare1.setVisibility(View.GONE);
+        }
+
+        if (!secondStatus.equalsIgnoreCase("")) {
+            txtConfirmed.setText(secondStatus);
+            txtConfirmedDate.setText(secondDate);
+            rlConfirmed.setVisibility(View.VISIBLE);
+            viewLine1.setVisibility(View.VISIBLE);
+            viewSquare2.setVisibility(View.VISIBLE);
+        } else {
+            rlConfirmed.setVisibility(View.GONE);
+            viewLine1.setVisibility(View.GONE);
+            viewSquare2.setVisibility(View.GONE);
+        }
+
+
+        if (!thirdStatus.equalsIgnoreCase("")) {
+            txtDelivered.setText(thirdStatus);
+            txtDeliveredDate.setText(thirdDate);
+            rlDelivered.setVisibility(View.VISIBLE);
+            viewSquare3.setVisibility(View.VISIBLE);
+        } else {
+            rlDelivered.setVisibility(View.GONE);
+            viewSquare3.setVisibility(View.GONE);
+        }
+
+
+    }
+
+    @OnClick(R.id.rvWriteAReview)
+    public void rvWriteAReviewClicked(View view) {
+
+        Intent intent = new Intent(getApplicationContext(), WriteAReviewActivity.class);
+        intent.putExtra("clickRestId", restId);
+        Log.e("RRRRID=", restId);
+        startActivity(intent);
     }
 }

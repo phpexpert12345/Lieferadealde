@@ -9,7 +9,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -20,23 +22,29 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.cardview.widget.CardView;
 
 import com.app.liferdeal.R;
 import com.app.liferdeal.application.App;
 import com.app.liferdeal.model.LanguageResponse;
 import com.app.liferdeal.model.restaurant.GuestUserPaymentModel;
+import com.app.liferdeal.model.restaurant.TimeListModel;
 import com.app.liferdeal.network.retrofit.ApiInterface;
 import com.app.liferdeal.network.retrofit.NetworkUtil;
 import com.app.liferdeal.network.retrofit.RFClient;
 import com.app.liferdeal.ui.Database.Database;
 import com.app.liferdeal.ui.activity.cart.paypal.PayPalConfig;
+import com.app.liferdeal.ui.activity.restaurant.RestaurantBookTable;
 import com.app.liferdeal.ui.activity.restaurant.TimeListActivity;
 import com.app.liferdeal.util.CommonMethods;
 import com.app.liferdeal.util.Constants;
 import com.app.liferdeal.util.DotToCommaClass;
 import com.app.liferdeal.util.PrefsHelper;
 import com.app.liferdeal.util.SharedPreferencesData;
+import com.contrarywind.adapter.WheelAdapter;
+import com.contrarywind.listener.OnItemSelectedListener;
+import com.contrarywind.view.WheelView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.radiobutton.MaterialRadioButton;
 import com.google.android.material.textview.MaterialTextView;
@@ -61,10 +69,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Currency;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -132,6 +142,9 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
     MaterialTextView tvSelectPayment;
     @BindView(R.id.rgFood)
     RadioGroup rgFood;
+    @BindView(R.id.tvLeaveMsg)
+    AppCompatTextView tvLeaveMsg;
+
     private String totalPrice = "";
 
     SharedPreferencesData sharedPreferencesData;
@@ -182,6 +195,7 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
         editTextInstruction.setHint(model.getSpecialInstructions().trim());
         textViewAllergy.setText(model.getDoYouHaveAnyAllergy().trim());
         buttonMakePayment.setText(model.getMakeAPayment().trim());
+        tvLeaveMsg.setText(model.getLeaveANoteForTheRestaurantText().trim());
 
         if (getIntent() != null) {
             totalPrice = getIntent().getStringExtra("totalPrice");
@@ -215,6 +229,7 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
             Pizzaname = getIntent().getStringExtra("Pizzaname");
             selectedPizzaItemPrice = getIntent().getStringExtra("selectedPizzaItemPrice");
             addressId = getIntent().getStringExtra("addressId");
+            instructions = getIntent().getStringExtra("instructions");
             customer_allow_register = "yes";
             payment_type = "cash";
         }
@@ -306,6 +321,7 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
         pizzaQuantity = getIntent().getStringExtra("pizzaQuantity");
         Pizzaname = getIntent().getStringExtra("Pizzaname");
         selectedPizzaItemPrice = getIntent().getStringExtra("selectedPizzaItemPrice");
+        instructions = getIntent().getStringExtra("instructions");
         customer_allow_register = "yes";
         payment_type = "cash";
 
@@ -327,12 +343,14 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.radioButtonASAP) {
-                    Intent i = new Intent(PayCheckOutActivity.this, TimeListActivity.class);
+
+                } else if (checkedId == R.id.radioButtonLater) {
+                   /* Intent i = new Intent(PayCheckOutActivity.this, TimeListActivity.class);
                     i.putExtra("RestId", restId);
                     i.putExtra("OrderType", order_type);
-                    startActivityForResult(i, 10);
-                } else if (checkedId == R.id.radioButtonLater) {
-
+                    startActivityForResult(i, 10);*/
+                    showProgress();
+                    callTimeApi();
                 }
             }
         });
@@ -474,7 +492,7 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
 
 
         //Toast.makeText(getApplicationContext(),"Toast calledin cash on delivery",Toast.LENGTH_LONG).show();
-        delivery_time = "10:15:20AM";
+        //delivery_time = "10:15:20AM";
         apiInterface = RFClient.getClient().create(ApiInterface.class);
         Observable<LoginMainData> observable = apiInterface.getPaymentLoginData(prefsHelper.getPref(Constants.API_KEY),
                 prefsHelper.getPref(Constants.LNG_CODE), "", pizzaItemid, quantity, TotalPrice, strsizeid, extraItemID,
@@ -501,7 +519,6 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
 
                         if (searchResult.getSuccess() != null) {
 
-
                             System.out.println("==== success");
                             String restname = searchResult.getRestaurantName().toString();
                             String restTime = searchResult.getRequestTime().toString();
@@ -513,6 +530,8 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
                             if (CartActivity.mInstance != null) {
                                 CartActivity.mInstance.finish();
                             }
+
+                            //Toast.makeText(getApplicationContext(),restTime,Toast.LENGTH_LONG).show();
                             Intent ii = new Intent(PayCheckOutActivity.this, ThankyouPageActivity.class);
                             ii.putExtra("restname", restname);
                             ii.putExtra("restTime", restTime);
@@ -719,5 +738,179 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
         startActivityForResult(intent, PAYPAL_REQUEST_CODE);
     }
 
+
+    @OnClick(R.id.textViewAllergy)
+    public void textViewAllergyClicked(View view) {
+        allergyGetting();
+    }
+
+
+    public void dialogOpenAllergy(String text) {
+        //selectDate="";
+        dialog = new Dialog(PayCheckOutActivity.this);
+        dialog.setContentView(R.layout.dialog_allergy);
+        Window window = dialog.getWindow();
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        TextView tvText = dialog.findViewById(R.id.tvText);
+        TextView tvTextHead = dialog.findViewById(R.id.tvTextHead);
+        ImageView imvBack = dialog.findViewById(R.id.imvBack);
+        imvBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
+        tvText.setText(text);
+        tvTextHead.setText(model.getAllergyDetails().trim());
+        dialog.show();
+    }
+
+
+    //stripe payment token send to server for success
+    private void allergyGetting() {
+        showProgress();
+        apiInterface = RFClient.getClient().create(ApiInterface.class);
+        Observable<AlergyMain> observable = apiInterface.allergyFromServer(prefsHelper.getPref(Constants.API_KEY), prefsHelper.getPref(Constants.LNG_CODE), restId);
+
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<AlergyMain>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(AlergyMain signin) {
+                        hideProgress();
+                        dialogOpenAllergy(signin.getAlleryInfo());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        hideProgress();
+                        Log.d("TAG", "log...." + e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        //   activity.mySharePreferences.setBundle("login");
+
+                    }
+                });
+
+    }
+
+    private void callTimeApi() {
+        apiInterface = RFClient.getClient().create(ApiInterface.class);
+        Observable<TimeListModel> observable = apiInterface.getTableTimeListData(prefsHelper.getPref(Constants.API_KEY),
+                prefsHelper.getPref(Constants.LNG_CODE), restId, order_type);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<TimeListModel>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(TimeListModel searchResult) {
+                        hideProgress();
+                        if (searchResult.getTimeList() != null && searchResult.getTimeList().size() > 0) {
+                            List<TimeListModel.TimeList> list = new ArrayList<TimeListModel.TimeList>();
+                            list.clear();
+//                            TimeListModel.TimeList newList = new TimeListModel.TimeList();
+//                            newList.setGetTime(model.getASSOONASPOSSIBLE());
+//                            newList.setSuccess("true");
+//                            list.add(newList);
+                            list.addAll(searchResult.getTimeList());
+                            dialogTimeSelection(list);
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        hideProgress();
+                        Log.d("TAG", "log...." + e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        hideProgress();
+                        //   activity.mySharePreferences.setBundle("login");
+
+                    }
+                });
+    }
+
+
+    private void dialogTimeSelection(List<TimeListModel.TimeList> sessionTypeMainData) {
+
+        dialog = new Dialog(PayCheckOutActivity.this);
+        dialog.setContentView(R.layout.dialog_session_type);
+        Window window = dialog.getWindow();
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        TextView tvCancel = dialog.findViewById(R.id.tvCancel);
+        TextView tvDone = dialog.findViewById(R.id.tvDone);
+        tvDone.setText(model.getDone());
+        tvCancel.setText(model.getCancel());
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.cancel();
+            }
+        });
+        tvDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               /* if (sessionType.equalsIgnoreCase("")){
+                    sessionType= sessionTypeMainData.get(0).getId();
+                    tvSessionType.setText(sessionTypeMainData.get(0).getSessionType());
+                }*/
+                // txt_selected_time.setText();
+                dialog.cancel();
+            }
+        });
+
+        WheelView wvSessionType = dialog.findViewById(R.id.wvSessionType);
+        wvSessionType.setCyclic(false);
+
+        /*final List<String> mOptionsItems = new ArrayList<>();
+        for (int i=0;i<sessionTypeMainData.size();i++){
+            mOptionsItems.add("item0");
+        }*/
+
+        wvSessionType.setAdapter(new WheelAdapter() {
+            @Override
+            public int getItemsCount() {
+                return sessionTypeMainData.size();
+            }
+
+            @Override
+            public Object getItem(int index) {
+                return sessionTypeMainData.get(index).getGetTime();
+            }
+
+            @Override
+            public int indexOf(Object o) {
+                return 0;
+            }
+        });
+        wvSessionType.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(int index) {
+                delivery_time = sessionTypeMainData.get(index).getGetTime();
+                //tvBookingTime.setText(sessionTypeMainData.get(index).getGetTime());
+                //txt_selected_time.setText(sessionTypeMainData.get(index).getGetTime());
+                //Toast.makeText(getApplicationContext(), "" + sessionTypeMainData.get(index).getSessionType(), Toast.LENGTH_SHORT).show();
+              /*  sessionType = sessionTypeMainData.get(index).getId();
+                tvSessionType.setText(sessionTypeMainData.get(index).getSessionType());*/
+            }
+        });
+        dialog.show();
+    }
 
 }

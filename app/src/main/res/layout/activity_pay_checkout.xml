@@ -119,6 +119,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/colorBlack"
                             android:layout_weight="1"
+                            android:checked="true"
                             android:textSize="@dimen/sp_15"
                             android:text="@string/asap" />
 
@@ -343,9 +344,20 @@
 
             </androidx.cardview.widget.CardView>
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvLeaveMsg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_10"
+                android:fontFamily="@font/roboto_regular"
+                android:textColor="@color/colorBlack"
+                android:text="Leave a note for restaurant"
+                android:textSize="@dimen/sp_13"/>
+
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/txtNoteText"
                 android:layout_width="match_parent"
+                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
                 android:text="@string/allergy_instruction" />

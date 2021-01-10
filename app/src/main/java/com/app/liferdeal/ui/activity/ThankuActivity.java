@@ -8,8 +8,10 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.app.liferdeal.R;
+import com.app.liferdeal.application.App;
 import com.app.liferdeal.model.LanguageResponse;
 import com.app.liferdeal.ui.activity.profile.ReferEarnFrndActivity;
+import com.app.liferdeal.ui.activity.restaurant.RestaurantDetails;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,6 +26,8 @@ public class ThankuActivity extends AppCompatActivity {
     TextView tvBookingDate;
     @BindView(R.id.tvNote)
     TextView tvNote;
+    @BindView(R.id.tvThankuTxt)
+    TextView tvThankuTxt;
     @BindView(R.id.btnHome)
     Button btnHome;
     private String booking_no = "", msg = "", date = "", note = "";
@@ -34,6 +38,9 @@ public class ThankuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_thanku);
         ButterKnife.bind(this);
+        if (App.retrieveLangFromGson(ThankuActivity.this) != null) {
+            model = App.retrieveLangFromGson(ThankuActivity.this);
+        }
 
         if (getIntent() != null) {
             booking_no = getIntent().getStringExtra("booking_no");
@@ -43,6 +50,7 @@ public class ThankuActivity extends AppCompatActivity {
         }
 
         btnHome.setText(model.getGOTOHOME());
+        tvThankuTxt.setText(model.getThankYou());
         tvMsg.setText(msg);
         tvBookingNo.setText(model.getYourBookingNumber() + " " + booking_no);
         tvBookingDate.setText(model.getBookingDate() + ": " + date);
@@ -51,9 +59,9 @@ public class ThankuActivity extends AppCompatActivity {
 
     @OnClick(R.id.btnHome)
     public void onClick() {
-        Intent i = new Intent(ThankuActivity.this, MainActivity.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        Intent i = new Intent(ThankuActivity.this, RestaurantDetails.class);
+        /*i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);*/
         startActivity(i);
         finish();
     }

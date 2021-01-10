@@ -111,6 +111,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/_10sdp"
+                android:layout_gravity="center"
+                android:gravity="center"
                 android:layout_height="wrap_content">
 
                 <LinearLayout
@@ -123,12 +125,11 @@
                     android:layout_height="wrap_content">
 
                     <LinearLayout
-                        android:layout_weight="1"
                         android:id="@+id/rl_delivery"
-                        android:layout_width="@dimen/dp_0"
+                        android:layout_width="@dimen/_80sdp"
                         android:orientation="vertical"
                         android:gravity="center"
-                        android:background="@drawable/circle_background"
+                        android:background="@drawable/edit_back_with_gray"
                         android:layout_height="@dimen/_60sdp">
 
                         <ImageView
@@ -152,9 +153,8 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_weight="1"
                         android:id="@+id/rl_pickup"
-                        android:layout_width="@dimen/dp_0"
+                        android:layout_width="@dimen/_80sdp"
                         android:layout_marginStart="@dimen/dp_10"
                         android:orientation="vertical"
                         android:gravity="center"
@@ -183,8 +183,7 @@
 
                     <LinearLayout
                         android:id="@+id/rlDineIn"
-                        android:layout_width="@dimen/dp_0"
-                        android:layout_weight="1"
+                        android:layout_width="@dimen/_80sdp"
                         android:orientation="vertical"
                         android:layout_marginStart="@dimen/dp_10"
                         android:gravity="center"
@@ -478,12 +477,12 @@
                             android:id="@+id/tvFoodDiscount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Coupon Discount"
-                            android:visibility="gone"
                             android:layout_marginTop="@dimen/_10sdp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:text="Coupon Discount"
                             android:textColor="@color/quantum_grey500"
                             android:textSize="13sp"
-                            android:fontFamily="@font/roboto_medium"/>
+                            android:visibility="gone" />
 
                         <TextView
                             android:id="@+id/tv_food_discount_total"
@@ -573,6 +572,33 @@
                             android:textSize="@dimen/sp_13" />
                     </RelativeLayout>
 
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/tvLoyaltyText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Loyalty Point"
+                            android:visibility="gone"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:textColor="@color/quantum_grey500"
+                            android:textSize="13sp"
+                            android:fontFamily="@font/roboto_medium"/>
+
+                        <TextView
+                            android:id="@+id/tvLoyaltyFee"
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            android:layout_alignParentRight="true"
+                            android:fontFamily="@font/roboto_medium"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="@dimen/sp_13" />
+                    </RelativeLayout>
+
                 </LinearLayout>
 
             <View
@@ -587,18 +613,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="@color/quantum_grey50"
-                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/dp_10"
                 android:layout_marginBottom="@dimen/dp_20"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:layout_marginLeft="@dimen/_10sdp">
+                android:layout_marginLeft="@dimen/dp_10">
 
                 <TextView
                     android:id="@+id/tvTotal"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="Total"
-                    android:layout_marginLeft="@dimen/_10sdp"
                     android:gravity="center"
                     android:textColor="@color/colorBlack"
                     android:textSize="15sp"
@@ -611,7 +636,6 @@
                     android:textSize="15sp"
                     android:gravity="center"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/_10sdp"
                     android:fontFamily="@font/roboto_medium"/>
             </RelativeLayout>
 
@@ -630,7 +654,7 @@
             android:layout_width="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
-            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/dp_10"
             android:layout_height="wrap_content">
             <TextView
                 android:id="@+id/tvTotalItem"
@@ -657,7 +681,6 @@
             android:layout_width="wrap_content"
             android:gravity="center"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/_20sdp"
             android:layout_centerInParent="true"
             android:layout_height="wrap_content">
             <TextView
@@ -669,7 +692,6 @@
                 android:gravity="center"
                 android:textColor="@color/colorWhite"
                 android:textSize="16sp"
-
                 android:fontFamily="@font/montserrat_semi_bold"/>
         </RelativeLayout>
 

@@ -26,6 +26,12 @@ import androidx.core.app.ActivityCompat;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.app.liferdeal.R;
+import com.app.liferdeal.application.App;
+import com.app.liferdeal.model.LanguageResponse;
+import com.app.liferdeal.model.PhpInitialInfoModel;
+import com.app.liferdeal.network.retrofit.ApiInterface;
+import com.app.liferdeal.network.retrofit.RFClient;
+import com.app.liferdeal.util.Constants;
 import com.app.liferdeal.util.PrefsHelper;
 
 import java.util.Comparator;
@@ -34,6 +40,11 @@ import java.util.Locale;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -66,6 +77,84 @@ public class SplashActivityNew extends AppCompatActivity implements LocationList
         return true;
     }
 
+    private ApiInterface apiInterface;
+
+    private void getSplashData() {
+        apiInterface = RFClient.getClient().create(ApiInterface.class);
+        Observable<PhpInitialInfoModel> observable = apiInterface.getSplashData();
+
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<PhpInitialInfoModel>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(PhpInitialInfoModel searchResult) {
+                        //  showProgress();
+                        myPref.savePref(Constants.API_KEY, searchResult.getApiKey());
+                        myPref.savePref(Constants.APP_LOGO, searchResult.getAppLogo());
+                        myPref.savePref(Constants.APP_TOP_LOGO_ICON, searchResult.getAppTopHomeIcon());
+                        myPref.savePref(Constants.APP_DEF_LANG, searchResult.getAppDefaultLanguage());
+                        myPref.savePref(Constants.APP_LNG_NAME, searchResult.getLangName());
+                        myPref.savePref(Constants.APP_LNG_ICON, searchResult.getLangIcon());
+                        myPref.savePref(Constants.APP_CURRENCY, searchResult.getAppCurrency());
+                        myPref.savePref(Constants.google_map_key, searchResult.getAppGoogleKey());
+                        myPref.savePref(Constants.LNG_CODE, searchResult.getAppDefaultLanguage());
+                        getLanguageData(searchResult.getApiKey(), searchResult.getAppDefaultLanguage());
+//                        Log.e("AppCurrency=",searchResult.getAppCurrency());
+                        //Toast.makeText(getApplicationContext(),searchResult.getAppCurrency()+"====Other"+searchResult.getLangName(),Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        // hideProgress();
+//                        Log.d("TAG", "log...." + e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        //   activity.mySharePreferences.setBundle("login");
+
+                    }
+                });
+
+    }
+
+    private void getLanguageData(String apiKey, String appDefaultLanguage) {
+        apiInterface = RFClient.getClient().create(ApiInterface.class);
+        Observable<LanguageResponse> observable = apiInterface.getLanguage(apiKey, appDefaultLanguage);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<LanguageResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(LanguageResponse response) {
+                        App.addLangToGson(SplashActivityNew.this, response);
+//                        btn_get_started.setText(response.);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        // hideProgress();
+//                        Log.d("TAG", "log...." + e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        //   activity.mySharePreferences.setBundle("login");
+
+                    }
+                });
+
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -89,11 +178,12 @@ public class SplashActivityNew extends AppCompatActivity implements LocationList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // Fabric.with(this, new Crashlytics());
+        // Fabric.with(this, new Crashlytics());
         //   statusBarColor();
         setContentView(R.layout.splash_activity_layout);
         myPref = new PrefsHelper(SplashActivityNew.this);
         requestQueue = Volley.newRequestQueue(this);
+        getSplashData();
       /*  txtgps = findViewById(R.id.txtgps);
         llgps = (LinearLayout) findViewById(R.id.llgps);
         llani = (LinearLayout) findViewById(R.id.llani);
@@ -217,7 +307,7 @@ public class SplashActivityNew extends AppCompatActivity implements LocationList
         if (lat.equals("") || lat.equals(null)) {
             fn_getlocation();
         } else {
-         //   getData();
+            //   getData();
 
             /*startActivity(new Intent(SplashScreenActivity.this, HomeActivity.class));
             finish();*/

@@ -117,17 +117,17 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             rl_change_password = findViewById(R.id.rl_change_password);
             lnr_my_order = findViewById(R.id.lnr_my_order);
 
-            tvMyOrder.setText(model.getMyOrder());
-            tvMyAddress.setText(model.getMyAddress());
-            tvHelp.setText(model.getHelpCenter());
-            tvSetting.setText(model.getSettings());
-            tvProfile.setText(model.getMyProfile());
-            tvLoyaltyPoint.setText(model.getLoyaltyPoints());
-            tvMyTicket.setText(model.getMyTicket());
-            tvPasswordSecurity.setText(model.getPasswordSecurity());
-            tvPrivacyPolicy.setText(model.getPrivacyPolicy());
-            tvAboutUs.setText(model.getAboutUs());
-            tvLogout.setText(model.getLogout());
+            tvMyOrder.setText(model.getMyOrder().trim());
+            tvMyAddress.setText(model.getMyAddress().trim());
+            tvHelp.setText(model.getHelpCenter().trim());
+            tvSetting.setText(model.getSettings().trim());
+            tvProfile.setText(""+model.getMyProfile().trim());
+            tvLoyaltyPoint.setText(model.getLoyaltyPoints().trim());
+            tvMyTicket.setText(model.getMyTicket().trim());
+            tvPasswordSecurity.setText(model.getPasswordSecurity().trim());
+            tvPrivacyPolicy.setText(model.getPrivacyPolicy().trim());
+            tvAboutUs.setText(model.getAboutUs().trim());
+            tvLogout.setText(model.getLogout().trim());
 
             aboutus.setOnClickListener(this);
             termscondition.setOnClickListener(this);

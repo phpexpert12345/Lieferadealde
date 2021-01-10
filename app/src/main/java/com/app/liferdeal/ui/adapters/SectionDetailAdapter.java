@@ -62,8 +62,8 @@ public class SectionDetailAdapter extends RecyclerView.Adapter<SectionDetailAdap
     }
 
     @Override
-    public void getClickMenuData(int otemId, String itemName, String price) {
-        restaurantDetailsAdapterInterface.getClickMenuData(otemId, itemName, price);
+    public void getClickMenuData(int otemId, String itemName, String price,String subcatItemDetails) {
+        restaurantDetailsAdapterInterface.getClickMenuData(otemId, itemName, price,subcatItemDetails);
     }
 
     class Holder extends RecyclerView.ViewHolder {

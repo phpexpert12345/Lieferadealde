@@ -56,6 +56,7 @@ import com.app.liferdeal.network.retrofit.RFClient;
 import com.app.liferdeal.ui.Database.Database;
 import com.app.liferdeal.ui.activity.login.SignInActivity;
 import com.app.liferdeal.ui.activity.login.SignUpActivity;
+import com.app.liferdeal.ui.activity.my_review.MyReviewActivity;
 import com.app.liferdeal.ui.activity.profile.AboutUsActivity;
 import com.app.liferdeal.ui.activity.profile.ChangePassword;
 import com.app.liferdeal.ui.activity.profile.ContactUs;
@@ -143,7 +144,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             model = App.retrieveLangFromGson(MainActivity.this);
         }
 
-
         authPreference = new PrefsHelper(this);
         progressDialog = new ProgressDialog(this);
         bottomNavigation.setOnNavigationItemSelectedListener(this);
@@ -183,8 +183,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (getIntent().getExtras() != null) {
             locationSearchAddress = getIntent().getStringExtra("SEARCHADDRESS");
             System.out.println("==== SEARCHADDRESS in main : " + locationSearchAddress);
+            initiateRestFragment();
         }
-        System.out.println("==== SEARCHADDRESS in main : " + locationSearchAddress);
+        System.out.println("==== SEARCHADDRESS in ma" +
+                "in : " + locationSearchAddress);
 
         lnr_edit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -193,9 +195,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
             }
         });
-
-        tvSignIn.setText(model.getSignIn());
-        tvCreateAccount.setText(model.getCreateANewAccount());
+        try {
+            tvSignIn.setText(model.getSignIn().trim());
+            tvCreateAccount.setText(model.getCreateANewAccount().trim());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
       /*  if (getIntent().getExtras() != null) {
             firstName = getIntent().getStringExtra("firstName");
             lastName = getIntent().getStringExtra("lastName");
@@ -279,20 +284,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         customerId = authPreference.getPref(Constants.CUSTOMER_ID);
         if (authPreference.isLoggedIn()) {
             getProfileData();
-            drawerItem = new DataModel[12];
-            drawerItem[0] = new DataModel(model.getHome(), R.drawable.my_account);
-            drawerItem[1] = new DataModel(model.getMyAccount(), R.drawable.my_account);
-            drawerItem[2] = new DataModel(model.getMyOrder(), R.drawable.my_order_new);
-            drawerItem[3] = new DataModel(model.getMyAddress(), R.drawable.my_address_new);
-            drawerItem[4] = new DataModel(model.getMyReview(), R.drawable.my_review_new);
-            drawerItem[5] = new DataModel(model.getMyTicket(), R.drawable.my_ticket_new);
-            drawerItem[6] = new DataModel(model.getMyLoyaltyPoints(), R.drawable.ic_loyalty_point);
-            drawerItem[7] = new DataModel(model.getChangePassword(), R.drawable.change_password_new);
-            drawerItem[8] = new DataModel(model.getReferAFriend(), R.drawable.refer_earn);
-            drawerItem[9] = new DataModel(model.getContactUsHelp(), R.drawable.contactus_help_new);
-            drawerItem[10] = new DataModel(model.getRateUs(), R.drawable.rate_us_new);
+            drawerItem = new DataModel[11];
+            drawerItem[0] = new DataModel(model.getMyAccount(), R.drawable.my_account);
+            drawerItem[1] = new DataModel(model.getMyOrder(), R.drawable.my_order_new);
+            drawerItem[2] = new DataModel(model.getMyAddress(), R.drawable.my_address_new);
+            drawerItem[3] = new DataModel(model.getMyReview(), R.drawable.my_review_new);
+            drawerItem[4] = new DataModel(model.getMyTicket(), R.drawable.my_ticket_new);
+            drawerItem[5] = new DataModel(model.getMyLoyaltyPoints(), R.drawable.ic_loyalty_point);
+            drawerItem[6] = new DataModel(model.getChangePassword(), R.drawable.change_password_new);
+            drawerItem[7] = new DataModel(model.getReferAFriend(), R.drawable.refer_earn);
+            drawerItem[8] = new DataModel(model.getContactUsHelp(), R.drawable.contactus_help_new);
+            drawerItem[9] = new DataModel(model.getRateUs(), R.drawable.rate_us_new);
 //          drawerItem[11] = new DataModel("Language Setting", R.drawable.ic_lang);
-            drawerItem[11] = new DataModel(model.getLogout(), R.drawable.logout_new);
+            drawerItem[10] = new DataModel(model.getLogout(), R.drawable.logout_new);
         } else {
             textView_name.setText(model.getWelcomeGuest());
             lnr_edit.setVisibility(View.GONE);
@@ -314,7 +318,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             drawerItem[2] = new DataModel(model.getTermsOfService(), R.drawable.termofservice_new);
             drawerItem[3] = new DataModel(model.getPrivacyPolicy(), R.drawable.privacy_policy_new);
             drawerItem[4] = new DataModel(model.getRateUs(), R.drawable.rate_us_new);
+
+
+
         }
+
+
 
         DrawerItemCustomAdapter adapter = new DrawerItemCustomAdapter(this, R.layout.nav_list_view_item_row, drawerItem);
         mDrawerList.setAdapter(adapter);
@@ -349,6 +358,53 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         img.setBounds(0, 0, 25, 25);
         tv_location.setCompoundDrawables(null, null, img, null);
 
+    }
+
+
+
+    public void loginNavigationView(){
+        if (authPreference.isLoggedIn()) {
+            getProfileData();
+            drawerItem = new DataModel[11];
+            drawerItem[0] = new DataModel(model.getMyAccount(), R.drawable.my_account);
+            drawerItem[1] = new DataModel(model.getMyOrder(), R.drawable.my_order_new);
+            drawerItem[2] = new DataModel(model.getMyAddress(), R.drawable.my_address_new);
+            drawerItem[3] = new DataModel(model.getMyReview(), R.drawable.my_review_new);
+            drawerItem[4] = new DataModel(model.getMyTicket(), R.drawable.my_ticket_new);
+            drawerItem[5] = new DataModel(model.getMyLoyaltyPoints(), R.drawable.ic_loyalty_point);
+            drawerItem[6] = new DataModel(model.getChangePassword(), R.drawable.change_password_new);
+            drawerItem[7] = new DataModel(model.getReferAFriend(), R.drawable.refer_earn);
+            drawerItem[8] = new DataModel(model.getContactUsHelp(), R.drawable.contactus_help_new);
+            drawerItem[9] = new DataModel(model.getRateUs(), R.drawable.rate_us_new);
+//          drawerItem[11] = new DataModel("Language Setting", R.drawable.ic_lang);
+            drawerItem[10] = new DataModel(model.getLogout(), R.drawable.logout_new);
+        } else {
+            textView_name.setText(model.getWelcomeGuest());
+            lnr_edit.setVisibility(View.GONE);
+            usermobile.setVisibility(View.GONE);
+            useremail.setVisibility(View.GONE);
+            lnr_view_signin_signup.setVisibility(View.VISIBLE);
+            drawerItem = new DataModel[5];
+
+         /*   drawerItem[0] = new DataModel(model.getContactUsHelp(), R.drawable.help_support);
+              drawerItem[1] = new DataModel(model.getAboutUs(), R.drawable.about_us);
+              drawerItem[2] = new DataModel(model.getTermsOfService(), R.drawable.terms_condition);
+              drawerItem[3] = new DataModel(model.getPrivacyPolicy(), R.drawable.policy);
+              drawerItem[4] = new DataModel(model.getRateUs(), R.drawable.help_support);*/
+//            drawerItem[5] = new DataModel("Language Setting", R.drawable.ic_lang);
+
+            drawerItem[0] = new DataModel(model.getContactUsHelp(), R.drawable.contact_new);
+            drawerItem[1] = new DataModel(model.getAboutUs(), R.drawable.aboutus_new);
+            drawerItem[2] = new DataModel(model.getTermsOfService(), R.drawable.termofservice_new);
+            drawerItem[3] = new DataModel(model.getPrivacyPolicy(), R.drawable.privacy_policy_new);
+            drawerItem[4] = new DataModel(model.getRateUs(), R.drawable.rate_us_new);
+        }
+        DrawerItemCustomAdapter adapter = new DrawerItemCustomAdapter(this, R.layout.nav_list_view_item_row, drawerItem);
+        mDrawerList.setAdapter(adapter);
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        setupDrawerToggle();
     }
 
     private void languageList() {
@@ -405,7 +461,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LanguageAdapter langAdapter;
     private Dialog dialog;
 
-
     private void dialogOpen(List<LanguageModel.LanguageListList> languageListList) {
         dialog = new Dialog(MainActivity.this);
         dialog.setContentView(R.layout.dialog_language);
@@ -416,6 +471,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        RadioButton rbGerman = dialog.findViewById(R.id.rbGerman);
 //        RadioButton rbEng = dialog.findViewById(R.id.rbEng);
         AppCompatImageView ivClose = dialog.findViewById(R.id.ivClose);
+        AppCompatTextView tvSelectLang = dialog.findViewById(R.id.tvSelectLang);
+        tvSelectLang.setText(model.getLANGUAGESETTINGS());
 //        AppCompatImageView ivEnglish = dialog.findViewById(R.id.ivEnglish);
 //        AppCompatImageView ivGerman = dialog.findViewById(R.id.ivGerman);
         RecyclerView rvLanguageList = dialog.findViewById(R.id.rvLanguageList);
@@ -475,6 +532,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         App.addLangToGson(MainActivity.this, response);
                         replaceHomeFragment();
                         replaceNavigationLanguage();
+                        Toast.makeText(getApplicationContext(), model.getYOURLANGUAGEHASBEENCHANGED(), Toast.LENGTH_SHORT).show();
 //                        btn_get_started.setText(response.);
                     }
 
@@ -505,20 +563,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (authPreference.isLoggedIn()) {
             //getProfileData();
 
-            drawerItem = new DataModel[12];
-            drawerItem[0] = new DataModel(model.getHome(), R.drawable.my_account);
-            drawerItem[1] = new DataModel(model.getMyAccount(), R.drawable.my_account);
-            drawerItem[2] = new DataModel(model.getMyOrder(), R.drawable.my_order_new);
-            drawerItem[3] = new DataModel(model.getMyAddress(), R.drawable.my_address_new);
-            drawerItem[4] = new DataModel(model.getMyReview(), R.drawable.my_review_new);
-            drawerItem[5] = new DataModel(model.getMyTicket(), R.drawable.my_ticket_new);
-            drawerItem[6] = new DataModel(model.getMyLoyaltyPoints(), R.drawable.ic_loyalty_point);
-            drawerItem[7] = new DataModel(model.getChangePassword(), R.drawable.change_password_new);
-            drawerItem[8] = new DataModel(model.getReferAFriend(), R.drawable.refer_earn);
-            drawerItem[9] = new DataModel(model.getContactUsHelp(), R.drawable.contactus_help_new);
-            drawerItem[10] = new DataModel(model.getRateUs(), R.drawable.rate_us_new);
+            drawerItem = new DataModel[11];
+            drawerItem[0] = new DataModel(model.getMyAccount(), R.drawable.my_account);
+            drawerItem[1] = new DataModel(model.getMyOrder(), R.drawable.my_order_new);
+            drawerItem[2] = new DataModel(model.getMyAddress(), R.drawable.my_address_new);
+            drawerItem[3] = new DataModel(model.getMyReview(), R.drawable.my_review_new);
+            drawerItem[4] = new DataModel(model.getMyTicket(), R.drawable.my_ticket_new);
+            drawerItem[5] = new DataModel(model.getMyLoyaltyPoints(), R.drawable.ic_loyalty_point);
+            drawerItem[6] = new DataModel(model.getChangePassword(), R.drawable.change_password_new);
+            drawerItem[7] = new DataModel(model.getReferAFriend(), R.drawable.refer_earn);
+            drawerItem[8] = new DataModel(model.getContactUsHelp(), R.drawable.contactus_help_new);
+            drawerItem[9] = new DataModel(model.getRateUs(), R.drawable.rate_us_new);
 //            drawerItem[11] = new DataModel("Language Setting", R.drawable.ic_lang);
-            drawerItem[11] = new DataModel(model.getLogout(), R.drawable.logout_new);
+            drawerItem[10] = new DataModel(model.getLogout(), R.drawable.logout_new);
         } else {
             textView_name.setText(model.getWelcomeGuest());
             lnr_edit.setVisibility(View.GONE);
@@ -541,7 +598,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             drawerItem[3] = new DataModel(model.getPrivacyPolicy(), R.drawable.privacy_policy_new);
             drawerItem[4] = new DataModel(model.getRateUs(), R.drawable.rate_us_new);
         }
-
 
         DrawerItemCustomAdapter adapter = new DrawerItemCustomAdapter(this, R.layout.nav_list_view_item_row, drawerItem);
         mDrawerList.setAdapter(adapter);
@@ -629,8 +685,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(i);
                 break;
             case R.id.img_current_img:
-                Intent ii = new Intent(MainActivity.this, LocationMapFragment.class);
-                startActivity(ii);
+                GPSTracker trackerObj = new GPSTracker(this);
+                currentLatitude = trackerObj.getLatitude();
+                currentLongitude = trackerObj.getLongitude();
+                getAddressFromCurrentLatLong(String.valueOf(currentLatitude), String.valueOf(currentLongitude));
+//                Intent ii = new Intent(MainActivity.this, LocationMapFragment.class);
+//                startActivity(ii);
                 break;
 
             case R.id.editprofile:
@@ -656,8 +716,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onResume() {
         super.onResume();
         try {
+            loginNavigationView();
+            String userphoto=authPreference.getPref(Constants.USER_PROFILE_IMAGE);
+            if (userphoto != null) {
+                Glide.with(MainActivity.this).load(userphoto).apply(new RequestOptions().override(100, 100).
+                        placeholder(R.drawable.user)).into(profileimage);
+            }
             bottomNavigation.setOnNavigationItemSelectedListener(this);
             bottomNavigation.getMenu().findItem(R.id.action_home).setChecked(true);
+            initiateRestFragment();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -724,7 +791,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
-
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             System.out.println("===== drawer click : " + customerId + "position : " + position);
@@ -745,54 +811,55 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         System.out.println("===== drawer click 2: " + customerId + "position : " + position);
         Fragment fragment = null;
         switch (position) {
+//            case 0:
+//                fragment = new RestaurantMain(currentLatitude, currentLongitude);
+//                mDrawerLayout.closeDrawer(rl_main_left_drawer);
+//                break;
             case 0:
-                fragment = new RestaurantMain(currentLatitude, currentLongitude);
-                mDrawerLayout.closeDrawer(rl_main_left_drawer);
-                break;
-            case 1:
                 startActivity(new Intent(this, ProfileActivity.class));
                 mDrawerLayout.closeDrawer(rl_main_left_drawer);
                 break;
-            case 2:
+            case 1:
                 startActivity(new Intent(this, MyOrderActivity.class));
                 mDrawerLayout.closeDrawer(rl_main_left_drawer);
                 break;
-            case 3:
+            case 2:
                 startActivity(new Intent(this, AddressActivity.class));
                 mDrawerLayout.closeDrawer(rl_main_left_drawer);
                 break;
-            case 4:
-                startActivity(new Intent(this, WriteAReviewActivity.class));   // api missing
+            case 3:
+                //startActivity(new Intent(this, WriteAReviewActivity.class));   // api missing
+                startActivity(new Intent(this, MyReviewActivity.class));   // api missing
                 mDrawerLayout.closeDrawer(rl_main_left_drawer);
                 break;
-            case 5:
+            case 4:
                 startActivity(new Intent(this, TicketList.class));
                 mDrawerLayout.closeDrawer(rl_main_left_drawer);
                 break;
-            case 6:
+            case 5:
                 startActivity(new Intent(this, LoyaltyPoints.class));
                 mDrawerLayout.closeDrawer(rl_main_left_drawer);
                 break;
-            case 7:
+            case 6:
                 startActivity(new Intent(this, ChangePassword.class));
                 mDrawerLayout.closeDrawer(rl_main_left_drawer);
                 break;
-            case 8:
+            case 7:
                 startActivity(new Intent(this, ReferEarnFrndActivity.class));
                 mDrawerLayout.closeDrawer(rl_main_left_drawer);
                 break;
-            case 9:
+            case 8:
                 startActivity(new Intent(this, ContactUs.class));
                 mDrawerLayout.closeDrawer(rl_main_left_drawer);
                 break;
-            case 10:// rate us
+            case 9:// rate us
                 mDrawerLayout.closeDrawer(rl_main_left_drawer);
                 break;
 //            case 11:// language setting
             //startActivity(new Intent(this, ChangePasswordActivity.class));
 //                mDrawerLayout.closeDrawer(rl_main_left_drawer);
 //                break;
-            case 11:
+            case 10:
                 // startActivity(new Intent(this, ReferEarnActivity.class));
                 logoutDialog();
                 mDrawerLayout.closeDrawer(rl_main_left_drawer);
@@ -1092,7 +1159,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             authPreference.savePref(Constants.SAVE_STATE, state);
             authPreference.savePref(Constants.SAVE_COUNTRY, country);
             authPreference.savePref(Constants.SAVE_POSTAL_CODE, postalCode);
-
+            tv_location.setText(address);
+            initiateRestFragment();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

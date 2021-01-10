@@ -20,6 +20,18 @@ public class RestaurantMainModel {
 
     public class SearchResult {
 
+        public String getTable_booking_limit() {
+            return table_booking_limit;
+        }
+
+        public void setTable_booking_limit(String table_booking_limit) {
+            this.table_booking_limit = table_booking_limit;
+        }
+
+        @SerializedName("table_booking_limit")
+        @Expose
+        private String table_booking_limit;
+
         @SerializedName("restaurant_name")
         @Expose
         private String restaurantName;

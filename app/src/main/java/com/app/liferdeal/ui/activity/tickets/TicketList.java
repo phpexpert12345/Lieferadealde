@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -46,7 +47,9 @@ public class TicketList extends Activity implements View.OnClickListener {
     AppCompatTextView tvOrderNo;
     @BindView(R.id.tvStatus)
     AppCompatTextView tvStatus;
-    private ImageView img_add_ticket;
+    @BindView(R.id.tvGoHome)
+    AppCompatTextView tvGoHome;
+    private AppCompatButton btnAddAddress;
     private PrefsHelper prefsHelper;
     private ApiInterface apiInterface;
     private ProgressDialog progressDialog;
@@ -68,19 +71,19 @@ public class TicketList extends Activity implements View.OnClickListener {
     private void findViewById() {
 
         prefsHelper = new PrefsHelper(this);
-        img_add_ticket = findViewById(R.id.img_add_ticket);
+        btnAddAddress = findViewById(R.id.btnAddAddress);
         recyler_view_ticket = findViewById(R.id.recyler_view_ticket);
         iv_back = findViewById(R.id.iv_back);
 
-        tvFaq.setText(model.getManageTicket());
-        tvTicketNo.setText(model.getTicketNumber());
-        tvStatus.setText(model.getStatus());
-        tvOrderNo.setText(model.getOrderNumber());
+        tvFaq.setText(model.getManageTicket().trim());
+        tvTicketNo.setText(model.getTicketNumber().trim());
+        tvStatus.setText(model.getStatus().trim());
+        tvOrderNo.setText(model.getOrderNumber().trim());
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         recyler_view_ticket.setLayoutManager(mLayoutManager);
         recyler_view_ticket.setItemAnimator(new DefaultItemAnimator());
-        img_add_ticket.setOnClickListener(this::onClick);
+        btnAddAddress.setOnClickListener(this::onClick);
         iv_back.setOnClickListener(this::onClick);
         getTicketData();
     }
@@ -88,10 +91,13 @@ public class TicketList extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.img_add_ticket:
+            case R.id.btnAddAddress:
                 startActivity(new Intent(this, AddTicket.class));
                 break;
             case R.id.iv_back:
+                finish();
+                break;
+            case R.id.tvGoHome:
                 finish();
                 break;
             default:
@@ -101,7 +107,8 @@ public class TicketList extends Activity implements View.OnClickListener {
 
     private void getTicketData() {
         apiInterface = RFClient.getClient().create(ApiInterface.class);
-        Observable<TicketListDataModel> observable = apiInterface.getTicketList(prefsHelper.getPref(Constants.API_KEY), prefsHelper.getPref(Constants.LNG_CODE), prefsHelper.getPref(Constants.CUSTOMER_ID));
+        Observable<TicketListDataModel> observable = apiInterface.getTicketList(prefsHelper.getPref(Constants.API_KEY),
+                prefsHelper.getPref(Constants.LNG_CODE), prefsHelper.getPref(Constants.CUSTOMER_ID));
 
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

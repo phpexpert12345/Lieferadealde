@@ -11,6 +11,9 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,11 +27,15 @@ import com.app.liferdeal.model.restaurant.RestaurantGalleryModel;
 import com.app.liferdeal.network.retrofit.ApiInterface;
 import com.app.liferdeal.network.retrofit.RFClient;
 import com.app.liferdeal.ui.adapters.PagerAdapter;
+import com.app.liferdeal.ui.fragment.restaurant.TabFragment1;
 import com.app.liferdeal.ui.interfaces.ItemClickListener;
 import com.app.liferdeal.util.Constants;
 import com.app.liferdeal.util.PrefsHelper;
 import com.google.android.material.tabs.TabLayout;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -84,6 +91,8 @@ public class RestaurantMenuPhotoGallery extends AppCompatActivity implements Vie
 
     }
 
+    private ArrayList<RestaurantGalleryModel.FoodGalleryList> photoData;
+
     private void getPhotoGalleryData() {
 
         apiInterface = RFClient.getClient().create(ApiInterface.class);
@@ -100,12 +109,15 @@ public class RestaurantMenuPhotoGallery extends AppCompatActivity implements Vie
 
                     @Override
                     public void onNext(RestaurantGalleryModel searchResult) {
-                        //  showProgress();
-
+                        showProgress();
+                        //  setAdapterCategory(searchResult.getRestaurantMencategory());
+                        // setAdapterPhotoGallery(searchResult.getFoodGalleryList());
+                        photoData = new ArrayList<>();
+                        photoData.clear();
+                        photoData.addAll(searchResult.getFoodGalleryList());
                         setTabPageData(searchResult.getFoodGalleryList());
-                        // banner_progress.setVisibility(View.GONE);
-                        //  hideProgress();
-
+                        banner_progress.setVisibility(View.GONE);
+                        hideProgress();
                     }
 
                     @Override
@@ -124,16 +136,20 @@ public class RestaurantMenuPhotoGallery extends AppCompatActivity implements Vie
     }
 
     public void showProgress() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Please wait...");
-        progressDialog.setCancelable(false);
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.show();
+        try {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage("Please wait...");
+            progressDialog.setCancelable(false);
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void hideProgress() {
         if (progressDialog.isShowing())
-        progressDialog.dismiss();
+            progressDialog.dismiss();
     }
 
     /*  private void setAdapterPhotoGallery(List<RestaurantGalleryModel.FoodGalleryList> list){
@@ -146,6 +162,7 @@ public class RestaurantMenuPhotoGallery extends AppCompatActivity implements Vie
     private TabsAdapter tabsAdapter;
 
     private void setTabPageData(List<RestaurantGalleryModel.FoodGalleryList> list) {
+        selectedList = new Boolean[list.size()];
         for (int i = 0; i < list.size(); i++) {
             if (i == 0) {
                 selectedList[i] = true;
@@ -176,24 +193,93 @@ public class RestaurantMenuPhotoGallery extends AppCompatActivity implements Vie
 
         viewPager = (ViewPager) findViewById(R.id.pager);
         // final PagerAdapter adapter = new PagerAdapter (getSupportFragmentManager(),tabLayout.getTabCount());
-        final PagerAdapter adapter = new PagerAdapter
-                (getSupportFragmentManager(), tabLayout.getTabCount(), list, listParty, listPhoto, RestaurantMenuPhotoGallery.this);
-        viewPager.setAdapter(adapter);
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+       /* final PagerAdapter adapter = new PagerAdapter
+                (getSupportFragmentManager(), tabLayout.getTabCount(), list, listParty, listPhoto, RestaurantPhotoGallery.this);
+        viewPager.setAdapter(adapter);*/
+        MyPagerAdapter myPagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(myPagerAdapter);
+        if (list.size() > 0) {
+            viewPager.setCurrentItem(0);
+        }
+
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
+
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
+
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
+
             }
         });
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                selectedList = new Boolean[list.size()];
+                for (int i = 0; i < list.size(); i++) {
+                    if (i == position) {
+                        selectedList[i] = true;
+                    } else
+                        selectedList[i] = false;
+                }
+//                tabsAdapter.notifyDataSetChanged();
+                changeTopTab(selectedList, list);
+            }
+
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+
+        });
+
+
+      /*  tabLayout.addTab(tabLayout.newTab().setText("Tab 1"));
+        tabLayout.addTab(tabLayout.newTab().setText("Tab 2"));
+        tabLayout.addTab(tabLayout.newTab().setText("Tab 3"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);*/
+    }
+
+    private void changeTopTab(Boolean[] selectedList, List<RestaurantGalleryModel.FoodGalleryList> list) {
+        tabsAdapter = new TabsAdapter(mContext, list, selectedList);
+        rvTabs.setAdapter(tabsAdapter);
+        tabsAdapter.setClickListener(this);
+    }
+
+    public class MyPagerAdapter extends FragmentStatePagerAdapter {
+
+        public MyPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @NotNull
+        @Override
+        public Fragment getItem(int pos) {
+            //Log.e("post=",pos+"");
+            /*return TabFragment1.newInstance(photoData,pos);*/
+            return TabFragment1.newInstance(photoData.get(pos).getGalleryPhoto(), pos);
+
+        }
+
+        @Override
+        public int getCount() {
+            return photoData.size();
+        }
     }
 
     @Override

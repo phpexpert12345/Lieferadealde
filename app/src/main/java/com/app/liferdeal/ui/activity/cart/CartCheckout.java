@@ -27,6 +27,7 @@ import com.app.liferdeal.model.Language;
 import com.app.liferdeal.model.LanguageResponse;
 import com.app.liferdeal.model.loginsignup.SignInModel;
 import com.app.liferdeal.model.restaurant.GuestUserPaymentModel;
+import com.app.liferdeal.model.restaurant.TimeListModel;
 import com.app.liferdeal.network.retrofit.ApiInterface;
 import com.app.liferdeal.network.retrofit.NetworkUtil;
 import com.app.liferdeal.network.retrofit.RFClient;
@@ -39,7 +40,11 @@ import com.app.liferdeal.util.Constants;
 import com.app.liferdeal.util.DotToCommaClass;
 import com.app.liferdeal.util.PrefsHelper;
 import com.app.liferdeal.util.SharedPreferencesData;
+import com.contrarywind.adapter.WheelAdapter;
+import com.contrarywind.listener.OnItemSelectedListener;
+import com.contrarywind.view.WheelView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalPayment;
 import com.paypal.android.sdk.payments.PayPalService;
@@ -56,7 +61,13 @@ import com.stripe.android.view.PaymentMethodsActivityStarter;
 import org.json.JSONException;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Currency;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 import butterknife.BindView;
@@ -90,6 +101,7 @@ public class CartCheckout extends AppCompatActivity implements View.OnClickListe
     DotToCommaClass dotToCommaClass;
     private AppCompatTextView tvHaveAccount, tvDeliverAdd, tvPersonalDetails, tvplacing, note2, tvPlsSelectTime, tvPayWith, tvPaypal, tvByClicking, tvToAid;
     private SharedPreferencesData sharedPreferencesData;
+    private TextInputLayout ipStreet, ipPostCode, ipCompany, ipCityName, ipNote, ipFullName, ipEmail, ipMobile;
 
     @BindView(R.id.rlPaypal)
     RelativeLayout rlPaypal;
@@ -111,6 +123,7 @@ public class CartCheckout extends AppCompatActivity implements View.OnClickListe
     }
 
     private void init() {
+
         sharedPreferencesData = new SharedPreferencesData(getApplicationContext());
         dotToCommaClass = new DotToCommaClass(getApplicationContext());
         prefsHelper = new PrefsHelper(this);
@@ -142,21 +155,31 @@ public class CartCheckout extends AppCompatActivity implements View.OnClickListe
         tvPaypal = findViewById(R.id.tvPaypal);
         tvByClicking = findViewById(R.id.tvByClicking);
         tvToAid = findViewById(R.id.tvToAid);
+        ipStreet = findViewById(R.id.ipStreet);
+        ipPostCode = findViewById(R.id.ipPostCode);
+        ipCityName = findViewById(R.id.ipCityName);
+        ipCompany = findViewById(R.id.ipCompany);
+        ipNote = findViewById(R.id.ipNote);
+        ipFullName = findViewById(R.id.ipFullName);
+        ipEmail = findViewById(R.id.ipEmail);
+        ipMobile = findViewById(R.id.ipMobile);
+
 
         tvCheckout.setText(model.getCheckout());
         tv_signIn.setText(model.getSignIn());
         tvHaveAccount.setText(model.getDoYouHaveAnAccount());
         tvDeliverAdd.setText(model.getDeliveryAddress());
-        deleviry_add.setHint(model.getStreetAndHouseNumber());
-        edit_post_code.setHint(model.getPostalCode());
-        edt_city_name.setHint(model.getCityName());
-        edit_company_name.setHint(model.getCompanyName());
-        edit_add_note.setHint(model.getAddNoteForDelivery());
-        edit_full_name.setHint(model.getFullName());
+        ipStreet.setHint(model.getStreetAndHouseNumber());
+        ipPostCode.setHint(model.getPostalCode());
+        ipCityName.setHint(model.getCityName());
+        ipCompany.setHint(model.getCompanyName());
+        ipNote.setHint(model.getAddNoteForDelivery());
+        ipFullName.setHint(model.getFullName());
         tvPersonalDetails.setText(model.getPersonalDetails());
-        edit_email_add.setHint(model.getEmailAddress());
-        edit_mobile_no.setHint(model.getMobileNo());
+        ipEmail.setHint(model.getEmailAddress());
+        ipMobile.setHint(model.getMobileNo());
         txt_selected_time.setHint(model.getSelectDeliveryTime());
+        txt_selected_time.setText(model.getASSOONASPOSSIBLE());
         tvplacing.setText(model.getWhenPlacingAnOrder());
         note2.setText(model.getSignUpToReceiceMessage());
         tvPlsSelectTime.setText(model.getPleaseSelectADeliveryTimeForYourOrder());
@@ -164,20 +187,21 @@ public class CartCheckout extends AppCompatActivity implements View.OnClickListe
         tvPaypal.setText(model.getPayingWithPaypalFree());
         tvByClicking.setText(model.getByClickingOnOrderAndPay());
         tvToAid.setText(model.getToAidInThePrevention());
+        rd_cash.setText(model.getCash());
+        rd_card.setText(model.getCard());
+        rd_paypal.setText(model.getPaypal());
+
 
         strPostalCode = prefsHelper.getPref(Constants.SAVE_POSTAL_CODE);
         strCityname = prefsHelper.getPref(Constants.SAVE_CITY_NAME);
         strFullAddress = prefsHelper.getPref(Constants.SAVE_FULL_ADDRESS);
         strAppCurrency = prefsHelper.getPref(Constants.APP_CURRENCY);
-
         edit_post_code.setText(strPostalCode);
         edt_city_name.setText(strCityname);
         deleviry_add.setText(strFullAddress);
-
         restId = getIntent().getStringExtra("RestId");
         TotalPrice = getIntent().getStringExtra("TotalPrice");
         order_price = TotalPrice;
-
         subTotalPrice = getIntent().getStringExtra("SubTotalPrice");
         subTotalAmount = subTotalPrice;
         strMainRestName = getIntent().getStringExtra("RESTName");
@@ -201,13 +225,11 @@ public class CartCheckout extends AppCompatActivity implements View.OnClickListe
         pizzaQuantity = getIntent().getStringExtra("pizzaQuantity");
         Pizzaname = getIntent().getStringExtra("Pizzaname");
         selectedPizzaItemPrice = getIntent().getStringExtra("selectedPizzaItemPrice");
+        instructions = getIntent().getStringExtra("instructions");
         customer_allow_register = "yes";
         payment_type = "cash";
-
-
         Currency hh = Currency.getInstance("" + prefsHelper.getPref(Constants.APP_CURRENCY));
         currencySymbol = hh.getSymbol();
-
         btn_order_placed.setText(model.getOrderAndPay() + ": " + currencySymbol + " " + "" + dotToCommaClass.changeDot(String.format("%.2f", Double.parseDouble(TotalPrice))));
 
         if (prefsHelper.isLoggedIn()) {
@@ -262,8 +284,11 @@ public class CartCheckout extends AppCompatActivity implements View.OnClickListe
                 } else if (!isValidEmailId(edit_email_add.getText().toString().trim())) {
                     edit_email_add.setError(model.getPLEASEENTERVALIDEMAIL());
                     edit_email_add.requestFocus();
-                } else if (edit_mobile_no.getText().toString().equalsIgnoreCase("")) {
-                    edit_mobile_no.setError(model.getPleaseEnterMobileNo());
+                } /*else if (!isValidEmailId(city)) {
+                    edt_city_name.setError(model.getCITYNAMEFIELDISREQUIRED());
+                    edt_city_name.requestFocus();
+                }*/ else if (edit_mobile_no.getText().toString().equalsIgnoreCase("")) {
+                    edit_mobile_no.setError(model.getMOBILENOFIELDISREQUIRED());
                     edit_mobile_no.requestFocus();
                 } else if (txt_selected_time.getText().toString().equalsIgnoreCase("")) {
                     Toast.makeText(CartCheckout.this, model.getPleaseSelectDeliveryTime(), Toast.LENGTH_SHORT).show();
@@ -296,10 +321,12 @@ public class CartCheckout extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.ll_delivery_time:
-                Intent i = new Intent(CartCheckout.this, TimeListActivity.class);
+                showProgress();
+                getTimeSlotData();
+                /*Intent i = new Intent(CartCheckout.this, TimeListActivity.class);
                 i.putExtra("RestId", restId);
                 i.putExtra("OrderType", order_type);
-                startActivityForResult(i, 10);
+                startActivityForResult(i, 10);*/
                 // startActivity(i);
                 break;
 
@@ -575,6 +602,7 @@ public class CartCheckout extends AppCompatActivity implements View.OnClickListe
                             ii.putExtra("pizzaQuantity", quantity);
                             ii.putExtra("Pizzaname", Pizzaname);
                             ii.putExtra("selectedPizzaItemPrice", selectedPizzaItemPrice);
+
                             startActivity(ii);
                             finish();
                             hideProgress();
@@ -665,5 +693,124 @@ public class CartCheckout extends AppCompatActivity implements View.OnClickListe
                         //   activity.mySharePreferences.setBundle("login");
                     }
                 });
+    }
+
+
+    private void dialogTimeSelection(List<TimeListModel.TimeList> sessionTypeMainData) {
+
+        dialog = new Dialog(CartCheckout.this);
+        dialog.setContentView(R.layout.dialog_session_type);
+        Window window = dialog.getWindow();
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        TextView tvCancel = dialog.findViewById(R.id.tvCancel);
+        TextView tvDone = dialog.findViewById(R.id.tvDone);
+        tvDone.setText(model.getDone());
+        tvCancel.setText(model.getCancel());
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.cancel();
+            }
+        });
+        tvDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               /* if (sessionType.equalsIgnoreCase("")){
+                    sessionType= sessionTypeMainData.get(0).getId();
+                    tvSessionType.setText(sessionTypeMainData.get(0).getSessionType());
+                }*/
+                // txt_selected_time.setText();
+                dialog.cancel();
+            }
+        });
+
+        WheelView wvSessionType = dialog.findViewById(R.id.wvSessionType);
+        wvSessionType.setCyclic(false);
+
+        /*final List<String> mOptionsItems = new ArrayList<>();
+        for (int i=0;i<sessionTypeMainData.size();i++){
+            mOptionsItems.add("item0");
+        }*/
+
+        wvSessionType.setAdapter(new WheelAdapter() {
+            @Override
+            public int getItemsCount() {
+                return sessionTypeMainData.size();
+            }
+
+            @Override
+            public Object getItem(int index) {
+                return sessionTypeMainData.get(index).getGetTime();
+            }
+
+            @Override
+            public int indexOf(Object o) {
+                return 0;
+            }
+        });
+        wvSessionType.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(int index) {
+                txt_selected_time.setText(sessionTypeMainData.get(index).getGetTime());
+                //Toast.makeText(getApplicationContext(), "" + sessionTypeMainData.get(index).getSessionType(), Toast.LENGTH_SHORT).show();
+              /*  sessionType = sessionTypeMainData.get(index).getId();
+                tvSessionType.setText(sessionTypeMainData.get(index).getSessionType());*/
+
+            }
+        });
+
+
+        dialog.show();
+    }
+
+
+    private void getTimeSlotData() {
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String formattedDate = df.format(c);
+
+        apiInterface = RFClient.getClient().create(ApiInterface.class);
+        Observable<TimeListModel> observable = apiInterface.getTimeListData(prefsHelper.getPref(Constants.API_KEY), prefsHelper.getPref(Constants.LNG_CODE),
+                restId, order_type, formattedDate);
+        observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<TimeListModel>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(TimeListModel searchResult) {
+                //showProgress();
+                hideProgress();
+                if (searchResult.getTimeList() != null && searchResult.getTimeList().size() > 0) {
+                    //setAdapterCategoryForQuick(searchResult.getTimeList());
+                    //banner_progress.setVisibility(View.GONE);
+                    List<TimeListModel.TimeList> list = new ArrayList<TimeListModel.TimeList>();
+                    list.clear();
+                    TimeListModel.TimeList newList = new TimeListModel.TimeList();
+                    newList.setGetTime(model.getASSOONASPOSSIBLE());
+                    newList.setSuccess("true");
+                    list.add(newList);
+                    list.addAll(searchResult.getTimeList());
+                    dialogTimeSelection(list);
+                }
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                hideProgress();
+                Log.d("TAG", "log...." + e);
+            }
+
+            @Override
+            public void onComplete() {
+                hideProgress();
+                //   activity.mySharePreferences.setBundle("login");
+
+            }
+        });
+
     }
 }

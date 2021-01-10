@@ -1,9 +1,26 @@
 package com.app.liferdeal.model.restaurant;
 
 public class RaviCartModle {
-    String item_id,item_name,size_item_id,size_item_name,extra_item_id,extra_item_name,price,item_quantity;
+    String item_id;
+    String item_name;
+    String size_item_id;
+    String size_item_name;
+    String extra_item_id;
+    String extra_item_name;
+    String price;
+    String item_quantity;
 
-    public RaviCartModle(String item_id ,String item_name,String size_item_id,String size_item_name,String extra_item_id,String extra_item_name,String price,String item_quantity)
+    public String getItemSubcatDetails() {
+        return itemSubcatDetails;
+    }
+
+    public void setItemSubcatDetails(String itemSubcatDetails) {
+        this.itemSubcatDetails = itemSubcatDetails;
+    }
+
+    String itemSubcatDetails;
+
+    public RaviCartModle(String item_id ,String item_name,String size_item_id,String size_item_name,String extra_item_id,String extra_item_name,String price,String item_quantity,String itemSubcatDetails)
     {
         this.item_id = item_id;
         this.item_name = item_name;
@@ -13,6 +30,7 @@ public class RaviCartModle {
         this.extra_item_name = extra_item_name;
         this.price = price;
         this.item_quantity = item_quantity;
+        this.itemSubcatDetails = itemSubcatDetails;
     }
 
     public String getItem_id() {

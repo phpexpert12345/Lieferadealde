@@ -303,9 +303,9 @@ public class AddExtraActivity extends AppCompatActivity implements View.OnClickL
                     startActivity(i);
                 } else {
                     if (extra_item_list_id.size() > 0)
-                        database.InsertItem(String.valueOf(restDetailsItemId), restDetailsItemName, String.valueOf(itemSizeId), selectFoodItemName, "" + extra_item_list_id, "" + extra_item_list_name, Double.parseDouble(restDetailsItemPrice), 1);
+                        database.InsertItem(String.valueOf(restDetailsItemId), restDetailsItemName, String.valueOf(itemSizeId), selectFoodItemName, "" + extra_item_list_id, "" + extra_item_list_name, Double.parseDouble(restDetailsItemPrice), 1,SUBCATCLICKITEMDesc);
                     else {
-                        database.InsertItem(String.valueOf(restDetailsItemId), restDetailsItemName, String.valueOf(itemSizeId), selectFoodItemName, "0", "0", Double.parseDouble(restDetailsItemPrice), 1);
+                        database.InsertItem(String.valueOf(restDetailsItemId), restDetailsItemName, String.valueOf(itemSizeId), selectFoodItemName, "0", "0", Double.parseDouble(restDetailsItemPrice), 1,SUBCATCLICKITEMDesc);
 
                     }
                     cart_Item_number = cart_Item_number + 1;

@@ -51,10 +51,10 @@ public class SavedAddressAdapter extends RecyclerView.Adapter<SavedAddressAdapte
         } else {
             holder.rbAddressName.setChecked(false);
         }
-        holder.rbAddressName.setText(prefsHelper.getPref(Constants.USER_NAME));
-        holder.tvContactAddress.setText(list.get(position).getUserPhone());
-        //  holder.tv_name.setText(activity.mySharePreferences.getFirstName()+activity.mySharePreferences.getLastName());
-        holder.tvLocation.setText(list.get(position).getAddress());
+        holder.rbAddressName.setText(list.get(position).getAddressTitle());
+        holder.tvLocation.setText(list.get(position).getCompanyStreetNo() + " " + list.get(position).getCustomerFlatName()
+                + " " + list.get(position).getCompanyStreet() + " " + list.get(position).getCityName() + " " + list.get(position).getZipcode());
+        holder.tvContactAddress.setText("Mobile: " + list.get(position).getUserPhone());
         holder.ivDelete.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onItemDelete(list.get(position).getId());

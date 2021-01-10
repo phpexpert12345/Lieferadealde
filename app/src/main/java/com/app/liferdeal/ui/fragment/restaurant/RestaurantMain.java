@@ -1,17 +1,21 @@
 package com.app.liferdeal.ui.fragment.restaurant;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,6 +47,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -60,6 +65,7 @@ public class RestaurantMain extends Fragment implements View.OnClickListener, Cu
     ProgressBar pbLoad;
 
     private RecyclerView rcv_rest_list;
+    private TextView tvDataNotAvailable;
     private ProgressDialog progressDialog;
     private PrefsHelper prefsHelper;
     private ApiInterface apiInterface;
@@ -122,6 +128,7 @@ public class RestaurantMain extends Fragment implements View.OnClickListener, Cu
         rcv_rest_list = v.findViewById(R.id.rcv_rest_list);
         banner_progress = v.findViewById(R.id.banner_progress);
         home_icon = v.findViewById(R.id.home);
+        tvDataNotAvailable = v.findViewById(R.id.tvDataNotAvailable);
         filter_cusine = v.findViewById(R.id.filter_cusine);
         img_location = v.findViewById(R.id.img_location);
         img_profile = v.findViewById(R.id.img_profile);
@@ -170,12 +177,20 @@ public class RestaurantMain extends Fragment implements View.OnClickListener, Cu
                 filterByDistance(editable.toString());
             }
         });
+
+       /* SharedPreferences prefs=getActivity().getSharedPreferences(Constants.PRICEPREFERENCE,
+        Context.MODE_PRIVATE);
+        Set<String> set = prefs.getStringSet(Constants.FILTERDATA, null);
+        List<String> sample=new ArrayList<String>(set);
+        if (sample!=null){
+            Log.e("SHARED=",sample.get(0));
+        }*/
     }
 
     private void getCusineFilterList() {
         apiInterface = RFClient.getClient().create(ApiInterface.class);
-        Log.e("CusinsList=",prefsHelper.getPref(Constants.LNG_CODE));
-        Observable<CusineFilterModel> observable = apiInterface.getCusineFilterList(prefsHelper.getPref(Constants.API_KEY),prefsHelper.getPref(Constants.LNG_CODE));
+        Observable<CusineFilterModel> observable = apiInterface.getCusineFilterList(prefsHelper.getPref(Constants.API_KEY),
+                prefsHelper.getPref(Constants.LNG_CODE));
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<CusineFilterModel>() {
@@ -187,6 +202,7 @@ public class RestaurantMain extends Fragment implements View.OnClickListener, Cu
                     @Override
                     public void onNext(CusineFilterModel searchResult) {
                         showProgress();
+
                         setFilterAdapterCategory(searchResult.getCuisineList());
                         banner_progress.setVisibility(View.GONE);
                     }
@@ -269,7 +285,14 @@ public class RestaurantMain extends Fragment implements View.OnClickListener, Cu
                     @Override
                     public void onNext(RestaurantMainModel searchResult) {
                         pbLoad.setVisibility(View.GONE);
-                        setAdapterCategory(searchResult.getSearchResult());
+                        if (searchResult.getSearchResult().size() > 0) {
+                            setAdapterCategory(searchResult.getSearchResult());
+                            tvDataNotAvailable.setVisibility(View.GONE);
+                        } else {
+                            setAdapterCategory(searchResult.getSearchResult());
+                            tvDataNotAvailable.setText(model.getSorryYouAreNotAvailableText());
+                            tvDataNotAvailable.setVisibility(View.VISIBLE);
+                        }
                         banner_progress.setVisibility(View.GONE);
                     }
 
@@ -375,7 +398,7 @@ public class RestaurantMain extends Fragment implements View.OnClickListener, Cu
         for (int i = 0; i < list.length; i++) {
             selectedList[i] = list[i];
             if (list[i]) {
-                selected_cusines.add(cuisineFilterList.get(i).getCuisineName());
+                selected_cusines.add(cuisineFilterList.get(i).getSeoUrlCall());
             }
         }
         adapterCategorys.notifyDataSetChanged();

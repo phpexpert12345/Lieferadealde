@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         app:cardElevation="@dimen/_5sdp"
         android:layout_height="@dimen/dp_50">
+
         <RelativeLayout
             android:id="@+id/rl_header"
             android:layout_width="match_parent"
@@ -85,29 +86,53 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.core.widget.NestedScrollView
-
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_height="match_parent">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/img_logo"
-            android:layout_width="@dimen/_200sdp"
-            android:src="@drawable/signinlogomd"
-            android:layout_marginTop="@dimen/_50sdp"
-            android:layout_marginRight="@dimen/_20sdp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/_20sdp"
-            android:layout_height="@dimen/_60sdp"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/img_logo"
+                    android:layout_width="@dimen/_200sdp"
+                    android:src="@drawable/signinlogomd"
+                    android:layout_marginTop="@dimen/_50sdp"
+                    android:layout_marginRight="@dimen/_20sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/_20sdp"
+                    android:layout_height="@dimen/_60sdp"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvSignIn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_50"
+                    android:fontFamily="@font/roboto_bold"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textSize="@dimen/sp_25"
+                    android:textColor="@color/colorGreenLiteh"
+                    android:text="Sign in"/>
+
+                <View
+                    android:layout_width="@dimen/dp_100"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_height="3dp"
+                    android:background="@color/colorGreenLiteh"/>
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_gravity="center"
+            android:visibility="gone"
             android:layout_marginTop="@dimen/_30sdp"
             android:background="@drawable/logintxtxh"
             android:layout_height="wrap_content"/>

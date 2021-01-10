@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:weightSum="3"
         android:orientation="horizontal"
+        android:padding="@dimen/dp_10"
         android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/txt_ticket_number"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:text="dnd"
+            android:text=""
+            android:textSize="@dimen/_10ssp"
+            android:fontFamily="@font/roboto_regular"
+            android:textColor="@color/colorTextSubSecondary"
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_height="wrap_content"/>
@@ -22,8 +28,11 @@
             android:id="@+id/txt_order_number"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:text="aaa"
+            android:textSize="@dimen/_10ssp"
+            android:fontFamily="@font/roboto_regular"
+            android:text=""
             android:layout_gravity="center"
+            android:textColor="@color/colorTextSubSecondary"
             android:gravity="center"
             android:layout_height="wrap_content"/>
 
@@ -31,9 +40,19 @@
             android:id="@+id/txt_order_status"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:text="ff"
+            android:textSize="@dimen/_10ssp"
+            android:textColor="@color/colorTextSubSecondary"
+            android:fontFamily="@font/roboto_regular"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text=""
             android:layout_height="wrap_content"/>
 
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_1"
+        android:background="@color/color_lighteGray"/>
 
 </LinearLayout>

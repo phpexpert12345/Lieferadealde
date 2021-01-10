@@ -25,6 +25,7 @@ import com.app.liferdeal.network.retrofit.RFClient;
 import com.app.liferdeal.util.CommonMethods;
 import com.app.liferdeal.util.Constants;
 import com.app.liferdeal.util.PrefsHelper;
+import com.app.liferdeal.util.SharedPreferencesData;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -43,6 +44,7 @@ public class AddAddressActivity extends AppCompatActivity implements View.OnClic
     private PrefsHelper prefsHelper;
     private TextView tvHead, tvAddNewAddress;
     private LanguageResponse model = new LanguageResponse();
+    private SharedPreferencesData sharedPreferencesData;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,19 +72,26 @@ public class AddAddressActivity extends AppCompatActivity implements View.OnClic
         tvAddNewAddress = findViewById(R.id.tvAddNewAddress);
         tvHead = findViewById(R.id.tvHead);
 
-        tvHead.setText(model.getAddAddress());
-        tvAddNewAddress.setText(model.getAddNewAddress());
-        btn_submit.setText(model.getAddAddress());
-        edit_add_tittle.setHint(model.getAddressTitle());
-        edit_flat_no.setHint(model.getHouseDoorNumber());
-        edit_flat_name.setHint(model.getFlatName());
-        edit_street_name.setHint(model.getStreetName());
-        edit_city.setHint(model.getCityName());
-        edit_zipcode.setHint(model.getPostalCode());
-        edit_mobile.setHint(model.getMobileNo());
+        tvHead.setText(model.getAddAddress().trim());
+        tvAddNewAddress.setText(model.getAddNewAddress().trim());
+        btn_submit.setText(model.getAddAddress().trim());
+        edit_add_tittle.setHint(model.getAddressTitle().trim());
+        edit_flat_no.setHint(model.getHouseDoorNumber().trim());
+        edit_flat_name.setHint(model.getFlatName().trim());
+        edit_street_name.setHint(model.getStreetName().trim());
+        edit_city.setHint(model.getCityName().trim());
+        edit_zipcode.setHint(model.getPostalCode().trim());
+        edit_mobile.setHint(model.getMobileNo().trim());
 
         rl_back.setOnClickListener(this);
         btn_submit.setOnClickListener(this);
+
+        sharedPreferencesData=new SharedPreferencesData(getApplicationContext());
+        edit_add_tittle.setText(sharedPreferencesData.getSharedPreferenceData(Constants.PRICEPREFERENCE,Constants.ADDRESSTITLE));
+        edit_flat_no.setText(sharedPreferencesData.getSharedPreferenceData(Constants.PRICEPREFERENCE,Constants.HOUSENO));
+        edit_street_name.setText( sharedPreferencesData.getSharedPreferenceData(Constants.PRICEPREFERENCE,Constants.STREETNAME));
+        edit_city.setText(sharedPreferencesData.getSharedPreferenceData(Constants.PRICEPREFERENCE,Constants.CITYNAME));
+        edit_zipcode.setText(sharedPreferencesData.getSharedPreferenceData(Constants.PRICEPREFERENCE,Constants.POSTALCODE));
     }
 
     @Override
@@ -101,7 +110,7 @@ public class AddAddressActivity extends AppCompatActivity implements View.OnClic
 
     public void updateProfileValidation() {
 
-        title = edit_add_tittle.getText().toString().trim();
+        title = CommonMethods.getStringDataInbase64(edit_add_tittle.getText().toString().trim());
         flatNo = CommonMethods.getStringDataInbase64(edit_flat_no.getText().toString().trim());
         flatName = CommonMethods.getStringDataInbase64(edit_flat_name.getText().toString().trim());
         address = CommonMethods.getStringDataInbase64(edit_address.getText().toString().trim());
@@ -123,12 +132,12 @@ public class AddAddressActivity extends AppCompatActivity implements View.OnClic
         } /*else if (edit_address.getText().toString().trim().isEmpty()) {
             edit_address.setError("Enter Address");
             edit_address.requestFocus();
-        } */ else if (edit_city.getText().toString().trim().isEmpty()) {
-            edit_city.setError(model.getPleaseEnterCity());
-            edit_city.requestFocus();
-        } else if (edit_street_name.getText().toString().trim().isEmpty()) {
+        } */ else if (edit_street_name.getText().toString().trim().isEmpty()) {
             edit_street_name.setError(model.getPleaseEnterStreetName());
             edit_street_name.requestFocus();
+        } else if (edit_city.getText().toString().trim().isEmpty()) {
+            edit_city.setError(model.getPleaseEnterCity());
+            edit_city.requestFocus();
         } else if (zipcode.isEmpty()) {
             edit_zipcode.setError(model.getPleaseEnterPostalCode());
             edit_zipcode.requestFocus();
@@ -144,8 +153,8 @@ public class AddAddressActivity extends AppCompatActivity implements View.OnClic
     private void saveAddress() {
         pbLoad.setVisibility(View.VISIBLE);
         apiInterface = RFClient.getClient().create(ApiInterface.class);
-        Observable<SaveAddressModel> observable = apiInterface.saveNewAddress(prefsHelper.getPref(Constants.API_KEY), prefsHelper.getPref(Constants.LNG_CODE), mobile, address,
-                flatNo, streetName, city, zipcode, "", prefsHelper.getPref(Constants.CUSTOMER_ID), flatName);
+        Observable<SaveAddressModel> observable = apiInterface.saveNewAddress(prefsHelper.getPref(Constants.API_KEY), prefsHelper.getPref(Constants.LNG_CODE),
+                mobile, title, flatNo, streetName, city, zipcode, "", prefsHelper.getPref(Constants.CUSTOMER_ID), flatName);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<SaveAddressModel>() {
@@ -191,8 +200,6 @@ public class AddAddressActivity extends AppCompatActivity implements View.OnClic
 
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
-                Intent i = new Intent(AddAddressActivity.this, AddressActivity.class);
-                startActivity(i);
                 finish();
             }
         });

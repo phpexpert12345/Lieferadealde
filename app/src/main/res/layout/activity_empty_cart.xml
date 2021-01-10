@@ -12,6 +12,7 @@
         android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvWhoops"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_bold"
@@ -21,6 +22,7 @@
             android:textSize="@dimen/sp_18" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvEmptyCart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tool_activity"
@@ -41,6 +43,7 @@
             app:srcCompat="@drawable/ic_shopping_bag" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvLooks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tool_activity"

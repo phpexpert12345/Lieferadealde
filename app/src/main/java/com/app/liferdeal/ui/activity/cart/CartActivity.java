@@ -23,6 +23,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.cardview.widget.CardView;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,7 +32,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.app.liferdeal.R;
 import com.app.liferdeal.application.App;
 import com.app.liferdeal.model.GetRestaurantDiscountResponse;
-import com.app.liferdeal.model.Language;
 import com.app.liferdeal.model.LanguageResponse;
 import com.app.liferdeal.model.RmGetLoyaltyPointResponse;
 import com.app.liferdeal.model.RmVerifyCouponCodeResponse;
@@ -43,6 +43,7 @@ import com.app.liferdeal.network.retrofit.RFClient;
 import com.app.liferdeal.ui.Database.Database;
 import com.app.liferdeal.ui.activity.restaurant.AddExtraActivity;
 import com.app.liferdeal.ui.activity.restaurant.RestaurantDetails;
+import com.app.liferdeal.util.CommonMethods;
 import com.app.liferdeal.util.Constants;
 import com.app.liferdeal.util.DotToCommaClass;
 import com.app.liferdeal.util.PrefsHelper;
@@ -86,7 +87,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     private PrefsHelper prefsHelper;
     Database database;
     ArrayList<RaviCartModle> raviCartModles;
-    public Double totalPrice = 0.0, disPrice = 0.0, subTot = 0.0, minOrder = 0.0, grandTotal = 0.0, coupon_price = 0.0, sales_tax = 0.0,
+    public Double totalPrice = 0.0, disPrice = 0.0, subTot = 0.0, minOrder = 0.0, grandTotal = 0.0, coupon_price = 0.0, sales_tax = 0.0, loyalty_price = 0.0,
             deliveryCost = 0.0, packagingCost = 0.0;
     private LinearLayout rl_pre_order_delivery_time, rl_pre_order_collection_time;
     private LinearLayoutManager linearLayoutManager, linearLayoutManager1;
@@ -112,7 +113,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             street, floor_no, zipcode, phone, email, name_customer, city, mealID, mealquqntity, mealPrice, mealItemExtra, mealItemOption;
 
     public static CartActivity mInstance;
-    private double discount, service_fee, service_vat;
+    private double discount=0, service_fee=0, service_vat=0;
     @BindView(R.id.tv_save_discount_amount_msg)
     TextView tv_save_discount_amount_msg;
     @BindView(R.id.tvLoyalty)
@@ -134,6 +135,10 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     TextView tv_food_discount_total;
     @BindView(R.id.cardViewLoyality)
     CardView cardViewLoyality;
+    @BindView(R.id.tvLoyaltyText)
+    TextView tvLoyaltyText;
+    @BindView(R.id.tvLoyaltyFee)
+    TextView tvLoyaltyFee;
     SharedPreferencesData sharedPreferencesData;
     private LanguageResponse model = new LanguageResponse();
     private DotToCommaClass dotToCommaClass;
@@ -183,11 +188,13 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         tv_food_item_total = findViewById(R.id.tv_food_item_total);
         // tv_count = findViewById(R.id.tv_count);
         RestId = getIntent().getStringExtra("RESTID");
+        //Log.e("REST", RestId);
         strMainRestName = getIntent().getStringExtra("RESTName");
         strMainRestLogo = getIntent().getStringExtra("RESTLOGO");
         pizzaItemid = getIntent().getStringExtra("subPizzaItemId");
         strsizeid = getIntent().getStringExtra("SIZEITEMID");
         extraItemID = getIntent().getStringExtra("globTempExtraItemidWithSizeIdd");
+
         System.out.println("==== rest id in cart activity : " + RestId);
         postalCode = prefsHelper.getPref(Constants.SAVE_POSTAL_CODE);
         if (prefsHelper.isLoggedIn()) {
@@ -229,7 +236,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         card_checkout.setOnClickListener(this);
         Currency hh = Currency.getInstance("" + prefsHelper.getPref(Constants.APP_CURRENCY));
         currencySymbol = hh.getSymbol();
-        this.orderType = "Delivery";
+//        orderType = "Delivery";
 
         if (prefsHelper.isLoggedIn()) {
             cardViewLoyality.setVisibility(View.VISIBLE);
@@ -241,7 +248,11 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
         if (sharedPreferencesData.getSharedPreferenceData(Constants.FORDELIVERY, Constants.HMDLVRYAVAIL).equalsIgnoreCase("yes")) {
             rl_delivery.setVisibility(View.VISIBLE);
-            this.orderType = "Delivery";
+            orderType = "Delivery";
+
+            rl_pickup.setBackgroundResource(R.drawable.edit_back_with_gray);
+            rl_delivery.setBackgroundResource(R.drawable.circle_background);
+            rlDineIn.setBackgroundResource(R.drawable.edit_back_with_gray);
         } else {
             rl_delivery.setVisibility(View.GONE);
         }
@@ -260,18 +271,27 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
         if (sharedPreferencesData.getSharedPreferenceData(Constants.FORDELIVERY, Constants.HMDLVRYAVAIL).equalsIgnoreCase("no") &&
                 sharedPreferencesData.getSharedPreferenceData(Constants.FORDELIVERY, Constants.PCKAVAILABLE).equalsIgnoreCase("yes")) {
-            this.orderType = "Pickup";
+            orderType = "Pickup";
+
+            rl_pickup.setBackgroundResource(R.drawable.circle_background);
+            rl_delivery.setBackgroundResource(R.drawable.edit_back_with_gray);
+            rlDineIn.setBackgroundResource(R.drawable.edit_back_with_gray);
         }
 
         if (sharedPreferencesData.getSharedPreferenceData(Constants.FORDELIVERY, Constants.HMDLVRYAVAIL).equalsIgnoreCase("no") &&
                 sharedPreferencesData.getSharedPreferenceData(Constants.FORDELIVERY, Constants.PCKAVAILABLE).equalsIgnoreCase("no") &&
                 sharedPreferencesData.getSharedPreferenceData(Constants.FORDELIVERY, Constants.DINAVAILABLE).equalsIgnoreCase("yes")) {
-            this.orderType = "Pickup";
+            orderType = "EAT-IN";
+
+            rl_pickup.setBackgroundResource(R.drawable.edit_back_with_gray);
+            rl_delivery.setBackgroundResource(R.drawable.edit_back_with_gray);
+            rlDineIn.setBackgroundResource(R.drawable.circle_background);
         }
 
         updateCart();
         getDiscount();
         getShippingChargeData();
+        // Log.e("extraItemID=",raviCartModles.get(0).getSize_item_name());
     }
 
     @Override
@@ -328,6 +348,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                     String extra_item_id = cursor.getString(4);
                     String extra_item_name = cursor.getString(5);
                     String price = cursor.getString(6);
+                    String subcatdetals = cursor.getString(8);
                     totalPrice = totalPrice + Double.parseDouble(price);
                     totalPrice = (double) Math.round(totalPrice * 100) / 100;
                     String item_quantity = cursor.getString(7);
@@ -339,7 +360,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 //                        tv_total.setText(currencySymbol + "" + "" + String.format("%.2f", totalPrice));
 //                        checkout_total_price.setText(currencySymbol + "" + "" + String.format("%.2f", totalPrice));
 
-                    grandTotal = totalPrice - discount + service_fee + service_vat + sales_tax + deliveryCost + packagingCost;
+                    grandTotal = totalPrice - discount - coupon_price - loyalty_price + service_fee + service_vat + sales_tax + deliveryCost + packagingCost;
                     tv_total.setText(currencySymbol + "" + "" + dotToCommaClass.changeDot(String.format("%.2f", grandTotal)));
                     checkout_total_price.setText(currencySymbol + "" + "" + dotToCommaClass.changeDot(String.format("%.2f", grandTotal)));
                     order_price = String.valueOf(totalPrice);
@@ -357,7 +378,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                     } else {
                         llFull.setVisibility(View.GONE);
                     }
-                    raviCartModles.add(new RaviCartModle(item_id, item_name, size_item_id, size_item_name, extra_item_id, extra_item_name, price, item_quantity));
+                    raviCartModles.add(new RaviCartModle(item_id, item_name, size_item_id, size_item_name, extra_item_id, extra_item_name, price, item_quantity, subcatdetals));
                     AddExtraActivity.cart_Item_number = raviCartModles.size();
                 } while (cursor.moveToNext());
                 //  tvTotalFoodCost.setText("+".concat(pound.concat("" + String.format("%.2f", totalPrice))));
@@ -390,6 +411,13 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             llFull.setVisibility(View.VISIBLE);
             LayoutInflater inflater = LayoutInflater.from(this);
             final View view = inflater.inflate(R.layout.activity_empty_cart, (ViewGroup) llFull, false);
+            AppCompatTextView tvWhoops = view.findViewById(R.id.tvWhoops);
+            AppCompatTextView tvEmptyCart = view.findViewById(R.id.tvEmptyCart);
+            AppCompatTextView tvLooks = view.findViewById(R.id.tvLooks);
+
+            tvWhoops.setText(model.getWOOPS());
+            tvEmptyCart.setText(model.getYOURCARTISEMPTY());
+            tvLooks.setText(model.getLOOKLIKEYOUHAVE());
             llFull.addView(view);
 //            Toast.makeText(mInstance, "Empty", Toast.LENGTH_SHORT).show();
         } else {
@@ -412,7 +440,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.rl_pickup:
                 changeSelect("Pickup");
-                this.orderType = "Pickup";
+                orderType = "Pickup";
                 getDiscount();
                 getShippingChargeData();
                 //  addQuatity.insert("1","sufiyan");
@@ -420,7 +448,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.rl_delivery:
                 changeSelect("Delivery");
-                this.orderType = "Delivery";
+                orderType = "Delivery";
                 getDiscount();
                 getShippingChargeData();
                 // addQuatity.updateItem("1","name.....");
@@ -429,17 +457,29 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.rlDineIn:
                 changeSelect("EAT-IN");
-                this.orderType = "EAT-IN";
+                orderType = "EAT-IN";
                 getDiscount();
                 getShippingChargeData();
 //                serviceChargedForDeliveryAndPickup();
                 // addQuatity.updateItem("1","name.....");
                 break;
             case R.id.card_checkout:
-                if (!this.orderType.equals("")) {
+                if (!orderType.equals("")) {
                     //  activity.setCurrent_fragment(new FragmentAddressList(), FragmentAddressList.FRAG_TITLE);
                     System.out.println("=== extraItemNameG :" + extraItemNameG);
                     System.out.println("=== extraItemIDG :" + extraItemIDG);
+
+                    sharedPreferencesData.createNewSharedPreferences(Constants.PRICEPREFERENCE);
+                    sharedPreferencesData.setSharedPreferenceData(Constants.PRICEPREFERENCE, Constants.SUBTOTAL, totalPrice + "");
+                    sharedPreferencesData.setSharedPreferenceData(Constants.PRICEPREFERENCE, Constants.FOODDISCOUNT, discount + "");
+                    sharedPreferencesData.setSharedPreferenceData(Constants.PRICEPREFERENCE, Constants.SERVICEFEES, service_fee + "");
+                    sharedPreferencesData.setSharedPreferenceData(Constants.PRICEPREFERENCE, Constants.SALESTAX, sales_tax.toString());
+                    sharedPreferencesData.setSharedPreferenceData(Constants.PRICEPREFERENCE, Constants.VAT, service_vat + "");
+                    sharedPreferencesData.setSharedPreferenceData(Constants.PRICEPREFERENCE, Constants.DELIVERYFEES, deliveryChargeValue + "");
+                    sharedPreferencesData.setSharedPreferenceData(Constants.PRICEPREFERENCE, Constants.PACKAGINGFEES, PackageFeesValue + "");
+                    sharedPreferencesData.setSharedPreferenceData(Constants.PRICEPREFERENCE, Constants.TOTALPR, grandTotal + "");
+                    sharedPreferencesData.setSharedPreferenceData(Constants.PRICEPREFERENCE, Constants.SIZEOFPIZZA, raviCartModles.get(0).getSize_item_name());
+
                     if (prefsHelper.isLoggedIn()) {
                         if (orderType.equalsIgnoreCase("Delivery")) {
                             Intent intent = new Intent(CartActivity.this, SavedAddressActivity.class);
@@ -463,10 +503,15 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                             intent.putExtra("PackageFeesValue", PackageFeesValue);
                             intent.putExtra("SalesTaxAmount", SalesTaxAmount);
                             intent.putExtra("VatTax", VatTax);
-                            intent.putExtra("deliveryType", this.orderType);
+                            intent.putExtra("deliveryType", orderType);
                             intent.putExtra("pizzaQuantity", quantity);
                             intent.putExtra("Pizzaname", selectedPizzaName);
+                            intent.putExtra("instructions", instructions);
                             intent.putExtra("selectedPizzaItemPrice", selectedPizzaItemPrice);
+
+
+                            //sharedPreferencesData.setSharedPreferenceData(Constants.PRICEPREFERENCE,Constants.PACKAGINGFEES,subTotalAmount);
+
                             startActivity(intent);
                         } else {
                             Intent i = new Intent(CartActivity.this, CartCheckout.class);
@@ -490,9 +535,10 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                             i.putExtra("PackageFeesValue", PackageFeesValue);
                             i.putExtra("SalesTaxAmount", SalesTaxAmount);
                             i.putExtra("VatTax", VatTax);
-                            i.putExtra("deliveryType", this.orderType);
+                            i.putExtra("deliveryType", orderType);
                             i.putExtra("pizzaQuantity", quantity);
                             i.putExtra("Pizzaname", selectedPizzaName);
+                            i.putExtra("instructions", instructions);
                             i.putExtra("selectedPizzaItemPrice", selectedPizzaItemPrice);
                             startActivity(i);
                         }
@@ -518,14 +564,15 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                         i.putExtra("PackageFeesValue", PackageFeesValue);
                         i.putExtra("SalesTaxAmount", SalesTaxAmount);
                         i.putExtra("VatTax", VatTax);
-                        i.putExtra("deliveryType", this.orderType);
+                        i.putExtra("deliveryType", orderType);
                         i.putExtra("pizzaQuantity", quantity);
                         i.putExtra("Pizzaname", selectedPizzaName);
+                        i.putExtra("instructions", instructions);
                         i.putExtra("selectedPizzaItemPrice", selectedPizzaItemPrice);
                         startActivity(i);
                     }
                 } else {
-                    Toast.makeText(this, model.getPLEASECHOOSEONEOPTION(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, model.getPLEASESELECTORDERTYPE(), Toast.LENGTH_LONG).show();
                 }
                 break;
 
@@ -587,8 +634,10 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 holder.tvMenuItemName.setText(rr.get(position).getItem_name());
                 selectedPizzaName = rr.get(position).getItem_name();
                 holder.tv_menu_item_extra.setVisibility(View.GONE);
+                holder.tv_menu_item_size.setVisibility(View.GONE);
             } else if (rr.get(position).getSize_item_name() != "0" && rr.get(position).getExtra_item_name().equals("0")) {
-                holder.tvMenuItemName.setText(rr.get(position).getItem_name() + "\n(" + rr.get(position).getSize_item_name() + ")");
+                holder.tvMenuItemName.setText(rr.get(position).getItem_name());
+                holder.tv_menu_item_size.setText("(" + rr.get(position).getSize_item_name() + ")");
                 selectedPizzaName = rr.get(position).getItem_name();
                 holder.tv_menu_item_extra.setVisibility(View.GONE);
             } else if (rr.get(position).getSize_item_name().equals("0") && rr.get(position).getExtra_item_name() != "0") {
@@ -603,9 +652,10 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 extraItemIDG = rr.get(position).getExtra_item_id();
                 System.out.println("==== extraname 1: " + extraItemNameG);
                 System.out.println("==== extraname 1: " + extraItemIDG);
-                holder.tv_menu_item_extra.setText(a);
+                holder.tv_menu_item_extra.setText("+" + a);
             } else if (rr.get(position).getSize_item_name() != "0" && rr.get(position).getExtra_item_name() != "0") {
-                holder.tvMenuItemName.setText(rr.get(position).getItem_name() + "\n(" + rr.get(position).getSize_item_name() + ")");
+                holder.tvMenuItemName.setText(rr.get(position).getItem_name());
+                holder.tv_menu_item_size.setText("(" + rr.get(position).getSize_item_name() + ")");
                 selectedPizzaName = rr.get(position).getItem_name();
                 holder.tv_menu_item_extra.setVisibility(View.VISIBLE);
                 String a = rr.get(position).getExtra_item_name().replace("[", "");
@@ -615,21 +665,13 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 extraItemIDG = rr.get(position).getExtra_item_id();
                 System.out.println("==== extraname 1: " + extraItemNameG);
                 System.out.println("==== extraname 1: " + extraItemIDG);
-                holder.tv_menu_item_extra.setText(a);
+                holder.tv_menu_item_extra.setText("+" + a);
             }
+            holder.tv_subcat_item_details.setText(rr.get(position).getItemSubcatDetails());
 
+            instructions = CommonMethods.getStringDataInbase64(holder.etInstruction.getText().toString());
             double pp = Double.parseDouble(rr.get(position).getPrice());
-
             holder.tvItemPrice.setText(currencySymbol + dotToCommaClass.changeDot(String.format("%.2f", pp)));
-           /* if(prefsHelper.getPref(Constants.LNG_CODE).toString().equalsIgnoreCase("de")){
-                String pnew=String.format("%.2f", pp);
-                pnew=pnew.replace(".",",");
-                Log.e("PNEW=",pnew);
-                holder.tvItemPrice.setText(currencySymbol + pnew);
-            }else{
-                holder.tvItemPrice.setText(currencySymbol + String.format("%.2f", pp));
-            }*/
-
             selectedPizzaItemPrice = holder.tvItemPrice.getText().toString();
             holder.tvQuantity.setText(rr.get(position).getItem_quantity());
 
@@ -718,7 +760,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
-            private TextView tvMenuItemName, tvItemPrice, tvQuantity, tv_menu_item_extra, ivPlus, ivMinus;
+            private TextView tvMenuItemName, tvItemPrice, tvQuantity, tv_menu_item_extra, ivPlus, ivMinus, tv_menu_item_size, tv_subcat_item_details;
             private ImageView cartDelete;
             private EditText etInstruction;
 
@@ -732,6 +774,8 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 ivMinus = itemView.findViewById(R.id.iv_minus);
                 cartDelete = itemView.findViewById(R.id.cart_delete);
                 etInstruction = itemView.findViewById(R.id.etInstruction);
+                tv_menu_item_size = itemView.findViewById(R.id.tv_menu_item_size);
+                tv_subcat_item_details = itemView.findViewById(R.id.tv_subcat_item_details);
 
                 etInstruction.setHint(model.getInstruction());
             }
@@ -739,18 +783,15 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void updateData() {
-        grandTotal = totalPrice - discount + service_fee + service_vat + sales_tax + deliveryCost + packagingCost;
+        grandTotal = totalPrice - discount + service_fee + service_vat + sales_tax + deliveryCost + packagingCost - coupon_price - loyalty_price;
         tv_total.setText(currencySymbol + "" + "" + dotToCommaClass.changeDot(String.format("%.2f", grandTotal)));
         checkout_total_price.setText(currencySymbol + "" + "" + dotToCommaClass.changeDot(String.format("%.2f", grandTotal)));
         order_price = String.valueOf(totalPrice);
         subTotalAmount = String.valueOf(totalPrice);
-
         tv_sub_total.setText(currencySymbol + "" + "" + dotToCommaClass.changeDot(String.format("%.2f", totalPrice)));
-
-//                        tv_food_item_total.setText(currencySymbol + "" + "" + String.format("%.2f", totalPrice));
+//      tv_food_item_total.setText(currencySymbol + "" + "" + String.format("%.2f", totalPrice));
         FoodCosts = tv_food_item_total.getText().toString();
     }
-
 
     private void getShippingChargeData() {
         apiInterface = RFClient.getClient().create(ApiInterface.class);
@@ -782,13 +823,37 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                             service_fee = Double.parseDouble(SeviceFeesValue);
                             service_vat = Double.parseDouble(VatTax);
                             sales_tax = Double.parseDouble(SalesTaxAmount);
+                            //Log.e("ServiceFee=",service_fee+"");
 
-                            tvServiceFee.setText(currencySymbol + "" + dotToCommaClass.changeDot(String.format("%.2f", service_fee)));
-                            tvVat.setText(currencySymbol + "" + dotToCommaClass.changeDot(String.format("%.2f", service_vat)));
-                            tvServiceCharge.setText(currencySymbol + "" + dotToCommaClass.changeDot(String.format("%.2f", sales_tax)));
+                            if (service_fee == 0 || service_fee == 0.00) {
+                                tvServiceFee.setVisibility(View.GONE);
+                                tvServiceFeeText.setVisibility(View.GONE);
+                            } else {
+                                tvServiceFee.setVisibility(View.VISIBLE);
+                                tvServiceFeeText.setVisibility(View.VISIBLE);
+                                tvServiceFee.setText(currencySymbol + "" + dotToCommaClass.changeDot(String.format("%.2f", service_fee)));
+                            }
 
-                            if (orderType.equalsIgnoreCase("delivery")) {
-                                if (Double.parseDouble(deliveryChargeValue) == 0) {
+                            if (service_vat == 0 || service_vat == 0.00) {
+                                tvVatText.setVisibility(View.GONE);
+                                tvVat.setVisibility(View.GONE);
+                            } else {
+                                tvVatText.setVisibility(View.VISIBLE);
+                                tvVat.setVisibility(View.VISIBLE);
+                                tvVat.setText(currencySymbol + "" + dotToCommaClass.changeDot(String.format("%.2f", service_vat)));
+                            }
+
+                            if (sales_tax == 0 || sales_tax == 0.00) {
+                                tvServiceChargeText.setVisibility(View.GONE);
+                                tvServiceCharge.setVisibility(View.GONE);
+                            } else {
+                                tvServiceCharge.setVisibility(View.VISIBLE);
+                                tvServiceChargeText.setVisibility(View.VISIBLE);
+                                tvServiceCharge.setText(currencySymbol + "" + dotToCommaClass.changeDot(String.format("%.2f", sales_tax)));
+                            }
+
+                            if (orderType.equalsIgnoreCase("Delivery")) {
+                                if (Double.parseDouble(deliveryChargeValue) == 0 || Double.parseDouble(deliveryChargeValue) == 0.00) {
                                     tvDeliveryFee.setVisibility(View.GONE);
                                     tvDeliveryText.setVisibility(View.GONE);
                                     deliveryCost = 0.0;
@@ -799,7 +864,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                                     tvDeliveryText.setVisibility(View.VISIBLE);
                                 }
 
-                                if (Double.parseDouble(PackageFeesValue) == 0) {
+                                if (Double.parseDouble(PackageFeesValue) == 0 || Double.parseDouble(PackageFeesValue) == 0.00) {
                                     packagingCost = 0.0;
                                     tvPackagingFee.setVisibility(View.GONE);
                                     tvPackagingText.setVisibility(View.GONE);
@@ -810,8 +875,8 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                                     tvPackagingText.setVisibility(View.VISIBLE);
                                 }
 //                            grandTotal = grandTotal + Double.parseDouble(deliveryChargeValue);
-                            } else if (orderType.equalsIgnoreCase("pickup")) {
-                                if (Double.parseDouble(PackageFeesValue) == 0) {
+                            } else if (orderType.equalsIgnoreCase("Pickup")) {
+                                if (Double.parseDouble(PackageFeesValue) == 0 || Double.parseDouble(PackageFeesValue) == 0.00) {
                                     tvPackagingFee.setVisibility(View.GONE);
                                     tvPackagingText.setVisibility(View.GONE);
                                     tvDeliveryText.setVisibility(View.GONE);
@@ -879,14 +944,21 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                             discountOfferPercentage = searchResult.getDiscountOfferPercentage();
                             discountOfferPrice = searchResult.getDiscountOfferPrice();
 
-                            if (discountOfferPrice.equalsIgnoreCase(""))
+                            if (discountOfferPrice.equalsIgnoreCase("") || discountOfferPrice.equalsIgnoreCase("0")
+                                    || discountOfferPrice.equalsIgnoreCase("0.00"))
                                 discount = 0.0;
                             else {
                                 discount = Double.parseDouble(discountOfferPrice);
                             }
 
-
-                            tv_food_item_total.setText(currencySymbol + "" + dotToCommaClass.changeDot(String.format("%.2f", discount)));
+                            if (discount == 0.0) {
+                                tvFoodItems.setVisibility(View.GONE);
+                                tv_food_item_total.setVisibility(View.GONE);
+                            } else {
+                                tvFoodItems.setVisibility(View.VISIBLE);
+                                tv_food_item_total.setVisibility(View.VISIBLE);
+                                tv_food_item_total.setText(currencySymbol + "" + dotToCommaClass.changeDot(String.format("%.2f", discount)));
+                            }
                         } catch (Exception e) {
                             e.printStackTrace();
 //                        updateCart()
@@ -936,21 +1008,67 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
     @OnClick(R.id.llLoyalityPoint)
     public void llLoyalityPointClicked(View view) {
-        //showProgress();
         if (redeemPointsTotal.equalsIgnoreCase("") || redeemPointsTotal.equalsIgnoreCase("0")) {
-            Toast.makeText(getApplicationContext(), model.getPleaseEnterLoyaltyPoint(), Toast.LENGTH_LONG).show();
-            showProgress();
-            redeemPointsUser();
+            Toast.makeText(getApplicationContext(), model.getYouHave().trim() + " 0 " + model.getLoyaltyPoints(), Toast.LENGTH_SHORT).show();
         } else {
-
+            if (!loyalty)
+                openLoyaltyDialog();
         }
+
+        //showProgress();
+//        if (redeemPointsTotal.equalsIgnoreCase("") || redeemPointsTotal.equalsIgnoreCase("0")) {
+//            Toast.makeText(getApplicationContext(), model.getPleaseEnterLoyaltyPoint(), Toast.LENGTH_LONG).show();
+//            showProgress();
+//            redeemPointsUser(etLoyaltyPoint.getText().toString(), dialog);
+//        } else {
+//
+//        }
     }
 
-    private Dialog dialog;
+    private boolean loyalty = false;
+
+    private void openLoyaltyDialog() {
+        Dialog dialog = new Dialog(CartActivity.this);
+        dialog.setContentView(R.layout.dialog_loyality);
+        Window window = dialog.getWindow();
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        ImageView ivClose = dialog.findViewById(R.id.ivClose);
+        EditText etLoyaltyPoint = dialog.findViewById(R.id.etLoyaltyPoint);
+        Button btnApply = dialog.findViewById(R.id.btnApply);
+        TextView tvApply = dialog.findViewById(R.id.tvApply);
+        TextView tvLoyaltyPoint = dialog.findViewById(R.id.tvLoyaltyPoint);
+
+        tvApply.setText(model.getRedeemLoyaltyPoints());
+        tvLoyaltyPoint.setText(model.getYouHave() + " " + redeemPointsTotal + " " + model.getLoyaltyPoints());
+        btnApply.setText(model.getRedeem());
+        etLoyaltyPoint.setHint(model.getEnterLoyaltyPointCode());
+
+        ivClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
+        btnApply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (etLoyaltyPoint.getText().toString() != null && etLoyaltyPoint.getText().toString().length() > 0) {
+                    redeemPointsUser(etLoyaltyPoint.getText().toString(), dialog);
+                } else {
+                    Toast.makeText(getApplicationContext(), model.getPleaseEnterLoyaltyPoint(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+       /* dialog.getWindow()
+                .getAttributes().windowAnimations = R.style.DialogAnimation;*/
+        dialog.show();
+    }
+
     String couponCodeText = "";
 
     private void dialogApplyCoupon() {
-        dialog = new Dialog(CartActivity.this);
+        Dialog dialog = new Dialog(CartActivity.this);
         dialog.setContentView(R.layout.dialog_applycoupons);
         Window window = dialog.getWindow();
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
@@ -973,8 +1091,8 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         btnApply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (etCouponCode.getText().toString() != null && etCouponCode.getText().toString().length() > 0) {
-                    applyCoupon(etCouponCode.getText().toString());
+                if (etCouponCode != null && etCouponCode.getText().toString().length() > 0) {
+                    applyCoupon(etCouponCode.getText().toString(), dialog);
                 } else {
                     Toast.makeText(getApplicationContext(), model.getAPPLYCOUPONISREQUIRED(), Toast.LENGTH_LONG).show();
                 }
@@ -986,7 +1104,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    private void applyCoupon(String couponCOde) {
+    private void applyCoupon(String couponCOde, Dialog dialog) {
 
         apiInterface = RFClient.getClient().create(ApiInterface.class);
         Observable<RmVerifyCouponCodeResponse> observable = apiInterface.getCouponCode(RestId, prefsHelper.getPref(Constants.API_KEY),
@@ -1002,16 +1120,29 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
                     @Override
                     public void onNext(RmVerifyCouponCodeResponse searchResult) {
-                        dialog.cancel();
-                        Toast.makeText(getApplicationContext(), searchResult.getCouponCodePrice(), Toast.LENGTH_LONG).show();
+
 //                        grandTotal = grandTotal - Double.parseDouble(searchResult.getCouponCodePrice());
 //                        tv_total.setText(new DecimalFormat("##.##").format(totalPrice).toString());
-                        coupon_price = Double.parseDouble(searchResult.getCouponCodePrice());
 //                        checkout_total_price.setText(new DecimalFormat("##.##").format(totalPrice).toString());
-                        tvFoodDiscount.setVisibility(View.VISIBLE);
-                        tv_food_discount_total.setVisibility(View.VISIBLE);
-                        tv_food_discount_total.setText(currencySymbol + dotToCommaClass.changeDot(searchResult.getCouponCodePrice()));
-
+                        if (searchResult.getError() == 2) {
+                            tvFoodDiscount.setVisibility(View.GONE);
+                            tv_food_discount_total.setVisibility(View.GONE);
+                            Toast.makeText(getApplicationContext(), searchResult.getError_msg(), Toast.LENGTH_LONG).show();
+                        } else {
+                            coupon_price = Double.parseDouble(searchResult.getCouponCodePrice());
+                            if (coupon_price == 0 || coupon_price == 0.00) {
+                                tvFoodDiscount.setVisibility(View.GONE);
+                                tv_food_discount_total.setVisibility(View.GONE);
+                                Toast.makeText(getApplicationContext(), searchResult.getError_msg(), Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), searchResult.getSuccessMsg(), Toast.LENGTH_LONG).show();
+                                tvFoodDiscount.setVisibility(View.VISIBLE);
+                                tv_food_discount_total.setVisibility(View.VISIBLE);
+                                tv_food_discount_total.setText("-" + currencySymbol + dotToCommaClass.changeDot(searchResult.getCouponCodePrice()));
+                                updateData();
+                            }
+                        }
+                        dialog.cancel();
                     }
 
                     @Override
@@ -1022,6 +1153,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
                     @Override
                     public void onComplete() {
+                        hideProgress();
                         //   activity.mySharePreferences.setBundle("login");
 
                     }
@@ -1065,9 +1197,9 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 });
     }
 
-    private void redeemPointsUser() {
+    private void redeemPointsUser(String s, Dialog dialog) {
         apiInterface = RFClient.getClient().create(ApiInterface.class);
-        Observable<RmVerifyLoyaltyPointResponse> observable = apiInterface.verifyLoyaltyPoint(CustomerId, "0", String.valueOf(totalPrice));
+        Observable<RmVerifyLoyaltyPointResponse> observable = apiInterface.verifyLoyaltyPoint(CustomerId, s, String.valueOf(totalPrice));
 
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -1079,8 +1211,30 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
                     @Override
                     public void onNext(RmVerifyLoyaltyPointResponse searchResult) {
-                        hideProgress();
-                        Toast.makeText(getApplicationContext(), searchResult.getSuccessMsg(), Toast.LENGTH_LONG).show();
+                        try {
+                            hideProgress();
+                            dialog.dismiss();
+                            if (searchResult.getSuccess() == 0) {
+                                loyalty = true;
+                                if (searchResult.getTotalLoyaltyAmount() != null) {
+                                    loyalty_price = Double.parseDouble(searchResult.getTotalLoyaltyAmount());
+//                        checkout_total_price.setText(new DecimalFormat("##.##").format(totalPrice).toString());
+                                    if (loyalty_price == 0 || loyalty_price == 0.00) {
+                                        tvLoyaltyText.setVisibility(View.GONE);
+                                        tvLoyaltyFee.setVisibility(View.GONE);
+                                    } else {
+                                        tvLoyaltyFee.setVisibility(View.VISIBLE);
+                                        tvLoyaltyText.setVisibility(View.VISIBLE);
+                                        tvLoyaltyFee.setText("-" + currencySymbol + dotToCommaClass.changeDot(searchResult.getTotalLoyaltyAmount()));
+                                        updateData();
+                                    }
+                                }
+                            } else {
+                                Toast.makeText(getApplicationContext(), searchResult.getSuccessMsg(), Toast.LENGTH_LONG).show();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     @Override

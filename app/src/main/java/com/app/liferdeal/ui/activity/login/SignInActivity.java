@@ -25,10 +25,13 @@ import com.app.liferdeal.model.loginsignup.SignInModel;
 import com.app.liferdeal.network.retrofit.ApiInterface;
 import com.app.liferdeal.network.retrofit.RFClient;
 import com.app.liferdeal.ui.activity.MainActivity;
+import com.app.liferdeal.ui.activity.restaurant.RestaurantBookTable;
+import com.app.liferdeal.ui.activity.restaurant.RestaurantDetails;
 import com.app.liferdeal.ui.activity.splash.SplashActivity;
 import com.app.liferdeal.ui.fragment.restaurant.RestaurantMain;
 import com.app.liferdeal.util.Constants;
 import com.app.liferdeal.util.PrefsHelper;
+import com.app.liferdeal.util.SharedPreferencesData;
 import com.bumptech.glide.Glide;
 
 import java.util.regex.Pattern;
@@ -41,23 +44,33 @@ import io.reactivex.schedulers.Schedulers;
 
 public class SignInActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText edt_usrName, edt_usrPass;
-    private TextView btn_login, txt_forgot_pass, txt_create_new,tvTitle;
+    private TextView btn_login, txt_forgot_pass, txt_create_new, tvTitle;
     private ProgressDialog progressDialog;
     private ApiInterface apiInterface;
     private PrefsHelper prefsHelper;
     private String langCode, deviceId, devicePlateform;
     private ImageView img_logo, img_back;
     private LanguageResponse model = new LanguageResponse();
+    private AppCompatTextView tvSignIn;
+    private String clickRestId = "", restourantBookLimit = "", from = "";
+    private SharedPreferencesData sharedPreferencesData;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_fragment_layout);
+        if (getIntent() != null) {
+            clickRestId = getIntent().getStringExtra("clickRestId");
+            restourantBookLimit = getIntent().getStringExtra("RESTBOOKLIMIT");
+            from = getIntent().getStringExtra("from");
+        }
         init();
     }
 
     private void init() {
         try {
+            sharedPreferencesData=new SharedPreferencesData(getApplicationContext());
+
             prefsHelper = new PrefsHelper(this);
             String logo = prefsHelper.getPref(Constants.APP_LOGO);
             img_logo = findViewById(R.id.img_logo);
@@ -68,6 +81,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
             btn_login = findViewById(R.id.btn_login);
             tvTitle = findViewById(R.id.tvTitle);
             img_back = findViewById(R.id.img_back);
+            tvSignIn = findViewById(R.id.tvSignIn);
 
             if (App.retrieveLangFromGson(SignInActivity.this) != null) {
                 model = App.retrieveLangFromGson(SignInActivity.this);
@@ -77,6 +91,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                 txt_create_new.setText(model.getCreateANewAccount());
                 btn_login.setText(model.getLogin());
                 tvTitle.setText(model.getLogin());
+                tvSignIn.setText(model.getLogin());
             }
 
             btn_login.setOnClickListener(this);
@@ -194,6 +209,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                             prefsHelper.savePref(Constants.isLoggedIn, true);
                             openDialog(signin.getSuccessMsg());
                             hideProgress();
+                            Log.e("CustomerId=", cusomerId);
                             //  initiateHomeFragment();
                             /*Intent i = new Intent(SignInActivity.this, SignInActivity.class);
                             startActivity(i);*/
@@ -245,10 +261,17 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         if (SplashActivity.mInstance != null) {
             SplashActivity.mInstance.finish();
         }
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+            if (from != null && from.equalsIgnoreCase("table")) {
+                Intent booktable = new Intent(SignInActivity.this, RestaurantBookTable.class);
+                booktable.putExtra("clickRestId", clickRestId);
+                booktable.putExtra("RESTBOOKLIMIT", restourantBookLimit);
+                startActivity(booktable);
+            } else {
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
         finish();
     }
 

@@ -24,6 +24,7 @@ import com.app.liferdeal.network.retrofit.RFClient;
 import com.app.liferdeal.util.CommonMethods;
 import com.app.liferdeal.util.Constants;
 import com.app.liferdeal.util.PrefsHelper;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.regex.Pattern;
 
@@ -41,6 +42,14 @@ public class ContactUs extends AppCompatActivity implements View.OnClickListener
     TextView tvFaq;
     @BindView(R.id.tvFeelFree)
     AppCompatTextView tvFeelFree;
+    @BindView(R.id.ipYourName)
+    TextInputLayout ipYourName;
+    @BindView(R.id.ipEmail)
+    TextInputLayout ipEmail;
+    @BindView(R.id.ipMobileNo)
+    TextInputLayout ipMobileNo;
+    @BindView(R.id.ipMsg)
+    TextInputLayout ipMsg;
     private PrefsHelper prefsHelper;
     private ApiInterface apiInterface;
     private ProgressDialog progressDialog;
@@ -73,11 +82,11 @@ public class ContactUs extends AppCompatActivity implements View.OnClickListener
 
         tvFaq.setText(model.getContactUs());
         tvFeelFree.setText(model.getFeelFreeToDropUsAMessage());
-        edit_name.setHint(model.getYourName());
-        edit_email_addres.setHint(model.getEmailAddress());
-        edit_mobile.setHint(model.getMobileNo());
-        edit_message.setHint(model.getMessage());
-        btn_send.setHint(model.getSend());
+        ipYourName.setHint(model.getYourName());
+        ipEmail.setHint(model.getEmailAddress());
+        ipMobileNo.setHint(model.getMobileNo());
+        ipMsg.setHint(model.getMessage());
+        btn_send.setText(model.getSend());
 
         straddress = prefsHelper.getPref(Constants.SAVE_FULL_ADDRESS);
         tv_address.setText(straddress);
@@ -162,7 +171,7 @@ public class ContactUs extends AppCompatActivity implements View.OnClickListener
     private void getContactUsData() {
 
         apiInterface = RFClient.getClient().create(ApiInterface.class);
-        Observable<ContactusModel> observable = apiInterface.sendContactUsData(prefsHelper.getPref(Constants.API_KEY),prefsHelper.getPref(Constants.LNG_CODE), strName, stremail, strPhone, strMessage);
+        Observable<ContactusModel> observable = apiInterface.sendContactUsData(prefsHelper.getPref(Constants.API_KEY), prefsHelper.getPref(Constants.LNG_CODE), strName, stremail, strPhone, strMessage);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ContactusModel>() {

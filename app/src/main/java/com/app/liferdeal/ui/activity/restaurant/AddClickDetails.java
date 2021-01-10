@@ -122,6 +122,7 @@ public class AddClickDetails extends AppCompatActivity implements View.OnClickLi
         tvSize.setText(model.getSize());
         tvTotal.setText(model.getTotal());
         btn_add_extra.setText(model.getAddExtraTopping());
+        btn_add_to_cart.setText(model.getAddToCart());
 
         clickItemtId = getIntent().getIntExtra("CLICKITEMID", 0);
         CLICKITEMNAME = getIntent().getStringExtra("CLICKITEMNAME");
@@ -288,7 +289,7 @@ public class AddClickDetails extends AppCompatActivity implements View.OnClickLi
         SQLiteDatabase db = database.getReadableDatabase();
 
         Cursor cursor = db.rawQuery("SELECT * FROM item_table where item_id='" + clickItemtId + "'", null);
-        database.InsertItem(String.valueOf(clickItemtId), CLICKITEMNAME, "0", "0", "0", "0", Double.parseDouble(CLICKITEMPRICE), 1);
+        database.InsertItem(String.valueOf(clickItemtId), CLICKITEMNAME, "0", "0", "0", "0", Double.parseDouble(CLICKITEMPRICE), 1,ClickPizzdesc);
         AddExtraActivity.cart_Item_number = AddExtraActivity.cart_Item_number + 1;
         RestaurantDetails.tvCartItemCount.setText("" + AddExtraActivity.cart_Item_number);
         Intent i = new Intent(this, RestaurantDetails.class);

@@ -1,5 +1,6 @@
 package com.app.liferdeal.ui.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,6 +23,7 @@ import com.app.liferdeal.model.LanguageResponse;
 import com.app.liferdeal.model.restaurant.Orders;
 import com.app.liferdeal.ui.activity.restaurant.MyOrderDetailsActivity;
 import com.app.liferdeal.util.Constants;
+import com.app.liferdeal.util.DotToCommaClass;
 import com.app.liferdeal.util.PrefsHelper;
 import com.bumptech.glide.Glide;
 
@@ -34,6 +37,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.Holder> 
     private String currencySymbol;
     private PrefsHelper prefsHelper;
     private LanguageResponse model = new LanguageResponse();
+    DotToCommaClass dotToCommaClass;
 
     public MyOrderAdapter(Context context, List<Orders.OrderViewResult> listSubCategory) {
         this.mContext = context;
@@ -41,6 +45,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.Holder> 
         if (App.retrieveLangFromGson(mContext) != null) {
             model = App.retrieveLangFromGson(mContext);
         }
+        dotToCommaClass = new DotToCommaClass(mContext);
         prefsHelper = new PrefsHelper(mContext);
     }
 
@@ -59,7 +64,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.Holder> 
         holder.tv_address.setText(listCategory.get(position).getRestaurantAddress());
         holder.txt_viewoderid.setText(listCategory.get(position).getOrderIdentifyno());
         holder.txt_order_status.setText(listCategory.get(position).getOrderStatusMsg());
-        holder.txt_view_orderprice.setText(currencySymbol + listCategory.get(position).getOrdPrice());
+        holder.txt_view_orderprice.setText(currencySymbol + dotToCommaClass.changeDot(listCategory.get(position).getOrdPrice()));
 
         holder.txt_date_time.setText(listCategory.get(position).getOrderDate() + " " + listCategory.get(position).getOrderTime());
         if (listCategory.get(position).getRestaurantLogo() != null) {
@@ -71,7 +76,25 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.Holder> 
             public void onClick(View v) {
                 Intent i = new Intent(mContext, MyOrderDetailsActivity.class);
                 i.putExtra("orderid", listCategory.get(position).getOrderIdentifyno());
+                i.putExtra("from", "track");
                 mContext.startActivity(i);
+            }
+        });
+
+        holder.rl_restaurant_list.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(mContext, MyOrderDetailsActivity.class);
+                i.putExtra("orderid", listCategory.get(position).getOrderIdentifyno());
+                //i.putExtra("from", "track");
+                mContext.startActivity(i);
+            }
+        });
+
+        holder.txt_btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((Activity)mContext).finish();
             }
         });
     }
@@ -83,8 +106,8 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.Holder> 
 
     class Holder extends RecyclerView.ViewHolder {
         public CardView card_subCategory;
-        private TextView tv_restaurant_name, tv_address, txt_viewoderid, txt_view_orderprice, txt_date_time, txt_order_status,
-                txt_btn_cancel, txt_btn_track;
+        RelativeLayout rl_restaurant_list;
+        private TextView tv_restaurant_name, tv_address, txt_viewoderid, txt_view_orderprice, txt_date_time, txt_order_status, txt_btn_cancel, txt_btn_track;
         private ImageView iv_restaurant_logo;
         private RatingBar ratingBar;
         private LinearLayout lnr_discount_avail, lnr_open_close;
@@ -100,11 +123,10 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.Holder> 
             txt_btn_cancel = itemView.findViewById(R.id.txt_btn_cancel);
             txt_btn_track = itemView.findViewById(R.id.txt_btn_track);
             iv_restaurant_logo = itemView.findViewById(R.id.iv_restaurant_logo);
+            rl_restaurant_list = itemView.findViewById(R.id.rl_restaurant_list);
 
-            txt_btn_cancel.setText(model.getCancel());
-            txt_btn_track.setText(model.getTrack());
-
+            txt_btn_cancel.setText(model.getCancel().trim());
+            txt_btn_track.setText(model.getTrack().trim());
         }
     }
-
 }

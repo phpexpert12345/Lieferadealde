@@ -38,6 +38,7 @@ import com.app.liferdeal.ui.Multipart.NetworkOperationHelper;
 import com.app.liferdeal.util.CommonMethods;
 import com.app.liferdeal.util.Constants;
 import com.app.liferdeal.util.PrefsHelper;
+import com.app.liferdeal.util.SharedPreferencesData;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.rengwuxian.materialedittext.MaterialEditText;
@@ -53,6 +54,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -79,7 +81,7 @@ public class EditUpdateProfileActivity extends AppCompatActivity implements View
     private String s = "Customer id:";
     private String customerId, firstName, lastName, userPhone, userEmail, flatname, houseNo, userFloor, userStreetName, userZipCode, city, state, userAddress;
     private ProgressDialog pDialog;
-    private ImageView profile_image;
+    private CircleImageView profile_image;
     private Button btn_submit;
     private LanguageResponse model;
 
@@ -87,6 +89,8 @@ public class EditUpdateProfileActivity extends AppCompatActivity implements View
     Bitmap bitmap;
     private static int RESULT_LOAD_IMAGE = 1;
     private EditUpdateProfileActivityInterface editUpdateProfileActivityInterface;
+
+    CircleImageView profileimage1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -103,8 +107,10 @@ public class EditUpdateProfileActivity extends AppCompatActivity implements View
         public void getupdateProfile(String profileimage);
     }
 
+
     private void init() {
         try {
+
             prefsHelper = new PrefsHelper(this);
             progressDialog = new ProgressDialog(this);
             iv_back = findViewById(R.id.iv_back);
@@ -119,15 +125,22 @@ public class EditUpdateProfileActivity extends AppCompatActivity implements View
             edtPhoneNumber = findViewById(R.id.edt_phone_number);
             tvUpdateProfile = findViewById(R.id.tvUpdateProfile);
 
-            tvUpdateProfile.setText(model.getEditProfile());
-            edtFirstName.setHint(model.getFirstName());
-            edtLastName.setHint(model.getLastName());
-            edt_house_no.setHint(model.getHouseNo());
-            edt_flat_name.setHint(model.getFlatName());
-            edtStreetName.setHint(model.getStreetName());
-            edtZipCode.setHint(model.getPostalCode());
-            edtPhoneNumber.setHint(model.getMobileNo());
-            btn_submit.setHint(model.getSubmit());
+            tvUpdateProfile.setText("" + model.getEditProfile().trim());
+            edtFirstName.setHint("" + model.getFirstName().trim());
+            edtLastName.setHint("" + model.getLastName().trim());
+            edt_house_no.setHint("" + model.getHouseNo().trim());
+            edt_flat_name.setHint("" + model.getFlatName().trim());
+            edtStreetName.setHint("" + model.getStreetName().trim());
+            edtZipCode.setHint("" + model.getPostalCode().trim());
+            edtPhoneNumber.setHint("" + model.getMobileNo().trim());
+            btn_submit.setText("" + model.getSubmit().trim());
+
+
+            String userphoto = prefsHelper.getPref(Constants.USER_PROFILE_IMAGE);
+            if (userphoto != null) {
+                Glide.with(EditUpdateProfileActivity.this).load(userphoto).apply(new RequestOptions().override(100, 100).
+                        placeholder(R.drawable.upload_profile)).into(profile_image);
+            }
 
             iv_back.setOnClickListener(this);
             profile_image.setOnClickListener(this);
@@ -242,6 +255,7 @@ public class EditUpdateProfileActivity extends AppCompatActivity implements View
                         if (response.body().getUserPhoto() != null) {
                             Glide.with(EditUpdateProfileActivity.this).load(response.body().getUserPhoto()).apply(new RequestOptions().
                                     override(100, 100).placeholder(R.drawable.user)).into(profile_image);
+
                         }
                         showCustomDialog1decline(success_msg, user_photo);
 
@@ -385,6 +399,8 @@ public class EditUpdateProfileActivity extends AppCompatActivity implements View
         super.onBackPressed();
     }
 
+    private SharedPreferencesData sharedPreferencesData;
+
     private void updateProfile() {
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
@@ -426,7 +442,13 @@ public class EditUpdateProfileActivity extends AppCompatActivity implements View
                             String success_msg = object.optString("success_msg");
                             String user_photo = object.optString("user_photo");
                             prefsHelper.savePref(Constants.USER_PROFILE_IMAGE, user_photo);
+                            //Log.e("PROFILEPP=",user_photo);
 
+                            //sharedPreferencesData=new SharedPreferencesData(getApplicationContext());
+                            //sharedPreferencesData.setSharedPreferenceData(Constants.);
+
+                           /* Glide.with(EditUpdateProfileActivity.this).load(user_photo).apply(new RequestOptions().
+                                    override(100, 100).placeholder(R.drawable.user)).into(profileimage1);*/
                             showCustomDialog1decline(success_msg, user_photo);
 
                         } else {

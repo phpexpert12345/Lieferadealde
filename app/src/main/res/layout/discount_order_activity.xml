@@ -56,6 +56,7 @@
                     android:layout_width="@dimen/dp_30"
                     android:layout_height="@dimen/dp_30"
                     android:layout_margin="0dp"
+                    android:visibility="invisible"
                     android:gravity="center"
                     android:tint="@color/colorBlack"
                     android:src="@drawable/vector_cart" />
@@ -67,6 +68,7 @@
                     android:layout_alignEnd="@id/hotlist_bell"
                     android:layout_alignTop="@id/hotlist_bell"
                     android:layout_marginEnd="0dp"
+                    android:visibility="invisible"
                     android:layout_marginTop="0dp"
                     android:background="@drawable/cart_count"
                     android:gravity="center"
@@ -96,6 +98,7 @@
         android:id="@+id/btxt_for_no_data"
         android:layout_centerInParent="true"
         android:visibility="gone"
+        android:text="No data availabla"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/_16ssp"
         android:layout_height="wrap_content"/>
@@ -113,6 +116,7 @@
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:textSize="@dimen/sp_15"
+        android:visibility="gone"
         android:textAllCaps="false"
         android:text="Go to home"
         android:textColor="@color/colorWhite"

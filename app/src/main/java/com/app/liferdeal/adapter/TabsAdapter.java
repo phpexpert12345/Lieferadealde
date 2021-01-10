@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
@@ -73,6 +74,9 @@ public class TabsAdapter extends RecyclerView.Adapter<TabsAdapter.ViewHolder> {
         public void onClick(View view) {
             if (mClickListener != null)
                 mClickListener.tabItemClick(view, getLayoutPosition(), true);
+
+            //Toast.makeText(mContext,"inside adapter",Toast.LENGTH_LONG).show();
+                //notifyDataSetChanged();
 
         }
     }

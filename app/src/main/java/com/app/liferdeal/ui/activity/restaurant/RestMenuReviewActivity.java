@@ -1,6 +1,7 @@
 package com.app.liferdeal.ui.activity.restaurant;
 
 import android.app.ProgressDialog;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,11 +47,10 @@ public class RestMenuReviewActivity extends AppCompatActivity implements View.On
     private ProgressDialog progressDialog;
     private ProgressBar banner_progress;
     private RatingBar ratingBar;
-    private TextView shop_image_place_text, tv_item_discount_cost, txt_view_for_no_data, tv_restaurant_rating_value, txt_rest_name;
-    private String customerId = "", restId = "", clickRestName = "", RESTCOVER = "", RESTLOGO = "", RESTADDRESS = "", RESTISOPEN = "", ratingValue = "";
+    private TextView shop_image_place_text, tv_item_discount_cost, txt_view_for_no_data, tv_restaurant_rating_value, txt_rest_name, tv_cart_item_count;
+    private String customerId = "", restId = "", clickRestName = "", RESTCOVER = "", RESTLOGO = "", RESTADDRESS = "", RESTISOPEN = "", ratingValue = "", colorCode = "";
 
     private LanguageResponse model = new LanguageResponse();
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,6 +76,7 @@ public class RestMenuReviewActivity extends AppCompatActivity implements View.On
             txt_view_for_no_data = findViewById(R.id.txt_view_for_no_data);
             ratingBar = findViewById(R.id.ratingBar);
             txt_rest_name = findViewById(R.id.txt_rest_name);
+            tv_cart_item_count = findViewById(R.id.tv_cart_item_count);
             tv_restaurant_rating_value = findViewById(R.id.tv_restaurant_rating_value);
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(RestMenuReviewActivity.this);
             rcv_rest_details_list.setLayoutManager(mLayoutManager);
@@ -87,11 +88,14 @@ public class RestMenuReviewActivity extends AppCompatActivity implements View.On
             RESTADDRESS = getIntent().getStringExtra("RESTADDRESS");
             RESTISOPEN = getIntent().getStringExtra("RESTISOPEN");
             ratingValue = getIntent().getStringExtra("RATINGVAL");
+            colorCode = getIntent().getStringExtra("color");
+
+            tv_cart_item_count.setText("" + AddExtraActivity.cart_Item_number);
 
             txt_rest_name.setText(model.getRestaurantReview());
 
             shop_image_place_text.setText(clickRestName);
-            tv_item_discount_cost.setText(RESTISOPEN);
+//            tv_item_discount_cost.setText(RESTISOPEN);
             if (!ratingValue.equalsIgnoreCase("")) {
                 ratingBar.setRating(Float.parseFloat(ratingValue));
             }
@@ -99,7 +103,16 @@ public class RestMenuReviewActivity extends AppCompatActivity implements View.On
             Glide.with(this).load(Uri.parse(RESTCOVER)).into(shop_img_places);
             Glide.with(this).load(Uri.parse(RESTLOGO)).into(rset_logo);
 
-
+            if (RESTISOPEN.contains("open") || RESTISOPEN.contains("Offen bei")) {
+//                tv_item_discount_cost.setBackgroundResource(R.drawable.circle_background);
+                tv_item_discount_cost.setText(RESTISOPEN);
+            } else if (RESTISOPEN.contains("Preorder") || RESTISOPEN.contains("Jetzt offen")) {
+//                tv_item_discount_cost.setBackgroundResource(R.drawable.circle_back_orange);
+                tv_item_discount_cost.setText(RESTISOPEN);
+            } else if (RESTISOPEN.contains("closed") || RESTISOPEN.contains("Jetzt geschlossen")) {
+                tv_item_discount_cost.setText(RESTISOPEN);
+            }
+            tv_item_discount_cost.setBackgroundColor(Color.parseColor(colorCode));
             img_back.setOnClickListener(this);
 
 

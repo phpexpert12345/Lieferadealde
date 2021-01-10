@@ -11,6 +11,7 @@
         android:layout_height="match_parent">
 
         <TextView
+            android:id="@+id/tvThankuTxt"
             android:layout_marginTop="@dimen/_15sdp"
             android:fontFamily="@font/roboto_bold"
             android:layout_gravity="center"
@@ -42,6 +43,8 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:fontFamily="@font/roboto_medium"
             android:layout_gravity="center"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginEnd="@dimen/dp_10"
             android:gravity="center"
             android:text="@string/your_booking"
             android:textColor="@color/colorBlack"
@@ -54,6 +57,8 @@
             android:id="@+id/tvBookingNo"
             android:layout_marginTop="@dimen/_15sdp"
             android:fontFamily="@font/roboto_bold"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginEnd="@dimen/dp_10"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="Your booking number is 74647347"
@@ -68,6 +73,8 @@
             android:fontFamily="@font/roboto_bold"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginEnd="@dimen/dp_10"
             android:gravity="center"
             android:text="Booking  Date : 02 Jan,2021 13:50"
             android:textColor="@color/colorGreenLite"
@@ -85,6 +92,8 @@
             android:text="Note: If 10 minute late for the booking the table will be \n  re-allocated"
             android:textColor="@color/colorRed"
             android:textSize="@dimen/_9sdp"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginEnd="@dimen/dp_10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 

@@ -32,12 +32,23 @@ public class CusineFilterModel {
         @SerializedName("cuisine_img")
         @Expose
         private String cuisineImg;
+        @SerializedName("seo_url_call")
+        @Expose
+        private String seoUrlCall;
         @SerializedName("error")
         @Expose
         private Integer error;
 
         public Integer getId() {
             return id;
+        }
+
+        public String getSeoUrlCall() {
+            return seoUrlCall;
+        }
+
+        public void setSeoUrlCall(String seoUrlCall) {
+            this.seoUrlCall = seoUrlCall;
         }
 
         public void setId(Integer id) {

@@ -14,6 +14,25 @@ public class Constants {
     public static final String FORCASHONDELIVERY ="forcashdelivery" ;
     public static final String PAYPALPAY ="paypalPay" ;
     public static final String CARDPAY ="cardpay" ;
+    public static final String RESTAURANTID ="RESTAURANTID" ;
+    public static final String PRICEPREFERENCE ="pricepreference" ;
+    public static final String SUBTOTAL ="subtotalpr" ;
+    public static final String FOODDISCOUNT ="fooddiscountpr" ;
+    public static final String SERVICEFEES ="servicefeespr" ;
+    public static final String SALESTAX ="salestaxpr" ;
+    public static final String VAT ="vatpr" ;
+    public static final String DELIVERYFEES ="deliveryfeespr" ;
+    public static final String PACKAGINGFEES = "packagingfeespr";
+    public static final String TOTALPR ="totalpr" ;
+    public static final String FORRESTIDCHANGE ="forrestidchange" ;
+    public static final String FIRSTTIMELOGINPAGE ="firsttimeloginpage" ;
+    public static final String ADDRESSTITLE ="addresstielead" ;
+    public static final String HOUSENO ="housenoad" ;
+    public static final String STREETNAME ="streetnamead" ;
+    public static final String CITYNAME ="citynamead" ;
+    public static final String POSTALCODE = "postalcodead";
+    public static final String SIZEOFPIZZA ="sizeofpizzapr" ;
+    public static final String FILTERDATA ="filterdatapr" ;
     public static String isLoggedIn = "isLoggedIn";
 
     public static class Url {

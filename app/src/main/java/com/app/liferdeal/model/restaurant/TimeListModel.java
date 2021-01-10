@@ -18,7 +18,7 @@ public class TimeListModel {
         this.timeList = timeList;
     }
 
-    public class TimeList {
+    public static class TimeList {
 
         @SerializedName("GetTime")
         @Expose

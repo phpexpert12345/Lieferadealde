@@ -23,19 +23,38 @@
                 android:layout_width="@dimen/dp_20"
                 android:layout_height="@dimen/dp_20"
                 android:layout_centerVertical="true"
+                android:visibility="invisible"
                 android:layout_marginStart="@dimen/dp_10"
                 android:src="@drawable/ic_back_arrow"
                 app:tint="@color/colorBlack"/>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_toRightOf="@+id/img_back"
-                android:orientation="vertical"
-                android:gravity="center"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_centerInParent="true"
+                    android:id="@+id/imgViewLogo"
+                    android:layout_width="180dp"
+                    android:layout_height="match_parent">
+
+                </ImageView>
+                <TextView
+                    android:id="@+id/tvClose"
+                    android:textColor="@color/colorPrimaryone"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="@dimen/dp_5"
+                    android:layout_width="wrap_content"
+                    android:text="Close"
+                    android:fontFamily="@font/roboto_bold"
+                    android:textSize="@dimen/sp_13"
+                    android:layout_height="wrap_content"/>
 
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/txt_order_number"
                     android:layout_width="wrap_content"
                     android:text="Order No #6420"
@@ -43,13 +62,14 @@
                     android:textSize="@dimen/sp_15"
                     android:layout_height="wrap_content"/>
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/txt_order_date_time"
                     android:layout_width="wrap_content"
                     android:fontFamily="@font/roboto_medium"
                     android:textSize="@dimen/sp_13"
                     android:text="Order Placed at : "
                     android:layout_height="wrap_content"/>
-            </LinearLayout>
+            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/cart_count_layout"
@@ -117,6 +137,7 @@
         android:layout_height="@dimen/_150sdp"
         />
 
+
     <LinearLayout
         android:id="@+id/lnr_time"
         android:layout_width="match_parent"
@@ -128,7 +149,7 @@
         <TextView
             android:id="@+id/txt_time_order"
             android:layout_width="match_parent"
-            android:text="9:15 AM"
+            android:text="@string/assonasposible"
             android:background="@color/colorPrimaryone"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/_13ssp"
@@ -166,6 +187,8 @@
         android:gravity="center"
         android:layout_height="wrap_content">
         <TextView
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
             android:id="@+id/tvThank"
             android:layout_width="wrap_content"
             android:text="Thank you! Your order with"
@@ -175,10 +198,10 @@
             android:gravity="center"
             android:layout_height="wrap_content"/>
         <TextView
+            android:layout_marginLeft="@dimen/_5sdp"
             android:id="@+id/txt_order_with_rest_name"
             android:layout_width="wrap_content"
             android:text=""
-            android:layout_marginLeft="@dimen/_5sdp"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_10ssp"
             android:layout_height="wrap_content"/>
@@ -188,8 +211,8 @@
         android:id="@+id/lnr_share_food_track"
         android:layout_width="match_parent"
         android:layout_below="@+id/lnr_thanky_text_withrestname"
+        android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginRight="@dimen/_80sdp"
-        android:layout_marginTop="@dimen/dp_10"
         android:layout_marginLeft="@dimen/_80sdp"
         android:layout_height="wrap_content">
         <TextView
@@ -245,10 +268,10 @@
             android:layout_height="wrap_content"/>
         <TextView
             android:layout_width="match_parent"
-            android:text=""
-            android:visibility="gone"
-            android:textColor="@color/gray"
-            android:textSize="@dimen/_12ssp"
+            android:id="@+id/tvSizeOf"
+            android:visibility="visible"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_11ssp"
             android:textStyle="bold"
             android:layout_height="wrap_content"/>
     </LinearLayout>
@@ -321,6 +344,7 @@
             android:layout_height="@dimen/_1sdp"/>
 
         <RelativeLayout
+            android:id="@+id/rvSubtotal"
             android:layout_width="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
@@ -360,11 +384,13 @@
         </RelativeLayout>
 
         <View
+            android:id="@+id/viewSubtotal"
             android:layout_width="match_parent"
             android:background="@color/gray"
             android:layout_height="@dimen/_1sdp"/>
 
         <RelativeLayout
+            android:id="@+id/rvFoodDiscount"
             android:layout_width="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
@@ -403,12 +429,283 @@
 
         </RelativeLayout>
         <View
+            android:id="@+id/viewServiceFees"
+            android:layout_width="match_parent"
+            android:background="@color/gray"
+            android:layout_height="@dimen/_1sdp"/>
+
+        <RelativeLayout
+            android:id="@+id/rvServiceFees"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_height="@dimen/_30sdp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tvServiceFee"
+                    android:layout_width="match_parent"
+                    android:text="Service Fee"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_10ssp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/txtServiceFee"
+                    android:layout_width="match_parent"
+                    android:text=""
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_13ssp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+        </RelativeLayout>
+        <View
+            android:id="@+id/viewSalesTax"
+            android:layout_width="match_parent"
+            android:background="@color/gray"
+            android:layout_height="@dimen/_1sdp"/>
+
+        <RelativeLayout
+            android:id="@+id/rvSalesTax"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_height="@dimen/_30sdp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tvSalesTax"
+                    android:layout_width="match_parent"
+                    android:text="Sales Tax"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_10ssp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/txtSalexTax"
+                    android:layout_width="match_parent"
+                    android:text=""
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_13ssp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+        </RelativeLayout>
+        <View
+            android:id="@+id/viewVat"
+            android:layout_width="match_parent"
+            android:background="@color/gray"
+            android:layout_height="@dimen/_1sdp"/>
+
+        <RelativeLayout
+            android:id="@+id/rvVat"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_height="@dimen/_30sdp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tvVat"
+                    android:layout_width="match_parent"
+                    android:text="VAT"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_10ssp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/txtVat"
+                    android:layout_width="match_parent"
+                    android:text=""
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_13ssp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+        </RelativeLayout>
+        <View
+            android:id="@+id/viewDeliveryFees"
+            android:layout_width="match_parent"
+            android:background="@color/gray"
+            android:layout_height="@dimen/_1sdp"/>
+
+        <RelativeLayout
+            android:id="@+id/rvDeliveryFees"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_height="@dimen/_30sdp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tvDeliveryFee"
+                    android:layout_width="match_parent"
+                    android:text="Delivery Fee"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_10ssp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/txtDeliveryFee"
+                    android:layout_width="match_parent"
+                    android:text=""
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_13ssp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+        </RelativeLayout>
+        <View
+            android:id="@+id/viewPackagingFees"
+            android:layout_width="match_parent"
+            android:background="@color/gray"
+            android:layout_height="@dimen/_1sdp"/>
+
+        <RelativeLayout
+            android:id="@+id/rvPackagingFees"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_height="@dimen/_30sdp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tvPackagingFee"
+                    android:layout_width="match_parent"
+                    android:text="Packaging Fee"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_10ssp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/txtPackagingFee"
+                    android:layout_width="match_parent"
+                    android:text=""
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_13ssp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+        </RelativeLayout>
+        <View
 
             android:layout_width="match_parent"
             android:background="@color/gray"
             android:layout_height="@dimen/_1sdp"/>
 
         <RelativeLayout
+            android:id="@+id/rvTotal"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_height="@dimen/_30sdp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tvTotal"
+                    android:layout_width="match_parent"
+                    android:text="Packaging Fee"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_10ssp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/txtTotal"
+                    android:layout_width="match_parent"
+                    android:text=""
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_13ssp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+        </RelativeLayout>
+        <View
+
+            android:layout_width="match_parent"
+            android:background="@color/gray"
+            android:layout_height="@dimen/_1sdp"/>
+
+        <RelativeLayout
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
@@ -445,22 +742,80 @@
                     android:layout_height="wrap_content"/>
             </LinearLayout>
 
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_height="@dimen/_30sdp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tvOrderNumber"
+                    android:layout_width="match_parent"
+                    android:text="Your Order Number"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_10ssp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tvOrderNoText"
+                    android:layout_width="match_parent"
+                    android:text=""
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_13ssp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+
+
         </RelativeLayout>
 
 
-            <TextView
-                android:id="@+id/txt_btn_go_to_home"
-                android:layout_alignParentBottom="true"
-                android:layout_width="match_parent"
-                android:text="Go to Home"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/_15ssp"
-                android:background="@color/colorPrimaryone"
-                android:layout_height="@dimen/_35sdp"/>
     </LinearLayout>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+    <RelativeLayout
+        android:id="@+id/rlForgot"
+        android:background="@color/colorOrangeDark"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_45sdp">
+
+        <TextView
+            android:layout_centerHorizontal="true"
+            android:id="@+id/txt_btn_go_to_home"
+            android:layout_width="wrap_content"
+            android:text="Forgot Something?"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/_15ssp"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tvPlaceAnew"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/txt_btn_go_to_home"
+            android:layout_width="wrap_content"
+            android:text="Place a new Order"
+
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/_12sdp"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
 </RelativeLayout>

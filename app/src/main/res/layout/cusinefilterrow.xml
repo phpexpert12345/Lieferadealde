@@ -23,6 +23,7 @@
             android:buttonTint="@color/colorGreenLiteh"/>
 
         <CheckBox
+            android:textColor="@color/colorBlack"
             android:visibility="visible"
             android:id="@+id/cbitem"
             android:layout_width="match_parent"
@@ -31,6 +32,7 @@
             android:buttonTint="@color/colorGreenLiteh"/>
 
         <TextView
+            android:textColor="@color/colorBlack"
             android:id="@+id/txtitemname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,6 +41,7 @@
             android:textSize="@dimen/sp_13"/>
 
         <TextView
+            android:textColor="@color/colorBlack"
             android:id="@+id/txtprice"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

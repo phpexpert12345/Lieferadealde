@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fillViewport="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            app:cardBackgroundColor="@color/quantum_white_100"
+            android:layout_margin="10dp"
+            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:layout_height="220dp">
+
+            <RelativeLayout
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tvApply"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="Redeem Loyalty Points"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/colorBlack"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/tvLoyaltyPoint"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:layout_below="@+id/tvApply"
+                    android:textColor="@color/dark_gray"
+                    android:text=""
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:id="@+id/ivClose"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/ic_close"
+                    android:layout_width="20dp"
+                    android:backgroundTint="@color/colorBlack"
+                    android:layout_height="20dp"/>
+
+                <EditText
+                    android:textColor="@color/colorBlack"
+                    android:textColorHint="@color/gray"
+                    android:background="@null"
+                    android:id="@+id/etLoyaltyPoint"
+                    android:layout_below="@+id/tvLoyaltyPoint"
+                    android:inputType="number"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:layout_marginTop="30dp"
+                    android:hint=""
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"/>
+
+                <View
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@+id/etLoyaltyPoint"
+                    android:background="@color/gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"/>
+
+                <Button
+                    android:id="@+id/btnApply"
+                    android:textColor="@color/quantum_white_100"
+                    android:textAllCaps="false"
+                    android:fontFamily="@font/montserrat_semi_bold"
+                    android:text=""
+                    android:layout_marginTop="20dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/etLoyaltyPoint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+
+</ScrollView>

@@ -125,7 +125,7 @@ public class RestaurantDetailsAdapter extends RecyclerView.Adapter<RestaurantDet
                     mContext.startActivity(i);
                 } else {
                     restaurantDetailsAdapterInterface.getClickMenuData(listFilterSubCategory.get(position).getItemID(),
-                            listFilterSubCategory.get(position).getRestaurantPizzaItemName(), listFilterSubCategory.get(position).getRestaurantPizzaItemPrice());
+                            listFilterSubCategory.get(position).getRestaurantPizzaItemName(), listFilterSubCategory.get(position).getRestaurantPizzaItemPrice(),listFilterSubCategory.get(position).getResPizzaDescription());
                 }
             }
         });
@@ -148,7 +148,7 @@ public class RestaurantDetailsAdapter extends RecyclerView.Adapter<RestaurantDet
                     mContext.startActivity(i);
                 } else {
                     restaurantDetailsAdapterInterface.getClickMenuData(listFilterSubCategory.get(position).getItemID(),
-                            listFilterSubCategory.get(position).getRestaurantPizzaItemName(), listFilterSubCategory.get(position).getRestaurantPizzaItemPrice());
+                            listFilterSubCategory.get(position).getRestaurantPizzaItemName(), listFilterSubCategory.get(position).getRestaurantPizzaItemPrice(),listFilterSubCategory.get(position).getResPizzaDescription());
                     if (listFilterSubCategory.get(position).getSizeavailable().equalsIgnoreCase("yes")){
                         holder.linearOnlyPlus.setVisibility(View.VISIBLE);
                         holder.linearWithQuantity.setVisibility(View.INVISIBLE);
@@ -163,7 +163,7 @@ public class RestaurantDetailsAdapter extends RecyclerView.Adapter<RestaurantDet
             @Override
             public void onClick(View v) {
                 restaurantDetailsAdapterInterface.getClickMenuData(listFilterSubCategory.get(position).getItemID(),
-                        listFilterSubCategory.get(position).getRestaurantPizzaItemName(), listFilterSubCategory.get(position).getRestaurantPizzaItemPrice());
+                        listFilterSubCategory.get(position).getRestaurantPizzaItemName(), listFilterSubCategory.get(position).getRestaurantPizzaItemPrice(),listFilterSubCategory.get(position).getResPizzaDescription());
                 holder.tv_quantity.setText(String.valueOf(Integer.parseInt(holder.tv_quantity.getText().toString())+1));
             }
         });

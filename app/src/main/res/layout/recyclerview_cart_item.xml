@@ -25,14 +25,37 @@
                 android:textSize="@dimen/sp_15" />
 
             <TextView
+                android:fontFamily="@font/roboto_bold"
+                android:id="@+id/tv_menu_item_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_2"
+                android:text="Vegetarian Samosa"
+                android:textColor="@color/colorTextSubSecondary"
+                android:textSize="@dimen/sp_13" />
+
+            <TextView
                 android:fontFamily="@font/roboto_medium"
                 android:id="@+id/tv_menu_item_extra"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/dark_gray"
                 android:layout_marginStart="@dimen/sp_15"
                 android:layout_marginTop="@dimen/dp_2"
                 android:text="Vegetarian Samosa"
-                android:textSize="@dimen/sp_13" />
+                android:textSize="@dimen/sp_11" />
+
+            <TextView
+                android:fontFamily="@font/roboto_medium"
+                android:id="@+id/tv_subcat_item_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/dark_gray"
+                android:layout_marginStart="@dimen/sp_15"
+                android:layout_marginTop="@dimen/dp_2"
+                android:text="Vegetarian Samosa"
+                android:textSize="@dimen/sp_11" />
         </LinearLayout>
 
         <LinearLayout

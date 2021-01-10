@@ -35,6 +35,7 @@
                 android:textStyle="bold"
                 android:textSize="@dimen/sp_15" />
             <RelativeLayout
+                android:visibility="invisible"
                 android:id="@+id/cart_count_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -82,6 +83,7 @@
     </androidx.cardview.widget.CardView>
 
     <RelativeLayout
+        android:background="@color/colorWhite"
         android:layout_below="@+id/tool_activity"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -96,6 +98,7 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:fontFamily="@font/montserrat_bold"
                 android:id="@+id/txt_view_ordernumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -106,6 +109,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:fontFamily="@font/montserrat_bold"
                 android:id="@+id/txt_view_orderstatus"
                 android:layout_width="wrap_content"
                 android:text="Order ID : "
@@ -135,13 +139,14 @@
                 android:textSize="@dimen/_12ssp"
                 android:layout_alignParentLeft="true"
                 android:textStyle="bold"
-                android:textColor="@color/colorBlack"
+                android:textColor="@color/quantum_grey700"
                 android:layout_height="wrap_content"/>
 
 
         </RelativeLayout>
 
         <View
+            android:layout_marginTop="@dimen/_5sdp"
             android:layout_width="match_parent"
             android:layout_below="@+id/rlt_sub_total"
             android:background="@color/color_lighteGray"
@@ -157,6 +162,7 @@
             android:layout_height="@dimen/_30sdp">
 
             <TextView
+                android:fontFamily="@font/montserrat_bold"
                 android:id="@+id/tvFoodItems"
                 android:layout_width="wrap_content"
                 android:text="Food Items - "
@@ -167,9 +173,31 @@
                 android:textColor="@color/colorBlack"
                 android:layout_height="wrap_content"/>
 
+            <TextView
+                android:id="@+id/tvFoodName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvFoodItems"
+                android:layout_alignParentLeft="true"
+                android:text="Sub Total"
+                android:textColor="@color/quantum_grey700"
+                android:textSize="@dimen/_12ssp"
+                android:textStyle="bold" />
+            <TextView
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/tvFoodItems"
+                android:id="@+id/txtPrice"
+                android:layout_width="wrap_content"
+                android:text="19.0"
+                android:textSize="@dimen/_12ssp"
+                android:textStyle="bold"
+                android:textColor="@color/quantum_grey700"
+                android:layout_height="wrap_content"/>
+
         </RelativeLayout>
 
         <View
+            android:layout_marginTop="@dimen/_5sdp"
             android:layout_width="match_parent"
             android:layout_below="@+id/rlt_total"
             android:background="@color/color_lighteGray"
@@ -186,6 +214,7 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:fontFamily="@font/montserrat_bold"
                 android:id="@+id/txt_vie_menu"
                 android:layout_width="wrap_content"
                 android:text="Delivered To - "
@@ -195,61 +224,236 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
+
                 android:id="@+id/txt_delivered_city"
                 android:layout_below="@+id/txt_vie_menu"
                 android:layout_width="wrap_content"
                 android:text="Pizza Selection"
                 android:textSize="@dimen/_12ssp"
-                android:textColor="@color/colorBlack"
+                android:textColor="@color/quantum_grey700"
                 android:layout_height="wrap_content"/>
 
 
 
 
         </RelativeLayout>
-
         <RelativeLayout
-            android:id="@+id/rlt_sub_menu"
+            android:id="@+id/rvTop"
             android:layout_below="@+id/rlt_menu"
             android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:layout_marginRight="@dimen/_10sdp"
             android:layout_height="wrap_content">
+            <RelativeLayout
 
-            <TextView
-                android:id="@+id/txt_view_sub_menu"
-                android:layout_width="wrap_content"
-                android:text="Order Recieved"
-                android:textSize="@dimen/_12ssp"
-                android:textStyle="bold"
-                android:textColor="@color/colorBlack"
-                android:layout_height="wrap_content"/>
+                android:id="@+id/rlt_sub_menu"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginLeft="@dimen/_25sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/txt_view_sub_menu_one"
-                android:layout_below="@+id/txt_view_sub_menu"
-                android:layout_width="wrap_content"
-                android:text="2020"
-                android:textSize="@dimen/_12ssp"
-                android:textColor="@color/colorBlack"
-                android:layout_height="wrap_content"/>
+                <TextView
+                    android:fontFamily="@font/montserrat_bold"
+                    android:id="@+id/txt_view_sub_menu"
+                    android:layout_width="wrap_content"
+                    android:text="Order Recieved"
+                    android:textSize="@dimen/_12ssp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorBlack"
+                    android:layout_height="wrap_content"/>
 
-            <TextView
-                android:layout_below="@+id/txt_view_sub_menu_one"
-                android:layout_width="wrap_content"
-                android:text="Pizza Selection"
+                <TextView
+                    android:id="@+id/txt_view_sub_menu_one"
+                    android:layout_below="@+id/txt_view_sub_menu"
+                    android:layout_width="wrap_content"
+                    android:text=""
+                    android:textSize="@dimen/_12ssp"
+                    android:textColor="@color/quantum_grey700"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_below="@+id/txt_view_sub_menu_one"
+                    android:layout_width="wrap_content"
+                    android:text="Pizza Selection"
+                    android:visibility="gone"
+                    android:textSize="@dimen/_10ssp"
+                    android:layout_height="wrap_content"/>
+
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_marginLeft="@dimen/_25sdp"
+                android:id="@+id/rlConfirmed"
+                android:layout_below="@+id/rlt_sub_menu"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_20sdp"
+
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:fontFamily="@font/montserrat_bold"
+                    android:id="@+id/txtConfirmed"
+                    android:layout_width="wrap_content"
+                    android:text="Order Confirmed"
+                    android:textSize="@dimen/_12ssp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorBlack"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/txtConfirmedDate"
+                    android:layout_below="@+id/txtConfirmed"
+                    android:layout_width="wrap_content"
+                    android:text="2020"
+                    android:textSize="@dimen/_12ssp"
+                    android:textColor="@color/quantum_grey700"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_below="@+id/txtConfirmedDate"
+                    android:layout_width="wrap_content"
+                    android:text="Pizza Selection"
+                    android:visibility="gone"
+                    android:textSize="@dimen/_10ssp"
+                    android:layout_height="wrap_content"/>
+
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_marginLeft="@dimen/_25sdp"
+                android:id="@+id/rlDelivered"
+                android:layout_below="@+id/rlConfirmed"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:fontFamily="@font/montserrat_bold"
+                    android:id="@+id/txtDelivered"
+                    android:layout_width="wrap_content"
+                    android:text="Order Delivery"
+                    android:textSize="@dimen/_12ssp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorBlack"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/txtDeliveredDate"
+                    android:layout_below="@+id/txtDelivered"
+                    android:layout_width="wrap_content"
+                    android:text="2020"
+                    android:textSize="@dimen/_12ssp"
+                    android:textColor="@color/quantum_grey700"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_below="@+id/txtDeliveredDate"
+                    android:layout_width="wrap_content"
+                    android:text="Pizza Selection"
+                    android:visibility="gone"
+                    android:textSize="@dimen/_10ssp"
+                    android:layout_height="wrap_content"/>
+
+
+            </RelativeLayout>
+            <View
                 android:visibility="gone"
-                android:textSize="@dimen/_10ssp"
+                android:id="@+id/viewSquare1"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:background="@color/colorGreen"
+                android:layout_width="@dimen/_12sdp"
+                android:layout_height="@dimen/_12sdp">
+
+            </View>
+            <View
+                android:visibility="gone"
+                android:id="@+id/viewSquare2"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_80sdp"
+                android:background="@color/colorGreen"
+                android:layout_width="@dimen/_12sdp"
+                android:layout_height="@dimen/_12sdp">
+
+            </View>
+
+            <View
+                android:visibility="gone"
+                android:id="@+id/viewSquare3"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_130sdp"
+                android:background="@color/colorGreen"
+                android:layout_width="@dimen/_12sdp"
+                android:layout_height="@dimen/_12sdp">
+
+            </View>
+
+
+
+
+            <View
+                android:visibility="gone"
+                android:id="@+id/viewLine1"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginLeft="@dimen/_11sdp"
+                android:background="@color/colorGreen"
+                android:layout_width="@dimen/_2sdp"
+                android:layout_height="@dimen/_60sdp">
+
+            </View>
+            <View
+                android:visibility="gone"
+                android:id="@+id/viewLine2"
+                android:layout_marginTop="@dimen/_80sdp"
+                android:layout_marginLeft="@dimen/_11sdp"
+                android:background="@color/colorGreen"
+                android:layout_width="@dimen/_2sdp"
+                android:layout_height="@dimen/_60sdp">
+
+            </View>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rvWriteAReview"
+            android:background="@color/gray"
+            android:layout_margin="@dimen/_10sdp"
+            android:layout_below="@+id/rvTop"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp">
+
+            <RatingBar
+                android:layout_centerVertical="true"
+                android:rating="4"
+                android:layout_marginStart="@dimen/dp_10"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:numStars="5"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
+            <TextView
+                android:id="@+id/tvWrite"
+                android:fontFamily="@font/montserrat_semi_bold"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:textSize="@dimen/sp_13"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:text="Write a review"
+                android:textColor="@color/colorBlack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </TextView>
 
         </RelativeLayout>
+
+
 
         <RelativeLayout
             android:id="@+id/rlt_review"
-            android:layout_below="@+id/rlt_sub_menu"
+            android:layout_below="@+id/rvTop"
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:visibility="gone"

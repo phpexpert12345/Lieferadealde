@@ -29,7 +29,6 @@ import com.app.liferdeal.model.restaurant.AddressModel;
 import com.app.liferdeal.model.restaurant.ModelAddressList;
 import com.app.liferdeal.network.retrofit.ApiInterface;
 import com.app.liferdeal.network.retrofit.RFClient;
-import com.app.liferdeal.ui.activity.profile.ProfileActivity;
 import com.app.liferdeal.ui.adapters.AddressAdapter;
 import com.app.liferdeal.util.Constants;
 import com.app.liferdeal.util.GPSTracker;
@@ -39,6 +38,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -46,6 +47,8 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class AddressActivity extends AppCompatActivity implements View.OnClickListener, AddressAdapter.AddressDelete {
+    @BindView(R.id.tvNoData)
+    AppCompatTextView tvNoData;
     private RecyclerView list_view_details;
     private RelativeLayout rl_back;
     private AppCompatButton card_add_address;
@@ -65,6 +68,7 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.address_activity);
+        ButterKnife.bind(this);
         if (App.retrieveLangFromGson(AddressActivity.this) != null) {
             model = App.retrieveLangFromGson(AddressActivity.this);
         }
@@ -147,6 +151,12 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
                     public void onNext(ModelAddressList searchResult) {
                         showProgress();
                         setAddAdapter(searchResult.getAddressModel().getDeliveryaddress());
+                        if (searchResult.getAddressModel().getDeliveryaddress().size() > 0) {
+                            tvNoData.setVisibility(View.GONE);
+                        } else {
+                            tvNoData.setVisibility(View.VISIBLE);
+                            tvNoData.setText(model.getDATAISNOTAVAILABLE());
+                        }
                         hideProgress();
                     }
 
@@ -189,11 +199,15 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     public void showProgress() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Please wait...");
-        progressDialog.setCancelable(false);
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.show();
+        try {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage("Please wait...");
+            progressDialog.setCancelable(false);
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void hideProgress() {

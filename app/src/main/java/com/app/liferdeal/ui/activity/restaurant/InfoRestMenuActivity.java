@@ -1,6 +1,8 @@
 package com.app.liferdeal.ui.activity.restaurant;
 
+import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -75,9 +78,11 @@ public class InfoRestMenuActivity extends AppCompatActivity implements View.OnCl
             lnr_txt_view_for_delivery_time_thursday, lnr_txt_view_for_delivery_time_friday, lnr_txt_view_for_delivery_time_satday, lnr_txt_view_for_delivery_time_sunday;
 
     private RecyclerView rcv_delivery_cost, rcv_special_holiday;
-    private TextView txt_restaurant_name, txt_rest_name_address, txt_legal_repesent_name, txt_legal_contact_no, txt_legal_email_id,
+    private TextView txt_restaurant_name, txt_rest_name_address, txt_legal_repesent_name, txt_legal_contact_no, txt_legal_email_id, tv_cart_item_count,
             txt_legal_fax, txt_legal_conmpany_registero, txt_legal_cocompany_register_nom, txt_legal_vat_number, txt_legal_social_sharing_msg,
-            txt_view_impressum, txt_rest_name;
+            txt_view_impressum, txt_rest_name, tvMonday, tvTuesday, tvSaturday, tvWednesday, tvThrusday, tvFriday, tvSunday, tvPincode, tvVatNo,
+            tvDeliveryAddress, tvDeliveryFee, tvDeliveryTimes, tvMinOrder, tvContactNo, tvEmail, tvFax, tvCompanyRegister, tvCompanyRegNo, tvLegalRepresentative;
+
     private LanguageResponse model1 = new LanguageResponse();
 
     @Override
@@ -111,6 +116,13 @@ public class InfoRestMenuActivity extends AppCompatActivity implements View.OnCl
             lnr_text_for_delivery_time = findViewById(R.id.lnr_text_for_delivery_time);
             rlt_delivery_time_img_view = findViewById(R.id.rlt_delivery_time_img_view);
             rlt_delivery_time = findViewById(R.id.rlt_delivery_time);
+            tv_cart_item_count = findViewById(R.id.tv_cart_item_count);
+            tvTuesday = findViewById(R.id.tvTuesday);
+            tvDeliveryFee = findViewById(R.id.tvDeliveryFee);
+            tvMinOrder = findViewById(R.id.tvMinOrder);
+            tvContactNo = findViewById(R.id.tvContactNo);
+
+            tv_cart_item_count.setText("" + AddExtraActivity.cart_Item_number);
 
             /////// FOR DELIVERY COST////////////////
             rlt_delivery_cost = findViewById(R.id.rlt_delivery_cost);
@@ -138,12 +150,28 @@ public class InfoRestMenuActivity extends AppCompatActivity implements View.OnCl
             txt_legal_cocompany_register_nom = findViewById(R.id.txt_legal_cocompany_register_nom);
             txt_legal_vat_number = findViewById(R.id.txt_legal_vat_number);
             txt_legal_social_sharing_msg = findViewById(R.id.txt_legal_social_sharing_msg);
+            tvMonday = findViewById(R.id.tvMonday);
+            tvSaturday = findViewById(R.id.tvSaturday);
+            tvWednesday = findViewById(R.id.tvWednesday);
+            tvThrusday = findViewById(R.id.tvThrusday);
+            tvTuesday = findViewById(R.id.tvTuesday);
+            tvFriday = findViewById(R.id.tvFriday);
+            tvSunday = findViewById(R.id.tvSunday);
+            tvPincode = findViewById(R.id.tvPincode);
 
             //////////// FOR IMRESSUM ////////////////////////
             rlt_impressum = findViewById(R.id.rlt_impressum);
             rlt_impresum_img_view = findViewById(R.id.rlt_impresum_img_view);
             lnr_text_for_impressum = findViewById(R.id.lnr_text_for_impressum);
             txt_view_impressum = findViewById(R.id.txt_view_impressum);
+            tvDeliveryAddress = findViewById(R.id.tvDeliveryAddress);
+            tvDeliveryTimes = findViewById(R.id.tvDeliveryTimes);
+            tvEmail = findViewById(R.id.tvEmail);
+            tvFax = findViewById(R.id.tvFax);
+            tvVatNo = findViewById(R.id.tvVatNo);
+            tvCompanyRegister = findViewById(R.id.tvCompanyRegister);
+            tvCompanyRegNo = findViewById(R.id.tvCompanyRegNo);
+            tvLegalRepresentative = findViewById(R.id.tvLegalRepresentative);
 
             /////////////////////// FOR SPECIAL HOLIDAY //////////////////////////////
 
@@ -166,12 +194,35 @@ public class InfoRestMenuActivity extends AppCompatActivity implements View.OnCl
             rlt_special_holiday.setOnClickListener(this);
 
             txt_restaurant_name.setText(model1.getAboutRestaurant());
+            txt_rest_name.setText(model1.getAboutRestaurant());
             tvAboutRestaurant.setText(model1.getAboutRestaurant());
             tvDeliveryTime.setText(model1.getDeliveryTime());
             tvDeliveryCost.setText(model1.getDeliveryCost());
             tvContactUs.setText(model1.getContactUs());
             tvImpressum.setText(model1.getImpressum());
             tvSpecial.setText(model1.getSpecialHoliday());
+
+            tvMonday.setText(model1.getMonday());
+            tvTuesday.setText(model1.getTuesday());
+            tvWednesday.setText(model1.getWednesday());
+            tvThrusday.setText(model1.getThursday());
+            tvFriday.setText(model1.getFriday());
+            tvSaturday.setText(model1.getSaturday());
+            tvSunday.setText(model1.getSunday());
+
+            tvPincode.setText(model1.getPostalCode());
+            tvDeliveryAddress.setText(model1.getDeliveryAddress());
+            tvDeliveryFee.setText(model1.getDeliveryCharge());
+            tvDeliveryTimes.setText(model1.getDeliveryTime());
+            tvMinOrder.setText(model1.getMinOrderAmount());
+
+            tvContactNo.setText(model1.getContactNumber());
+            tvEmail.setText(model1.getEmail());
+            tvFax.setText(model1.getFax());
+            tvCompanyRegNo.setText(model1.getCompanyRegisterNo());
+            tvVatNo.setText(model1.getVatNumber());
+            tvCompanyRegister.setText(model1.getCompanyRegister());
+//            tvLegalRepresentative.setText(model1.get);
 
             getRestSearchDetailsData();
 
@@ -200,6 +251,28 @@ public class InfoRestMenuActivity extends AppCompatActivity implements View.OnCl
                     lnr_text_for_about.setBackgroundColor(getResources().getColor(R.color.gray));
                     rlt_about_img_view.setBackgroundResource(R.drawable.minusbtn);
                 }
+
+                if (lnr_text_for_delivery_time.getVisibility() == View.VISIBLE) {
+                    lnr_text_for_delivery_time.setVisibility(View.GONE);
+                    rlt_delivery_time_img_view.setBackgroundResource(R.drawable.plusbtn);
+                }
+                if (lnr_text_for_delivery_cost.getVisibility() == View.VISIBLE) {
+                    lnr_text_for_delivery_cost.setVisibility(View.GONE);
+                    rlt_delivery_cost_img_view.setBackgroundResource(R.drawable.plusbtn);
+                }
+                if (lnr_text_for_contact_us.getVisibility() == View.VISIBLE) {
+                    lnr_text_for_contact_us.setVisibility(View.GONE);
+                    rlt_contact_us_img_view.setBackgroundResource(R.drawable.plusbtn);
+                }
+                if (lnr_text_for_impressum.getVisibility() == View.VISIBLE) {
+                    lnr_text_for_impressum.setVisibility(View.GONE);
+                    rlt_impresum_img_view.setBackgroundResource(R.drawable.plusbtn);
+                }
+                if (lnr_text_for_special_holiday.getVisibility() == View.VISIBLE) {
+                    lnr_text_for_special_holiday.setVisibility(View.GONE);
+                    rlt_special_holiday_img_view.setBackgroundResource(R.drawable.plusbtn);
+                }
+
                 break;
 
             case R.id.rlt_delivery_time:
@@ -213,6 +286,28 @@ public class InfoRestMenuActivity extends AppCompatActivity implements View.OnCl
                     lnr_text_for_delivery_time.setBackgroundColor(getResources().getColor(R.color.gray));
                     rlt_delivery_time_img_view.setBackgroundResource(R.drawable.minusbtn);
                 }
+
+                if (lnr_text_for_about.getVisibility() == View.VISIBLE) {
+                    lnr_text_for_about.setVisibility(View.GONE);
+                    rlt_about_img_view.setBackgroundResource(R.drawable.plusbtn);
+                }
+                if (lnr_text_for_delivery_cost.getVisibility() == View.VISIBLE) {
+                    lnr_text_for_delivery_cost.setVisibility(View.GONE);
+                    rlt_delivery_cost_img_view.setBackgroundResource(R.drawable.plusbtn);
+                }
+                if (lnr_text_for_contact_us.getVisibility() == View.VISIBLE) {
+                    lnr_text_for_contact_us.setVisibility(View.GONE);
+                    rlt_contact_us_img_view.setBackgroundResource(R.drawable.plusbtn);
+                }
+                if (lnr_text_for_impressum.getVisibility() == View.VISIBLE) {
+                    lnr_text_for_impressum.setVisibility(View.GONE);
+                    rlt_impresum_img_view.setBackgroundResource(R.drawable.plusbtn);
+                }
+                if (lnr_text_for_special_holiday.getVisibility() == View.VISIBLE) {
+                    lnr_text_for_special_holiday.setVisibility(View.GONE);
+                    rlt_special_holiday_img_view.setBackgroundResource(R.drawable.plusbtn);
+                }
+
                 break;
 
             case R.id.rlt_delivery_cost:
@@ -227,6 +322,27 @@ public class InfoRestMenuActivity extends AppCompatActivity implements View.OnCl
                     rlt_delivery_cost_img_view.setBackgroundResource(R.drawable.minusbtn);
                 }
 
+
+                if (lnr_text_for_about.getVisibility() == View.VISIBLE) {
+                    lnr_text_for_about.setVisibility(View.GONE);
+                    rlt_about_img_view.setBackgroundResource(R.drawable.plusbtn);
+                }
+                if (lnr_text_for_delivery_time.getVisibility() == View.VISIBLE) {
+                    lnr_text_for_delivery_time.setVisibility(View.GONE);
+                    rlt_delivery_time_img_view.setBackgroundResource(R.drawable.plusbtn);
+                }
+                if (lnr_text_for_contact_us.getVisibility() == View.VISIBLE) {
+                    lnr_text_for_contact_us.setVisibility(View.GONE);
+                    rlt_contact_us_img_view.setBackgroundResource(R.drawable.plusbtn);
+                }
+                if (lnr_text_for_impressum.getVisibility() == View.VISIBLE) {
+                    lnr_text_for_impressum.setVisibility(View.GONE);
+                    rlt_impresum_img_view.setBackgroundResource(R.drawable.plusbtn);
+                }
+                if (lnr_text_for_special_holiday.getVisibility() == View.VISIBLE) {
+                    lnr_text_for_special_holiday.setVisibility(View.GONE);
+                    rlt_special_holiday_img_view.setBackgroundResource(R.drawable.plusbtn);
+                }
                 break;
 
             case R.id.rlt_contact_us:
@@ -241,6 +357,26 @@ public class InfoRestMenuActivity extends AppCompatActivity implements View.OnCl
                     rlt_contact_us_img_view.setBackgroundResource(R.drawable.minusbtn);
                 }
 
+                if (lnr_text_for_about.getVisibility() == View.VISIBLE) {
+                    lnr_text_for_about.setVisibility(View.GONE);
+                    rlt_about_img_view.setBackgroundResource(R.drawable.plusbtn);
+                }
+                if (lnr_text_for_delivery_time.getVisibility() == View.VISIBLE) {
+                    lnr_text_for_delivery_time.setVisibility(View.GONE);
+                    rlt_delivery_time_img_view.setBackgroundResource(R.drawable.plusbtn);
+                }
+                if (lnr_text_for_delivery_cost.getVisibility() == View.VISIBLE) {
+                    lnr_text_for_delivery_cost.setVisibility(View.GONE);
+                    rlt_delivery_cost_img_view.setBackgroundResource(R.drawable.plusbtn);
+                }
+                if (lnr_text_for_impressum.getVisibility() == View.VISIBLE) {
+                    lnr_text_for_impressum.setVisibility(View.GONE);
+                    rlt_impresum_img_view.setBackgroundResource(R.drawable.plusbtn);
+                }
+                if (lnr_text_for_special_holiday.getVisibility() == View.VISIBLE) {
+                    lnr_text_for_special_holiday.setVisibility(View.GONE);
+                    rlt_special_holiday_img_view.setBackgroundResource(R.drawable.plusbtn);
+                }
                 break;
 
             case R.id.rlt_impressum:
@@ -253,6 +389,27 @@ public class InfoRestMenuActivity extends AppCompatActivity implements View.OnCl
                     lnr_text_for_impressum.setVisibility(View.VISIBLE);
                     lnr_text_for_impressum.setBackgroundColor(getResources().getColor(R.color.gray));
                     rlt_impresum_img_view.setBackgroundResource(R.drawable.minusbtn);
+                }
+
+                if (lnr_text_for_about.getVisibility() == View.VISIBLE) {
+                    lnr_text_for_about.setVisibility(View.GONE);
+                    rlt_about_img_view.setBackgroundResource(R.drawable.plusbtn);
+                }
+                if (lnr_text_for_delivery_time.getVisibility() == View.VISIBLE) {
+                    lnr_text_for_delivery_time.setVisibility(View.GONE);
+                    rlt_delivery_time_img_view.setBackgroundResource(R.drawable.plusbtn);
+                }
+                if (lnr_text_for_delivery_cost.getVisibility() == View.VISIBLE) {
+                    lnr_text_for_delivery_cost.setVisibility(View.GONE);
+                    rlt_delivery_cost_img_view.setBackgroundResource(R.drawable.plusbtn);
+                }
+                if (lnr_text_for_contact_us.getVisibility() == View.VISIBLE) {
+                    lnr_text_for_contact_us.setVisibility(View.GONE);
+                    rlt_contact_us_img_view.setBackgroundResource(R.drawable.plusbtn);
+                }
+                if (lnr_text_for_special_holiday.getVisibility() == View.VISIBLE) {
+                    lnr_text_for_special_holiday.setVisibility(View.GONE);
+                    rlt_special_holiday_img_view.setBackgroundResource(R.drawable.plusbtn);
                 }
 
                 break;
@@ -269,8 +426,27 @@ public class InfoRestMenuActivity extends AppCompatActivity implements View.OnCl
                     rlt_special_holiday_img_view.setBackgroundResource(R.drawable.minusbtn);
                 }
 
+                if (lnr_text_for_about.getVisibility() == View.VISIBLE) {
+                    lnr_text_for_about.setVisibility(View.GONE);
+                    rlt_about_img_view.setBackgroundResource(R.drawable.plusbtn);
+                }
+                if (lnr_text_for_delivery_time.getVisibility() == View.VISIBLE) {
+                    lnr_text_for_delivery_time.setVisibility(View.GONE);
+                    rlt_delivery_time_img_view.setBackgroundResource(R.drawable.plusbtn);
+                }
+                if (lnr_text_for_delivery_cost.getVisibility() == View.VISIBLE) {
+                    lnr_text_for_delivery_cost.setVisibility(View.GONE);
+                    rlt_delivery_cost_img_view.setBackgroundResource(R.drawable.plusbtn);
+                }
+                if (lnr_text_for_contact_us.getVisibility() == View.VISIBLE) {
+                    lnr_text_for_contact_us.setVisibility(View.GONE);
+                    rlt_contact_us_img_view.setBackgroundResource(R.drawable.plusbtn);
+                }
+                if (lnr_text_for_impressum.getVisibility() == View.VISIBLE) {
+                    lnr_text_for_impressum.setVisibility(View.GONE);
+                    rlt_impresum_img_view.setBackgroundResource(R.drawable.plusbtn);
+                }
                 break;
-
             default:
                 break;
         }
@@ -342,7 +518,7 @@ public class InfoRestMenuActivity extends AppCompatActivity implements View.OnCl
     private void setDataInExpandList(InfoMenuAcModel searchResult) {
         try {
             model = searchResult;
-            mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+            mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapinfo);
             mapFragment.getMapAsync(this);
 
             restAbout = searchResult.getRestaurantInfo().get(0).getRestaurantAbout();
@@ -423,6 +599,7 @@ public class InfoRestMenuActivity extends AppCompatActivity implements View.OnCl
         List<Address> addresses = null;
         googleMaps.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
+        //LatLng latLong = new LatLng(28.5355, 77.3910);
         LatLng latLong = new LatLng(Double.valueOf(model.getRestaurantInfo().get(0).getRestaurantLatitudePoint()), Double.valueOf(model.getRestaurantInfo().get(0).getRestaurantLongitudePoint()));
         // LatLng currentLatLong = new LatLng(currentLatitude, currentLongitude);
         // LatLng currentLatLong = new LatLng(28.5463658 ,-82.2084836);
@@ -436,13 +613,26 @@ public class InfoRestMenuActivity extends AppCompatActivity implements View.OnCl
 //            String country = addresses.get(0).getCountryName();
 //            String postalCode = addresses.get(0).getPostalCode();
 
+
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            googleMap.setMyLocationEnabled(true);
             googleMap.setTrafficEnabled(false);
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLong, 15.0f));
             googleMap.getUiSettings().setCompassEnabled(false);
             googleMap.getUiSettings().setZoomControlsEnabled(false);
             googleMap.getUiSettings().setMyLocationButtonEnabled(false);
             googleMap.getUiSettings().setMapToolbarEnabled(false);
-            googleMap.getUiSettings().setZoomControlsEnabled(false);
+            googleMap.getUiSettings().setZoomGesturesEnabled(false);
+            googleMap.getUiSettings().setAllGesturesEnabled(false);
             //googleMaps.addMarker(new MarkerOptions().position(latLong).title((""+getIntent().getStringExtra("resturtantaddress"))));
             googleMaps.addMarker(new MarkerOptions().position(latLong));//.title((address)));
 

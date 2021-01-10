@@ -14,6 +14,8 @@ import com.app.liferdeal.ui.fragment.restaurant.TabFragment2;
 import com.app.liferdeal.ui.fragment.restaurant.TabFragment3;
 import com.google.gson.Gson;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
@@ -29,8 +31,9 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
         this.mContext = context;
         this.mListParty = listParty;
         this.mListPhoto = listPhoto;
-
     }
+
+    @NotNull
     @Override
     public Fragment getItem(int position) {
         switch (position) {
@@ -39,7 +42,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 Bundle bundle = new Bundle();
                 bundle.putString("MListdata", gson.toJson(mlist));
                 bundle.putString("mListPartyData", gson.toJson(mListParty));
-                TabFragment1 tab1 = new TabFragment1();
+                TabFragment3 tab1 = new TabFragment3();
                 tab1.setArguments(bundle);
                 return tab1;
             case 1:

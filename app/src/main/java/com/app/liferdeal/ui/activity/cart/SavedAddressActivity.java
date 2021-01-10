@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -59,6 +60,8 @@ public class SavedAddressActivity extends AppCompatActivity implements DeleteAdd
     AppCompatButton btnAddAddress;
     @BindView(R.id.tvDeliveryAdd)
     AppCompatTextView tvDeliveryAdd;
+    @BindView(R.id.tvNoData)
+    AppCompatTextView tvNoData;
     @BindView(R.id.tvAddressLint)
     TextView tvAddressLint;
     private PrefsHelper prefsHelper;
@@ -74,7 +77,7 @@ public class SavedAddressActivity extends AppCompatActivity implements DeleteAdd
     private String payment_transaction_paypal = "", quantity, deliveryChargeValue = "", SeviceFeesValue = "", ServiceFees = "", ServiceFeesType = "", PackageFeesType = "", PackageFees = "", PackageFeesValue = "", SalesTaxAmount = "", VatTax = "";
     private String strsizeid, extraItemID, CustomerId, CustomerAddressId, payment_type, order_price, subTotalAmount, delivery_date, delivery_time, instructions, deliveryCharge,
             CouponCode, CouponCodePrice, couponCodeType, order_type, SpecialInstruction, extraTipAddAmount, RestaurantNameEstimate, discountOfferDescription, discountOfferPrice, RestaurantoffrType,
-            PaymentProcessingFees, deliveryChargeValueType, WebsiteCodePrice, WebsiteCodeType, WebsiteCodeNo, preorderTime, addressId,
+            PaymentProcessingFees, deliveryChargeValueType, WebsiteCodePrice, WebsiteCodeType, WebsiteCodeNo, preorderTime, addressId = "",
             GiftCardPay, WalletPay, loyptamount, table_number_assign, customer_country, group_member_id, loyltPnts, branch_id, FoodCosts,
             getTotalItemDiscount, getFoodTaxTotal7, getFoodTaxTotal19, TotalSavedDiscount, discountOfferFreeItems, number_of_people, customer_allow_register, address,
             street, floor_no, zipcode, phone, email, name_customer, city, mealID, mealquqntity, mealPrice, mealItemExtra, mealItemOption;
@@ -127,6 +130,7 @@ public class SavedAddressActivity extends AppCompatActivity implements DeleteAdd
             pizzaQuantity = getIntent().getStringExtra("pizzaQuantity");
             Pizzaname = getIntent().getStringExtra("Pizzaname");
             selectedPizzaItemPrice = getIntent().getStringExtra("selectedPizzaItemPrice");
+            instructions = getIntent().getStringExtra("instructions");
             customer_allow_register = "yes";
             payment_type = "cash";
         }
@@ -151,35 +155,39 @@ public class SavedAddressActivity extends AppCompatActivity implements DeleteAdd
                 startActivity(intent1);
                 break;
             case R.id.tvDeliveryAdd:
-                Intent intent = new Intent(SavedAddressActivity.this, PayCheckOutActivity.class);
-
-                intent.putExtra("RestId", restId);
-                intent.putExtra("TotalPrice", String.valueOf(order_price));
-                intent.putExtra("SubTotalPrice", String.valueOf(subTotalAmount));
-                intent.putExtra("RESTName", strMainRestName);
-                intent.putExtra("RESTLOGO", strMainRestLogo);
-                intent.putExtra("subPizzaItemId", pizzaItemid);
-                intent.putExtra("SIZEITEMID", strsizeid);
-                intent.putExtra("globTempExtraItemidWithSizeIdd", extraItemID);
-                intent.putExtra("delivery_date", delivery_date);
-                intent.putExtra("food_cost", FoodCosts);
-                intent.putExtra("quantity", quantity);
-                intent.putExtra("deliveryChargeValue", deliveryChargeValue);
-                intent.putExtra("SeviceFeesValue", SeviceFeesValue);
-                intent.putExtra("ServiceFees", ServiceFees);
-                intent.putExtra("ServiceFeesType", ServiceFeesType);
-                intent.putExtra("PackageFeesType", PackageFeesType);
-                intent.putExtra("PackageFees", PackageFees);
-                intent.putExtra("PackageFeesValue", PackageFeesValue);
-                intent.putExtra("SalesTaxAmount", SalesTaxAmount);
-                intent.putExtra("VatTax", VatTax);
-                intent.putExtra("deliveryType", order_type);
-                intent.putExtra("pizzaQuantity", quantity);
-                intent.putExtra("Pizzaname", Pizzaname);
-                intent.putExtra("selectedPizzaItemPrice", selectedPizzaItemPrice);
-                intent.putExtra("totalPrice", totalPrice);
-                intent.putExtra("addressId", addressId);
-                startActivity(intent);
+                if (addressId.equalsIgnoreCase("")) {
+                    Toast.makeText(mContext, model.getPLEASESELECTADDRESS(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(SavedAddressActivity.this, PayCheckOutActivity.class);
+                    intent.putExtra("RestId", restId);
+                    intent.putExtra("TotalPrice", String.valueOf(order_price));
+                    intent.putExtra("SubTotalPrice", String.valueOf(subTotalAmount));
+                    intent.putExtra("RESTName", strMainRestName);
+                    intent.putExtra("RESTLOGO", strMainRestLogo);
+                    intent.putExtra("subPizzaItemId", pizzaItemid);
+                    intent.putExtra("SIZEITEMID", strsizeid);
+                    intent.putExtra("globTempExtraItemidWithSizeIdd", extraItemID);
+                    intent.putExtra("delivery_date", delivery_date);
+                    intent.putExtra("food_cost", FoodCosts);
+                    intent.putExtra("quantity", quantity);
+                    intent.putExtra("deliveryChargeValue", deliveryChargeValue);
+                    intent.putExtra("SeviceFeesValue", SeviceFeesValue);
+                    intent.putExtra("ServiceFees", ServiceFees);
+                    intent.putExtra("ServiceFeesType", ServiceFeesType);
+                    intent.putExtra("PackageFeesType", PackageFeesType);
+                    intent.putExtra("PackageFees", PackageFees);
+                    intent.putExtra("PackageFeesValue", PackageFeesValue);
+                    intent.putExtra("SalesTaxAmount", SalesTaxAmount);
+                    intent.putExtra("VatTax", VatTax);
+                    intent.putExtra("deliveryType", order_type);
+                    intent.putExtra("pizzaQuantity", quantity);
+                    intent.putExtra("Pizzaname", Pizzaname);
+                    intent.putExtra("instructions", instructions);
+                    intent.putExtra("selectedPizzaItemPrice", selectedPizzaItemPrice);
+                    intent.putExtra("totalPrice", totalPrice);
+                    intent.putExtra("addressId", addressId);
+                    startActivity(intent);
+                }
                 break;
         }
     }
@@ -204,6 +212,15 @@ public class SavedAddressActivity extends AppCompatActivity implements DeleteAdd
                             addressList.clear();
                         addressList.addAll(searchResult.getAddressModel().getDeliveryaddress());
                         setAddAdapter(searchResult.getAddressModel().getDeliveryaddress());
+                        if (searchResult.getAddressModel().getDeliveryaddress().size() > 0) {
+                            tvNoData.setVisibility(View.GONE);
+                        } else {
+                            tvNoData.setVisibility(View.VISIBLE);
+                            tvNoData.setText(model.getDATAISNOTAVAILABLE());
+
+                            Intent intent1 = new Intent(SavedAddressActivity.this, AddAddressActivity.class);
+                            startActivity(intent1);
+                        }
                         hideProgress();
                     }
 

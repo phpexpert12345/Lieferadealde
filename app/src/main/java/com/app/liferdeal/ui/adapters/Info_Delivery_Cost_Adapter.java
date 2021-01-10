@@ -17,7 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.app.liferdeal.R;
 import com.app.liferdeal.model.restaurant.DeliveryListInfo;
 import com.app.liferdeal.model.restaurant.RestaurantDetailsModel;
+import com.app.liferdeal.util.Constants;
+import com.app.liferdeal.util.PrefsHelper;
 
+import java.util.Currency;
 import java.util.List;
 
 public class Info_Delivery_Cost_Adapter extends RecyclerView.Adapter<Info_Delivery_Cost_Adapter.Holder> {
@@ -28,6 +31,7 @@ public class Info_Delivery_Cost_Adapter extends RecyclerView.Adapter<Info_Delive
     private int selectedPosition;
     private int selectedPositionItem = 0;
     public static Info_Delivery_Cost_Adapter.Holder mHolder;
+    private PrefsHelper prefsHelper;
 
     public interface RestaurantDetailsQuickInterface {
         public void getRestaaurantQuickClickData(String restId, int catId, String categoryImage);
@@ -39,7 +43,7 @@ public class Info_Delivery_Cost_Adapter extends RecyclerView.Adapter<Info_Delive
         this.listCategory = listSubCategory;
         //this.selectedPosition = -1;
         this.selectedPosition = 0;
-
+        prefsHelper = new PrefsHelper(mContext);
     }
 
     @NonNull
@@ -51,9 +55,13 @@ public class Info_Delivery_Cost_Adapter extends RecyclerView.Adapter<Info_Delive
 
     @Override
     public void onBindViewHolder(@NonNull Info_Delivery_Cost_Adapter.Holder holder, final int position) {
+
+        Currency hh = Currency.getInstance("" + prefsHelper.getPref(Constants.APP_CURRENCY));
+        String currencySymbol = hh.getSymbol();
+
         holder.txt_view_pincode.setText(listCategory.get(position).getPostcode());
         holder.txt_view_delivry_address.setText(listCategory.get(position).getAdminDistrict());
-        holder.txt_view_delivery_fee.setText(listCategory.get(position).getDeliveryCharge());
+        holder.txt_view_delivery_fee.setText(currencySymbol + listCategory.get(position).getDeliveryCharge());
         holder.txt_view_delivery_time.setText(listCategory.get(position).getDeliveryTime());
         holder.txt_view_min_order.setText(listCategory.get(position).getMinimumOrder());
 

@@ -118,16 +118,21 @@ public class DiscountOrderActivity extends AppCompatActivity implements View.OnC
                     @Override
                     public void onNext(DiscountModel searchResult) {
                         // showProgress();
-                        if (searchResult.getRestaurantDiscountCouponList() != null) {
-                            setAdapterCategory(searchResult.getRestaurantDiscountCouponList());
-                            banner_progress.setVisibility(View.GONE);
+                        if (searchResult.getRestaurantDiscountCouponList().size() > 0) {
+                            if (searchResult.getRestaurantDiscountCouponList().get(0).getError().equalsIgnoreCase("1")) {
+                                btxt_for_no_data.setVisibility(View.VISIBLE);
+                                btxt_for_no_data.setText(searchResult.getRestaurantDiscountCouponList().get(0).getErrorMsg());
+                                banner_progress.setVisibility(View.GONE);
+                            } else {
+                                setAdapterCategory(searchResult.getRestaurantDiscountCouponList());
+                                banner_progress.setVisibility(View.GONE);
+                                btxt_for_no_data.setVisibility(View.GONE);
+                            }
                         } else {
                             btxt_for_no_data.setVisibility(View.VISIBLE);
-                            btxt_for_no_data.setText("No Discount Available");
+                            btxt_for_no_data.setText(model.getDATAISNOTAVAILABLE());
                             banner_progress.setVisibility(View.GONE);
                         }
-
-
                     }
 
                     @Override

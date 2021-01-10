@@ -31,7 +31,6 @@
                         <ImageView
                             android:scaleType="fitXY"
                             android:id="@+id/ivHorizontal"
-                            android:background="@drawable/defpizzaimg"
                             android:layout_width="match_parent"
                             android:layout_height="60dp">
 
@@ -47,6 +46,8 @@
                     android:text="TextView"
                     android:textColor="@color/colorGreenLite"
                     android:textStyle="bold"
+                    android:maxLines="1"
+                    android:singleLine="true"
                     android:textSize="@dimen/sp_10"/>
                 </RelativeLayout>
         </androidx.cardview.widget.CardView>

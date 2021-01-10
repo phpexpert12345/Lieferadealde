@@ -39,7 +39,7 @@ import io.reactivex.schedulers.Schedulers;
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText edt_fst_name, edt_lst_name, edt_pass, edt_mobile_num, edt_con_pass, edt_email_id;
-    private TextView btn_signup, txt_login_view, txt_signin, tvTitle,tvAlreadyAccount;
+    private TextView btn_signup, txt_login_view, txt_signin, tvTitle, tvAlreadyAccount;
     private ApiInterface apiInterface;
     private PrefsHelper prefsHelper;
     private String deviceId = "", devicePlateform = "";
@@ -47,6 +47,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private ProgressDialog progressDialog;
     private ImageView img_logo, img_back;
     private LanguageResponse model;
+    private AppCompatTextView tvSignUp;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,6 +62,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             String logo = prefsHelper.getPref(Constants.APP_LOGO);
 
             edt_fst_name = findViewById(R.id.edt_fst_name);
+            tvSignUp = findViewById(R.id.tvSignUp);
             img_logo = findViewById(R.id.img_logo);
             edt_lst_name = findViewById(R.id.edt_lst_name);
             edt_email_id = findViewById(R.id.edt_email_id);
@@ -81,9 +83,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 edt_email_id.setHint(model.getEmailAddress());
                 edt_mobile_num.setHint(model.getMobileNo());
                 edt_pass.setHint(model.getPassword());
-                btn_signup.setHint(model.getSIGNUP());
-                tvAlreadyAccount.setHint(model.getDoYouHaveAnAccount());
-                txt_signin.setHint(model.getSignIn());
+                btn_signup.setText(model.getSIGNUP());
+                tvAlreadyAccount.setText(model.getDoYouHaveAnAccount());
+                txt_signin.setText(model.getSignIn());
+                tvTitle.setText(model.getSIGNUP());
+                tvSignUp.setText(model.getSIGNUP());
             }
 
             img_back.setOnClickListener(this);
@@ -183,13 +187,14 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void userRegistration(String fstName, String lstname, String emailid, String mobileno, String pass) {
+        showProgress();
+
         String ffName = CommonMethods.getStringDataInbase64(fstName);
         String llstname = CommonMethods.getStringDataInbase64(lstname);
 
         apiInterface = RFClient.getClient().create(ApiInterface.class);
-        Observable<SignupModel> observable = apiInterface.registerUser(ffName, llstname, emailid, mobileno, pass, country,
-                "", Constants.API_KEY, langCode, deviceId, devicePlateform);
-
+        Observable<SignupModel> observable = apiInterface.registerUser(ffName, llstname, emailid, mobileno, pass, deviceId, country,
+                devicePlateform, "", prefsHelper.getPref(Constants.API_KEY), prefsHelper.getPref(Constants.LNG_CODE));
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<SignupModel>() {
@@ -200,7 +205,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                     @Override
                     public void onNext(SignupModel signup) {
-                        showProgress();
+                        hideProgress();
                         if (signup.getSuccess() != null && signup.getSuccess() == 1) {
                             String cusomerId = signup.getCustomerId();
                             prefsHelper.savePref(Constants.CUSTOMER_ID, cusomerId);
@@ -208,7 +213,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                         } else {
                             Toast.makeText(SignUpActivity.this, signup.getError_msg(), Toast.LENGTH_SHORT).show();
                         }
-
                     }
 
                     @Override
@@ -219,6 +223,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                     @Override
                     public void onComplete() {
+                        hideProgress();
                         //   activity.mySharePreferences.setBundle("login");
 
                     }

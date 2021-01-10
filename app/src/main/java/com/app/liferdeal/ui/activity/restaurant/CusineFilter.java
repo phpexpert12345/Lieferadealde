@@ -1,7 +1,9 @@
 package com.app.liferdeal.ui.activity.restaurant;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,9 +33,12 @@ import com.app.liferdeal.ui.fragment.LocationMapFragment;
 import com.app.liferdeal.ui.fragment.restaurant.RestaurantMain;
 import com.app.liferdeal.util.Constants;
 import com.app.liferdeal.util.PrefsHelper;
+import com.app.liferdeal.util.SharedPreferencesData;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -54,6 +59,7 @@ public class CusineFilter extends AppCompatActivity implements View.OnClickListe
     private AppCompatButton btnSubmit;
     private ProgressBar banner_progress;
     private LanguageResponse model = new LanguageResponse();
+    private SharedPreferencesData sharedPreferencesData;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,6 +74,7 @@ public class CusineFilter extends AppCompatActivity implements View.OnClickListe
 
     private void init() {
         try {
+            sharedPreferencesData=new SharedPreferencesData(getApplicationContext());
             prefsHelper = new PrefsHelper(this);
             rcv_cusine_view = findViewById(R.id.rcv_cusine_view);
             selected_cusines = new ArrayList<>();
@@ -118,7 +125,8 @@ public class CusineFilter extends AppCompatActivity implements View.OnClickListe
 
     private void getCusineFilterList() {
         apiInterface = RFClient.getClient().create(ApiInterface.class);
-        Observable<CusineFilterModel> observable = apiInterface.getCusineFilterList(prefsHelper.getPref(Constants.API_KEY), prefsHelper.getPref(Constants.LNG_CODE));
+        Observable<CusineFilterModel> observable = apiInterface.getCusineFilterList(prefsHelper.getPref(Constants.API_KEY),
+                prefsHelper.getPref(Constants.LNG_CODE));
 
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -172,5 +180,14 @@ public class CusineFilter extends AppCompatActivity implements View.OnClickListe
     public void getClickData(ArrayList<Integer> extraId, ArrayList<String> extraName) {
         selected_cusines = extraName;
         selected_cusines_id = extraId;
+       /* Set<String> set = new HashSet<String>();
+        set.addAll(extraName);
+
+        SharedPreferences prefs=this.getSharedPreferences(Constants.PRICEPREFERENCE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor edit=prefs.edit();
+        edit.putStringSet(Constants.FILTERDATA, set);
+        edit.commit();*/
+
+
     }
 }

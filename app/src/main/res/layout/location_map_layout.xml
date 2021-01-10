@@ -37,24 +37,52 @@
                 android:layout_toRightOf="@+id/img_back"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/search"
+                <RelativeLayout
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:id="@+id/rlt_search"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_30sdp"
+                    android:layout_height="@dimen/dp_40"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="@dimen/dp_10"
-                    android:drawableRight="@drawable/location"
-                    android:gravity="center"
-                    android:hint="Search Address"
-                    android:imeOptions="actionSearch"
-                    android:singleLine="true"
-                    android:text=""
-                    android:fontFamily="@font/roboto_regular"
-                    android:textColor="@color/colorBlack"
-                    android:textColorHint="@color/belowline_color"
-                    android:textSize="@dimen/sp_13"
-                    android:visibility="visible" />
+                    android:gravity="center_vertical"
+                    android:background="@drawable/editext_corner">
 
+                    <ImageView
+                        android:id="@+id/search_img"
+                        android:layout_width="@dimen/dp_30"
+                        android:layout_height="@dimen/dp_30"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:src="@drawable/quantum_ic_search_grey600_24" />
+
+                    <TextView
+                        android:layout_marginLeft="@dimen/_35sdp"
+                        android:id="@+id/search"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        android:text="Search Address"
+                        android:imeOptions="actionSearch"
+                        android:singleLine="true"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/colorBlack"
+                        android:textColorHint="@color/belowline_color"
+                        android:textSize="@dimen/sp_13"
+                        android:visibility="visible" />
+
+                    <ImageView
+                        android:id="@+id/cancel_text"
+                        android:layout_width="@dimen/dp_18"
+                        android:layout_height="@dimen/dp_18"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_cros"
+                        android:layout_marginEnd="@dimen/dp_10"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
 
             </LinearLayout>
 
@@ -119,8 +147,8 @@
         android:id="@+id/lnr_confirm_location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_marginRight="@dimen/_20sdp"
-        android:layout_above="@+id/bottom_navigation"
         android:layout_marginLeft="@dimen/_20sdp"
         android:layout_marginBottom="@dimen/_20sdp"
         android:orientation="horizontal">
@@ -142,7 +170,7 @@
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
-        android:layout_height="@dimen/dp_70"
+        android:layout_height="@dimen/dp_60"
         android:layout_gravity="bottom"
         android:background="@drawable/bg_with_eleveation"
         app:contentInsetEnd="0dp"
@@ -150,10 +178,11 @@
         app:contentInsetRight="0dp"
         app:contentInsetStart="0dp"
         app:elevation="@dimen/dp_10"
+        android:visibility="gone"
         app:itemBackground="@drawable/bg_item_color_state"
         app:itemIconTint="@drawable/item_color_state"
         app:itemTextColor="@drawable/item_color_state"
-        app:labelVisibilityMode="labeled"
+        app:labelVisibilityMode="unlabeled"
         app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
         app:menu="@menu/bottom_navigation_main" />
 
