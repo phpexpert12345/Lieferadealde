@@ -135,10 +135,10 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void getSavedAddress() {
+        showProgress();
         apiInterface = RFClient.getClient().create(ApiInterface.class);
         Observable<ModelAddressList> observable = apiInterface.getSavedAddress(String.valueOf(currentLatitude), String.valueOf(currentLongitude),
                 prefsHelper.getPref(Constants.CUSTOMER_ID));
-
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ModelAddressList>() {
@@ -149,7 +149,7 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
 
                     @Override
                     public void onNext(ModelAddressList searchResult) {
-                        showProgress();
+
                         setAddAdapter(searchResult.getAddressModel().getDeliveryaddress());
                         if (searchResult.getAddressModel().getDeliveryaddress().size() > 0) {
                             tvNoData.setVisibility(View.GONE);
@@ -225,7 +225,7 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void deleteAddress(AddressModel.Deliveryaddress address, String title) {
         if (title.equals("delete")) {
-            deleteAddressCustomer(address.getId());
+            showDeleteDialog(address);
         } else if (title.equalsIgnoreCase("edit")) {
 
         }
@@ -239,6 +239,19 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         System.out.println("===== onnew intent");
+    }
+    public void showDeleteDialog(AddressModel.Deliveryaddress address){
+        androidx.appcompat.app.AlertDialog.Builder builder=new androidx.appcompat.app.AlertDialog.Builder(this);
+        builder.setMessage(model.getAlertText());
+        builder.setPositiveButton(model.getOKText(), (dialog, which) -> {
+            dialog.dismiss();
+            deleteAddressCustomer(address.getId());
+
+        });
+        builder.setNegativeButton(model.getCancel(),((dialog, which) -> {
+            dialog.dismiss();
+        }));
+        builder.create().show();
     }
 
     private void deleteAddressCustomer(int id) {
@@ -280,9 +293,11 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
     private void showCustomDialog(String s) {
         final AlertDialog alertDialog = new AlertDialog.Builder(AddressActivity.this).create();
         alertDialog.setTitle("Alert");
-        alertDialog.setMessage("" + s);
+        if(!s.equalsIgnoreCase("null")) {
+            alertDialog.setMessage("" + s);
+        }
         alertDialog.setIcon(R.drawable.tick);
-        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+        alertDialog.setButton(model.getOKText(), new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
                 getSavedAddress();

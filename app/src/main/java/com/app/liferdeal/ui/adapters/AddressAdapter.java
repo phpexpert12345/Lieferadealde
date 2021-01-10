@@ -44,7 +44,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.Holder> 
         holder.tv_name.setText(list.get(position).getAddressTitle());
         holder.tv_mobile.setText(list.get(position).getCompanyStreetNo() + " " + list.get(position).getCustomerFlatName()
                 + " " + list.get(position).getCompanyStreet() + " " + list.get(position).getCityName() + " " + list.get(position).getZipcode());
-        holder.tvNo.setText("Mobile: " + list.get(position).getUserPhone());
+        holder.tvNo.setText("Mobile num: " + list.get(position).getUserPhone());
 
         holder.img_edit.setOnClickListener(view -> {
             addressDelete.deleteAddress(list.get(position), "delete");

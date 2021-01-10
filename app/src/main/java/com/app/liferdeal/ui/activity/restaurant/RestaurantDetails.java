@@ -244,7 +244,7 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
             ratingBar.setRating(Float.parseFloat(getRatingValue));
         }
 
-        tv_restaurant_rating_value.setText("(" + getRatingValue + " " + model.getRating() + ")");
+        tv_restaurant_rating_value.setText("(" + getRatingValue + " "  + ")");
         Glide.with(this).load(Uri.parse(RESTCOVER)).into(shop_img_places);
         Glide.with(this).load(Uri.parse(RESTLOGO)).into(rset_logo);
 

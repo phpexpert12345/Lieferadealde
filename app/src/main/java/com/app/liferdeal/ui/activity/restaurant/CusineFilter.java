@@ -179,13 +179,15 @@ public class CusineFilter extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setAdapterCategory(List<CuisineList> list) {
-        if(lists.size()>0){
-            for(int i=0;i<lists.size();i++){
-                for(int j=0;j<list.size();j++){
-                    if(lists.get(i).getId().equals(list.get(j).getId())){
-                        list.get(j).setSelected(true);
-                        break;
+        if(lists!=null) {
+            if (lists.size() > 0) {
+                for (int i = 0; i < lists.size(); i++) {
+                    for (int j = 0; j < list.size(); j++) {
+                        if (lists.get(i).getId().equals(list.get(j).getId())) {
+                            list.get(j).setSelected(true);
+                            break;
 
+                        }
                     }
                 }
             }

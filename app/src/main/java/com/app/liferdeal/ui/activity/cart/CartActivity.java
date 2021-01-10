@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -84,6 +85,10 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     LinearLayout llFull;
     @BindView(R.id.nsv)
     NestedScrollView nsv;
+    @BindView(R.id.img_delivery)
+    ImageView img_delivery;
+    @BindView(R.id.img_pickup)
+    ImageView  img_pickup;
     private PrefsHelper prefsHelper;
     Database database;
     ArrayList<RaviCartModle> raviCartModles;
@@ -590,20 +595,34 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             rl_pickup.setBackgroundResource(R.drawable.circle_background);
             rl_delivery.setBackgroundResource(R.drawable.edit_back_with_gray);
             rlDineIn.setBackgroundResource(R.drawable.edit_back_with_gray);
+            img_delivery.setColorFilter(Color.BLACK);
+            img_pickup.setColorFilter(Color.WHITE);
+            tvDeliveryText.setTextColor(Color.BLACK);
+            tvPickup.setTextColor(Color.WHITE);
+            tvEatIn.setTextColor(Color.BLACK);
+
             //  img_select_picup.setImageResource(R.drawable.img_select);
             //  img_select_delivery.setImageResource(R.drawable.unselect);
         }
-        if (type.equals("Delivery")) {
+      else  if (type.equals("Delivery")) {
             rl_delivery.setBackgroundResource(R.drawable.circle_background);
             rl_pickup.setBackgroundResource(R.drawable.edit_back_with_gray);
             rlDineIn.setBackgroundResource(R.drawable.edit_back_with_gray);
+            img_delivery.setColorFilter(Color.WHITE);
+            img_pickup.setColorFilter(Color.BLACK);
+            tvEatIn.setTextColor(Color.WHITE);
+            tvPickup.setTextColor(Color.BLACK);
+            tvDeliveryText.setTextColor(Color.WHITE);
             // img_select_picup.setImageResource(R.drawable.unselect);
             // img_select_delivery.setImageResource(R.drawable.img_select);
         }
-        if (type.equals("EAT-IN")) {
+       else if (type.equals("EAT-IN")) {
             rl_delivery.setBackgroundResource(R.drawable.edit_back_with_gray);
             rl_pickup.setBackgroundResource(R.drawable.edit_back_with_gray);
             rlDineIn.setBackgroundResource(R.drawable.circle_background);
+            tvDeliveryText.setTextColor(Color.BLACK);
+            tvPickup.setTextColor(Color.BLACK);
+            tvEatIn.setTextColor(Color.WHITE);
             // img_select_picup.setImageResource(R.drawable.unselect);
             // img_select_delivery.setImageResource(R.drawable.img_select);
         }
@@ -1054,7 +1073,14 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 if (etLoyaltyPoint.getText().toString() != null && etLoyaltyPoint.getText().toString().length() > 0) {
-                    redeemPointsUser(etLoyaltyPoint.getText().toString(), dialog);
+                   int loyality_points=Integer.parseInt( etLoyaltyPoint.getText().toString());
+                   int redeempoints= Integer.parseInt(redeemPointsTotal);
+                   if(loyality_points>0 && loyality_points<=redeempoints) {
+                       redeemPointsUser(etLoyaltyPoint.getText().toString(), dialog);
+                   }
+                   else{
+                       Toast.makeText(getApplicationContext(), model.getPleaseEnterLoyaltyPoint(), Toast.LENGTH_LONG).show();
+                   }
                 } else {
                     Toast.makeText(getApplicationContext(), model.getPleaseEnterLoyaltyPoint(), Toast.LENGTH_LONG).show();
                 }
@@ -1092,7 +1118,12 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 if (etCouponCode != null && etCouponCode.getText().toString().length() > 0) {
-                    applyCoupon(etCouponCode.getText().toString(), dialog);
+                    if(!etCouponCode.getText().toString().trim().isEmpty()) {
+                        applyCoupon(etCouponCode.getText().toString(), dialog);
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), model.getAPPLYCOUPONISREQUIRED(), Toast.LENGTH_LONG).show();
+                    }
                 } else {
                     Toast.makeText(getApplicationContext(), model.getAPPLYCOUPONISREQUIRED(), Toast.LENGTH_LONG).show();
                 }

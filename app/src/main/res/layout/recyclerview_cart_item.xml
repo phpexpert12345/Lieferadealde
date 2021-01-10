@@ -51,7 +51,7 @@
                 android:id="@+id/tv_subcat_item_details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/dark_gray"
+                android:textColor="@color/colorBlack"
                 android:layout_marginStart="@dimen/sp_15"
                 android:layout_marginTop="@dimen/dp_2"
                 android:text="Vegetarian Samosa"

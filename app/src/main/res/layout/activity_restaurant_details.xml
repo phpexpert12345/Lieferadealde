@@ -200,6 +200,7 @@
 
                         <androidx.appcompat.widget.AppCompatRatingBar
                             android:id="@+id/ratingBar"
+                            android:background="@color/colorWhite"
                             style="@style/Widget.AppCompat.RatingBar.Small"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

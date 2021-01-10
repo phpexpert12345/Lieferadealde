@@ -44,8 +44,18 @@ public class SectionDetailAdapter extends RecyclerView.Adapter<SectionDetailAdap
     @Override
     public void onBindViewHolder(@NonNull Holder holder, final int position) {
         holder.tvName.setText(listCategory.get(position).getCategoryName());
-        Glide.with(mContext).load(Uri.parse(listCategory.get(position).getCategoryImg())).into(holder.shop_img_places_cat);
-
+        if(!listCategory.get(position).getCategoryImg().trim().isEmpty()){
+            if(!listCategory.get(position).getCategoryImg().equalsIgnoreCase("null")){
+                holder.shop_img_places_cat.setVisibility(View.VISIBLE);
+                Glide.with(mContext).load(Uri.parse(listCategory.get(position).getCategoryImg())).into(holder.shop_img_places_cat);
+            }
+            else{
+                holder.shop_img_places_cat.setVisibility(View.GONE);
+            }
+        }
+        else{
+            holder.shop_img_places_cat.setVisibility(View.GONE);
+        }
         holder.rvItemList.setLayoutManager(new LinearLayoutManager(mContext));
         RestaurantDetailsAdapter adapter = new RestaurantDetailsAdapter(mContext, listCategory.get(position).getSubItemsRecord(), listCategory.get(position).getRestaurantId(), listCategory.get(position).getName());
         holder.rvItemList.setAdapter(adapter);
