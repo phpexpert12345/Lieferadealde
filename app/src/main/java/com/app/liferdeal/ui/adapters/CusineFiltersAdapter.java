@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.liferdeal.R;
+import com.app.liferdeal.model.CuisineList;
 import com.app.liferdeal.model.restaurant.CusineFilterModel;
 import com.app.liferdeal.model.restaurant.SubItemsRecord;
 import com.bumptech.glide.Glide;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CusineFiltersAdapter extends RecyclerView.Adapter<CusineFiltersAdapter.Holder> {
-    private List<CusineFilterModel.CuisineList> listCategory;
+    private List<CuisineList> listCategory;
     private List<SubItemsRecord> listFilterSubCategory;
     private Context mContext;
     ArrayList<String> selected_cusines;
@@ -32,7 +33,7 @@ public class CusineFiltersAdapter extends RecyclerView.Adapter<CusineFiltersAdap
         void getClickData(ArrayList<Integer> extraId, ArrayList<String> extraName, Boolean[] selectedList);
     }
 
-    public CusineFiltersAdapter(Context context, List<CusineFilterModel.CuisineList> listSubCategory, Boolean[] selectedList) {
+    public CusineFiltersAdapter(Context context, List<CuisineList> listSubCategory, Boolean[] selectedList) {
         this.mContext = context;
         this.listCategory = listSubCategory;
         this.selected_cusines = new ArrayList<>();

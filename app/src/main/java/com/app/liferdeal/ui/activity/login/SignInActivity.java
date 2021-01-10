@@ -6,14 +6,17 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.FragmentTransaction;
@@ -137,6 +140,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                 break;
 
             case R.id.txt_forgot_pass:
+                ShowForgotPassword();
                 break;
 
             default:
@@ -296,5 +300,34 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         transaction.replace(R.id.main_content, locationMapFragment);
         transaction.addToBackStack(locationMapFragment.getTag());
         transaction.commit();
+    }
+
+    public void ShowForgotPassword(){
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        AlertDialog alertDialog;
+        View view=getLayoutInflater().inflate(R.layout.layout_forgot_password,null);
+        ImageView img_cross=view.findViewById(R.id.img_cross);
+        EditText edit_email_add=view.findViewById(R.id.edit_email_add);
+        Button btn_send=view.findViewById(R.id.btn_send);
+        btn_send.setOnClickListener(v->{
+            if(edit_email_add.getText().toString().isEmpty()){
+                Toast.makeText(this, "Please enter email address", Toast.LENGTH_SHORT).show();
+            }
+            else if(!Patterns.EMAIL_ADDRESS.matcher(edit_email_add.getText().toString()).matches()){
+                Toast.makeText(this, "Please enter valid email address", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                SubmitForgotPassword();
+            }
+        });
+        builder.setView(view);
+        alertDialog=builder.create();
+        alertDialog.show();
+        img_cross.setOnClickListener(v -> alertDialog.dismiss());
+
+
+    }
+    public void SubmitForgotPassword(){
+
     }
 }

@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.liferdeal.R;
 import com.app.liferdeal.application.App;
+import com.app.liferdeal.model.CuisineList;
 import com.app.liferdeal.model.LanguageResponse;
 import com.app.liferdeal.model.restaurant.CusineFilterModel;
 import com.app.liferdeal.model.restaurant.RestaurantMainModel;
@@ -39,6 +40,7 @@ import com.app.liferdeal.ui.adapters.CusineFiltersAdapter;
 import com.app.liferdeal.ui.adapters.RestaurantMainAdapter;
 
 import com.app.liferdeal.ui.fragment.LocationMapFragment;
+import com.app.liferdeal.ui.interfaces.FilterInterface;
 import com.app.liferdeal.util.CommonMethods;
 import com.app.liferdeal.util.Constants;
 import com.app.liferdeal.util.PrefsHelper;
@@ -70,6 +72,7 @@ public class RestaurantMain extends Fragment implements View.OnClickListener, Cu
     private PrefsHelper prefsHelper;
     private ApiInterface apiInterface;
     private ProgressBar banner_progress;
+    private List<CuisineList> lists=new ArrayList<>();
     private ImageView home_icon, filter_cusine, img_location, img_profile;
     private String fullAddress = "", cityName = "", cityState = "", cityPostalcode = "", cityCountry = "", locationSearchAddress = "";
     private ArrayList<String> selected_cusines;
@@ -80,10 +83,12 @@ public class RestaurantMain extends Fragment implements View.OnClickListener, Cu
     private ArrayList<Integer> selected_cusines_id;
     private LanguageResponse model = new LanguageResponse();
     private Double currentLatitude, currentLongitude;
+    private FilterInterface filterInterface;
 
-    public RestaurantMain(Double currentLatitude, Double currentLongitude) {
+    public RestaurantMain(Double currentLatitude, Double currentLongitude,FilterInterface filterInterface) {
         this.currentLatitude = currentLatitude;
         this.currentLongitude = currentLongitude;
+        this.filterInterface=filterInterface;
     }
 
     public RestaurantMain() {
@@ -223,9 +228,9 @@ public class RestaurantMain extends Fragment implements View.OnClickListener, Cu
 
     private Boolean[] selectedList;
     private CusineFiltersAdapter adapterCategorys;
-    private List<CusineFilterModel.CuisineList> cuisineFilterList;
+    private List<CuisineList> cuisineFilterList;
 
-    private void setFilterAdapterCategory(List<CusineFilterModel.CuisineList> cuisineList) {
+    private void setFilterAdapterCategory(List<CuisineList> cuisineList) {
         selectedList = new Boolean[cuisineList.size()];
         cuisineFilterList = new ArrayList<>();
         cuisineFilterList.addAll(cuisineList);
@@ -398,13 +403,17 @@ public class RestaurantMain extends Fragment implements View.OnClickListener, Cu
         for (int i = 0; i < list.length; i++) {
             selectedList[i] = list[i];
             if (list[i]) {
-                selected_cusines.add(cuisineFilterList.get(i).getSeoUrlCall());
+                selected_cusines.add(cuisineFilterList.get(i).getCuisineName());
+                lists.add(cuisineFilterList.get(i));
             }
         }
         adapterCategorys.notifyDataSetChanged();
         Gson gson1 = new Gson();
         filterData = gson1.toJson(selected_cusines, new TypeToken<ArrayList<String>>() {
         }.getType());
+        if(lists.size()>0){
+            filterInterface.getSelectedFilter(lists);
+        }
 
         getRestSearchInfo();
     }

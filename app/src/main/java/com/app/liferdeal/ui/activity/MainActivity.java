@@ -13,6 +13,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -47,6 +48,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.liferdeal.R;
 import com.app.liferdeal.application.App;
+import com.app.liferdeal.model.CuisineList;
 import com.app.liferdeal.model.GetProfileModel;
 import com.app.liferdeal.model.LanguageModel;
 import com.app.liferdeal.model.LanguageResponse;
@@ -76,6 +78,7 @@ import com.app.liferdeal.ui.adapters.DrawerItemCustomAdapter;
 import com.app.liferdeal.ui.adapters.LanguageAdapter;
 import com.app.liferdeal.ui.fragment.LocationMapFragment;
 import com.app.liferdeal.ui.fragment.restaurant.RestaurantMain;
+import com.app.liferdeal.ui.interfaces.FilterInterface;
 import com.app.liferdeal.ui.interfaces.ItemClickListener;
 import com.app.liferdeal.util.Constants;
 import com.app.liferdeal.util.GPSTracker;
@@ -101,7 +104,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener, ItemClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener, ItemClickListener, FilterInterface {
 
     private String[] mNavigationDrawerItemTitles;
     public static DrawerLayout mDrawerLayout;
@@ -128,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView tv_location, textView_name, tvCreateAccount, tvSignIn;
     private Double currentLatitude, currentLongitude;
     private LanguageResponse model = new LanguageResponse();
-
+    List<CuisineList> lists=new ArrayList<>();
     @BindView(R.id.bottom_navigation)
     BottomNavigationView bottomNavigation;
 
@@ -673,7 +676,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void replaceHomeFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        RestaurantMain homeFragment = new RestaurantMain(currentLatitude, currentLongitude);
+        RestaurantMain homeFragment = new RestaurantMain(currentLatitude, currentLongitude,this);
         fragmentManager.beginTransaction().replace(R.id.main_content, homeFragment).commit();
     }
 
@@ -764,6 +767,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.action_filter:
                 Intent intent2 = new Intent(MainActivity.this, CusineFilter.class);
+                if(lists.size()>0){
+                    intent2.putParcelableArrayListExtra("selected_filter", (ArrayList<? extends Parcelable>) lists);
+                }
                 intent2.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent2);
                 break;
@@ -788,6 +794,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Toast.makeText(getApplicationContext(),"Tab clicked",Toast.LENGTH_LONG).show();
         getLanguageData(authPreference.getPref(Constants.API_KEY), langList.get(adapterPosition).getLangCode());
         langAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void getSelectedFilter(List<CuisineList> listCategory) {
+if(listCategory.size()>0){
+    lists.addAll(listCategory);
+}
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -1113,13 +1126,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     System.out.println("==== selected cusine in main activityu" + selected_cusines);
                     initiateRestFragment();
                 } else if (checkFromWhere.equalsIgnoreCase("fromhome")) {
-                    RestaurantMain locationMapFragment = new RestaurantMain(currentLatitude, currentLongitude);
+                    RestaurantMain locationMapFragment = new RestaurantMain(currentLatitude, currentLongitude,this);
                     FragmentTransaction transaction = this.getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.main_content, locationMapFragment);
                     // transaction.addToBackStack(restaurantMain.getTag());
                     transaction.commit();
                 } else if (checkFromWhere.equalsIgnoreCase("fromlocation")) {
-                    RestaurantMain locationMapFragment = new RestaurantMain(currentLatitude, currentLongitude);
+                    RestaurantMain locationMapFragment = new RestaurantMain(currentLatitude, currentLongitude,this);
                     FragmentTransaction transaction = this.getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.main_content, locationMapFragment);
                     // transaction.addToBackStack(restaurantMain.getTag());
@@ -1131,7 +1144,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initiateRestFragment() {
 
-        RestaurantMain restaurantMain = new RestaurantMain(currentLatitude, currentLongitude);
+        RestaurantMain restaurantMain = new RestaurantMain(currentLatitude, currentLongitude,this);
         Bundle args = new Bundle();
         args.putStringArrayList("SELECTEDCUSINES", selected_cusines);
         restaurantMain.setArguments(args);

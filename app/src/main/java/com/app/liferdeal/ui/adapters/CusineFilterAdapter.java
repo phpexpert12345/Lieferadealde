@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.liferdeal.R;
+import com.app.liferdeal.model.CuisineList;
 import com.app.liferdeal.model.restaurant.CusineFilterModel;
 import com.app.liferdeal.model.restaurant.SubItemsRecord;
 import com.app.liferdeal.util.SharedPreferencesData;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CusineFilterAdapter extends RecyclerView.Adapter<CusineFilterAdapter.Holder> {
-    private List<CusineFilterModel.CuisineList> listCategory;
+    private List<CuisineList> listCategory;
     private List<SubItemsRecord> listFilterSubCategory;
     private Context mContext;
     ArrayList<String> selected_cusines;
@@ -33,7 +34,7 @@ public class CusineFilterAdapter extends RecyclerView.Adapter<CusineFilterAdapte
 
     }
 
-    public CusineFilterAdapter(Context context, List<CusineFilterModel.CuisineList> listSubCategory, CusineFilterAdapterInterface cusineFilterAdapterInterface1) {
+    public CusineFilterAdapter(Context context, List<CuisineList> listSubCategory, CusineFilterAdapterInterface cusineFilterAdapterInterface1) {
         this.mContext = context;
         this.listCategory = listSubCategory;
         this.selected_cusines = new ArrayList<>();
@@ -54,6 +55,12 @@ public class CusineFilterAdapter extends RecyclerView.Adapter<CusineFilterAdapte
 
     @Override
     public void onBindViewHolder(@NonNull CusineFilterAdapter.Holder holder, final int position) {
+        if(listCategory.get(position).getSelected()){
+            holder.cbitem.setChecked(true);
+        }
+        else{
+            holder.cbitem.setChecked(false);
+        }
         holder.cbitem.setText(listCategory.get(position).getCuisineName());
         holder.cbitem.setOnClickListener(new View.OnClickListener() {
             @Override

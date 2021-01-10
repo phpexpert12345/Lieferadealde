@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.liferdeal.R;
 import com.app.liferdeal.application.App;
+import com.app.liferdeal.model.CuisineList;
 import com.app.liferdeal.model.LanguageModel;
 import com.app.liferdeal.model.LanguageResponse;
 import com.app.liferdeal.model.restaurant.CusineFilterModel;
@@ -59,6 +60,8 @@ public class CusineFilter extends AppCompatActivity implements View.OnClickListe
     private AppCompatButton btnSubmit;
     private ProgressBar banner_progress;
     private LanguageResponse model = new LanguageResponse();
+    Intent intent;
+    List<CuisineList> lists;
     private SharedPreferencesData sharedPreferencesData;
 
     @Override
@@ -68,6 +71,11 @@ public class CusineFilter extends AppCompatActivity implements View.OnClickListe
 
         if (App.retrieveLangFromGson(CusineFilter.this) != null) {
             model = App.retrieveLangFromGson(CusineFilter.this);
+        }
+        intent=getIntent();
+        if(intent.hasExtra("selected_filter")){
+            lists=intent.getParcelableArrayListExtra("selected_filter");
+
         }
         init();
     }
@@ -170,7 +178,18 @@ public class CusineFilter extends AppCompatActivity implements View.OnClickListe
             progressDialog.dismiss();
     }
 
-    private void setAdapterCategory(List<CusineFilterModel.CuisineList> list) {
+    private void setAdapterCategory(List<CuisineList> list) {
+        if(lists.size()>0){
+            for(int i=0;i<lists.size();i++){
+                for(int j=0;j<list.size();j++){
+                    if(lists.get(i).getId().equals(list.get(j).getId())){
+                        list.get(j).setSelected(true);
+                        break;
+
+                    }
+                }
+            }
+        }
         CusineFilterAdapter adapterCategory = new CusineFilterAdapter(this, list, this);
         rcv_cusine_view.setAdapter(adapterCategory);
         hideProgress();
