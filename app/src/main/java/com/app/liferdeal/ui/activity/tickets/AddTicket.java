@@ -12,10 +12,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 
 import com.app.liferdeal.R;
+import com.app.liferdeal.application.App;
+import com.app.liferdeal.model.LanguageResponse;
 import com.app.liferdeal.model.restaurant.AddTicketDataModel;
 import com.app.liferdeal.model.restaurant.AddTicketModel;
 import com.app.liferdeal.model.restaurant.SaveAddressModel;
@@ -23,6 +27,7 @@ import com.app.liferdeal.network.retrofit.ApiInterface;
 import com.app.liferdeal.network.retrofit.RFClient;
 import com.app.liferdeal.util.Constants;
 import com.app.liferdeal.util.PrefsHelper;
+import com.google.android.material.textfield.TextInputLayout;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -33,15 +38,21 @@ import io.reactivex.schedulers.Schedulers;
 public class AddTicket extends Activity implements View.OnClickListener {
     private EditText edit_order_no, edit_issue_type, edit_comment;
     private ProgressDialog progressDialog;
-    private Button btn_submit_ticket;
     private ApiInterface apiInterface;
     private PrefsHelper prefsHelper;
     private ImageView iv_back;
+    private TextView tv_faq;
+    private AppCompatButton btn_submit_ticket;
+    private TextInputLayout ipOrderNo, ipIssueType, ipComment;
+    private LanguageResponse model = new LanguageResponse();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_ticket);
+        if (App.retrieveLangFromGson(AddTicket.this) != null) {
+            model = App.retrieveLangFromGson(AddTicket.this);
+        }
         findViewById();
 
     }
@@ -50,12 +61,23 @@ public class AddTicket extends Activity implements View.OnClickListener {
 
         prefsHelper = new PrefsHelper(this);
         iv_back = findViewById(R.id.iv_back);
+        tv_faq = findViewById(R.id.tv_faq);
+        ipOrderNo = findViewById(R.id.ipOrderNo);
+        ipIssueType = findViewById(R.id.ipIssueType);
+        ipComment = findViewById(R.id.ipComment);
+        btn_submit_ticket = findViewById(R.id.btn_submit_ticket);
         edit_order_no = findViewById(R.id.edit_order_no);
         edit_issue_type = findViewById(R.id.edit_issue_type);
         edit_comment = findViewById(R.id.edit_comment);
         btn_submit_ticket = findViewById(R.id.btn_submit_ticket);
         btn_submit_ticket.setOnClickListener(this::onClick);
         iv_back.setOnClickListener(this::onClick);
+
+        tv_faq.setText("" + model.getSubmitTicket().trim());
+        btn_submit_ticket.setText("" + model.getSubmit().trim());
+        ipOrderNo.setHint("" + model.getOrderNumber().trim());
+        ipIssueType.setHint("" + model.getIssueType().trim());
+        ipComment.setHint("" + model.getComment().trim());
     }
 
     @Override
@@ -66,7 +88,7 @@ public class AddTicket extends Activity implements View.OnClickListener {
                 break;
 
             case R.id.iv_back:
-               finish();
+                finish();
                 break;
 
             default:
@@ -76,13 +98,13 @@ public class AddTicket extends Activity implements View.OnClickListener {
 
     private void checkValidation() {
         if (edit_order_no.getText().toString().isEmpty()) {
-            edit_order_no.setError("Enter Order Number");
+            edit_order_no.setError(model.getPleaseEnterOrderNumber());
             edit_order_no.requestFocus();
         } else if (edit_issue_type.getText().toString().isEmpty()) {
-            edit_issue_type.setError("Enter issue type");
+            edit_issue_type.setError(model.getPleaseEnterIssueType());
             edit_issue_type.requestFocus();
         } else if (edit_comment.getText().toString().isEmpty()) {
-            edit_comment.setError("Enter comment");
+            edit_comment.setError(model.getPleaseEnterComment());
             edit_comment.requestFocus();
         } else {
             SaveTicket();
@@ -90,8 +112,11 @@ public class AddTicket extends Activity implements View.OnClickListener {
     }
 
     private void SaveTicket() {
+        showProgress();
         apiInterface = RFClient.getClient().create(ApiInterface.class);
-        Observable<AddTicketDataModel> observable = apiInterface.submitTicket(prefsHelper.getPref(Constants.API_KEY),prefsHelper.getPref(Constants.LNG_CODE), prefsHelper.getPref(Constants.CUSTOMER_ID), edit_order_no.getText().toString(), edit_comment.getText().toString(), edit_issue_type.getText().toString(), prefsHelper.getPref(Constants.USER_EMAIL));
+        Observable<AddTicketDataModel> observable = apiInterface.submitTicket(prefsHelper.getPref(Constants.API_KEY),
+                prefsHelper.getPref(Constants.LNG_CODE), prefsHelper.getPref(Constants.CUSTOMER_ID), edit_order_no.getText().toString(),
+                edit_comment.getText().toString(), edit_issue_type.getText().toString(), prefsHelper.getPref(Constants.USER_EMAIL));
 
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -103,9 +128,7 @@ public class AddTicket extends Activity implements View.OnClickListener {
 
                     @Override
                     public void onNext(AddTicketDataModel searchResult) {
-                        showProgress();
-
-                        showCustomDialog1decline(searchResult.getErrorMsg().toString());
+                        showCustomDialog1decline(searchResult.getError(), searchResult.getErrorMsg().toString());
                         hideProgress();
                         //setAdapterCategory(searchResult.getMenuItemExtraGroup());
                     }
@@ -122,10 +145,7 @@ public class AddTicket extends Activity implements View.OnClickListener {
 
                     }
                 });
-
-
     }
-
 
     public void showProgress() {
         progressDialog = new ProgressDialog(this);
@@ -139,7 +159,7 @@ public class AddTicket extends Activity implements View.OnClickListener {
         progressDialog.dismiss();
     }
 
-    private void showCustomDialog1decline(String s) {
+    private void showCustomDialog1decline(Integer error, String s) {
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.setTitle("Alert");
         alertDialog.setMessage("" + s);
@@ -149,11 +169,17 @@ public class AddTicket extends Activity implements View.OnClickListener {
         alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
+                if (error == 1) {
+                    edit_order_no.setText("");
+                    edit_issue_type.setText("");
+                    edit_comment.setText("");
+                } else {
+                    edit_order_no.setText("");
+                    edit_issue_type.setText("");
+                    edit_comment.setText("");
+                    finish();
+                }
                 alertDialog.dismiss();
-                edit_order_no.setText("");
-                edit_issue_type.setText("");
-                edit_issue_type.setText("");
-                finish();
             }
         });
         alertDialog.show();

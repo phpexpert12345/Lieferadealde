@@ -149,7 +149,7 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
 
                     @Override
                     public void onNext(ModelAddressList searchResult) {
-
+                        hideProgress();
                         setAddAdapter(searchResult.getAddressModel().getDeliveryaddress());
                         if (searchResult.getAddressModel().getDeliveryaddress().size() > 0) {
                             tvNoData.setVisibility(View.GONE);
@@ -157,7 +157,6 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
                             tvNoData.setVisibility(View.VISIBLE);
                             tvNoData.setText(model.getDATAISNOTAVAILABLE());
                         }
-                        hideProgress();
                     }
 
                     @Override

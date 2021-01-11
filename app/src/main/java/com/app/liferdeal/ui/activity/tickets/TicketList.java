@@ -49,6 +49,8 @@ public class TicketList extends Activity implements View.OnClickListener {
     AppCompatTextView tvStatus;
     @BindView(R.id.tvGoHome)
     AppCompatTextView tvGoHome;
+    @BindView(R.id.tvNoData)
+    AppCompatTextView tvNoData;
     private AppCompatButton btnAddAddress;
     private PrefsHelper prefsHelper;
     private ApiInterface apiInterface;
@@ -84,7 +86,14 @@ public class TicketList extends Activity implements View.OnClickListener {
         recyler_view_ticket.setLayoutManager(mLayoutManager);
         recyler_view_ticket.setItemAnimator(new DefaultItemAnimator());
         btnAddAddress.setOnClickListener(this::onClick);
+        tvGoHome.setOnClickListener(this::onClick);
         iv_back.setOnClickListener(this::onClick);
+        getTicketData();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         getTicketData();
     }
 
@@ -121,9 +130,17 @@ public class TicketList extends Activity implements View.OnClickListener {
                     @Override
                     public void onNext(TicketListDataModel searchResult) {
                         showProgress();
-                        if (searchResult.getComplaintsHistory().size() > 0)
-                            setAdapterCategory(searchResult.getComplaintsHistory());
-                        else
+                        if (searchResult.getComplaintsHistory().size() > 0) {
+                            if (searchResult.getComplaintsHistory().get(0).getError().equalsIgnoreCase("1")) {
+                                tvNoData.setVisibility(View.VISIBLE);
+                                tvNoData.setText(searchResult.getComplaintsHistory().get(0).getError_msg());
+                                recyler_view_ticket.setVisibility(View.GONE);
+                            } else {
+                                recyler_view_ticket.setVisibility(View.VISIBLE);
+                                tvNoData.setVisibility(View.GONE);
+                                setAdapterCategory(searchResult.getComplaintsHistory());
+                            }
+                        } else
                             showCustomDialog1decline("No data available");
                         hideProgress();
                     }
