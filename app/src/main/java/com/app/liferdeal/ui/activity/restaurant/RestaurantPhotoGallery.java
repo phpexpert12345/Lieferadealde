@@ -38,6 +38,7 @@ import com.app.liferdeal.model.restaurant.GalleryPhoto;
 import com.app.liferdeal.model.restaurant.RestaurantGalleryModel;
 import com.app.liferdeal.network.retrofit.ApiInterface;
 import com.app.liferdeal.network.retrofit.RFClient;
+import com.app.liferdeal.ui.adapters.AccountViewPagerAdapter;
 import com.app.liferdeal.ui.adapters.PagerAdapter;
 import com.app.liferdeal.ui.fragment.restaurant.TabFragment1;
 import com.app.liferdeal.ui.interfaces.ItemClickListener;
@@ -211,10 +212,27 @@ public class RestaurantPhotoGallery extends AppCompatActivity implements View.On
                 (getSupportFragmentManager(), tabLayout.getTabCount(), list, listParty, listPhoto, RestaurantPhotoGallery.this);
         viewPager.setAdapter(adapter);*/
         MyPagerAdapter myPagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(myPagerAdapter);
-        if (list.size() > 0) {
-            viewPager.setCurrentItem(0);
+        AccountViewPagerAdapter accountViewPagerAdapter=new AccountViewPagerAdapter(getSupportFragmentManager());
+        //accountViewPagerAdapter.addFragment(new TabFragment1(photoData.get(0).getGalleryPhoto()),"");
+        boolean flag=true;
+        for (int i=0;i<photoData.size();i++){
+            if (flag){
+                accountViewPagerAdapter.addFragment(new com.app.liferdeal.ui.activity.restaurant.TabFragment0(photoData.get(i).getGalleryPhoto()),"");
+                flag=false;
+            }else{
+                accountViewPagerAdapter.addFragment(new TabFragment1(photoData.get(i).getGalleryPhoto()),"");
+                flag=true;
+            }
         }
+
+        viewPager.setAdapter(accountViewPagerAdapter);
+
+        //accountViewPagerAdapter.addFragment(new TabFragment1(photoData.get(1).getGalleryPhoto()),"");
+        //accountViewPagerAdapter.addFragment(new TabFragment1(photoData.get(2).getGalleryPhoto()),"");
+
+       /* if (list.size() > 0) {
+            viewPager.setCurrentItem(0);
+        }*/
 
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -275,24 +293,44 @@ public class RestaurantPhotoGallery extends AppCompatActivity implements View.On
         tabsAdapter.setClickListener(this);
     }
 
-    public class MyPagerAdapter extends FragmentStatePagerAdapter {
-
+    public class MyPagerAdapter extends FragmentPagerAdapter {
+        ArrayList<Fragment> fragments;
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
+
         }
+
 
         @NotNull
         @Override
         public Fragment getItem(int pos) {
             //Log.e("post=",pos+"");
             /*return TabFragment1.newInstance(photoData,pos);*/
-            return TabFragment1.newInstance(photoData.get(pos).getGalleryPhoto(), pos);
+            if (pos==0){
+                return new TabFragment1(photoData.get(0).getGalleryPhoto());
+            }else if (pos==1){
+                return new TabFragment1(photoData.get(1).getGalleryPhoto());
+            }else if (pos==2){
+                return new TabFragment1(photoData.get(2).getGalleryPhoto());
+            }else{
+                return null;
+            }
+
+            //return   fragments.get(pos);
+
 
         }
 
         @Override
+        public int getItemPosition(@NonNull Object object) {
+            return super.getItemPosition(object);
+        }
+
+
+        @Override
         public int getCount() {
-            return photoData.size();
+            //Log.e("Size=",photoData.size()+"");
+            return 3;
         }
     }
 

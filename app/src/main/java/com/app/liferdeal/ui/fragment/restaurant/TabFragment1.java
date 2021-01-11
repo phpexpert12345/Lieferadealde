@@ -81,9 +81,12 @@ public class TabFragment1 extends Fragment {
         return fragmentFirst;
     }
 
-    public TabFragment1(List<GalleryPhoto> photoData, int position) {
+    public TabFragment1(List<GalleryPhoto> photoData) {
+
+        photoData1=new ArrayList<>();
+        photoData1.clear();
         photoData1 = photoData;
-        position1 = position;
+        //position1 = position;
     }
 
     public TabFragment1() {
@@ -107,7 +110,7 @@ public class TabFragment1 extends Fragment {
     }
 
     private void init(View v) {
-//        Log.e("DATACHECK=", photoData1.get(1).getGalleryPhoto().get(0).getFoodPhoto());
+        //Log.e("DATACHECK=", photoData1.get(0).getFoodPhoto());
         prefsHelper = new PrefsHelper(getActivity());
         selectPackageDialog = new Dialog(getActivity());
         rest_food_gallery = v.findViewById(R.id.rest_food_gallery);

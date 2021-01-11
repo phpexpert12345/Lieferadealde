@@ -320,6 +320,7 @@ public class RestaurantMainAdapter extends RecyclerView.Adapter<RestaurantMainAd
                     i.putExtra("DINAVAILABLE", listCategory.get(position).getDineInAvailable());
                     i.putExtra("RESDELORAVAIL", listCategory.get(position).getRestaurantDeliverycharge().toString());
                     i.putExtra("TABLEBOOKINGLIMIT", listCategory.get(position).getTable_booking_limit());
+                    i.putExtra("TABLEBOOKING", listCategory.get(position).getBookaTablesupportAvailable());
                     i.putExtra("color", listCategory.get(position).getRestaurantTimeStatusColorCode());
                     mContext.startActivity(i);
 

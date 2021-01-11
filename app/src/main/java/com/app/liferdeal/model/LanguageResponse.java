@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class LanguageResponse {
 
+
     @SerializedName("Take_a_Photo")
     @Expose
     private String takePhoto;
@@ -1074,7 +1075,7 @@ public class LanguageResponse {
     @SerializedName("Search_Table_Number")
     @Expose
     private String searchTableNumber;
-    @SerializedName("Skip")
+    @SerializedName("skip_button_text")
     @Expose
     private String skip;
     @SerializedName("Add_to_cart")

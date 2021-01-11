@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.liferdeal.R;
 import com.app.liferdeal.model.restaurant.GalleryPhoto;
+import com.app.liferdeal.ui.activity.restaurant.TabFragment0;
 import com.app.liferdeal.ui.fragment.restaurant.TabFragment1;
 import com.app.liferdeal.ui.fragment.restaurant.TabFragment3;
 import com.bumptech.glide.Glide;
@@ -30,12 +31,18 @@ public class PhotoProfileGalleryAdapter extends RecyclerView.Adapter<PhotoProfil
     private List<GalleryPhoto> galleryPhotoList;
     private Context mContext;
     private TabFragment1 mProfileGallery;
+    private TabFragment0 mProfileGallery0;
 
     // public ProfileGalleryAdapter(Context context, List<RestaurantGalleryModel.FoodGalleryList> profileGalleryModelList) {
     public PhotoProfileGalleryAdapter(Context context, List<GalleryPhoto> profileGalleryModelList, TabFragment1 tabFragment1) {
         this.profileGalleryModelList = profileGalleryModelList;
         this.mContext = context;
         this.mProfileGallery = tabFragment1;
+    }
+    public PhotoProfileGalleryAdapter(Context context, List<GalleryPhoto> profileGalleryModelList, TabFragment0 tabFragment0) {
+        this.profileGalleryModelList = profileGalleryModelList;
+        this.mContext = context;
+        this.mProfileGallery0 = tabFragment0;
     }
 
     @NotNull

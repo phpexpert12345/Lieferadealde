@@ -26,6 +26,7 @@ import com.app.liferdeal.model.restaurant.GalleryPhoto;
 import com.app.liferdeal.model.restaurant.RestaurantGalleryModel;
 import com.app.liferdeal.network.retrofit.ApiInterface;
 import com.app.liferdeal.network.retrofit.RFClient;
+import com.app.liferdeal.ui.adapters.AccountViewPagerAdapter;
 import com.app.liferdeal.ui.adapters.PagerAdapter;
 import com.app.liferdeal.ui.fragment.restaurant.TabFragment1;
 import com.app.liferdeal.ui.interfaces.ItemClickListener;
@@ -196,8 +197,23 @@ public class RestaurantMenuPhotoGallery extends AppCompatActivity implements Vie
        /* final PagerAdapter adapter = new PagerAdapter
                 (getSupportFragmentManager(), tabLayout.getTabCount(), list, listParty, listPhoto, RestaurantPhotoGallery.this);
         viewPager.setAdapter(adapter);*/
-        MyPagerAdapter myPagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(myPagerAdapter);
+        // MyPagerAdapter myPagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
+
+
+        AccountViewPagerAdapter accountViewPagerAdapter = new AccountViewPagerAdapter(getSupportFragmentManager());
+        //accountViewPagerAdapter.addFragment(new TabFragment1(photoData.get(0).getGalleryPhoto()),"");
+        boolean flag = true;
+        for (int i = 0; i < photoData.size(); i++) {
+            if (flag) {
+                accountViewPagerAdapter.addFragment(new com.app.liferdeal.ui.activity.restaurant.TabFragment0(photoData.get(i).getGalleryPhoto()), "");
+                flag = false;
+            } else {
+                accountViewPagerAdapter.addFragment(new TabFragment1(photoData.get(i).getGalleryPhoto()), "");
+                flag = true;
+            }
+        }
+
+        viewPager.setAdapter(accountViewPagerAdapter);
         if (list.size() > 0) {
             viewPager.setCurrentItem(0);
         }

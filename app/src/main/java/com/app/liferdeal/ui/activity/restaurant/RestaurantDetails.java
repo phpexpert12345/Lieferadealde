@@ -112,7 +112,7 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
     private Boolean[] selectedItem;
     private int selectedPos = 0;
     private List<RestaurantDetailsModel.RestaurantMencategory> listnew;
-    private String globcategoryImage = "", globRestId = "", colorCode;
+    private String globcategoryImage = "", globRestId = "", colorCode, table_booking = "";
     private int globSelectedCatId;
     private ArrayList<String> itemCount = new ArrayList<>();
     private LanguageResponse model = new LanguageResponse();
@@ -219,6 +219,7 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
         LOCATIONDISTANCE = getIntent().getStringExtra("LOCATIONDISTANCE");
         RESTCUSINE = getIntent().getStringExtra("RESTCUSINE");
         colorCode = getIntent().getStringExtra("color");
+        table_booking = getIntent().getStringExtra("TABLEBOOKING");
         tvDistance.setText(LOCATIONDISTANCE);
         tempExtraItemidWithSizeIdd = getIntent().getStringExtra("tempExtraItemidWithSizeIdd");
         System.out.println("==== tempExtraItemidWithSizeIdd : " + tempExtraItemidWithSizeIdd);
@@ -226,6 +227,12 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
             globTempExtraItemidWithSizeIdd = tempExtraItemidWithSizeIdd.replace("[", "");
             globTempExtraItemidWithSizeIdd = globTempExtraItemidWithSizeIdd.replace("]", "");
             System.out.println("==== globTempExtraItemidWithSizeIdd : " + globTempExtraItemidWithSizeIdd);
+        }
+
+        if (table_booking.equalsIgnoreCase("yes")) {
+            lnr_bookatable.setVisibility(View.VISIBLE);
+        } else {
+            lnr_bookatable.setVisibility(View.GONE);
         }
 
         sharedPreferencesData.createNewSharedPreferences(Constants.PRICEPREFERENCE);
@@ -243,7 +250,7 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
             ratingBar.setRating(Float.parseFloat(getRatingValue));
         }
 
-        tv_restaurant_rating_value.setText("(" + getRatingValue + " "  + ")");
+        tv_restaurant_rating_value.setText("(" + getRatingValue + " " + ")");
         Glide.with(this).load(Uri.parse(RESTCOVER)).into(shop_img_places);
         Glide.with(this).load(Uri.parse(RESTLOGO)).into(rset_logo);
 
@@ -733,7 +740,7 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
     }
 
     @Override
-    public void getClickMenuData(int itemId, String itemName, String amt,String subcatItemDetails) {
+    public void getClickMenuData(int itemId, String itemName, String amt, String subcatItemDetails) {
         System.out.println("===== item name : " + itemId);
         subPizzaItemId = itemId;
         System.out.println("===== subPizzaItemId name : " + subPizzaItemId);
@@ -761,7 +768,7 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
             price = price * qunt;
             database.update_item(String.valueOf(subPizzaItemId), qunt, price);
         } else {
-            database.InsertItem(String.valueOf(itemId), itemName, "0", "0", "0", "0", Double.parseDouble(amt), 1,subcatItemDetails);
+            database.InsertItem(String.valueOf(itemId), itemName, "0", "0", "0", "0", Double.parseDouble(amt), 1, subcatItemDetails);
             AddExtraActivity.cart_Item_number = AddExtraActivity.cart_Item_number + 1;
         }
         tvTotalItemCnt.setText("" + AddExtraActivity.cart_Item_number + " Items");

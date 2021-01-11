@@ -801,7 +801,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             System.out.println("===== drawer click : " + customerId + "position : " + position);
-            if (customerId != null) {
+            if (customerId != null && authPreference.isLoggedIn()) {
                 System.out.println("===== drawer click if ");
                 if (!customerId.isEmpty()) {
                     System.out.println("===== drawer click 1: " + customerId + "position : " + position);
@@ -1117,11 +1117,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (checkFromWhere.equalsIgnoreCase("pagecusine")) {
                     System.out.println("==== onnew 1");
                     selected_cusines = intent.getStringArrayListExtra("SELECTEDCUSINE");
-                    if(intent.hasExtra("selected_filter")){
-                        if(lists.size()>0){
+                    if (intent.hasExtra("selected_filter")) {
+                        if (lists.size() > 0) {
                             lists.clear();
                         }
-                        lists=intent.getParcelableArrayListExtra("selected_filter");
+                        lists = intent.getParcelableArrayListExtra("selected_filter");
                     }
                     System.out.println("==== selected cusine in main activityu" + selected_cusines);
                     initiateRestFragment();

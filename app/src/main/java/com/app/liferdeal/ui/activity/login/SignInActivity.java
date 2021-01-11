@@ -97,10 +97,11 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                 btn_login.setText(model.getLogin());
                 tvTitle.setText(model.getLogin());
                 tvSignIn.setText(model.getLogin());
-//                tvSkip.setText(model.getLogin());
+                tvSkip.setText(model.getSkip());
             }
 
             btn_login.setOnClickListener(this);
+            txt_forgot_pass.setOnClickListener(this);
             tvSkip.setOnClickListener(this);
             img_back.setOnClickListener(this);
             txt_create_new.setOnClickListener(this);
@@ -263,7 +264,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     private void userLogin(String emailid, String pass) {
         showProgress();
         apiInterface = RFClient.getClient().create(ApiInterface.class);
-        Observable<SignInModel> observable = apiInterface.loginUser(emailid, pass, Constants.API_KEY, langCode, deviceId, devicePlateform);
+        Observable<SignInModel> observable = apiInterface.loginUser(emailid, pass, prefsHelper.getPref(Constants.API_KEY), langCode, deviceId, devicePlateform);
 
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -324,7 +325,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
                     }
                 });
-
     }
 
     private void openDialog(String successMsg) {
@@ -395,15 +395,21 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         dialog.setContentView(R.layout.layout_forgot_password);
 
         ImageView img_cross = dialog.findViewById(R.id.img_cross);
+        TextView txt_forgot_pass = dialog.findViewById(R.id.txt_forgot_pass);
         EditText edit_email_add = dialog.findViewById(R.id.edit_email_add);
         Button btn_send = dialog.findViewById(R.id.btn_send);
+
+        txt_forgot_pass.setText(model.getForgortPassword().trim());
+        edit_email_add.setHint(model.getEnterYourEmail().trim());
+        btn_send.setText(model.getSend().trim());
+
         btn_send.setOnClickListener(v -> {
             if (edit_email_add.getText().toString().isEmpty()) {
                 Toast.makeText(this, model.getPleaseEnterEmailAddress(), Toast.LENGTH_SHORT).show();
             } else if (!Patterns.EMAIL_ADDRESS.matcher(edit_email_add.getText().toString()).matches()) {
                 Toast.makeText(this, model.getPLEASEENTERVALIDEMAIL(), Toast.LENGTH_SHORT).show();
             } else {
-                SubmitForgotPassword();
+                SubmitForgotPassword(edit_email_add.getText().toString().trim());
             }
         });
 
@@ -414,7 +420,41 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         img_cross.setOnClickListener(v -> dialog.dismiss());
     }
 
-    public void SubmitForgotPassword() {
+    public void SubmitForgotPassword(String emailid) {
+        showProgress();
+        apiInterface = RFClient.getClient().create(ApiInterface.class);
+        Observable<SignInModel> observable = apiInterface.forgotPassword(emailid, prefsHelper.getPref(Constants.API_KEY), langCode, deviceId, devicePlateform);
 
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<SignInModel>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(SignInModel signin) {
+                        if (signin.getSuccess() == 0) {
+
+                        } else {
+                            Toast.makeText(SignInActivity.this, signin.getSuccessMsg(), Toast.LENGTH_SHORT).show();
+                            hideProgress();
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        hideProgress();
+                        Log.d("TAG", "log...." + e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        //   activity.mySharePreferences.setBundle("login");
+
+                    }
+                });
     }
 }
