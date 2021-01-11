@@ -21,34 +21,34 @@ public class SpecialHolidayAdapter extends RecyclerView.Adapter<SpecialHolidayAd
     private Context mContext;
     private RestaurantDetailsQuickInterface restaurantDetailsQuickInterface;
     private int selectedPosition;
-    private int selectedPositionItem=0;
+    private int selectedPositionItem = 0;
     public static SpecialHolidayAdapter.Holder mHolder;
-    public interface RestaurantDetailsQuickInterface
-    {
+
+    public interface RestaurantDetailsQuickInterface {
         public void getRestaaurantQuickClickData(String restId, int catId, String categoryImage);
 
     }
-    public SpecialHolidayAdapter(Context context, List<RestaurantHoliday>listSubCategory){
-        this.mContext=context;
-        this.listCategory=listSubCategory;
+
+    public SpecialHolidayAdapter(Context context, List<RestaurantHoliday> listSubCategory) {
+        this.mContext = context;
+        this.listCategory = listSubCategory;
         //this.selectedPosition = -1;
         this.selectedPosition = 0;
 
     }
+
     @NonNull
     @Override
     public SpecialHolidayAdapter.Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.special_holiday_row_list,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.special_holiday_row_list, parent, false);
         return new SpecialHolidayAdapter.Holder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull SpecialHolidayAdapter.Holder holder, final int position) {
         holder.txt_date.setText(listCategory.get(position).getHolidayDate());
-       holder.txt_time.setText(listCategory.get(position).getHolidayStartTime() + "-" + listCategory.get(position).getHolidayEndTime());
+        holder.txt_time.setText(listCategory.get(position).getHolidayStartTime() + "-" + listCategory.get(position).getHolidayEndTime());
     }
-
-
 
 
     @Override
@@ -57,13 +57,13 @@ public class SpecialHolidayAdapter extends RecyclerView.Adapter<SpecialHolidayAd
     }
 
 
-    class  Holder extends RecyclerView.ViewHolder{
+    class Holder extends RecyclerView.ViewHolder {
         private TextView txt_date, txt_time;
+
         public Holder(@NonNull View itemView) {
             super(itemView);
             txt_date = itemView.findViewById(R.id.txt_date);
             txt_time = itemView.findViewById(R.id.txt_time);
-
 
 
         }

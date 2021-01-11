@@ -468,7 +468,7 @@
         <LinearLayout
             android:id="@+id/lnr_text_for_delivery_cost"
             android:orientation="vertical"
-            android:visibility="visible"
+            android:visibility="gone"
             android:layout_marginLeft="@dimen/_10sdp"
             android:layout_marginRight="@dimen/_10sdp"
             android:layout_width="match_parent"
@@ -943,7 +943,6 @@
              android:layout_width="match_parent"
              android:padding="@dimen/dp_5"
              android:layout_height="wrap_content"/>
-
 
         </LinearLayout>
 

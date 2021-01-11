@@ -165,59 +165,133 @@
                 android:layout_marginRight="@dimen/_20sdp"
                 android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/edt_fst_name"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_35sdp"
                     android:background="@drawable/edit_back_with_gray"
-                    android:hint="Full name"
-                    android:maxLines="1"
-                    android:padding="@dimen/dp_10" />
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="@dimen/dp_20"
+                        android:layout_height="@dimen/dp_20"
+                        android:layout_marginStart="@dimen/dp_5"
+                        android:layout_gravity="center"
+                        android:tint="@color/colorGreenLiteh"
+                        app:srcCompat="@drawable/username"/>
+
+                    <EditText
+                        android:id="@+id/edt_fst_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Full name"
+                        android:layout_marginStart="@dimen/dp_5"
+                        android:layout_gravity="start"
+                        android:gravity="start"
+                        android:maxLines="1"
+                        android:textColor="@color/colorBlack"
+                        android:padding="@dimen/dp_10" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:background="@drawable/edit_back_with_gray"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="@dimen/dp_20"
+                        android:layout_height="@dimen/dp_20"
+                        android:layout_marginStart="@dimen/dp_5"
+                        android:layout_gravity="center"
+                        android:tint="@color/colorGreenLiteh"
+                        app:srcCompat="@drawable/email"/>
+
+                    <EditText
+                        android:id="@+id/edt_email_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Email Id"
+                        android:layout_marginStart="@dimen/dp_5"
+                        android:textColor="@color/colorBlack"
+                        android:textColorHint="@color/colorTextSubSecondary"
+                        android:inputType="textEmailAddress"
+                        android:maxLines="1"
+                        android:padding="@dimen/dp_10" />
+
+                </LinearLayout>
 
                 <EditText
                     android:id="@+id/edt_lst_name"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_35sdp"
-                    android:layout_marginTop="@dimen/_20sdp"
                     android:background="@drawable/edit_back_with_gray"
                     android:hint="Last name"
+                    android:textColor="@color/colorBlack"
                     android:maxLines="1"
                     android:padding="@dimen/dp_10"
                     android:visibility="gone" />
 
-                <EditText
-                    android:id="@+id/edt_email_id"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_35sdp"
-                    android:layout_marginTop="@dimen/_20sdp"
                     android:background="@drawable/edit_back_with_gray"
-                    android:hint="Email Id"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"
-                    android:padding="@dimen/dp_10" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/edt_mobile"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_35sdp"
-                    android:layout_marginTop="@dimen/_20sdp"
-                    android:background="@drawable/edit_back_with_gray"
-                    android:hint="Mobile number"
-                    android:inputType="number"
-                    android:maxLength="14"
-                    android:maxLines="1"
-                    android:padding="@dimen/dp_10" />
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="@dimen/dp_20"
+                        android:layout_height="@dimen/dp_20"
+                        android:layout_marginStart="@dimen/dp_5"
+                        android:layout_gravity="center"
+                        android:tint="@color/colorGreenLiteh"
+                        app:srcCompat="@drawable/phone"/>
 
-                <EditText
-                    android:id="@+id/edt_usr_pass"
+                    <EditText
+                        android:id="@+id/edt_mobile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Mobile number"
+                        android:inputType="number"
+                        android:textColorHint="@color/colorTextSubSecondary"
+                        android:layout_marginStart="@dimen/dp_5"
+                        android:maxLength="14"
+                        android:textColor="@color/colorBlack"
+                        android:maxLines="1"
+                        android:padding="@dimen/dp_10" />
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_35sdp"
-                    android:layout_marginTop="@dimen/_20sdp"
                     android:background="@drawable/edit_back_with_gray"
-                    android:hint="Password"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:padding="@dimen/dp_10" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="@dimen/dp_20"
+                        android:layout_height="@dimen/dp_20"
+                        android:layout_marginStart="@dimen/dp_5"
+                        android:layout_gravity="center"
+                        android:tint="@color/colorGreenLiteh"
+                        app:srcCompat="@drawable/password"/>
+
+                    <EditText
+                        android:id="@+id/edt_usr_pass"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorBlack"
+                        android:hint="Password"
+                        android:textColorHint="@color/colorTextSubSecondary"
+                        android:layout_marginStart="@dimen/dp_5"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:padding="@dimen/dp_10" />
+
+                </LinearLayout>
 
                 <EditText
                     android:id="@+id/edt_con_pass"
