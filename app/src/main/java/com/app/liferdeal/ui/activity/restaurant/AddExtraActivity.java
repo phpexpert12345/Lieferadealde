@@ -307,7 +307,6 @@ public class AddExtraActivity extends AppCompatActivity implements View.OnClickL
                              for(int j=0;j<array.length;j++){
                                  cards.add(Integer.parseInt(array[j].trim()));
                              }
-
                              if(extra_item_list_id.size()>0){
                                  if(cards.equals(extra_item_list_id)){
                                      selected_position=i;
