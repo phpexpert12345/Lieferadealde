@@ -156,6 +156,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         if (App.retrieveLangFromGson(CartActivity.this) != null) {
             model = App.retrieveLangFromGson(CartActivity.this);
         }
+
         init();
     }
 
@@ -255,9 +256,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             rl_delivery.setVisibility(View.VISIBLE);
             orderType = "Delivery";
 
-            rl_pickup.setBackgroundResource(R.drawable.edit_back_with_gray);
-            rl_delivery.setBackgroundResource(R.drawable.circle_background);
-            rlDineIn.setBackgroundResource(R.drawable.edit_back_with_gray);
+           changeSelect(orderType);
         } else {
             rl_delivery.setVisibility(View.GONE);
         }
@@ -278,9 +277,8 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 sharedPreferencesData.getSharedPreferenceData(Constants.FORDELIVERY, Constants.PCKAVAILABLE).equalsIgnoreCase("yes")) {
             orderType = "Pickup";
 
-            rl_pickup.setBackgroundResource(R.drawable.circle_background);
-            rl_delivery.setBackgroundResource(R.drawable.edit_back_with_gray);
-            rlDineIn.setBackgroundResource(R.drawable.edit_back_with_gray);
+
+            changeSelect(orderType);
         }
 
         if (sharedPreferencesData.getSharedPreferenceData(Constants.FORDELIVERY, Constants.HMDLVRYAVAIL).equalsIgnoreCase("no") &&
@@ -288,9 +286,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 sharedPreferencesData.getSharedPreferenceData(Constants.FORDELIVERY, Constants.DINAVAILABLE).equalsIgnoreCase("yes")) {
             orderType = "EAT-IN";
 
-            rl_pickup.setBackgroundResource(R.drawable.edit_back_with_gray);
-            rl_delivery.setBackgroundResource(R.drawable.edit_back_with_gray);
-            rlDineIn.setBackgroundResource(R.drawable.circle_background);
+           changeSelect(orderType);
         }
 
         updateCart();

@@ -4,6 +4,14 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent">
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progress_address"
+        android:layout_centerInParent="true"
+        android:visibility="gone">
+
+    </ProgressBar>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/rl_header"
