@@ -58,11 +58,11 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
             model = App.retrieveLangFromGson(ChangePassword.this);
         }
 
-        tv_faq.setText(model.getChangePassword());
-        btn_submit.setText(model.getSubmit());
-        edt_old_pwd.setHint(model.getEnterOldPassword());
-        edt_new_pwd.setHint(model.getEnterNewPassword());
-        edt_confirm_pwd.setHint(model.getConfirmNewPassword());
+        tv_faq.setText("" + model.getChangePassword().trim());
+        btn_submit.setText("" + model.getSubmit().trim());
+        edt_old_pwd.setHint("" + model.getEnterOldPassword().trim());
+        edt_new_pwd.setHint("" + model.getEnterNewPassword().trim());
+        edt_confirm_pwd.setHint("" + model.getConfirmNewPassword().trim());
 
         btn_submit.setOnClickListener(this);
         iv_back.setOnClickListener(this);
@@ -101,6 +101,7 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
     }
 
     private void saveAddress() {
+        showProgress();
         apiInterface = RFClient.getClient().create(ApiInterface.class);
         Observable<ChangepasswordModel> observable = apiInterface.changePassword(prefsHelper.getPref(Constants.API_KEY), prefsHelper.getPref(Constants.LNG_CODE), prefsHelper.getPref(Constants.CUSTOMER_ID), edt_old_pwd.getText().toString().trim(), edt_new_pwd.getText().toString().trim());
 
@@ -114,8 +115,21 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
 
                     @Override
                     public void onNext(ChangepasswordModel searchResult) {
-                        showProgress();
-                        showCustomDialog1decline(searchResult.getSuccessMsg().toString());
+                        try {
+                            if (searchResult.getError() == 1) {
+                                showCustomDialog1decline(searchResult.getError_msg(), "error");
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        try {
+                            if (searchResult.getSuccess() == 1) {
+                                showCustomDialog1decline(searchResult.getSuccessMsg(), "success");
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         hideProgress();
                         //setAdapterCategory(searchResult.getMenuItemExtraGroup());
                     }
@@ -134,7 +148,7 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
                 });
     }
 
-    public void showCustomDialog1decline(String s) {
+    public void showCustomDialog1decline(String s, String type) {
         final AlertDialog alertDialog = new AlertDialog.Builder(ChangePassword.this).create();
         alertDialog.setTitle("Alert");
         alertDialog.setMessage("" + s);
@@ -143,7 +157,9 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
 
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
-                finish();
+                if (type.equalsIgnoreCase("success")) {
+                    finish();
+                }
             }
         });
         alertDialog.show();

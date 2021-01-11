@@ -425,6 +425,10 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
                         prefsHelper.savePref(Constants.APP_CURRENCY, searchResult.getAppCurrency());
                         prefsHelper.savePref(Constants.google_map_key, searchResult.getAppGoogleKey());
                         prefsHelper.savePref(Constants.LNG_CODE, searchResult.getAppDefaultLanguage());
+                        prefsHelper.savePref(Constants.APP_ADDRESS, searchResult.getAppAddress());
+                        prefsHelper.savePref(Constants.APP_NUMBER, searchResult.getAppMobileNumber() + ", " + searchResult.getAppPhoneNumber());
+                        prefsHelper.savePref(Constants.APP_EMAIL, searchResult.getAppEmailAddress());
+                        prefsHelper.savePref(Constants.APP_NAME, searchResult.getAppName());
                         getLanguageData(searchResult.getApiKey(), searchResult.getAppDefaultLanguage());
                         getSplashImageData(searchResult.getApiKey(), searchResult.getAppDefaultLanguage());
 //                        Log.e("AppCurrency=",searchResult.getAppCurrency());

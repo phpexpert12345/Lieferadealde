@@ -53,7 +53,7 @@ public class ContactUs extends AppCompatActivity implements View.OnClickListener
     private PrefsHelper prefsHelper;
     private ApiInterface apiInterface;
     private ProgressDialog progressDialog;
-    private TextView edit_name, edit_email_addres, edit_mobile, edit_message, tv_address;
+    private TextView edit_name, edit_email_addres, edit_mobile, edit_message, tv_address, tv_lat_long, tv_email_addres, tvAppName;
     private ImageView iv_back;
     private Button btn_send;
     private String strName = "", stremail = "", strPhone = "", strMessage = "", straddress = "";
@@ -79,6 +79,9 @@ public class ContactUs extends AppCompatActivity implements View.OnClickListener
         edit_mobile = findViewById(R.id.edit_mobile);
         edit_message = findViewById(R.id.edit_message);
         tv_address = findViewById(R.id.tv_address);
+        tvAppName = findViewById(R.id.tvAppName);
+        tv_lat_long = findViewById(R.id.tv_lat_long);
+        tv_email_addres = findViewById(R.id.tv_email_addres);
 
         tvFaq.setText(model.getContactUs());
         tvFeelFree.setText(model.getFeelFreeToDropUsAMessage());
@@ -88,8 +91,11 @@ public class ContactUs extends AppCompatActivity implements View.OnClickListener
         ipMsg.setHint(model.getMessage());
         btn_send.setText(model.getSend());
 
-        straddress = prefsHelper.getPref(Constants.SAVE_FULL_ADDRESS);
+        straddress = prefsHelper.getPref(Constants.APP_ADDRESS);
         tv_address.setText(straddress);
+        tv_lat_long.setText(prefsHelper.getPref(Constants.APP_NUMBER));
+        tv_email_addres.setText(prefsHelper.getPref(Constants.APP_EMAIL));
+        tvAppName.setText(prefsHelper.getPref(Constants.APP_NAME));
         iv_back.setOnClickListener(this);
         btn_send.setOnClickListener(this);
     }
@@ -169,7 +175,7 @@ public class ContactUs extends AppCompatActivity implements View.OnClickListener
     }
 
     private void getContactUsData() {
-
+        showProgress();
         apiInterface = RFClient.getClient().create(ApiInterface.class);
         Observable<ContactusModel> observable = apiInterface.sendContactUsData(prefsHelper.getPref(Constants.API_KEY), prefsHelper.getPref(Constants.LNG_CODE), strName, stremail, strPhone, strMessage);
         observable.subscribeOn(Schedulers.io())
@@ -182,19 +188,19 @@ public class ContactUs extends AppCompatActivity implements View.OnClickListener
 
                     @Override
                     public void onNext(ContactusModel searchResult) {
-                        showProgress();
                         showCustomDialog1decline(searchResult.getErrorMsg().toString());
                         hideProgress();
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        // hideProgress();
+                        hideProgress();
                         Log.d("TAG", "log...." + e);
                     }
 
                     @Override
                     public void onComplete() {
+                        hideProgress();
                         //   activity.mySharePreferences.setBundle("login");
 
                     }

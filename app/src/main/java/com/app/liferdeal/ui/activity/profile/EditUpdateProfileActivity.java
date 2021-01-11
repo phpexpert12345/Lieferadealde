@@ -162,7 +162,7 @@ public class EditUpdateProfileActivity extends AppCompatActivity implements View
 
             case R.id.profile_image:
                 String title = model.getSelectOption();
-                CharSequence[] itemlist = {"Take a Photo", "Pick from Gallery"};
+                CharSequence[] itemlist = {model.getTakePhoto(), model.getPickGallery()};
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(EditUpdateProfileActivity.this);
                 builder.setTitle(title);

@@ -135,6 +135,18 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/header_layout"/>
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvNoData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:text="No Data Found"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/_15sdp"
+        android:fontFamily="@font/roboto_regular"/>
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnAddAddress"
             android:layout_width="@dimen/_40sdp"

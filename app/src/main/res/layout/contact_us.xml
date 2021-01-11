@@ -100,6 +100,7 @@
             android:textStyle="bold"/>
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvAppName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_20"
@@ -118,19 +119,21 @@
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="@dimen/dp_20"
-                android:layout_height="@dimen/dp_20"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                app:tint="@color/colorGreenLiteh"
                 android:src="@drawable/location"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/sp_15"
+                android:textSize="@dimen/sp_13"
                 android:layout_gravity="left"
+                android:fontFamily="@font/roboto_regular"
                 android:gravity="left"
                 android:textColor="@color/colorTextPrimary"
-                android:paddingLeft="@dimen/_10sdp"
+                android:paddingLeft="@dimen/_5sdp"
                 android:text="address"/>
 
         </LinearLayout>
@@ -142,21 +145,21 @@
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="@dimen/dp_20"
-                android:layout_height="@dimen/dp_20"
-                app:tint="@color/colorPrimaryone"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                app:tint="@color/colorGreenLiteh"
                 android:src="@drawable/ic_call"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_lat_long"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/sp_13"
-                android:textSize="@dimen/sp_15"
+                android:paddingStart="@dimen/_5sdp"
+                android:textSize="@dimen/sp_13"
                 android:layout_gravity="left"
                 android:gravity="left"
                 android:textColor="@color/colorTextPrimary"
-                android:text="01237 457766, 7768678"/>
+                android:text=""/>
 
         </LinearLayout>
 
@@ -167,96 +170,197 @@
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="@dimen/dp_20"
-                android:layout_height="@dimen/dp_20"
-                app:tint="@color/colorPrimaryone"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                app:tint="@color/colorGreenLiteh"
                 android:src="@drawable/ic_email"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_email_addres"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/_10sdp"
-                android:textSize="@dimen/sp_15"
+                android:paddingStart="@dimen/_5sdp"
+                android:textSize="@dimen/sp_13"
+                android:fontFamily="@font/roboto_regular"
                 android:layout_gravity="left"
                 android:gravity="left"
                 android:textColor="@color/colorTextPrimary"
-                android:text="customercare@lieferadeal.de"/>
+                android:text=""/>
 
         </LinearLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/ipYourName"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:hint="Your name"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_name"
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/dp_5"
+                android:layout_marginTop="@dimen/dp_8"
+                app:srcCompat="@drawable/ic_user"
+                app:tint="@color/colorGreenLiteh" />
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/colorWhite"
-                android:drawablePadding="@dimen/dp_20"
-                android:textColor="@color/colorTextPrimary"
-                android:drawableTint="@color/colorPrimaryone"
-                android:textSize="@dimen/sp_13"
-                android:drawableLeft="@drawable/ic_user"
-                android:textColorHint="@color/dark_gray" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:id="@+id/ipYourName"
+                app:boxStrokeColor="@color/colorWhite"
+                app:boxStrokeWidth="0dp"
+                android:layout_marginStart="@dimen/dp_5"
+                app:boxStrokeWidthFocused="0dp"
+                android:background="@null"
+                android:layout_height="wrap_content">
 
-        <com.google.android.material.textfield.TextInputLayout
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textSize="@dimen/sp_13"
+                    android:textColor="@color/colorTextSubSecondary"
+                    android:background="@color/colorWhite"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <View
             android:layout_width="match_parent"
-            android:id="@+id/ipEmail"
-            android:hint="Email Address"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_email_addres"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/colorWhite"
-                android:textColor="@color/colorTextPrimary"
-                android:drawablePadding="@dimen/dp_20"
-                android:textSize="@dimen/sp_13"
-                android:drawableTint="@color/colorPrimaryone"
-                android:drawableLeft="@drawable/ic_email"
-                android:textColorHint="@color/dark_gray" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
+            android:layout_height="@dimen/dp_1"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:background="@color/dark_gray"/>
+        <LinearLayout
             android:layout_width="match_parent"
-            android:id="@+id/ipMobileNo"
-            android:hint="Mobile Number"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_mobile"
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/dp_5"
+                android:layout_marginTop="@dimen/dp_8"
+                app:srcCompat="@drawable/ic_email"
+                app:tint="@color/colorGreenLiteh" />
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/colorWhite"
-                android:inputType="number"
-                android:drawablePadding="@dimen/_20sdp"
-                android:maxLength="10"
-                android:drawableTint="@color/colorPrimaryone"
-                android:drawableStart="@drawable/ic_call" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:id="@+id/ipEmail"
+                app:boxStrokeColor="@color/colorWhite"
+                app:boxStrokeWidth="0dp"
+                android:layout_marginStart="@dimen/dp_5"
+                app:boxStrokeWidthFocused="0dp"
+                android:background="@null"
+                android:layout_height="wrap_content">
 
-        <com.google.android.material.textfield.TextInputLayout
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_email_addres"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textSize="@dimen/sp_13"
+                    android:textColor="@color/colorTextSubSecondary"
+                    android:background="@color/colorWhite"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <View
             android:layout_width="match_parent"
-            android:id="@+id/ipMsg"
-            android:hint="Message"
-            android:layout_height="wrap_content">
+            android:layout_height="@dimen/dp_1"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:background="@color/dark_gray"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_message"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/dp_5"
+                android:layout_marginTop="@dimen/dp_8"
+                app:srcCompat="@drawable/ic_call"
+                app:tint="@color/colorGreenLiteh" />
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/colorWhite"
-                android:drawableStart="@drawable/messageicon"
-                android:drawablePadding="@dimen/_20sdp"
-                android:drawableTint="@color/colorPrimaryone"
-                 />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:id="@+id/ipMobileNo"
+                app:boxStrokeColor="@color/colorWhite"
+                app:boxStrokeWidth="0dp"
+                android:layout_marginStart="@dimen/dp_5"
+                app:boxStrokeWidthFocused="0dp"
+                android:background="@null"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_mobile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textSize="@dimen/sp_13"
+                    android:textColor="@color/colorTextSubSecondary"
+                    android:background="@color/colorWhite"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:background="@color/dark_gray"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                android:layout_marginStart="@dimen/dp_5"
+                android:layout_marginTop="@dimen/dp_25"
+                app:srcCompat="@drawable/messageicon"
+                app:tint="@color/colorGreenLiteh" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:id="@+id/ipMsg"
+                app:boxStrokeColor="@color/colorWhite"
+                app:boxStrokeWidth="0dp"
+                android:layout_marginStart="@dimen/dp_5"
+                app:boxStrokeWidthFocused="0dp"
+                android:background="@null"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_message"
+                    android:layout_width="match_parent"
+                    android:fontFamily="@font/roboto_regular"
+                    android:layout_height="@dimen/dp_80"
+                    android:textSize="@dimen/sp_13"
+                    android:textColor="@color/colorTextSubSecondary"
+                    android:background="@color/colorWhite"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:background="@color/dark_gray"/>
 
     </LinearLayout>
 
@@ -268,6 +372,8 @@
         android:background="@color/colorPrimaryone"
         android:layout_alignParentBottom="true"
         android:padding="@dimen/dp_10"
+        android:textSize="@dimen/sp_15"
+        android:textAllCaps="false"
         android:fontFamily="@font/roboto_medium"
         android:text="Send"
         android:textColor="@color/colorWhite"/>

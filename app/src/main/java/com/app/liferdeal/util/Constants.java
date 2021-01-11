@@ -34,6 +34,11 @@ public class Constants {
     public static final String SIZEOFPIZZA ="sizeofpizzapr" ;
     public static final String FILTERDATA ="filterdatapr" ;
     public static String isLoggedIn = "isLoggedIn";
+    public static final String APP_ADDRESS = "appaddress";
+    public static final String APP_NUMBER = "appnumber";
+    public static final String APP_EMAIL = "appemail";
+    public static final String APP_NAME = "appname";
+
 
     public static class Url {
         public static String BASE_URL = "https://www.lieferadeal.de/WebAppAPI/";

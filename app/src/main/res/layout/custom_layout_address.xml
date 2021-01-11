@@ -28,15 +28,15 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_bold"
                 android:layout_centerVertical="true"
-                android:text=""
+                android:text="bbbbbb"
                 android:textColor="@color/colorBlack"
                 android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_edit"
-                android:layout_width="@dimen/_25sdp"
-                android:layout_height="@dimen/_25sdp"
-               android:layout_alignParentEnd="true"
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="@dimen/dp_20"
+                android:layout_alignParentRight="true"
                 android:elevation="@dimen/_5sdp"
                 android:src="@drawable/ic_delete" />
         </RelativeLayout>
@@ -45,9 +45,9 @@
             android:id="@+id/tv_mobile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_2"
             android:fontFamily="@font/roboto_regular"
-            android:text=""
+            android:text="bbbb"
             android:textColor="@color/colorBlack"
             android:textSize="13sp" />
 
@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_5"
             android:fontFamily="@font/roboto_regular"
-            android:text=""
+            android:text="bbbb"
             android:textColor="@color/colorBlack"
             android:textSize="13sp" />
 

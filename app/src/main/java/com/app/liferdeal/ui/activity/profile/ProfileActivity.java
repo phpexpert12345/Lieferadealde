@@ -121,7 +121,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             tvMyAddress.setText(model.getMyAddress().trim());
             tvHelp.setText(model.getHelpCenter().trim());
             tvSetting.setText(model.getSettings().trim());
-            tvProfile.setText(""+model.getMyProfile().trim());
+            tvProfile.setText("" + model.getMyProfile().trim());
             tvLoyaltyPoint.setText(model.getLoyaltyPoints().trim());
             tvMyTicket.setText(model.getMyTicket().trim());
             tvPasswordSecurity.setText(model.getPasswordSecurity().trim());
@@ -321,9 +321,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 .setPositiveButton(android.R.string.yes,
                         new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(
-                                    DialogInterface dialog,
-                                    int which) {
+                            public void onClick(DialogInterface dialog, int which) {
                                 try {
                                     File dir = getCacheDir();
                                     //deleteDir(dir);
@@ -341,16 +339,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 //                                finish();
                             }
                         })
-                .setNegativeButton(android.R.string.no,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(
-                                    DialogInterface dialog,
-                                    int which) {
-                                dialog.dismiss();
-
-                            }
-                        }).show();
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).show();
     }
 
     private void openDialog() {
@@ -372,7 +366,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
-
 //            prefsHelper.clearAllPref();
         });
     }

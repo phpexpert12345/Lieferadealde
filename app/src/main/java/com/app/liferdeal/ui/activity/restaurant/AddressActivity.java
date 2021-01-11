@@ -168,6 +168,7 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
 
                     @Override
                     public void onComplete() {
+                        hideProgress();
                         //   activity.mySharePreferences.setBundle("login");
 
                     }

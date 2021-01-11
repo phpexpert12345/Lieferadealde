@@ -1,11 +1,13 @@
 package com.app.liferdeal.ui.activity.profile;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +22,8 @@ public class PrivacyAndPolicy extends AppCompatActivity implements View.OnClickL
     private WebView webView;
     private TextView tv_terms_condition;
     private LanguageResponse model;
+    private ProgressDialog progressDialog;
+    private ProgressBar pbLoad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +33,7 @@ public class PrivacyAndPolicy extends AppCompatActivity implements View.OnClickL
         if (App.retrieveLangFromGson(PrivacyAndPolicy.this) != null) {
             model = App.retrieveLangFromGson(PrivacyAndPolicy.this);
         }
+        showProgress();
         initialization();
         initializedListener();
         statusBarColor();
@@ -36,6 +41,7 @@ public class PrivacyAndPolicy extends AppCompatActivity implements View.OnClickL
 
     private void initialization() {
         ivBack = findViewById(R.id.iv_back);
+        pbLoad = findViewById(R.id.pbLoad);
         tv_terms_condition = findViewById(R.id.tv_terms_condition);
         webView = (WebView) findViewById(R.id.webview);
         if (getIntent() != null) {
@@ -47,10 +53,26 @@ public class PrivacyAndPolicy extends AppCompatActivity implements View.OnClickL
                 tv_terms_condition.setText(model.getTermsOfService());
                 webView.loadUrl(Constants.Url.BASE_URL + "terms_of_use_web.php");
             }
+            pbLoad.setVisibility(View.GONE);
+            hideProgress();
         } else {
             tv_terms_condition.setText(model.getTermsOfService());
             webView.loadUrl(Constants.Url.BASE_URL + "terms_of_use_web.php");
+            hideProgress();
+            pbLoad.setVisibility(View.GONE);
         }
+    }
+
+    public void showProgress() {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Please wait...");
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
+    }
+
+    public void hideProgress() {
+        progressDialog.dismiss();
     }
 
     private void initializedListener() {

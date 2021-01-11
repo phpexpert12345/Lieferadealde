@@ -6,6 +6,15 @@ import com.google.gson.annotations.SerializedName;
 
 public class LanguageResponse {
 
+    @SerializedName("Take_a_Photo")
+    @Expose
+    private String takePhoto;
+    @SerializedName("Pick_from_Gallery")
+    @Expose
+    private String pickGallery;
+    @SerializedName("Legal_Representative")
+    @Expose
+    private String legalRepresentative;
     @SerializedName("AlertText")
     @Expose
     private String alertText;
@@ -1305,6 +1314,52 @@ public class LanguageResponse {
     @SerializedName("search_location")
     @Expose
     private String searchLocation;
+    @SerializedName("are_you_sure_you_to_delete_this_address")
+    @Expose
+    private String are_you_sure;
+    @SerializedName("please_wait_text")
+    @Expose
+    private String please_wait_text;
+
+    public String getPlease_wait_text() {
+        return please_wait_text;
+    }
+
+    public void setPlease_wait_text(String please_wait_text) {
+        this.please_wait_text = please_wait_text;
+    }
+
+    public String getAre_you_sure() {
+        return are_you_sure;
+    }
+
+    public void setAre_you_sure(String are_you_sure) {
+        this.are_you_sure = are_you_sure;
+    }
+
+    public String getTakePhoto() {
+        return takePhoto;
+    }
+
+    public void setTakePhoto(String takePhoto) {
+        this.takePhoto = takePhoto;
+    }
+
+    public String getPickGallery() {
+        return pickGallery;
+    }
+
+    public void setPickGallery(String pickGallery) {
+        this.pickGallery = pickGallery;
+    }
+
+    public String getLegalRepresentative() {
+        return legalRepresentative;
+    }
+
+    public void setLegalRepresentative(String legalRepresentative) {
+        this.legalRepresentative = legalRepresentative;
+    }
 
     public String getSearchLocation() {
         return searchLocation;

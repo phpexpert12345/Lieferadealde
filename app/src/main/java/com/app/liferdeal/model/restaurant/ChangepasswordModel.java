@@ -10,6 +10,28 @@ public class ChangepasswordModel {
     @SerializedName("success_msg")
     @Expose
     private String successMsg;
+    @SerializedName("error")
+    @Expose
+    private Integer error;
+    @SerializedName("error_msg")
+    @Expose
+    private String error_msg;
+
+    public Integer getError() {
+        return error;
+    }
+
+    public void setError(Integer error) {
+        this.error = error;
+    }
+
+    public String getError_msg() {
+        return error_msg;
+    }
+
+    public void setError_msg(String error_msg) {
+        this.error_msg = error_msg;
+    }
 
     public Integer getSuccess() {
         return success;

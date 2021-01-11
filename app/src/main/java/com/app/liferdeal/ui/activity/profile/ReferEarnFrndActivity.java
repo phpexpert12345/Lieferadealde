@@ -32,7 +32,7 @@ public class ReferEarnFrndActivity extends AppCompatActivity implements View.OnC
     private RelativeLayout rlt_btn_got_to_home;
     private ImageView iv_back, watsapp, facebook, twitter, share;
     private String strReferCode = "", referSharingMessage, referralEarnPoints, refercodeMessage, referralJoinFriends;
-    private TextView refercode, refercodemsg, earnfrndjointpoints, tv_faq, tvRefferalCode, joinfriends;
+    private TextView refercode, refercodemsg, earnfrndjointpoints, tv_faq, tvRefferalCode, joinfriends, joinfriendss;
     private LanguageResponse model = new LanguageResponse();
 
     @Override
@@ -61,11 +61,13 @@ public class ReferEarnFrndActivity extends AppCompatActivity implements View.OnC
         tv_faq = findViewById(R.id.tv_faq);
         tvRefferalCode = findViewById(R.id.tvRefferalCode);
         joinfriends = findViewById(R.id.joinfriends);
+        joinfriendss = findViewById(R.id.joinfriendss);
 
-        tv_faq.setText(model.getReferAFriend());
-        tvRefferalCode.setText(model.getReferralCode());
-        joinfriends.setText(model.getYouHaveReferred());
-        refercodemsg.setText(model.getReferWithFriendsWhenFriendJoinAndPlaceOrdersFromHarper());
+        tv_faq.setText("" + model.getReferAFriend().trim());
+        tvRefferalCode.setText("" + model.getReferralCode().trim());
+        joinfriends.setText("" + model.getYouHaveReferred().trim());
+        joinfriendss.setText("" + model.getYouHaveReferred().trim());
+        refercodemsg.setText("" + model.getReferWithFriendsWhenFriendJoinAndPlaceOrdersFromHarper().trim());
 
         strReferCode = prefsHelper.getPref(Constants.REFERCODELOGIN);
         refercodeMessage = prefsHelper.getPref(Constants.refercodeMessage);
