@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -62,6 +63,7 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
     private PrefsHelper prefsHelper;
     private ApiInterface apiInterface;
     private ProgressDialog progressDialog;
+    private ProgressBar pbLoad;
     private LanguageResponse model = new LanguageResponse();
 
     @Override
@@ -88,6 +90,7 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
         img_select = findViewById(R.id.img_select);
         tvHome = findViewById(R.id.tvHome);
         tvHead = findViewById(R.id.tvHead);
+        pbLoad = findViewById(R.id.pbLoad);
 
         tvHead.setText(model.getAddress());
         tvHome.setText(model.getGOTOHOME());
@@ -135,7 +138,6 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void getSavedAddress() {
-        showProgress();
         apiInterface = RFClient.getClient().create(ApiInterface.class);
         Observable<ModelAddressList> observable = apiInterface.getSavedAddress(String.valueOf(currentLatitude), String.valueOf(currentLongitude),
                 prefsHelper.getPref(Constants.CUSTOMER_ID));
@@ -149,7 +151,8 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
 
                     @Override
                     public void onNext(ModelAddressList searchResult) {
-                        hideProgress();
+//                        showProgress();
+                        pbLoad.setVisibility(View.VISIBLE);
                         setAddAdapter(searchResult.getAddressModel().getDeliveryaddress());
                         if (searchResult.getAddressModel().getDeliveryaddress().size() > 0) {
                             tvNoData.setVisibility(View.GONE);
@@ -157,17 +160,20 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
                             tvNoData.setVisibility(View.VISIBLE);
                             tvNoData.setText(model.getDATAISNOTAVAILABLE());
                         }
+//                        hideProgress();
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        hideProgress();
+//                        hideProgress();
+                        pbLoad.setVisibility(View.GONE);
                         Log.d("TAG", "log...." + e);
                     }
 
                     @Override
                     public void onComplete() {
-                        hideProgress();
+//                        hideProgress();
+                        pbLoad.setVisibility(View.GONE);
                         //   activity.mySharePreferences.setBundle("login");
 
                     }
@@ -240,15 +246,16 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
         super.onNewIntent(intent);
         System.out.println("===== onnew intent");
     }
-    public void showDeleteDialog(AddressModel.Deliveryaddress address){
-        androidx.appcompat.app.AlertDialog.Builder builder=new androidx.appcompat.app.AlertDialog.Builder(this);
+
+    public void showDeleteDialog(AddressModel.Deliveryaddress address) {
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
         builder.setMessage(model.getAlertText());
         builder.setPositiveButton(model.getOKText(), (dialog, which) -> {
             dialog.dismiss();
             deleteAddressCustomer(address.getId());
 
         });
-        builder.setNegativeButton(model.getCancel(),((dialog, which) -> {
+        builder.setNegativeButton(model.getCancel(), ((dialog, which) -> {
             dialog.dismiss();
         }));
         builder.create().show();
@@ -293,7 +300,7 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
     private void showCustomDialog(String s) {
         final AlertDialog alertDialog = new AlertDialog.Builder(AddressActivity.this).create();
         alertDialog.setTitle("Alert");
-        if(!s.equalsIgnoreCase("null")) {
+        if (!s.equalsIgnoreCase("null")) {
             alertDialog.setMessage("" + s);
         }
         alertDialog.setIcon(R.drawable.tick);

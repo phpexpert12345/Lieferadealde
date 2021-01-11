@@ -7,7 +7,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -20,7 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_10"
-                android:layout_marginTop="@dimen/dp_30"
+                android:layout_marginTop="@dimen/dp_20"
                 android:layout_marginEnd="@dimen/dp_10"
                 android:orientation="horizontal">
 
@@ -32,12 +32,12 @@
                     android:gravity="left|center_vertical"
                     android:text="Select your language"
                     android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/sp_20" />
+                    android:textSize="@dimen/sp_18" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivClose"
-                    android:layout_width="@dimen/dp_30"
-                    android:layout_height="@dimen/dp_30"
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_20"
                     android:layout_alignParentEnd="true"
                     app:srcCompat="@drawable/arrow_down" />
 
@@ -46,7 +46,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvLanguageList"
                 android:layout_marginStart="@dimen/dp_10"
-                android:layout_marginTop="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_10"
                 android:layout_marginEnd="@dimen/dp_10"
                 android:layout_marginBottom="@dimen/dp_20"
                 android:layout_width="match_parent"

@@ -100,7 +100,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             devicePlateform = prefsHelper.getPref(Constants.devicePlateform);
             if (!logo.equalsIgnoreCase("")) {
                 Glide.with(SignUpActivity.this).load(Uri.parse(logo)).into(img_logo);
-
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -116,12 +115,12 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
             case R.id.btn_signup:
                 if (edt_fst_name.getText().toString().trim().equalsIgnoreCase("")) {
-                    edt_fst_name.setError(model.getPleaseEnterFirstName());
+                    edt_fst_name.setError(model.getPleaseEnterFullName());
                     edt_fst_name.requestFocus();
-                } else if (edt_lst_name.getText().toString().trim().equalsIgnoreCase("")) {
+                } /*else if (edt_lst_name.getText().toString().trim().equalsIgnoreCase("")) {
                     edt_lst_name.setError(model.getPleaseEnterLastName());
                     edt_lst_name.requestFocus();
-                } else if (edt_email_id.getText().toString().trim().equalsIgnoreCase("")) {
+                } */else if (edt_email_id.getText().toString().trim().equalsIgnoreCase("")) {
                     edt_email_id.setError(model.getPleaseEnterEmailAddress());
                     edt_email_id.requestFocus();
                 } else if (!isValidEmailId(edt_email_id.getText().toString().trim())) {
@@ -146,6 +145,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 }*/
 
                 else {
+                    
                     userRegistration(edt_fst_name.getText().toString().trim(), edt_lst_name.getText().toString().trim(), edt_email_id.getText().toString().trim(), edt_mobile_num.getText().toString().trim(), edt_pass.getText().toString().trim());
                 }
                 break;
@@ -207,8 +207,29 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     public void onNext(SignupModel signup) {
                         hideProgress();
                         if (signup.getSuccess() != null && signup.getSuccess() == 1) {
-                            String cusomerId = signup.getCustomerId();
-                            prefsHelper.savePref(Constants.CUSTOMER_ID, cusomerId);
+
+//                            String cusomerId = signin.getCustomerId();
+//                            String username = signin.getUserName();
+//                            String mobilenum = signin.getUserPhone();
+//                            String usernemail = signin.getUserEmail();
+//                            String refercode = signin.getReferralCode();
+//                            String refercodeMessage = signin.getReferralCodeMessage().toString();
+//                            String referSharingMessage = signin.getReferralSharingMessage();
+//                            String referralEarnPoints = signin.getReferralEarnPoints();
+//                            String referralJoinFriends = signin.getReferralJoinFriends();
+//                            System.out.println("===== strReferCode : " + refercode + "refercodeMessage : " + refercodeMessage + "referSharingMessage :" + referSharingMessage + "referralEarnPoints : " + referralEarnPoints + "referralJoinFriends : " + referralJoinFriends);
+//
+//                            prefsHelper.savePref(Constants.USER_NAME, username);
+//                            prefsHelper.savePref(Constants.USER_MOBILE, mobilenum);
+//                            prefsHelper.savePref(Constants.USER_EMAIL, usernemail);
+//                            prefsHelper.savePref(Constants.CUSTOMER_ID, cusomerId);
+//                            prefsHelper.savePref(Constants.REFERCODELOGIN, refercode);
+//                            prefsHelper.savePref(Constants.refercodeMessage, refercodeMessage);
+//                            prefsHelper.savePref(Constants.referSharingMessage, referSharingMessage);
+//                            prefsHelper.savePref(Constants.referralEarnPoints, referralEarnPoints);
+//                            prefsHelper.savePref(Constants.referralJoinFriends, referralJoinFriends);
+//                            prefsHelper.savePref(Constants.isLoggedIn, true);
+
                             openDialog(signup.getSuccessMsg());
                         } else {
                             Toast.makeText(SignUpActivity.this, signup.getError_msg(), Toast.LENGTH_SHORT).show();

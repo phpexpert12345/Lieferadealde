@@ -86,12 +86,12 @@ public class AddAddressActivity extends AppCompatActivity implements View.OnClic
         rl_back.setOnClickListener(this);
         btn_submit.setOnClickListener(this);
 
-        sharedPreferencesData=new SharedPreferencesData(getApplicationContext());
-        edit_add_tittle.setText(sharedPreferencesData.getSharedPreferenceData(Constants.PRICEPREFERENCE,Constants.ADDRESSTITLE));
-        edit_flat_no.setText(sharedPreferencesData.getSharedPreferenceData(Constants.PRICEPREFERENCE,Constants.HOUSENO));
-        edit_street_name.setText( sharedPreferencesData.getSharedPreferenceData(Constants.PRICEPREFERENCE,Constants.STREETNAME));
-        edit_city.setText(sharedPreferencesData.getSharedPreferenceData(Constants.PRICEPREFERENCE,Constants.CITYNAME));
-        edit_zipcode.setText(sharedPreferencesData.getSharedPreferenceData(Constants.PRICEPREFERENCE,Constants.POSTALCODE));
+        sharedPreferencesData = new SharedPreferencesData(getApplicationContext());
+//        edit_add_tittle.setText(sharedPreferencesData.getSharedPreferenceData(Constants.PRICEPREFERENCE,Constants.ADDRESSTITLE));
+        edit_flat_no.setText(sharedPreferencesData.getSharedPreferenceData(Constants.PRICEPREFERENCE, Constants.HOUSENO));
+        edit_street_name.setText(sharedPreferencesData.getSharedPreferenceData(Constants.PRICEPREFERENCE, Constants.STREETNAME));
+        edit_city.setText(sharedPreferencesData.getSharedPreferenceData(Constants.PRICEPREFERENCE, Constants.CITYNAME));
+        edit_zipcode.setText(sharedPreferencesData.getSharedPreferenceData(Constants.PRICEPREFERENCE, Constants.POSTALCODE));
     }
 
     @Override
@@ -196,7 +196,7 @@ public class AddAddressActivity extends AppCompatActivity implements View.OnClic
         alertDialog.setTitle("Alert");
         alertDialog.setMessage("" + s);
         alertDialog.setIcon(R.drawable.ic_place_order_check);
-        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+        alertDialog.setButton(model.getOk(), new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();

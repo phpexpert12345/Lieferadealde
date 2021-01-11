@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView tv_location, textView_name, tvCreateAccount, tvSignIn;
     private Double currentLatitude, currentLongitude;
     private LanguageResponse model = new LanguageResponse();
-    List<CuisineList> lists=new ArrayList<>();
+    List<CuisineList> lists = new ArrayList<>();
     @BindView(R.id.bottom_navigation)
     BottomNavigationView bottomNavigation;
 
@@ -199,8 +199,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         try {
-            tvSignIn.setText(model.getSignIn().trim());
-            tvCreateAccount.setText(model.getCreateANewAccount().trim());
+            tvSignIn.setText("" + model.getLogin().trim());
+            tvCreateAccount.setText("" + model.getSIGNUP().trim());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -321,12 +321,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             drawerItem[2] = new DataModel(model.getTermsOfService(), R.drawable.termofservice_new);
             drawerItem[3] = new DataModel(model.getPrivacyPolicy(), R.drawable.privacy_policy_new);
             drawerItem[4] = new DataModel(model.getRateUs(), R.drawable.rate_us_new);
-
-
-
         }
-
-
 
         DrawerItemCustomAdapter adapter = new DrawerItemCustomAdapter(this, R.layout.nav_list_view_item_row, drawerItem);
         mDrawerList.setAdapter(adapter);
@@ -364,23 +359,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
-    public void loginNavigationView(){
+    public void loginNavigationView() {
         if (authPreference.isLoggedIn()) {
             getProfileData();
             drawerItem = new DataModel[11];
-            drawerItem[0] = new DataModel(model.getMyAccount(), R.drawable.my_account);
-            drawerItem[1] = new DataModel(model.getMyOrder(), R.drawable.my_order_new);
-            drawerItem[2] = new DataModel(model.getMyAddress(), R.drawable.my_address_new);
-            drawerItem[3] = new DataModel(model.getMyReview(), R.drawable.my_review_new);
-            drawerItem[4] = new DataModel(model.getMyTicket(), R.drawable.my_ticket_new);
-            drawerItem[5] = new DataModel(model.getMyLoyaltyPoints(), R.drawable.ic_loyalty_point);
-            drawerItem[6] = new DataModel(model.getChangePassword(), R.drawable.change_password_new);
-            drawerItem[7] = new DataModel(model.getReferAFriend(), R.drawable.refer_earn);
-            drawerItem[8] = new DataModel(model.getContactUsHelp(), R.drawable.contactus_help_new);
-            drawerItem[9] = new DataModel(model.getRateUs(), R.drawable.rate_us_new);
+            drawerItem[0] = new DataModel(model.getMyAccount().trim(), R.drawable.my_account);
+            drawerItem[1] = new DataModel(model.getMyOrder().trim(), R.drawable.my_order_new);
+            drawerItem[2] = new DataModel(model.getMyAddress().trim(), R.drawable.my_address_new);
+            drawerItem[3] = new DataModel(model.getMyReview().trim(), R.drawable.my_review_new);
+            drawerItem[4] = new DataModel(model.getMyTicket().trim(), R.drawable.my_ticket_new);
+            drawerItem[5] = new DataModel(model.getMyLoyaltyPoints().trim(), R.drawable.ic_loyalty_point);
+            drawerItem[6] = new DataModel(model.getChangePassword().trim(), R.drawable.change_password_new);
+            drawerItem[7] = new DataModel(model.getReferAFriend().trim(), R.drawable.refer_earn);
+            drawerItem[8] = new DataModel(model.getContactUsHelp().trim(), R.drawable.contactus_help_new);
+            drawerItem[9] = new DataModel(model.getRateUs().trim(), R.drawable.rate_us_new);
 //          drawerItem[11] = new DataModel("Language Setting", R.drawable.ic_lang);
-            drawerItem[10] = new DataModel(model.getLogout(), R.drawable.logout_new);
+            drawerItem[10] = new DataModel(model.getLogout().trim(), R.drawable.logout_new);
         } else {
             textView_name.setText(model.getWelcomeGuest());
             lnr_edit.setVisibility(View.GONE);
@@ -396,11 +390,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
               drawerItem[4] = new DataModel(model.getRateUs(), R.drawable.help_support);*/
 //            drawerItem[5] = new DataModel("Language Setting", R.drawable.ic_lang);
 
-            drawerItem[0] = new DataModel(model.getContactUsHelp(), R.drawable.contact_new);
-            drawerItem[1] = new DataModel(model.getAboutUs(), R.drawable.aboutus_new);
-            drawerItem[2] = new DataModel(model.getTermsOfService(), R.drawable.termofservice_new);
-            drawerItem[3] = new DataModel(model.getPrivacyPolicy(), R.drawable.privacy_policy_new);
-            drawerItem[4] = new DataModel(model.getRateUs(), R.drawable.rate_us_new);
+            drawerItem[0] = new DataModel(model.getContactUsHelp().trim(), R.drawable.contact_new);
+            drawerItem[1] = new DataModel(model.getAboutUs().trim(), R.drawable.aboutus_new);
+            drawerItem[2] = new DataModel(model.getTermsOfService().trim(), R.drawable.termofservice_new);
+            drawerItem[3] = new DataModel(model.getPrivacyPolicy().trim(), R.drawable.privacy_policy_new);
+            drawerItem[4] = new DataModel(model.getRateUs().trim(), R.drawable.rate_us_new);
         }
         DrawerItemCustomAdapter adapter = new DrawerItemCustomAdapter(this, R.layout.nav_list_view_item_row, drawerItem);
         mDrawerList.setAdapter(adapter);
@@ -560,23 +554,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             model = App.retrieveLangFromGson(MainActivity.this);
         }
 
-        tvSignIn.setText(model.getSignIn());
-        tvCreateAccount.setText(model.getCreateANewAccount());
+        tvSignIn.setText("" + model.getLogin().trim());
+        tvCreateAccount.setText("" + model.getSIGNUP().trim());
 
         if (authPreference.isLoggedIn()) {
             //getProfileData();
 
             drawerItem = new DataModel[11];
-            drawerItem[0] = new DataModel(model.getMyAccount(), R.drawable.my_account);
-            drawerItem[1] = new DataModel(model.getMyOrder(), R.drawable.my_order_new);
-            drawerItem[2] = new DataModel(model.getMyAddress(), R.drawable.my_address_new);
-            drawerItem[3] = new DataModel(model.getMyReview(), R.drawable.my_review_new);
-            drawerItem[4] = new DataModel(model.getMyTicket(), R.drawable.my_ticket_new);
-            drawerItem[5] = new DataModel(model.getMyLoyaltyPoints(), R.drawable.ic_loyalty_point);
-            drawerItem[6] = new DataModel(model.getChangePassword(), R.drawable.change_password_new);
-            drawerItem[7] = new DataModel(model.getReferAFriend(), R.drawable.refer_earn);
-            drawerItem[8] = new DataModel(model.getContactUsHelp(), R.drawable.contactus_help_new);
-            drawerItem[9] = new DataModel(model.getRateUs(), R.drawable.rate_us_new);
+            drawerItem[0] = new DataModel(model.getMyAccount().trim(), R.drawable.my_account);
+            drawerItem[1] = new DataModel(model.getMyOrder().trim(), R.drawable.my_order_new);
+            drawerItem[2] = new DataModel(model.getMyAddress().trim(), R.drawable.my_address_new);
+            drawerItem[3] = new DataModel(model.getMyReview().trim(), R.drawable.my_review_new);
+            drawerItem[4] = new DataModel(model.getMyTicket().trim(), R.drawable.my_ticket_new);
+            drawerItem[5] = new DataModel(model.getMyLoyaltyPoints().trim(), R.drawable.ic_loyalty_point);
+            drawerItem[6] = new DataModel(model.getChangePassword().trim(), R.drawable.change_password_new);
+            drawerItem[7] = new DataModel(model.getReferAFriend().trim(), R.drawable.refer_earn);
+            drawerItem[8] = new DataModel(model.getContactUsHelp().trim(), R.drawable.contactus_help_new);
+            drawerItem[9] = new DataModel(model.getRateUs().trim(), R.drawable.rate_us_new);
 //            drawerItem[11] = new DataModel("Language Setting", R.drawable.ic_lang);
             drawerItem[10] = new DataModel(model.getLogout(), R.drawable.logout_new);
         } else {
@@ -595,11 +589,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //            drawerItem[5] = new DataModel("Language Setting", R.drawable.ic_lang);
 
 
-            drawerItem[0] = new DataModel(model.getContactUsHelp(), R.drawable.contact_new);
-            drawerItem[1] = new DataModel(model.getAboutUs(), R.drawable.aboutus_new);
-            drawerItem[2] = new DataModel(model.getTermsOfService(), R.drawable.termofservice_new);
-            drawerItem[3] = new DataModel(model.getPrivacyPolicy(), R.drawable.privacy_policy_new);
-            drawerItem[4] = new DataModel(model.getRateUs(), R.drawable.rate_us_new);
+            drawerItem[0] = new DataModel(model.getContactUsHelp().trim(), R.drawable.contact_new);
+            drawerItem[1] = new DataModel(model.getAboutUs().trim(), R.drawable.aboutus_new);
+            drawerItem[2] = new DataModel(model.getTermsOfService().trim(), R.drawable.termofservice_new);
+            drawerItem[3] = new DataModel(model.getPrivacyPolicy().trim(), R.drawable.privacy_policy_new);
+            drawerItem[4] = new DataModel(model.getRateUs().trim(), R.drawable.rate_us_new);
         }
 
         DrawerItemCustomAdapter adapter = new DrawerItemCustomAdapter(this, R.layout.nav_list_view_item_row, drawerItem);
@@ -676,7 +670,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void replaceHomeFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        RestaurantMain homeFragment = new RestaurantMain(currentLatitude, currentLongitude,this);
+        RestaurantMain homeFragment = new RestaurantMain(currentLatitude, currentLongitude, this);
         fragmentManager.beginTransaction().replace(R.id.main_content, homeFragment).commit();
     }
 
@@ -720,7 +714,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onResume();
         try {
             loginNavigationView();
-            String userphoto=authPreference.getPref(Constants.USER_PROFILE_IMAGE);
+            String userphoto = authPreference.getPref(Constants.USER_PROFILE_IMAGE);
             if (userphoto != null) {
                 Glide.with(MainActivity.this).load(userphoto).apply(new RequestOptions().override(100, 100).
                         placeholder(R.drawable.user)).into(profileimage);
@@ -767,7 +761,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.action_filter:
                 Intent intent2 = new Intent(MainActivity.this, CusineFilter.class);
-                if(lists.size()>0){
+                if (lists.size() > 0) {
                     intent2.putParcelableArrayListExtra("selected_filter", (ArrayList<? extends Parcelable>) lists);
                 }
                 intent2.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -798,9 +792,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void getSelectedFilter(List<CuisineList> listCategory) {
-if(listCategory.size()>0){
-    lists.addAll(listCategory);
-}
+        if (listCategory.size() > 0) {
+            lists.addAll(listCategory);
+        }
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -1126,13 +1120,13 @@ if(listCategory.size()>0){
                     System.out.println("==== selected cusine in main activityu" + selected_cusines);
                     initiateRestFragment();
                 } else if (checkFromWhere.equalsIgnoreCase("fromhome")) {
-                    RestaurantMain locationMapFragment = new RestaurantMain(currentLatitude, currentLongitude,this);
+                    RestaurantMain locationMapFragment = new RestaurantMain(currentLatitude, currentLongitude, this);
                     FragmentTransaction transaction = this.getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.main_content, locationMapFragment);
                     // transaction.addToBackStack(restaurantMain.getTag());
                     transaction.commit();
                 } else if (checkFromWhere.equalsIgnoreCase("fromlocation")) {
-                    RestaurantMain locationMapFragment = new RestaurantMain(currentLatitude, currentLongitude,this);
+                    RestaurantMain locationMapFragment = new RestaurantMain(currentLatitude, currentLongitude, this);
                     FragmentTransaction transaction = this.getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.main_content, locationMapFragment);
                     // transaction.addToBackStack(restaurantMain.getTag());
@@ -1144,7 +1138,7 @@ if(listCategory.size()>0){
 
     private void initiateRestFragment() {
 
-        RestaurantMain restaurantMain = new RestaurantMain(currentLatitude, currentLongitude,this);
+        RestaurantMain restaurantMain = new RestaurantMain(currentLatitude, currentLongitude, this);
         Bundle args = new Bundle();
         args.putStringArrayList("SELECTEDCUSINES", selected_cusines);
         restaurantMain.setArguments(args);

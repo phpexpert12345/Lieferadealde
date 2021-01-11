@@ -72,7 +72,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     private void init() {
         try {
-            sharedPreferencesData=new SharedPreferencesData(getApplicationContext());
+            sharedPreferencesData = new SharedPreferencesData(getApplicationContext());
 
             prefsHelper = new PrefsHelper(this);
             String logo = prefsHelper.getPref(Constants.APP_LOGO);
@@ -265,17 +265,17 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         if (SplashActivity.mInstance != null) {
             SplashActivity.mInstance.finish();
         }
-            if (from != null && from.equalsIgnoreCase("table")) {
-                Intent booktable = new Intent(SignInActivity.this, RestaurantBookTable.class);
-                booktable.putExtra("clickRestId", clickRestId);
-                booktable.putExtra("RESTBOOKLIMIT", restourantBookLimit);
-                startActivity(booktable);
-            } else {
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
+        if (from != null && from.equalsIgnoreCase("table")) {
+            Intent booktable = new Intent(SignInActivity.this, RestaurantBookTable.class);
+            booktable.putExtra("clickRestId", clickRestId);
+            booktable.putExtra("RESTBOOKLIMIT", restourantBookLimit);
+            startActivity(booktable);
+        } else {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
         finish();
     }
 
@@ -302,32 +302,32 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         transaction.commit();
     }
 
-    public void ShowForgotPassword(){
-        AlertDialog.Builder builder=new AlertDialog.Builder(this);
-        AlertDialog alertDialog;
-        View view=getLayoutInflater().inflate(R.layout.layout_forgot_password,null);
-        ImageView img_cross=view.findViewById(R.id.img_cross);
-        EditText edit_email_add=view.findViewById(R.id.edit_email_add);
-        Button btn_send=view.findViewById(R.id.btn_send);
-        btn_send.setOnClickListener(v->{
-            if(edit_email_add.getText().toString().isEmpty()){
-                Toast.makeText(this, "Please enter email address", Toast.LENGTH_SHORT).show();
-            }
-            else if(!Patterns.EMAIL_ADDRESS.matcher(edit_email_add.getText().toString()).matches()){
-                Toast.makeText(this, "Please enter valid email address", Toast.LENGTH_SHORT).show();
-            }
-            else{
+    public void ShowForgotPassword() {
+        final Dialog dialog = new Dialog(SignInActivity.this, R.style.DialogCustomTheme);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.layout_forgot_password);
+
+        ImageView img_cross = dialog.findViewById(R.id.img_cross);
+        EditText edit_email_add = dialog.findViewById(R.id.edit_email_add);
+        Button btn_send = dialog.findViewById(R.id.btn_send);
+        btn_send.setOnClickListener(v -> {
+            if (edit_email_add.getText().toString().isEmpty()) {
+                Toast.makeText(this, model.getPleaseEnterEmailAddress(), Toast.LENGTH_SHORT).show();
+            } else if (!Patterns.EMAIL_ADDRESS.matcher(edit_email_add.getText().toString()).matches()) {
+                Toast.makeText(this, model.getPLEASEENTERVALIDEMAIL(), Toast.LENGTH_SHORT).show();
+            } else {
                 SubmitForgotPassword();
             }
         });
-        builder.setView(view);
-        alertDialog=builder.create();
-        alertDialog.show();
-        img_cross.setOnClickListener(v -> alertDialog.dismiss());
 
+        dialog.show();
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
 
+        img_cross.setOnClickListener(v -> dialog.dismiss());
     }
-    public void SubmitForgotPassword(){
+
+    public void SubmitForgotPassword() {
 
     }
 }
