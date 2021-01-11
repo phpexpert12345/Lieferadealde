@@ -80,7 +80,7 @@ public class InfoRestMenuActivity extends AppCompatActivity implements View.OnCl
     private RecyclerView rcv_delivery_cost, rcv_special_holiday;
     private TextView txt_restaurant_name, txt_rest_name_address, txt_legal_repesent_name, txt_legal_contact_no, txt_legal_email_id, tv_cart_item_count,
             txt_legal_fax, txt_legal_conmpany_registero, txt_legal_cocompany_register_nom, txt_legal_vat_number, txt_legal_social_sharing_msg,
-            txt_view_impressum, txt_rest_name, tvMonday, tvTuesday, tvSaturday, tvWednesday, tvThrusday, tvFriday, tvSunday, tvPincode, tvVatNo,
+            txt_view_impressum, txt_rest_name, tvMonday, tvTuesday, tvSaturday, tvWednesday, tvThrusday, tvFriday, tvSunday, tvPincode, tvVatNo, tvAppName,
             tvDeliveryAddress, tvDeliveryFee, tvDeliveryTimes, tvMinOrder, tvContactNo, tvEmail, tvFax, tvCompanyRegister, tvCompanyRegNo, tvLegalRepresentative;
 
     private LanguageResponse model1 = new LanguageResponse();
@@ -104,6 +104,7 @@ public class InfoRestMenuActivity extends AppCompatActivity implements View.OnCl
             rlt_about = findViewById(R.id.rlt_about);
             lnr_text_for_about = findViewById(R.id.lnr_text_for_about);
             lnr_txt_view_for_about = findViewById(R.id.lnr_txt_view_for_about);
+            tvAppName = findViewById(R.id.tvAppName);
             rlt_about_img_view = findViewById(R.id.rlt_about_img_view);
             /////// FOR DELIVERY TIME/////////////////////
             lnr_txt_view_for_delivery_time_monday = findViewById(R.id.lnr_txt_view_for_delivery_time_monday);
@@ -202,27 +203,28 @@ public class InfoRestMenuActivity extends AppCompatActivity implements View.OnCl
             tvImpressum.setText(model1.getImpressum());
             tvSpecial.setText(model1.getSpecialHoliday());
 
-            tvMonday.setText(model1.getMonday());
-            tvTuesday.setText(model1.getTuesday());
-            tvWednesday.setText(model1.getWednesday());
-            tvThrusday.setText(model1.getThursday());
-            tvFriday.setText(model1.getFriday());
-            tvSaturday.setText(model1.getSaturday());
-            tvSunday.setText(model1.getSunday());
+            tvMonday.setText(model1.getMonday().trim());
+            tvTuesday.setText(model1.getTuesday().trim());
+            tvWednesday.setText(model1.getWednesday().trim());
+            tvThrusday.setText(model1.getThursday().trim());
+            tvFriday.setText(model1.getFriday().trim());
+            tvSaturday.setText(model1.getSaturday().trim());
+            tvSunday.setText(model1.getSunday().trim());
 
-            tvPincode.setText(model1.getPostalCode());
-            tvDeliveryAddress.setText(model1.getDeliveryAddress());
-            tvDeliveryFee.setText(model1.getDeliveryCharge());
-            tvDeliveryTimes.setText(model1.getDeliveryTime());
-            tvMinOrder.setText(model1.getMinOrderAmount());
+            tvPincode.setText(model1.getPostalCode().trim());
+            tvDeliveryAddress.setText(model1.getDeliveryAddress().trim());
+            tvDeliveryFee.setText(model1.getDeliveryCharge().trim());
+            tvDeliveryTimes.setText(model1.getDeliveryTime().trim());
+            tvMinOrder.setText(model1.getMinOrderAmount().trim());
+            tvAppName.setText(prefsHelper.getPref(Constants.APP_NAME));
 
-            tvContactNo.setText(model1.getContactNumber());
-            tvEmail.setText(model1.getEmail());
-            tvFax.setText(model1.getFax());
-            tvCompanyRegNo.setText(model1.getCompanyRegisterNo());
-            tvVatNo.setText(model1.getVatNumber());
-            tvCompanyRegister.setText(model1.getCompanyRegister());
-//            tvLegalRepresentative.setText(model1.get);
+            tvContactNo.setText(model1.getContactNumber().trim() + ": ");
+            tvEmail.setText(model1.getEmail().trim() + ": ");
+            tvFax.setText(model1.getFax().trim() + ": ");
+            tvCompanyRegNo.setText(model1.getCompanyRegisterNo().trim() + ": ");
+            tvVatNo.setText(model1.getVatNumber().trim() + ": ");
+            tvCompanyRegister.setText(model1.getCompanyRegister().trim() + ": ");
+            tvLegalRepresentative.setText(model1.getLegalRepresentative().trim() + ": ");
 
             getRestSearchDetailsData();
 
@@ -552,7 +554,6 @@ public class InfoRestMenuActivity extends AppCompatActivity implements View.OnCl
             } else {
                 rlt_delivery_cost.setVisibility(View.GONE);
             }
-
 
             /////////////// FOR CONTACT US////////////////////////////
 

@@ -34,8 +34,9 @@
                 android:layout_centerVertical="true"
                 android:text="About Restaurant"
                 android:textColor="@color/colorBlack"
-                android:textStyle="bold"
-                android:textSize="@dimen/sp_18" />
+                android:fontFamily="@font/roboto_medium"
+                android:textSize="@dimen/sp_15" />
+
             <RelativeLayout
                 android:visibility="invisible"
                 android:id="@+id/cart_count_layout"
@@ -117,7 +118,7 @@
                         android:layout_alignParentRight="true"
                         android:src="@drawable/restabout"
                         app:tint="@color/colorPrimaryone"
-                        android:layout_marginRight="@dimen/dp_10"
+                        android:layout_marginEnd="@dimen/dp_10"
                         android:layout_width="@dimen/_15sdp"
                         android:layout_height="@dimen/_15sdp"/>
 
@@ -126,8 +127,8 @@
                         android:layout_width="wrap_content"
                         android:text="About Restaurant"
                         android:gravity="center"
+                        android:fontFamily="@font/roboto_bold"
                         android:textSize="@dimen/sp_15"
-                        android:textStyle="bold"
                         android:textColor="@color/colorBlack"
                         android:layout_gravity="center"
                         android:layout_height="wrap_content"/>
@@ -158,9 +159,20 @@
                 android:layout_height="@dimen/dp_200"/>
 
             <TextView
+                android:id="@+id/tvAppName"
+                android:layout_width="match_parent"
+                android:textSize="@dimen/sp_13"
+                android:padding="@dimen/dp_5"
+                android:layout_height="wrap_content"/>
+
+            <TextView
                 android:id="@+id/lnr_txt_view_for_about"
                 android:layout_width="match_parent"
-                android:padding="@dimen/dp_5"
+                android:paddingStart="@dimen/dp_5"
+                android:paddingEnd="@dimen/dp_5"
+                android:textSize="@dimen/sp_13"
+                android:paddingBottom="@dimen/dp_5"
+                android:text=""
                 android:layout_height="wrap_content"/>
 
         </LinearLayout>
@@ -202,7 +214,7 @@
                     android:text="Delivery Time"
                     android:gravity="center"
                     android:textSize="@dimen/sp_15"
-                    android:textStyle="bold"
+                    android:fontFamily="@font/roboto_bold"
                     android:textColor="@color/colorBlack"
                     android:layout_gravity="center"
                     android:layout_height="wrap_content"/>
@@ -437,7 +449,7 @@
                     android:layout_width="wrap_content"
                     android:text="Delivery Cost"
                     android:textSize="@dimen/sp_15"
-                    android:textStyle="bold"
+                    android:fontFamily="@font/roboto_bold"
                     android:textColor="@color/colorBlack"
                     android:gravity="center"
                     android:layout_gravity="center"
@@ -456,8 +468,7 @@
         <LinearLayout
             android:id="@+id/lnr_text_for_delivery_cost"
             android:orientation="vertical"
-            android:visibility="gone"
-            android:padding="@dimen/dp_5"
+            android:visibility="visible"
             android:layout_marginLeft="@dimen/_10sdp"
             android:layout_marginRight="@dimen/_10sdp"
             android:layout_width="match_parent"
@@ -467,6 +478,7 @@
                 android:layout_width="match_parent"
                 android:background="@color/color_lighteGray"
                 android:weightSum="5"
+                android:padding="@dimen/dp_5"
                 android:layout_height="@dimen/_50sdp">
 
                 <TextView
@@ -476,7 +488,7 @@
                     android:layout_gravity="center"
                     android:textSize="@dimen/sp_13"
                     android:textColor="@color/colorBlack"
-                    android:textStyle="bold"
+                   android:fontFamily="@font/roboto_bold"
                     android:layout_marginStart="@dimen/_5sdp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"/>
@@ -487,7 +499,7 @@
                     android:text="Delivery \n Address"
                     android:textSize="@dimen/sp_13"
                     android:textColor="@color/colorBlack"
-                    android:textStyle="bold"
+                    android:fontFamily="@font/roboto_bold"
                     android:layout_marginStart="@dimen/dp_2"
                     android:layout_gravity="center"
                     android:layout_weight="1"
@@ -501,7 +513,7 @@
                     android:layout_gravity="center"
                     android:textSize="@dimen/sp_13"
                     android:textColor="@color/colorBlack"
-                    android:textStyle="bold"
+                    android:fontFamily="@font/roboto_bold"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"/>
 
@@ -511,7 +523,7 @@
                     android:text="Delivery \n Time"
                     android:textSize="@dimen/sp_13"
                     android:textColor="@color/colorBlack"
-                    android:textStyle="bold"
+                    android:fontFamily="@font/roboto_bold"
                     android:layout_marginStart="@dimen/dp_2"
                     android:layout_gravity="center"
                     android:layout_weight="1"
@@ -525,7 +537,7 @@
                     android:textSize="@dimen/sp_13"
                     android:textColor="@color/colorBlack"
                     android:layout_marginStart="@dimen/dp_2"
-                    android:textStyle="bold"
+                    android:fontFamily="@font/roboto_bold"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"/>
 
@@ -534,6 +546,7 @@
            <androidx.recyclerview.widget.RecyclerView
                android:id="@+id/rcv_delivery_cost"
                android:layout_width="match_parent"
+               android:padding="@dimen/dp_5"
                android:layout_height="match_parent"/>
 
         </LinearLayout>
@@ -576,7 +589,7 @@
                     android:layout_width="wrap_content"
                     android:text="Contact us"
                     android:textSize="@dimen/sp_15"
-                    android:textStyle="bold"
+                    android:fontFamily="@font/roboto_bold"
                     android:textColor="@color/colorBlack"
                     android:gravity="center"
                     android:layout_gravity="center"
@@ -823,7 +836,7 @@
                     android:text="Impressum"
                     android:gravity="center"
                     android:textSize="@dimen/sp_15"
-                    android:textStyle="bold"
+                    android:fontFamily="@font/roboto_bold"
                     android:textColor="@color/colorBlack"
                     android:layout_gravity="center"
                     android:layout_height="wrap_content"/>
@@ -900,7 +913,7 @@
                     android:gravity="center"
                     android:layout_gravity="center"
                     android:textSize="@dimen/sp_15"
-                    android:textStyle="bold"
+                    android:fontFamily="@font/roboto_bold"
                     android:textColor="@color/colorBlack"
                     android:layout_height="wrap_content"/>
 

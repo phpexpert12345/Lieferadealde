@@ -192,7 +192,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                         tv_user_email.setText(searchResult.getUserEmail());
                         if (userphoto != null) {
                             Glide.with(ProfileActivity.this).load(userphoto).apply(new RequestOptions().override(100, 100).
-                                    placeholder(R.drawable.user)).into(userimage);
+                                    placeholder(R.drawable.profile_pic)).into(userimage);
                         }
                         hideProgress();
                     }
