@@ -204,7 +204,7 @@
                     android:background="@drawable/edit_back_with_gray"
                     android:hint="Mobile number"
                     android:inputType="number"
-                    android:maxLength="10"
+                    android:maxLength="14"
                     android:maxLines="1"
                     android:padding="@dimen/dp_10" />
 
@@ -231,7 +231,6 @@
                     android:visibility="gone" />
 
             </LinearLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"

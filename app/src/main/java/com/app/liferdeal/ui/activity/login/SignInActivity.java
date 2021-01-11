@@ -24,6 +24,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.app.liferdeal.R;
 import com.app.liferdeal.application.App;
 import com.app.liferdeal.model.LanguageResponse;
+import com.app.liferdeal.model.PhpInitialInfoModel;
 import com.app.liferdeal.model.loginsignup.SignInModel;
 import com.app.liferdeal.network.retrofit.ApiInterface;
 import com.app.liferdeal.network.retrofit.RFClient;
@@ -47,7 +48,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class SignInActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText edt_usrName, edt_usrPass;
-    private TextView btn_login, txt_forgot_pass, txt_create_new, tvTitle;
+    private TextView btn_login, txt_forgot_pass, txt_create_new, tvTitle, tvSkip;
     private ProgressDialog progressDialog;
     private ApiInterface apiInterface;
     private PrefsHelper prefsHelper;
@@ -85,6 +86,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
             tvTitle = findViewById(R.id.tvTitle);
             img_back = findViewById(R.id.img_back);
             tvSignIn = findViewById(R.id.tvSignIn);
+            tvSkip = findViewById(R.id.tvSkip);
 
             if (App.retrieveLangFromGson(SignInActivity.this) != null) {
                 model = App.retrieveLangFromGson(SignInActivity.this);
@@ -95,9 +97,11 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                 btn_login.setText(model.getLogin());
                 tvTitle.setText(model.getLogin());
                 tvSignIn.setText(model.getLogin());
+//                tvSkip.setText(model.getLogin());
             }
 
             btn_login.setOnClickListener(this);
+            tvSkip.setOnClickListener(this);
             img_back.setOnClickListener(this);
             txt_create_new.setOnClickListener(this);
             langCode = prefsHelper.getPref(Constants.LNG_CODE);
@@ -117,7 +121,9 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.img_back:
                 finish();
                 break;
-
+            case R.id.tvSkip:
+                getSplashData();
+                break;
             case R.id.btn_login:
                 if (edt_usrName.equals("")) {
                     edt_usrName.setError(model.getEMAILFIELDISREQUIRED());
@@ -132,20 +138,101 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                     userLogin(edt_usrName.getText().toString().trim(), edt_usrPass.getText().toString().trim());
                 }
                 break;
-
             case R.id.txt_create_acc:
                 Intent intent = new Intent(SignInActivity.this, SignUpActivity.class);
                 startActivity(intent);
-                finish();
                 break;
-
             case R.id.txt_forgot_pass:
                 ShowForgotPassword();
                 break;
-
             default:
                 break;
         }
+    }
+
+    private void getSplashData() {
+        showProgress();
+        apiInterface = RFClient.getClient().create(ApiInterface.class);
+        Observable<PhpInitialInfoModel> observable = apiInterface.getSplashData();
+
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<PhpInitialInfoModel>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(PhpInitialInfoModel searchResult) {
+                        //  showProgress();
+                        prefsHelper.savePref(Constants.API_KEY, searchResult.getApiKey());
+                        prefsHelper.savePref(Constants.APP_LOGO, searchResult.getAppLogo());
+                        prefsHelper.savePref(Constants.APP_TOP_LOGO_ICON, searchResult.getAppTopHomeIcon());
+                        prefsHelper.savePref(Constants.APP_DEF_LANG, searchResult.getAppDefaultLanguage());
+                        prefsHelper.savePref(Constants.APP_LNG_NAME, searchResult.getLangName());
+                        prefsHelper.savePref(Constants.APP_LNG_ICON, searchResult.getLangIcon());
+                        prefsHelper.savePref(Constants.APP_CURRENCY, searchResult.getAppCurrency());
+                        prefsHelper.savePref(Constants.google_map_key, searchResult.getAppGoogleKey());
+                        prefsHelper.savePref(Constants.LNG_CODE, searchResult.getAppDefaultLanguage());
+                        prefsHelper.savePref(Constants.APP_ADDRESS, searchResult.getAppAddress());
+                        prefsHelper.savePref(Constants.APP_NUMBER, searchResult.getAppMobileNumber() + ", " + searchResult.getAppPhoneNumber());
+                        prefsHelper.savePref(Constants.APP_EMAIL, searchResult.getAppEmailAddress());
+                        prefsHelper.savePref(Constants.APP_NAME, searchResult.getAppName());
+                        getLanguageData(searchResult.getApiKey(), searchResult.getAppDefaultLanguage());
+//                        Log.e("AppCurrency=",searchResult.getAppCurrency());
+                        //Toast.makeText(getApplicationContext(),searchResult.getAppCurrency()+"====Other"+searchResult.getLangName(),Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        // hideProgress();
+//                        Log.d("TAG", "log...." + e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        //   activity.mySharePreferences.setBundle("login");
+
+                    }
+                });
+    }
+
+    private void getLanguageData(String apiKey, String appDefaultLanguage) {
+        apiInterface = RFClient.getClient().create(ApiInterface.class);
+        Observable<LanguageResponse> observable = apiInterface.getLanguage(apiKey, appDefaultLanguage);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<LanguageResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(LanguageResponse response) {
+                        hideProgress();
+                        App.addLangToGson(SignInActivity.this, response);
+                        Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+//                        btn_get_started.setText(response.);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        // hideProgress();hideProgress
+//                        Log.d("TAG", "log...." + e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        hideProgress();
+                        //   activity.mySharePreferences.setBundle("login");
+
+                    }
+                });
+
     }
 
     private boolean isValidEmailId(String email) {

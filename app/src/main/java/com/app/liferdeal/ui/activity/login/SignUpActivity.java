@@ -20,9 +20,11 @@ import androidx.appcompat.widget.AppCompatTextView;
 import com.app.liferdeal.R;
 import com.app.liferdeal.application.App;
 import com.app.liferdeal.model.LanguageResponse;
+import com.app.liferdeal.model.loginsignup.SignInModel;
 import com.app.liferdeal.model.loginsignup.SignupModel;
 import com.app.liferdeal.network.retrofit.ApiInterface;
 import com.app.liferdeal.network.retrofit.RFClient;
+import com.app.liferdeal.ui.activity.MainActivity;
 import com.app.liferdeal.util.CommonMethods;
 import com.app.liferdeal.util.Constants;
 import com.app.liferdeal.util.PrefsHelper;
@@ -120,7 +122,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 } /*else if (edt_lst_name.getText().toString().trim().equalsIgnoreCase("")) {
                     edt_lst_name.setError(model.getPleaseEnterLastName());
                     edt_lst_name.requestFocus();
-                } */else if (edt_email_id.getText().toString().trim().equalsIgnoreCase("")) {
+                } */ else if (edt_email_id.getText().toString().trim().equalsIgnoreCase("")) {
                     edt_email_id.setError(model.getPleaseEnterEmailAddress());
                     edt_email_id.requestFocus();
                 } else if (!isValidEmailId(edt_email_id.getText().toString().trim())) {
@@ -135,17 +137,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 } else if (edt_pass.getText().toString().length() == 0) {
                     edt_pass.setError(model.getPleaseEnterPassword());
                     edt_pass.requestFocus();
-                }
-                /* else if (edt_con_pass.getText().toString().length() == 0) {
-                    edt_con_pass.setError("Confirm Password");
-                    edt_con_pass.requestFocus();
-                }  else if (!edt_con_pass.getText().toString().trim().equals(edt_pass.getText().toString().trim())) {
-                    edt_con_pass.setError("Password not match");
-                    edt_con_pass.requestFocus();
-                }*/
-
-                else {
-                    
+                } else {
                     userRegistration(edt_fst_name.getText().toString().trim(), edt_lst_name.getText().toString().trim(), edt_email_id.getText().toString().trim(), edt_mobile_num.getText().toString().trim(), edt_pass.getText().toString().trim());
                 }
                 break;
@@ -188,9 +180,20 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     private void userRegistration(String fstName, String lstname, String emailid, String mobileno, String pass) {
         showProgress();
+        String lName = " ";
+        String currentString = fstName.trim();
+        String[] separated = currentString.split(" ");
+        String fName = separated[0];
+        if (fstName.contains(" ")) {
+            if (separated[1].equalsIgnoreCase(null) || separated[1].equalsIgnoreCase("")) {
+                lName = " ";
+            } else {
+                lName = separated[1];
+            }
+        }
 
-        String ffName = CommonMethods.getStringDataInbase64(fstName);
-        String llstname = CommonMethods.getStringDataInbase64(lstname);
+        String ffName = CommonMethods.getStringDataInbase64(fName);
+        String llstname = CommonMethods.getStringDataInbase64(lName);
 
         apiInterface = RFClient.getClient().create(ApiInterface.class);
         Observable<SignupModel> observable = apiInterface.registerUser(ffName, llstname, emailid, mobileno, pass, deviceId, country,
@@ -208,7 +211,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                         hideProgress();
                         if (signup.getSuccess() != null && signup.getSuccess() == 1) {
 
-//                            String cusomerId = signin.getCustomerId();
+                            String cusomerId = signup.getCustomerId();
+                            prefsHelper.savePref(Constants.CUSTOMER_ID, cusomerId);
+
 //                            String username = signin.getUserName();
 //                            String mobilenum = signin.getUserPhone();
 //                            String usernemail = signin.getUserEmail();
@@ -222,7 +227,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 //                            prefsHelper.savePref(Constants.USER_NAME, username);
 //                            prefsHelper.savePref(Constants.USER_MOBILE, mobilenum);
 //                            prefsHelper.savePref(Constants.USER_EMAIL, usernemail);
-//                            prefsHelper.savePref(Constants.CUSTOMER_ID, cusomerId);
 //                            prefsHelper.savePref(Constants.REFERCODELOGIN, refercode);
 //                            prefsHelper.savePref(Constants.refercodeMessage, refercodeMessage);
 //                            prefsHelper.savePref(Constants.referSharingMessage, referSharingMessage);
@@ -267,10 +271,84 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         tvOk.setOnClickListener(view -> {
             dialog.dismiss();
-            Intent i = new Intent(SignUpActivity.this, SignInActivity.class);
-            startActivity(i);
+            userLogin(edt_email_id.getText().toString(), edt_pass.getText().toString());
+//            Intent i = new Intent(SignUpActivity.this, SignInActivity.class);
+//            startActivity(i);
             finish();
         });
+    }
+
+
+    private void userLogin(String emailid, String pass) {
+        showProgress();
+        apiInterface = RFClient.getClient().create(ApiInterface.class);
+        Observable<SignInModel> observable = apiInterface.loginUser(emailid, pass, Constants.API_KEY, langCode, deviceId, devicePlateform);
+
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<SignInModel>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(SignInModel signin) {
+
+                        if (signin.getSuccess() == 0) {
+                            String cusomerId = signin.getCustomerId();
+                            String username = signin.getUserName();
+                            String mobilenum = signin.getUserPhone();
+                            String usernemail = signin.getUserEmail();
+                            String refercode = signin.getReferralCode();
+                            String refercodeMessage = signin.getReferralCodeMessage().toString();
+                            String referSharingMessage = signin.getReferralSharingMessage();
+                            String referralEarnPoints = signin.getReferralEarnPoints();
+                            String referralJoinFriends = signin.getReferralJoinFriends();
+                            System.out.println("===== strReferCode : " + refercode + "refercodeMessage : " + refercodeMessage + "referSharingMessage :" + referSharingMessage + "referralEarnPoints : " + referralEarnPoints + "referralJoinFriends : " + referralJoinFriends);
+
+                            prefsHelper.savePref(Constants.USER_NAME, username);
+                            prefsHelper.savePref(Constants.USER_MOBILE, mobilenum);
+                            prefsHelper.savePref(Constants.USER_EMAIL, usernemail);
+                            prefsHelper.savePref(Constants.CUSTOMER_ID, cusomerId);
+                            prefsHelper.savePref(Constants.REFERCODELOGIN, refercode);
+                            prefsHelper.savePref(Constants.refercodeMessage, refercodeMessage);
+                            prefsHelper.savePref(Constants.referSharingMessage, referSharingMessage);
+                            prefsHelper.savePref(Constants.referralEarnPoints, referralEarnPoints);
+                            prefsHelper.savePref(Constants.referralJoinFriends, referralJoinFriends);
+                            prefsHelper.savePref(Constants.isLoggedIn, true);
+
+                            Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+
+                            hideProgress();
+                            Log.e("CustomerId=", cusomerId);
+                            //  initiateHomeFragment();
+                            /*Intent i = new Intent(SignInActivity.this, SignInActivity.class);
+                            startActivity(i);*/
+                            // finish();
+                        } else {
+                            Toast.makeText(SignUpActivity.this, signin.getSuccessMsg(), Toast.LENGTH_SHORT).show();
+                            hideProgress();
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        hideProgress();
+                        Log.d("TAG", "log...." + e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        //   activity.mySharePreferences.setBundle("login");
+
+                    }
+                });
+
     }
 
     public void showProgress() {

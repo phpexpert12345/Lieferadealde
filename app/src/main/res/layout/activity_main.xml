@@ -286,6 +286,8 @@
             android:id="@+id/lnr_view_signin_signup"
             android:layout_width="@dimen/dp_255"
             android:orientation="horizontal"
+            android:layout_marginStart="@dimen/dp_5"
+            android:layout_marginEnd="@dimen/dp_5"
             android:visibility="gone"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_height="wrap_content">

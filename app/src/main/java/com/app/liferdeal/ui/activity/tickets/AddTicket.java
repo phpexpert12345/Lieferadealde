@@ -141,6 +141,7 @@ public class AddTicket extends Activity implements View.OnClickListener {
 
                     @Override
                     public void onComplete() {
+                        hideProgress();
                         //   activity.mySharePreferences.setBundle("login");
 
                     }
