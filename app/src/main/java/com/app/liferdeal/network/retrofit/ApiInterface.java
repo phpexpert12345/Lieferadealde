@@ -1,6 +1,7 @@
 package com.app.liferdeal.network.retrofit;
 
 import com.app.liferdeal.model.DeleteAddressResponse;
+import com.app.liferdeal.model.ForgotPasswordModel;
 import com.app.liferdeal.model.GetProfileModel;
 import com.app.liferdeal.model.GetRestaurantDiscountResponse;
 import com.app.liferdeal.model.LanguageModel;
@@ -80,11 +81,11 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("phpexpert_customer_forgot_password.php")
-    Observable<SignInModel> forgotPassword(@Field("user_email") String userEmail,
-                                           @Field("api_key") String apiKey,
-                                           @Field("lang_code") String langCode,
-                                           @Field("device_id") String device_id,
-                                           @Field("device_platform") String platform);
+    Observable<ForgotPasswordModel> forgotPassword(@Field("user_email") String userEmail,
+                                                   @Field("api_key") String apiKey,
+                                                   @Field("lang_code") String langCode,
+                                                   @Field("device_id") String device_id,
+                                                   @Field("device_platform") String platform);
 
     @FormUrlEncoded
     @POST("phpexpert_payment_intent_generate.php")

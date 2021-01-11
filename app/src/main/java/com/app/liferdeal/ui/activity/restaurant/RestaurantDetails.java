@@ -175,7 +175,7 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
         tvRating = findViewById(R.id.tvRating);
         tvViewCart = findViewById(R.id.tvViewCart);
 
-        txt_rest_name1.setText(model.getRestaurantDescription());
+        txt_rest_name1.setText(model.getMenu().trim());
         tvOrderOnline.setText(model.getOnlineOrder());
         tvGallery.setText(model.getGallery());
         tvReserveTable.setText(model.getReserveATable());

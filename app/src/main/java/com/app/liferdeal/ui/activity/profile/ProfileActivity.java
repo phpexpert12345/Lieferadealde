@@ -90,6 +90,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         if (App.retrieveLangFromGson(ProfileActivity.this) != null) {
             model = App.retrieveLangFromGson(ProfileActivity.this);
         }
+        progressDialog = new ProgressDialog(this);
+
         init();
         authPreference = new PrefsHelper(this);
 
@@ -214,7 +216,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private ProgressDialog progressDialog;
 
     public void showProgress() {
-        progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Please wait...");
         progressDialog.setCancelable(false);
         progressDialog.setCanceledOnTouchOutside(false);

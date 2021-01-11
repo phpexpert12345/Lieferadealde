@@ -23,6 +23,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.app.liferdeal.R;
 import com.app.liferdeal.application.App;
+import com.app.liferdeal.model.ForgotPasswordModel;
 import com.app.liferdeal.model.LanguageResponse;
 import com.app.liferdeal.model.PhpInitialInfoModel;
 import com.app.liferdeal.model.loginsignup.SignInModel;
@@ -410,6 +411,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                 Toast.makeText(this, model.getPLEASEENTERVALIDEMAIL(), Toast.LENGTH_SHORT).show();
             } else {
                 SubmitForgotPassword(edit_email_add.getText().toString().trim());
+                dialog.dismiss();
             }
         });
 
@@ -423,24 +425,24 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     public void SubmitForgotPassword(String emailid) {
         showProgress();
         apiInterface = RFClient.getClient().create(ApiInterface.class);
-        Observable<SignInModel> observable = apiInterface.forgotPassword(emailid, prefsHelper.getPref(Constants.API_KEY), langCode, deviceId, devicePlateform);
+        Observable<ForgotPasswordModel> observable = apiInterface.forgotPassword(emailid, prefsHelper.getPref(Constants.API_KEY), langCode, deviceId, devicePlateform);
 
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<SignInModel>() {
+                .subscribe(new Observer<ForgotPasswordModel>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(SignInModel signin) {
-                        if (signin.getSuccess() == 0) {
-
-                        } else {
-                            Toast.makeText(SignInActivity.this, signin.getSuccessMsg(), Toast.LENGTH_SHORT).show();
+                    public void onNext(ForgotPasswordModel signin) {
+//                        if (signin.getError() == 0) {
+//
+//                        } else {
+                            Toast.makeText(SignInActivity.this, signin.getErrorMsg(), Toast.LENGTH_SHORT).show();
                             hideProgress();
-                        }
+//                        }
 
                     }
 
