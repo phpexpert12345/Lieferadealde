@@ -48,7 +48,6 @@ import com.app.liferdeal.util.DotToCommaClass;
 import com.app.liferdeal.util.PrefsHelper;
 import com.app.liferdeal.util.SharedPreferencesData;
 import com.bumptech.glide.Glide;
-import com.paypal.android.sdk.payments.LoginActivity;
 import com.shuhart.stickyheader.StickyAdapter;
 import com.shuhart.stickyheader.StickyHeaderItemDecorator;
 
@@ -757,7 +756,7 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
             qunt = Integer.parseInt(cursor.getString(7));
             price = Double.parseDouble(amt);
 //            price = price / qunt;
-//            price = (double) Math.round(price * 100) / 100;
+//            price = (double) Math.round(pQArice * 100) / 100;
             qunt = qunt + 1;
             price = price * qunt;
             database.update_item(String.valueOf(subPizzaItemId), qunt, price);

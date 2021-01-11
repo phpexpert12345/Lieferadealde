@@ -30,7 +30,7 @@ public class CusineFiltersAdapter extends RecyclerView.Adapter<CusineFiltersAdap
     private Boolean[] selectedList;
 
     public interface CusineFilterAdapterInterface {
-        void getClickData(ArrayList<Integer> extraId, ArrayList<String> extraName, Boolean[] selectedList);
+        void getClickData(List<CuisineList> listCategory,int pos);
     }
 
     public CusineFiltersAdapter(Context context, List<CuisineList> listSubCategory, Boolean[] selectedList) {
@@ -62,42 +62,43 @@ public class CusineFiltersAdapter extends RecyclerView.Adapter<CusineFiltersAdap
         if (listCategory.get(position).getCuisineImg() != null) {
             Glide.with(mContext).load(Uri.parse(listCategory.get(position).getCuisineImg())).into(holder.ivHorizontal);
         }
-
-        if (selectedList[position]) {
+        if(listCategory.get(position).getSelected()){
             holder.txtitemname.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.button_rounded_bottom));
             holder.txtitemname.setTextColor(mContext.getResources().getColor(R.color.colorWhite));
-        } else {
+        }
+        else{
             holder.txtitemname.setBackgroundColor(mContext.getResources().getColor(R.color.colorWhite));
             holder.txtitemname.setTextColor(mContext.getResources().getColor(R.color.colorBlack));
         }
 
+
+holder.txtitemname.setTag(position);
+
         holder.txtitemname.setOnClickListener(view -> {
-            if (selectedList[position]) {
-                selected_cusines_id.remove(listCategory.get(position).getId());
-                selected_cusines.remove(listCategory.get(position).getSeoUrlCall());
-                selectedList[position] = false;
-            } else {
-                selected_cusines_id.add(listCategory.get(position).getId());
-                selected_cusines.add(listCategory.get(position).getSeoUrlCall());
-                selectedList[position] = true;
+            int pos= (int) view.getTag();
+            if(listCategory.get(pos).getSelected()){
+                listCategory.get(pos).setSelected(false);
             }
+            else{
+                listCategory.get(pos).setSelected(true);
+            }
+
             if (mClickListener != null) {
-                mClickListener.getClickData(selected_cusines_id, selected_cusines, selectedList);
+                mClickListener.getClickData(listCategory,pos);
             }
         });
-
+holder.ivHorizontal.setTag(position);
         holder.ivHorizontal.setOnClickListener(view -> {
-            if (selectedList[position]) {
-                selected_cusines_id.remove(listCategory.get(position).getId());
-                selected_cusines.remove(listCategory.get(position).getSeoUrlCall());
-                selectedList[position] = false;
-            } else {
-                selected_cusines_id.add(listCategory.get(position).getId());
-                selected_cusines.add(listCategory.get(position).getSeoUrlCall());
-                selectedList[position] = true;
+            int pos= (int) view.getTag();
+            if(listCategory.get(pos).getSelected()){
+                listCategory.get(pos).setSelected(false);
             }
+            else{
+                listCategory.get(pos).setSelected(true);
+            }
+
             if (mClickListener != null) {
-                mClickListener.getClickData(selected_cusines_id, selected_cusines, selectedList);
+                mClickListener.getClickData(listCategory,pos);
             }
         });
     }

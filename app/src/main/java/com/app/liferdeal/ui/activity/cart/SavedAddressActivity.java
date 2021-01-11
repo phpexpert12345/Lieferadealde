@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,6 +55,8 @@ public class SavedAddressActivity extends AppCompatActivity implements DeleteAdd
     RelativeLayout rlBack;
     @BindView(R.id.rl_header)
     CardView rlHeader;
+    @BindView(R.id.progress_address)
+    ProgressBar progress_address;
     @BindView(R.id.rvAddressList)
     RecyclerView rvAddressList;
     @BindView(R.id.btnAddAddress)
@@ -191,8 +194,22 @@ public class SavedAddressActivity extends AppCompatActivity implements DeleteAdd
                 break;
         }
     }
+    public void showDeleteDialog(int id){
+        androidx.appcompat.app.AlertDialog.Builder builder=new androidx.appcompat.app.AlertDialog.Builder(this);
+        builder.setMessage(model.getAlertText());
+        builder.setPositiveButton(model.getOKText(), (dialog, which) -> {
+            dialog.dismiss();
+            deleteAddressCustomer(id);
+
+        });
+        builder.setNegativeButton(model.getCancel(),((dialog, which) -> {
+            dialog.dismiss();
+        }));
+        builder.create().show();
+    }
 
     private void getSavedAddress() {
+progress_address.setVisibility(View.VISIBLE);
         apiInterface = RFClient.getClient().create(ApiInterface.class);
         Observable<ModelAddressList> observable = apiInterface.getSavedAddress(String.valueOf(currentLatitude), String.valueOf(currentLongitude),
                 prefsHelper.getPref(Constants.CUSTOMER_ID));
@@ -207,7 +224,7 @@ public class SavedAddressActivity extends AppCompatActivity implements DeleteAdd
 
                     @Override
                     public void onNext(ModelAddressList searchResult) {
-                        showProgress();
+                        progress_address.setVisibility(View.GONE);
                         if (addressList.size() > 0)
                             addressList.clear();
                         addressList.addAll(searchResult.getAddressModel().getDeliveryaddress());
@@ -221,7 +238,7 @@ public class SavedAddressActivity extends AppCompatActivity implements DeleteAdd
                             Intent intent1 = new Intent(SavedAddressActivity.this, AddAddressActivity.class);
                             startActivity(intent1);
                         }
-                        hideProgress();
+
                     }
 
                     @Override
@@ -266,7 +283,7 @@ public class SavedAddressActivity extends AppCompatActivity implements DeleteAdd
 
     @Override
     public void onItemDelete(int id) {
-        deleteAddressCustomer(id);
+        showDeleteDialog(id);
     }
 
     @Override

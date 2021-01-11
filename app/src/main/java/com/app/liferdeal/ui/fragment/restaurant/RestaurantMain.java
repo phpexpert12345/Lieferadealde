@@ -153,7 +153,11 @@ public class RestaurantMain extends Fragment implements View.OnClickListener, Cu
         if (getArguments() != null) {
             Bundle bundle = getArguments();
             selected_cusines = bundle.getStringArrayList("SELECTEDCUSINES");
+            if(bundle.getParcelableArrayList("selected_filter")!=null){
+                lists=bundle.getParcelableArrayList("selected_filter");
+            }
             System.out.println("==== selected cusine in main restmain" + selected_cusines);
+
             locationSearchAddress = bundle.getString("locationSearchAddress");
             System.out.println("==== locationSearchAddress : " + locationSearchAddress);
             Gson gson1 = new Gson();
@@ -193,6 +197,7 @@ public class RestaurantMain extends Fragment implements View.OnClickListener, Cu
     }
 
     private void getCusineFilterList() {
+        showProgress();
         apiInterface = RFClient.getClient().create(ApiInterface.class);
         Observable<CusineFilterModel> observable = apiInterface.getCusineFilterList(prefsHelper.getPref(Constants.API_KEY),
                 prefsHelper.getPref(Constants.LNG_CODE));
@@ -206,7 +211,7 @@ public class RestaurantMain extends Fragment implements View.OnClickListener, Cu
 
                     @Override
                     public void onNext(CusineFilterModel searchResult) {
-                        showProgress();
+
 
                         setFilterAdapterCategory(searchResult.getCuisineList());
                         banner_progress.setVisibility(View.GONE);
@@ -235,9 +240,16 @@ public class RestaurantMain extends Fragment implements View.OnClickListener, Cu
         cuisineFilterList = new ArrayList<>();
         cuisineFilterList.addAll(cuisineList);
         if (cuisineList.size() > 0) {
-            for (int i = 0; i < cuisineList.size(); i++) {
-                selectedList[i] = false;
+            if(lists.size()>0){
+                for(int i=0;i<cuisineList.size();i++){
+                    for(int j=0;j<lists.size();j++){
+                        if(lists.get(j).getId().equals(cuisineList.get(i).getId())){
+                            cuisineList.get(i).setSelected(true);
+                        }
+                    }
+                }
             }
+
             rvFilterlist.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
             adapterCategorys = new CusineFiltersAdapter(getActivity(), cuisineList, selectedList);
             rvFilterlist.setAdapter(adapterCategorys);
@@ -396,24 +408,25 @@ public class RestaurantMain extends Fragment implements View.OnClickListener, Cu
     private String filterData = "";
 
     @Override
-    public void getClickData(ArrayList<Integer> extraId, ArrayList<String> extraName, Boolean[] list) {
+    public void getClickData(List<CuisineList>cuisineLists,int pos) {
 //        selected_cusines = extraName;
         selected_cusines.clear();
-        selected_cusines_id = extraId;
-        for (int i = 0; i < list.length; i++) {
-            selectedList[i] = list[i];
-            if (list[i]) {
-                selected_cusines.add(cuisineFilterList.get(i).getCuisineName());
-                lists.add(cuisineFilterList.get(i));
-            }
+
+        if(cuisineLists.get(pos).getSelected()){
+            lists.add(cuisineLists.get(pos));
         }
+        else{
+            lists.remove(cuisineLists.get(pos));
+        }
+        for(int i=0;i<lists.size();i++){
+            selected_cusines.add(lists.get(i).getCuisineName());
+        }
+
         adapterCategorys.notifyDataSetChanged();
         Gson gson1 = new Gson();
         filterData = gson1.toJson(selected_cusines, new TypeToken<ArrayList<String>>() {
         }.getType());
-        if(lists.size()>0){
-            filterInterface.getSelectedFilter(lists);
-        }
+
 
         getRestSearchInfo();
     }

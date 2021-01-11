@@ -1117,6 +1117,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (checkFromWhere.equalsIgnoreCase("pagecusine")) {
                     System.out.println("==== onnew 1");
                     selected_cusines = intent.getStringArrayListExtra("SELECTEDCUSINE");
+                    if(intent.hasExtra("selected_filter")){
+                        if(lists.size()>0){
+                            lists.clear();
+                        }
+                        lists=intent.getParcelableArrayListExtra("selected_filter");
+                    }
                     System.out.println("==== selected cusine in main activityu" + selected_cusines);
                     initiateRestFragment();
                 } else if (checkFromWhere.equalsIgnoreCase("fromhome")) {
@@ -1141,6 +1147,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         RestaurantMain restaurantMain = new RestaurantMain(currentLatitude, currentLongitude, this);
         Bundle args = new Bundle();
         args.putStringArrayList("SELECTEDCUSINES", selected_cusines);
+        args.putParcelableArrayList("selected_filter", (ArrayList<? extends Parcelable>) lists);
         restaurantMain.setArguments(args);
         FragmentTransaction transaction = this.getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.main_content, restaurantMain);

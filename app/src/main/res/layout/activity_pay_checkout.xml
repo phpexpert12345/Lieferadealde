@@ -116,12 +116,12 @@
                         <com.google.android.material.radiobutton.MaterialRadioButton
                             android:id="@+id/radioButtonASAP"
                             android:layout_width="@dimen/dp_0"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/colorBlack"
+                            android:layout_height="16dp"
                             android:layout_weight="1"
                             android:checked="true"
-                            android:textSize="@dimen/sp_15"
-                            android:text="@string/asap" />
+                            android:text="@string/asap"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="@dimen/sp_15" />
 
                         <com.google.android.material.radiobutton.MaterialRadioButton
                             android:id="@+id/radioButtonLater"
@@ -280,7 +280,7 @@
                             android:padding="10dp">
 
                             <RadioButton
-                                android:checked="true"
+                                android:checked="false"
                                 android:id="@+id/radioButtonCashOnDelivery"
                                 android:layout_width="wrap_content"
                                 android:layout_height="50dp"

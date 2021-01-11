@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,14 +27,11 @@ import androidx.cardview.widget.CardView;
 import com.app.liferdeal.R;
 import com.app.liferdeal.application.App;
 import com.app.liferdeal.model.LanguageResponse;
-import com.app.liferdeal.model.restaurant.GuestUserPaymentModel;
 import com.app.liferdeal.model.restaurant.TimeListModel;
 import com.app.liferdeal.network.retrofit.ApiInterface;
 import com.app.liferdeal.network.retrofit.NetworkUtil;
 import com.app.liferdeal.network.retrofit.RFClient;
-import com.app.liferdeal.ui.Database.Database;
 import com.app.liferdeal.ui.activity.cart.paypal.PayPalConfig;
-import com.app.liferdeal.ui.activity.restaurant.RestaurantBookTable;
 import com.app.liferdeal.ui.activity.restaurant.TimeListActivity;
 import com.app.liferdeal.util.CommonMethods;
 import com.app.liferdeal.util.Constants;
@@ -64,13 +60,9 @@ import com.stripe.android.view.PaymentMethodsActivityStarter;
 import org.json.JSONException;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Currency;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -144,8 +136,10 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
     RadioGroup rgFood;
     @BindView(R.id.tvLeaveMsg)
     AppCompatTextView tvLeaveMsg;
+    private String allergy_Data="";
 
     private String totalPrice = "";
+    List<TimeListModel.TimeList> list = new ArrayList<TimeListModel.TimeList>();
 
     SharedPreferencesData sharedPreferencesData;
     private LanguageResponse model = new LanguageResponse();
@@ -164,6 +158,7 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
             getTotalItemDiscount = "", getFoodTaxTotal7 = "", getFoodTaxTotal19 = "", TotalSavedDiscount = "", discountOfferFreeItems = "", number_of_people = "",
             customer_allow_register = "", address = "", mealID = "", mealquqntity = "", mealPrice = "", mealItemExtra = "", mealItemOption = "";
     DotToCommaClass dotToCommaClass;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -196,6 +191,7 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
         textViewAllergy.setText(model.getDoYouHaveAnyAllergy().trim());
         buttonMakePayment.setText(model.getMakeAPayment().trim());
         tvLeaveMsg.setText(model.getLeaveANoteForTheRestaurantText().trim());
+
 
         if (getIntent() != null) {
             totalPrice = getIntent().getStringExtra("totalPrice");
@@ -248,6 +244,7 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
             cardViewCreditDebitCard.setVisibility(View.GONE);
         }
         viewFinds();
+        callTimeApi();
     }
 
 
@@ -257,6 +254,7 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
         radioButtonCashOnDelivery.setOnClickListener(this);
         radioButtonPayLater.setOnClickListener(this);
         buttonMakePayment.setOnClickListener(this);
+        rlBack.setOnClickListener(this);
 
 
       /*  if (App.retrieveLangFromGson(PayCheckOutActivity.this) != null) {
@@ -349,8 +347,8 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
                     i.putExtra("RestId", restId);
                     i.putExtra("OrderType", order_type);
                     startActivityForResult(i, 10);*/
-                    showProgress();
-                    callTimeApi();
+                    dialogTimeSelection(list);
+
                 }
             }
         });
@@ -464,6 +462,9 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
                     getPaymentRequestData();
                     break;
                 }
+            case R.id.rl_back:
+                finish();
+                break;
 
         }
     }
@@ -741,7 +742,7 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
 
     @OnClick(R.id.textViewAllergy)
     public void textViewAllergyClicked(View view) {
-        allergyGetting();
+        dialogOpenAllergy(allergy_Data);
     }
 
 
@@ -784,7 +785,8 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
                     @Override
                     public void onNext(AlergyMain signin) {
                         hideProgress();
-                        dialogOpenAllergy(signin.getAlleryInfo());
+                        allergy_Data=signin.getAlleryInfo();
+
                     }
 
                     @Override
@@ -803,6 +805,7 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void callTimeApi() {
+        showProgress();
         apiInterface = RFClient.getClient().create(ApiInterface.class);
         Observable<TimeListModel> observable = apiInterface.getTableTimeListData(prefsHelper.getPref(Constants.API_KEY),
                 prefsHelper.getPref(Constants.LNG_CODE), restId, order_type);
@@ -818,14 +821,15 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
                     public void onNext(TimeListModel searchResult) {
                         hideProgress();
                         if (searchResult.getTimeList() != null && searchResult.getTimeList().size() > 0) {
-                            List<TimeListModel.TimeList> list = new ArrayList<TimeListModel.TimeList>();
+
                             list.clear();
 //                            TimeListModel.TimeList newList = new TimeListModel.TimeList();
 //                            newList.setGetTime(model.getASSOONASPOSSIBLE());
 //                            newList.setSuccess("true");
 //                            list.add(newList);
                             list.addAll(searchResult.getTimeList());
-                            dialogTimeSelection(list);
+                            allergyGetting();
+
                         }
 
                     }
@@ -861,6 +865,8 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onClick(View view) {
                 dialog.cancel();
+                radioButtonLater.setChecked(false);
+                radioButtonASAP.setChecked(true);
             }
         });
         tvDone.setOnClickListener(new View.OnClickListener() {

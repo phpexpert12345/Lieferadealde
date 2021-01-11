@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -62,6 +63,7 @@ public class CusineFilter extends AppCompatActivity implements View.OnClickListe
     private LanguageResponse model = new LanguageResponse();
     Intent intent;
     List<CuisineList> lists;
+    List<CuisineList>all_list=new ArrayList<>();
     private SharedPreferencesData sharedPreferencesData;
 
     @Override
@@ -127,11 +129,13 @@ public class CusineFilter extends AppCompatActivity implements View.OnClickListe
         Intent i = new Intent(CusineFilter.this, MainActivity.class);
         i.putExtra("FROMWHERE", "pagecusine");
         i.putExtra("SELECTEDCUSINE", selected_cusines);
+        i.putParcelableArrayListExtra("selected_filter", (ArrayList<? extends Parcelable>) lists);
         startActivity(i);
         finish();
     }
 
     private void getCusineFilterList() {
+        showProgress();
         apiInterface = RFClient.getClient().create(ApiInterface.class);
         Observable<CusineFilterModel> observable = apiInterface.getCusineFilterList(prefsHelper.getPref(Constants.API_KEY),
                 prefsHelper.getPref(Constants.LNG_CODE));
@@ -146,8 +150,12 @@ public class CusineFilter extends AppCompatActivity implements View.OnClickListe
 
                     @Override
                     public void onNext(CusineFilterModel searchResult) {
-                        showProgress();
-                        setAdapterCategory(searchResult.getCuisineList());
+
+                        if(all_list.size()>0){
+                            all_list.clear();
+                        }
+                        all_list=searchResult.getCuisineList();
+                        setAdapterCategory();
                         banner_progress.setVisibility(View.GONE);
                     }
 
@@ -178,13 +186,13 @@ public class CusineFilter extends AppCompatActivity implements View.OnClickListe
             progressDialog.dismiss();
     }
 
-    private void setAdapterCategory(List<CuisineList> list) {
+    private void setAdapterCategory() {
         if(lists!=null) {
             if (lists.size() > 0) {
                 for (int i = 0; i < lists.size(); i++) {
-                    for (int j = 0; j < list.size(); j++) {
-                        if (lists.get(i).getId().equals(list.get(j).getId())) {
-                            list.get(j).setSelected(true);
+                    for (int j = 0; j < all_list.size(); j++) {
+                        if (lists.get(i).getId().equals(all_list.get(j).getId())) {
+                            all_list.get(j).setSelected(true);
                             break;
 
                         }
@@ -192,15 +200,22 @@ public class CusineFilter extends AppCompatActivity implements View.OnClickListe
                 }
             }
         }
-        CusineFilterAdapter adapterCategory = new CusineFilterAdapter(this, list, this);
+        CusineFilterAdapter adapterCategory = new CusineFilterAdapter(this, all_list, this);
         rcv_cusine_view.setAdapter(adapterCategory);
         hideProgress();
     }
 
     @Override
-    public void getClickData(ArrayList<Integer> extraId, ArrayList<String> extraName) {
-        selected_cusines = extraName;
-        selected_cusines_id = extraId;
+    public void getClickData(List<CuisineList>listcategory, int pos) {
+        if(listcategory.size()>0){
+            if(listcategory.get(pos).getSelected()){
+                lists.add(listcategory.get(pos));
+            }
+            else{
+                lists.remove(listcategory.get(pos));
+            }
+        }
+
        /* Set<String> set = new HashSet<String>();
         set.addAll(extraName);
 

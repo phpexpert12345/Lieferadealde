@@ -30,7 +30,7 @@ public class CusineFilterAdapter extends RecyclerView.Adapter<CusineFilterAdapte
     private SharedPreferencesData sharedPreferencesData;
 
     public interface CusineFilterAdapterInterface {
-        void getClickData(ArrayList<Integer> extraId, ArrayList<String> extraName);
+        void getClickData(List<CuisineList> listCategory, int pos);
 
     }
 
@@ -62,19 +62,18 @@ public class CusineFilterAdapter extends RecyclerView.Adapter<CusineFilterAdapte
             holder.cbitem.setChecked(false);
         }
         holder.cbitem.setText(listCategory.get(position).getCuisineName());
+        holder.cbitem.setTag(position);
         holder.cbitem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int pos= (int) view.getTag();
                 if(holder.cbitem.isChecked()) {
-                    System.out.println("==== checkbox is click");
-                    selected_cusines_id.add(listCategory.get(position).getId());
-                    selected_cusines.add(listCategory.get(position).getSeoUrlCall());
-                    cusineFilterAdapterInterface.getClickData(selected_cusines_id, selected_cusines);
+                   listCategory.get(position).setSelected(true);
+                    cusineFilterAdapterInterface.getClickData(listCategory, pos);
 
                 } else {
-                    selected_cusines_id.remove(listCategory.get(position).getId());
-                    selected_cusines.remove(listCategory.get(position).getSeoUrlCall());
-                    cusineFilterAdapterInterface.getClickData(selected_cusines_id, selected_cusines);
+                    listCategory.get(position).setSelected(false);
+                    cusineFilterAdapterInterface.getClickData(listCategory, pos);
                 }
             }
         });
