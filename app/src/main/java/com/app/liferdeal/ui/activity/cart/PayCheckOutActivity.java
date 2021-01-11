@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,10 +29,12 @@ import androidx.cardview.widget.CardView;
 import com.app.liferdeal.R;
 import com.app.liferdeal.application.App;
 import com.app.liferdeal.model.LanguageResponse;
+import com.app.liferdeal.model.restaurant.RaviCartModle;
 import com.app.liferdeal.model.restaurant.TimeListModel;
 import com.app.liferdeal.network.retrofit.ApiInterface;
 import com.app.liferdeal.network.retrofit.NetworkUtil;
 import com.app.liferdeal.network.retrofit.RFClient;
+import com.app.liferdeal.ui.Database.Database;
 import com.app.liferdeal.ui.activity.cart.paypal.PayPalConfig;
 import com.app.liferdeal.ui.activity.restaurant.TimeListActivity;
 import com.app.liferdeal.util.CommonMethods;
@@ -137,7 +141,8 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
     @BindView(R.id.tvLeaveMsg)
     AppCompatTextView tvLeaveMsg;
     private String allergy_Data="";
-
+    Database database;
+    ArrayList<RaviCartModle> raviCartModles;
     private String totalPrice = "";
     List<TimeListModel.TimeList> list = new ArrayList<TimeListModel.TimeList>();
 
@@ -156,8 +161,9 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
             WebsiteCodePrice = "", WebsiteCodeType = "", WebsiteCodeNo = "", preorderTime = "", addressId = "", GiftCardPay = "", WalletPay = "",
             loyptamount = "", table_number_assign = "", customer_country = "", group_member_id = "", loyltPnts = "", branch_id = "", FoodCosts = "",
             getTotalItemDiscount = "", getFoodTaxTotal7 = "", getFoodTaxTotal19 = "", TotalSavedDiscount = "", discountOfferFreeItems = "", number_of_people = "",
-            customer_allow_register = "", address = "", mealID = "", mealquqntity = "", mealPrice = "", mealItemExtra = "", mealItemOption = "";
+            customer_allow_register = "", address = "", mealID = "", mealquqntity = "", mealPrice = "", mealItemExtra = "", mealItemOption = "",item_Id;
     DotToCommaClass dotToCommaClass;
+    String Price;
 
 
     @Override
@@ -169,6 +175,8 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
         prefsHelper = new PrefsHelper(this);
         progressDialog = new ProgressDialog(this);
         dotToCommaClass = new DotToCommaClass(getApplicationContext());
+        database = new Database(PayCheckOutActivity.this);
+        raviCartModles=new ArrayList<>();
 
         Currency hh = Currency.getInstance("" + prefsHelper.getPref(Constants.APP_CURRENCY));
         currencySymbol = hh.getSymbol();
@@ -245,6 +253,7 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
         }
         viewFinds();
         callTimeApi();
+        getCartData();
     }
 
 
@@ -496,7 +505,7 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
         //delivery_time = "10:15:20AM";
         apiInterface = RFClient.getClient().create(ApiInterface.class);
         Observable<LoginMainData> observable = apiInterface.getPaymentLoginData(prefsHelper.getPref(Constants.API_KEY),
-                prefsHelper.getPref(Constants.LNG_CODE), "", pizzaItemid, quantity, TotalPrice, strsizeid, extraItemID,
+                prefsHelper.getPref(Constants.LNG_CODE), "", pizzaItemid, quantity, Price, strsizeid, extraItemID,
                 CustomerId, addressId, payment_type, order_price, subTotalAmount, delivery_date, delivery_time, instructions, deliveryChargeValue,
                 CouponCode, CouponCodePrice, couponCodeType, SalesTaxAmount, order_type, SpecialInstruction, extraTipAddAmount, RestaurantNameEstimate,
                 discountOfferDescription, discountOfferPrice, RestaurantoffrType, ServiceFees, PaymentProcessingFees, deliveryChargeValueType,
@@ -590,6 +599,76 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
 
     //stripe payment code for success
     Dialog dialog;
+    public void getCartData(){
+        SQLiteDatabase db = database.getReadableDatabase();
+        StringBuilder itemId=new StringBuilder();
+        StringBuilder quant=new StringBuilder();
+        StringBuilder price_total=new StringBuilder();
+        StringBuilder strsize_all=new StringBuilder();
+        StringBuilder extra_all=new StringBuilder();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM item_table", null);
+        if (cursor.moveToFirst()) {
+            do {
+                String item_id = cursor.getString(0);
+                String item_name = cursor.getString(1);
+                String size_item_id = cursor.getString(2);
+                String size_item_name = cursor.getString(3);
+                String extra_item_id = cursor.getString(4);
+                String extra_item_name = cursor.getString(5);
+                String price = cursor.getString(6);
+                String subcatdetals = cursor.getString(8);
+                String item_quantity = cursor.getString(7);
+                raviCartModles.add(new RaviCartModle(item_id, item_name, size_item_id, size_item_name, extra_item_id, extra_item_name, price, item_quantity, subcatdetals));
+
+            }
+            while (cursor.moveToNext());
+            if(raviCartModles.size()>0){
+                for(int i=0;i<raviCartModles.size();i++){
+                    itemId.append(raviCartModles.get(i).getItem_id());
+                    itemId.append(",");
+                    quant.append(raviCartModles.get(i).getItem_quantity());
+                    quant.append(",");
+                    price_total.append(raviCartModles.get(i).getPrice());
+                    price_total.append(",");
+                    strsize_all.append(raviCartModles.get(i).getSize_item_id());
+                    strsize_all.append("_");
+                    if(raviCartModles.get(i).getExtra_item_id().startsWith("[")){
+                        String extra_id=raviCartModles.get(i).getExtra_item_id().substring(1,raviCartModles.get(i).getExtra_item_id().lastIndexOf("]"));
+                        String[] array=extra_id.split(",");
+
+                        StringBuilder extra_check=new StringBuilder();
+                        for(int j=0;j<array.length;j++){
+                            extra_check.append(array[j]);
+                            extra_check.append("_");
+                        }
+                        if(extra_check.length()>0){
+                            extra_all.append(extra_check.deleteCharAt(extra_check.lastIndexOf("_"))).toString();
+                            extra_all.append(",");
+
+                        }
+                    }
+
+                }
+                if(itemId.length()>0){
+                    item_Id=itemId.deleteCharAt(itemId.lastIndexOf(",")).toString();
+                }
+                if(quant.length()>0){
+                    quantity=quant.deleteCharAt(quant.lastIndexOf(",")).toString();
+                }
+                if(price_total.length()>0){
+                    Price=price_total.deleteCharAt(price_total.lastIndexOf(",")).toString();
+                }
+                if(strsize_all.length()>0){
+                    strsizeid=strsize_all.deleteCharAt(strsize_all.lastIndexOf("_")).toString();
+                }
+                if(extra_all.length()>0){
+                    extraItemID=extra_all.deleteCharAt(extra_all.lastIndexOf(",")).toString();
+                }
+            }
+        }
+        Log.i("reason",item_Id+" "+quantity+" "+Price+" "+strsizeid+" "+extraItemID);
+    }
 
     private void dialogOpen() {
         dialog = new Dialog(PayCheckOutActivity.this);

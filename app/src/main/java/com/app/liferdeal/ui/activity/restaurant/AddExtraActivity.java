@@ -25,6 +25,7 @@ import com.app.liferdeal.R;
 import com.app.liferdeal.application.App;
 import com.app.liferdeal.model.LanguageResponse;
 import com.app.liferdeal.model.restaurant.FoodExtraModel;
+import com.app.liferdeal.model.restaurant.RaviCartModle;
 import com.app.liferdeal.network.retrofit.ApiInterface;
 import com.app.liferdeal.network.retrofit.RFClient;
 import com.app.liferdeal.ui.Database.Database;
@@ -36,6 +37,7 @@ import com.app.liferdeal.util.PrefsHelper;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Currency;
 import java.util.List;
 
@@ -254,6 +256,7 @@ public class AddExtraActivity extends AppCompatActivity implements View.OnClickL
 
                 double sizePizzaPricee = 0.0;
                 double restDetailsItemPricee = 0.0;
+
                 if (sizePizzaPrice != null && !sizePizzaPrice.equalsIgnoreCase("")) {
                     sizePizzaPricee = Double.parseDouble(sizePizzaPrice);
                 }
@@ -273,49 +276,84 @@ public class AddExtraActivity extends AppCompatActivity implements View.OnClickL
                 SQLiteDatabase db = database.getReadableDatabase();
 
                 Cursor cursor;
-                if (extra_item_list_id.size() > 0)
-                    cursor = db.rawQuery("SELECT * FROM item_table where item_id='" + restDetailsItemId
-                            + "' AND size_item_id = '" + itemSizeId + "' AND extra_item_id = '" + extra_item_list_id + "'", null);
-                else
-                    cursor = db.rawQuery("SELECT * FROM item_table where item_id='" + restDetailsItemId
-                            + "' AND size_item_id = '" + itemSizeId + "'", null);
-                if (cursor.moveToNext()) {
-                    qunt = Integer.parseInt(cursor.getString(7)) + 1;
-                    price = Double.parseDouble(restDetailsItemPrice) * qunt;
-                    if (extra_item_list_id.size() > 0) {
-                        qunt = Integer.parseInt(cursor.getString(7));
-                        price1 = Double.parseDouble(cursor.getString(6));
-                        price1 = price1 / qunt;
-                        price1 = (double) Math.round(price1 * 100) / 100;
-                        qunt = qunt + 1;
-                        price1 = price1 * qunt;
-                        database.update_item(String.valueOf(restDetailsItemId), qunt, price);
-                        database.update_extra_quantity(getIntent().getStringExtra("itemid"), "" + extra_item_list_id, price1, qunt);
-                    } else {
-                        database.update_item(String.valueOf(restDetailsItemId), qunt, price);
-                    }
-                    cart_Item_number = cart_Item_number + 1;
-                    RestaurantDetails.tvCartItemCount.setText("" + cart_Item_number);
-                    Intent i = new Intent(this, RestaurantDetails.class);
-                    i.putExtra("SIZEITEMID", itemSizeId);
-                    i.putExtra("tempExtraItemidWithSizeIdd", txt_add_extra_total.getText().toString().trim());
-                    //i.putExtra("", ext);
-                    startActivity(i);
-                } else {
-                    if (extra_item_list_id.size() > 0)
-                        database.InsertItem(String.valueOf(restDetailsItemId), restDetailsItemName, String.valueOf(itemSizeId), selectFoodItemName, "" + extra_item_list_id, "" + extra_item_list_name, Double.parseDouble(restDetailsItemPrice), 1,SUBCATCLICKITEMDesc);
-                    else {
-                        database.InsertItem(String.valueOf(restDetailsItemId), restDetailsItemName, String.valueOf(itemSizeId), selectFoodItemName, "0", "0", Double.parseDouble(restDetailsItemPrice), 1,SUBCATCLICKITEMDesc);
+                 cursor = db.rawQuery("SELECT * FROM item_table", null);
+                 List<RaviCartModle>raviCartModles=new ArrayList<>();
 
-                    }
-                    cart_Item_number = cart_Item_number + 1;
-                    RestaurantDetails.tvCartItemCount.setText("" + cart_Item_number);
-                    Intent i = new Intent(this, RestaurantDetails.class);
-                    i.putExtra("SIZEITEMID", itemSizeId);
-                    i.putExtra("tempExtraItemidWithSizeIdd", txt_add_extra_total.getText().toString().trim());
-                    //i.putExtra("", ext);
-                    startActivity(i);
-                }
+                 if(cursor.moveToNext()){
+                     do {
+                         String item_id = cursor.getString(0);
+                         String item_name = cursor.getString(1);
+                         String size_item_id = cursor.getString(2);
+                         String size_item_name = cursor.getString(3);
+                         String extra_item_id = cursor.getString(4);
+                         String extra_item_name = cursor.getString(5);
+                         String price_str = cursor.getString(6);
+                         String subcatdetals = cursor.getString(8);
+                         String item_quantity = cursor.getString(7);
+                         raviCartModles.add(new RaviCartModle(item_id, item_name, size_item_id, size_item_name, extra_item_id, extra_item_name, price_str, item_quantity, subcatdetals));
+
+                     }
+                     while (cursor.moveToNext());
+
+                 }
+                 int selected_position=-1;
+                 for(int i=0;i<raviCartModles.size();i++){
+                     if(raviCartModles.get(i).getItem_id().equalsIgnoreCase(restDealisItemId)){
+                         String extra_id=raviCartModles.get(i).getExtra_item_id();
+                         if(extra_id.startsWith("[")){
+                             extra_id=raviCartModles.get(i).getExtra_item_id().substring(1,raviCartModles.get(i).getExtra_item_id().lastIndexOf("]"));
+                             String[] array=extra_id.split(",");
+                             ArrayList<Integer>cards=new ArrayList<>();
+                             for(int j=0;j<array.length;j++){
+                                 cards.add(Integer.parseInt(array[j].trim()));
+                             }
+
+                             if(extra_item_list_id.size()>0){
+                                 if(cards.equals(extra_item_list_id)){
+                                     selected_position=i;
+                                     break;
+                                 }
+                             }
+
+                         }
+                     }
+                 }
+                 if(selected_position>=0){
+                     int quatity;
+                     RaviCartModle raviCartModle=raviCartModles.get(selected_position);
+                     qunt = Integer.parseInt(raviCartModle.getItem_quantity()) + 1;
+                     price = Double.parseDouble(restDetailsItemPrice) * qunt;
+                    quatity= Integer.parseInt(raviCartModle.getItem_quantity());
+                     price1 = Double.parseDouble(raviCartModle.getPrice());
+                     price1 = price1 / quatity;
+                     price1 = (double) Math.round(price1 * 100) / 100;
+                     quatity = quatity + 1;
+                     price1 = price1 * quatity;
+                     database.update_item(raviCartModle.getItem_id(),qunt,price);
+                     database.update_extra_quantity(raviCartModle.getItem_id(), "" + extra_item_list_id, price1, quatity);
+                     RestaurantDetails.tvCartItemCount.setText("" + cart_Item_number);
+                     Intent i = new Intent(this, RestaurantDetails.class);
+                     i.putExtra("SIZEITEMID", itemSizeId);
+                     i.putExtra("tempExtraItemidWithSizeIdd", txt_add_extra_total.getText().toString().trim());
+                     //i.putExtra("", ext);
+                     startActivity(i);
+
+                 }
+                 else{
+                     if (extra_item_list_id.size() > 0)
+                         database.InsertItem(String.valueOf(restDetailsItemId), restDetailsItemName, String.valueOf(itemSizeId), selectFoodItemName, "" + extra_item_list_id, "" + extra_item_list_name, Double.parseDouble(restDetailsItemPrice), 1,SUBCATCLICKITEMDesc);
+                     else {
+                         database.InsertItem(String.valueOf(restDetailsItemId), restDetailsItemName, String.valueOf(itemSizeId), selectFoodItemName, "0", "0", Double.parseDouble(restDetailsItemPrice), 1,SUBCATCLICKITEMDesc);
+                     }
+                     cart_Item_number = cart_Item_number + 1;
+                     RestaurantDetails.tvCartItemCount.setText("" + cart_Item_number);
+                     Intent i = new Intent(this, RestaurantDetails.class);
+                     i.putExtra("SIZEITEMID", itemSizeId);
+                     i.putExtra("tempExtraItemidWithSizeIdd", txt_add_extra_total.getText().toString().trim());
+                     //i.putExtra("", ext);
+                     startActivity(i);
+                 }
+
                 database.close();
                 break;
 
