@@ -232,32 +232,8 @@ public class RestaurantBookTable extends AppCompatActivity implements View.OnCli
                 if (tvBookingDate.getText().toString().length() == 0) {
                     Toast.makeText(getApplicationContext(), model.getSelctBookingDate(), Toast.LENGTH_SHORT).show();
                 } else {
-                   /* Intent i = new Intent(RestaurantBookTable.this, ActivityTableTimeList.class);
-                    i.putExtra("RestId", restid);
-                    i.putExtra("date", date);
-                    startActivityForResult(i, x);*/
-//                    showProgress();
-//                    callTimeApi();
-                    if (list.size() > 0)
-                        dialogTimeSelection(list);
-                    else {
-                        showProgress();
-                        callTimeApi();
-                    }
+                    dialogTimeSelection(list);
                 }
-
-//                Calendar mcurrentTime = Calendar.getInstance();
-//                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-//                int minute = mcurrentTime.get(Calendar.MINUTE);
-//                TimePickerDialog mTimePicker;
-//                mTimePicker = new TimePickerDialog(RestaurantBookTable.this, new TimePickerDialog.OnTimeSetListener() {
-//                    @Override
-//                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-//                        edit_book_time.setText(selectedHour + ":" + selectedMinute);
-//                    }
-//                }, hour, minute, true);//Yes 24 hour time
-//                mTimePicker.setTitle("Select Time");
-//                mTimePicker.show();
                 break;
 
             case R.id.btn_submit:
@@ -287,17 +263,10 @@ public class RestaurantBookTable extends AppCompatActivity implements View.OnCli
                 } else if (tvBookingTime.getText().toString().trim().equalsIgnoreCase("")) {
                     tvBookingTime.setError(model.getPleaseEnterBookingTime());
 //                    edit_book_time.requestFocus();
-                } /*else if (edit_no_person.getText().toString().trim().equalsIgnoreCase("")) {
-                    edit_no_person.setError(model.getNoOfPerson());
-                    edit_no_person.requestFocus();
-                } else if (edit_specia_instruct.getText().toString().trim().equalsIgnoreCase("")) {
-                    edit_specia_instruct.setError(model.getSpecialInstructions());
-                    edit_specia_instruct.requestFocus();
-                } */ else {
+                } else {
                     getBookingTableData();
                 }
                 break;
-
             default:
                 break;
         }
@@ -329,6 +298,7 @@ public class RestaurantBookTable extends AppCompatActivity implements View.OnCli
     }
 
     private void getBookingTableData() {
+        showProgress();
         apiInterface = RFClient.getClient().create(ApiInterface.class);
         Observable<RestaurantBookTableModel> observable = apiInterface.setBookingTableData(prefsHelper.getPref(Constants.API_KEY), prefsHelper.getPref(Constants.LNG_CODE), customerId, restid, strName, stremail, strPhone, strBookDate, strBookTime, strNumberofPerson, strSpecialInstruct);
         observable.subscribeOn(Schedulers.io())
@@ -341,7 +311,6 @@ public class RestaurantBookTable extends AppCompatActivity implements View.OnCli
 
                     @Override
                     public void onNext(RestaurantBookTableModel searchResult) {
-                        showProgress();
                         Intent intent = new Intent(RestaurantBookTable.this, ThankuActivity.class);
                         intent.putExtra("msg", searchResult.getSuccessMsg());
                         intent.putExtra("booking_no", searchResult.getBookingNumber());
@@ -355,12 +324,13 @@ public class RestaurantBookTable extends AppCompatActivity implements View.OnCli
 
                     @Override
                     public void onError(Throwable e) {
-                        // hideProgress();
+                         hideProgress();
                         Log.d("TAG", "log...." + e);
                     }
 
                     @Override
                     public void onComplete() {
+                        hideProgress();
                         //   activity.mySharePreferences.setBundle("login");
 
                     }
@@ -482,12 +452,9 @@ public class RestaurantBookTable extends AppCompatActivity implements View.OnCli
 //                            newList.setSuccess("true");
 //                            list.add(newList);
 
-                            if (searchResult.getTimeList().size() == 0) {
-                                Toast.makeText(getApplicationContext(), model.getTimeSlotNotAvailable(), Toast.LENGTH_SHORT).show();
-                            } else {
-                                list.addAll(searchResult.getTimeList());
-                            }
-                        }
+                            list.addAll(searchResult.getTimeList());
+                        } else
+                            Toast.makeText(getApplicationContext(), model.getTimeSlotNotAvailable(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
