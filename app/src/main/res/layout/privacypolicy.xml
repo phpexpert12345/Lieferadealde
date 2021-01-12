@@ -4,15 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-   >
+    android:background="@color/colorWhite"
+    >
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/rl_header"
-        android:elevation="@dimen/_5sdp"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_40sdp">
+    <ProgressBar
+        android:id="@+id/pbLoad"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
     <RelativeLayout
-
+        android:id="@+id/rl_header"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_50"
         android:background="@color/colorPrimary">
@@ -36,20 +39,18 @@
             android:textSize="@dimen/sp_15" />
 
     </RelativeLayout>
-    </androidx.cardview.widget.CardView>
-    <WebView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/webview"
+
+    <RelativeLayout
+        android:layout_below="@+id/rl_header"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/rl_header" />
+        android:layout_height="match_parent">
+        <WebView
+            android:id="@+id/webview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <ProgressBar
-        android:id="@+id/pbLoad"
-        android:visibility="visible"
-        android:layout_centerInParent="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        </WebView>
 
+    </RelativeLayout>
 
 </RelativeLayout>

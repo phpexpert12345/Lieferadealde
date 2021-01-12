@@ -152,7 +152,7 @@ public class OrderTrackActivity extends AppCompatActivity implements View.OnClic
     private String currency, menuprice, itemname;
     private long quantity;
     DotToCommaClass dotToCommaClass;
-    String restId = "";
+    String restId = "", orderNoSend = "";
 
     private void getOrderDetails() {
 
@@ -176,7 +176,7 @@ public class OrderTrackActivity extends AppCompatActivity implements View.OnClic
                             rvWriteAReview.setVisibility(View.GONE);
                         }
                         restId = String.valueOf(searchResult.getOrderDetailItem().get(0).getResid());
-                        String orderno = searchResult.getOrderDetailItem().get(0).getOrderIdentifyno();
+                        orderNoSend = searchResult.getOrderDetailItem().get(0).getOrderIdentifyno();
                         String orderstatusmsg = searchResult.getOrderDetailItem().get(0).getOrderStatusMsg();
                         String subtotal = searchResult.getOrderDetailItem().get(0).getSubTotal();
                         String orderpricetotal = searchResult.getOrderDetailItem().get(0).getOrderPrice();
@@ -222,7 +222,7 @@ public class OrderTrackActivity extends AppCompatActivity implements View.OnClic
                              quantity = searchResult.getOrderFoodItem().get(i).getQuantity();
                         }
 */
-                        setTextData(orderno, orderstatusmsg, subtotal, orderpricetotal, restname, resuestatdate, resuestattime, customercity, currency, menuprice, itemname, quantity, firstStatus, secondStatus, thirdStatus, firstDate, secondDate, thirdDate);
+                        setTextData(orderNoSend, orderstatusmsg, subtotal, orderpricetotal, restname, resuestatdate, resuestattime, customercity, currency, menuprice, itemname, quantity, firstStatus, secondStatus, thirdStatus, firstDate, secondDate, thirdDate);
                         //  String orderpricetotal = searchResult.getOrderPrice().toString();
 
                     }
@@ -299,14 +299,13 @@ public class OrderTrackActivity extends AppCompatActivity implements View.OnClic
             rlDelivered.setVisibility(View.GONE);
             viewSquare3.setVisibility(View.GONE);
         }
-
-
     }
 
     @OnClick(R.id.rvWriteAReview)
     public void rvWriteAReviewClicked(View view) {
         Intent intent = new Intent(getApplicationContext(), WriteAReviewActivity.class);
         intent.putExtra("clickRestId", restId);
+        intent.putExtra("ORDERNO", orderNoSend);
         Log.e("RRRRID=", restId);
         startActivity(intent);
     }

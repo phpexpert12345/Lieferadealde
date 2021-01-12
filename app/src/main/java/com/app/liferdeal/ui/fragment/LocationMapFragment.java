@@ -129,6 +129,13 @@ public class LocationMapFragment extends AppCompatActivity implements OnMapReady
         authPreference = new PrefsHelper(this);
         bottomNavigation.setOnNavigationItemSelectedListener(this);
         bottomNavigation.getMenu().findItem(R.id.action_location).setChecked(true);
+        sharedPreferencesData = new SharedPreferencesData(getApplicationContext());
+        String firstTime = sharedPreferencesData.getSharedPreferenceData(Constants.PRICEPREFERENCE, Constants.FIRSTTIMELOGINPAGE);
+        if (firstTime.equalsIgnoreCase("")) {
+            img_back.setVisibility(View.GONE);
+        } else {
+            img_back.setVisibility(View.VISIBLE);
+        }
     }
 
     /*@Nullable
