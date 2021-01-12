@@ -85,7 +85,7 @@ public class RestaurantMainAdapter extends RecyclerView.Adapter<RestaurantMainAd
             holder.txt_view_timer.setTextColor(mContext.getResources().getColor(R.color.backlightgray));
             holder.txt_rest_min_order.setTextColor(mContext.getResources().getColor(R.color.backlightgray));
             holder.txt_rest_free_order.setTextColor(mContext.getResources().getColor(R.color.backlightgray));
-            holder.txt_discount_avail.setTextColor(mContext.getResources().getColor(R.color.backlightgray));
+            holder.txt_discount_avail.setTextColor(mContext.getResources().getColor(R.color.colorWhite));
             holder.txt_discount_avail.setBackground(mContext.getResources().getDrawable(R.drawable.background_close_rest));
             //holder.llTopLayout.setBackgroundColor(mContext.getResources().getColor(R.color.dark_gray));
             //holder.kidred.setColorFilter(mContext.getResources().getColor(R.color.backlightgray));

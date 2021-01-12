@@ -307,7 +307,7 @@ public class RestaurantMain extends Fragment implements View.OnClickListener, Cu
                             tvDataNotAvailable.setVisibility(View.GONE);
                         } else {
                             setAdapterCategory(searchResult.getSearchResult());
-                            tvDataNotAvailable.setText(model.getSorryYouAreNotAvailableText());
+                            tvDataNotAvailable.setText(model.getDATAISNOTAVAILABLE());
                             tvDataNotAvailable.setVisibility(View.VISIBLE);
                         }
                         banner_progress.setVisibility(View.GONE);

@@ -101,6 +101,7 @@
 
 
     <dimen name="sp_6">6sp</dimen>
+    <dimen name="sp_7">7sp</dimen>
     <dimen name="sp_8">8sp</dimen>
     <dimen name="sp_9">9sp</dimen>
     <dimen name="sp_10">10sp</dimen>

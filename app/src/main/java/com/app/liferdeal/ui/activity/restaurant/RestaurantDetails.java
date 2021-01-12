@@ -101,7 +101,7 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
     private LinearLayout img_view_gallery, lnr_rest_menyu_details, lnr_bookatable, lnr_view_rating;
     private Database database;
     private ProgressBar banner_progress;
-    private TextView shop_image_place_text, tv_item_discount_cost, txt_rest_address, txt_rest_name, txt_rest_name1, tv_restaurant_rating_value,
+    private TextView shop_image_place_text, tv_item_discount_cost, txt_rest_address, txt_rest_name, txt_rest_name1, tv_restaurant_rating_value, tvDataNotFound,
             tvCusineName, tvOrderOnline, tvGallery, tvMenu, tvReserveTable, tvRating, tvViewCart;
     private int subPizzaItemId;
     private RatingBar ratingBar;
@@ -174,6 +174,7 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
         tvMenu = findViewById(R.id.tvMenu);
         tvRating = findViewById(R.id.tvRating);
         tvViewCart = findViewById(R.id.tvViewCart);
+        tvDataNotFound = findViewById(R.id.tvDataNotFound);
 
         txt_rest_name1.setText(model.getMenu().trim());
         tvOrderOnline.setText(model.getOnlineOrder());
@@ -603,12 +604,14 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
                         //  setAdapterCategory(searchResult.getRestaurantMencategory());
                         if (searchResult.getRestaurantMencategory().size() > 0)
                             if (searchResult.getRestaurantMencategory().get(0).getError() == 1) {
+                                tvDataNotFound.setVisibility(View.VISIBLE);
+                                tvDataNotFound.setText(searchResult.getRestaurantMencategory().get(0).getError_msg());
                                 Toast.makeText(RestaurantDetails.this, searchResult.getRestaurantMencategory().get(0).getError_msg(), Toast.LENGTH_SHORT).show();
                                 hideProgress();
                             } else {
+                                tvDataNotFound.setVisibility(View.GONE);
                                 setAdapterCategoryForQuick(searchResult.getRestaurantMencategory());
                             }
-
                     }
 
                     @Override

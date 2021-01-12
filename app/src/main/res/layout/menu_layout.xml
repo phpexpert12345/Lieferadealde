@@ -33,6 +33,18 @@
         android:background="@color/colorWhite"
         android:layout_height="wrap_content"/>
 
+    <TextView
+        android:id="@+id/tvDataNotFound"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="@color/colorBlack"
+        android:visibility="gone"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/dp_50"
+        android:padding="@dimen/dp_10"
+        android:textSize="@dimen/sp_15"/>
+
     <ProgressBar
         android:layout_width="match_parent"
         android:id="@+id/banner_progress"
