@@ -105,10 +105,15 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.Holder> 
             }
         });
 
+        if (listCategory.get(position).getOrder_status_close().equalsIgnoreCase("1")) {
+            holder.txt_btn_cancel.setVisibility(View.GONE);
+        } else {
+            holder.txt_btn_cancel.setVisibility(View.VISIBLE);
+        }
         holder.txt_btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cancelClicked.cancleButton(listCategory.get(position).getOrderIdentifyno(),mContext);
+                cancelClicked.cancleButton(listCategory.get(position).getOrderIdentifyno(), mContext);
             }
         });
     }
@@ -153,6 +158,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.Holder> 
     }
 
     private ProgressDialog progressDialog;
+
     public void showProgress() {
         progressDialog = new ProgressDialog(mContext);
         progressDialog.setMessage(model.getPlease_wait_text().trim() + "...");

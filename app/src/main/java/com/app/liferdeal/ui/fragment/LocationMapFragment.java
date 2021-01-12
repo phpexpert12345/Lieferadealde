@@ -159,11 +159,18 @@ public class LocationMapFragment extends AppCompatActivity implements OnMapReady
 //        edt_search.setText(model.getSearchForLocation());
 //        ed_search.setHint(model.getSearchForLocation());
         try {
-            search.setText("" + model.getSearchForLocation());
+            if (model.getSearchForLocation() != null)
+                search.setText("" + model.getSearchLocation().trim());
+            else {
+                search.setText("Search for Location");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        tvConfirmLocation.setText(model.getConfirmLocation());
+        if (model.getConfirmLocation() != null)
+            tvConfirmLocation.setText("" + model.getConfirmLocation().trim());
+        else
+            tvConfirmLocation.setText("Confirm Location");
 
 //        ed_search.setOnClickListener(this);
         search.setOnClickListener(this);
@@ -339,10 +346,10 @@ public class LocationMapFragment extends AppCompatActivity implements OnMapReady
             case R.id.lnr_confirm_location:
                 //  initiateRestFragment();
 
-                if (mPICKUP_ADDRESS==null||mPICKUP_ADDRESS.equalsIgnoreCase("")){
-                    Toast.makeText(getApplicationContext(),model.getConfirmLocation(),Toast.LENGTH_LONG).show();
+                if (mPICKUP_ADDRESS == null || mPICKUP_ADDRESS.equalsIgnoreCase("")) {
+                    Toast.makeText(getApplicationContext(), model.getConfirmLocation(), Toast.LENGTH_LONG).show();
 
-                }else{
+                } else {
                     saveSelectedAddress(latLongSelected);
                     Intent i = new Intent(LocationMapFragment.this, MainActivity.class);
                     i.putExtra("SEARCHADDRESS", mPICKUP_ADDRESS);
@@ -597,7 +604,7 @@ public class LocationMapFragment extends AppCompatActivity implements OnMapReady
 
     public void showProgress() {
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage(model.getPlease_wait_text().trim()+"...");
+        progressDialog.setMessage(model.getPlease_wait_text().trim() + "...");
         progressDialog.setCancelable(false);
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();

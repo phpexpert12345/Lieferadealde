@@ -180,8 +180,6 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
 
                     @Override
                     public void onNext(OrderCancelModel searchResult) {
-
-
                         Toast.makeText(context, searchResult.getErrorMsg().toString(), Toast.LENGTH_LONG).show();
                         //getRestSearchInfoInside(context);
 
