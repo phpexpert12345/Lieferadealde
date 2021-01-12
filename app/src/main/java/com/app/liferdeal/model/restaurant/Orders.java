@@ -24,6 +24,18 @@ public class Orders {
         @SerializedName("order_identifyno")
         @Expose
         private String orderIdentifyno;
+
+        public String getOrder_status_close() {
+            return order_status_close;
+        }
+
+        public void setOrder_status_close(String order_status_close) {
+            this.order_status_close = order_status_close;
+        }
+
+        @SerializedName("order_status_close")
+        @Expose
+        private String order_status_close;
         @SerializedName("order_time")
         @Expose
         private String orderTime;

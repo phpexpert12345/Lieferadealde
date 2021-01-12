@@ -51,6 +51,7 @@
                     android:id="@+id/hotlist_bell"
                     android:layout_width="@dimen/dp_30"
                     android:layout_height="@dimen/dp_30"
+                    android:visibility="gone"
                     android:layout_margin="0dp"
                     android:gravity="center"
                     android:src="@drawable/vector_cart"
@@ -68,6 +69,7 @@
                     android:gravity="center"
                     android:minWidth="17sp"
                     android:paddingLeft="5dp"
+                    android:visibility="gone"
                     android:paddingTop="0dp"
                     android:paddingRight="5dp"
                     android:paddingBottom="1dp"
@@ -103,6 +105,7 @@
                 android:id="@+id/tvHead"
                 android:layout_width="wrap_content"
                 android:text="Write a Review"
+                android:fontFamily="@font/roboto_bold"
                 android:layout_marginLeft="@dimen/_20sdp"
                 android:textSize="@dimen/_13ssp"
                 android:layout_height="wrap_content"/>
@@ -122,7 +125,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:numStars="5"
-                android:theme="@style/RatingBar" />
+                android:theme="@style/Green.RatingBar" />
 
         </LinearLayout>
 
@@ -142,8 +145,11 @@
 
             <EditText
                 android:id="@+id/edt_txt_write_review"
-                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:layout_width="match_parent"
+                android:textSize="@dimen/sp_13"
+                android:textColor="@color/colorBlack"
+                android:fontFamily="@font/roboto_regular"
                 android:layout_height="wrap_content"/>
 
         </LinearLayout>
@@ -157,9 +163,10 @@
         android:background="@color/colorPrimaryone"
         android:padding="@dimen/dp_20"
         android:textColor="@color/colorWhite"
+        android:textAllCaps="false"
         android:layout_alignParentBottom="true"
         android:textSize="@dimen/_15ssp"
-        android:textStyle="bold"
+        android:fontFamily="@font/roboto_medium"
         android:layout_gravity="center"
         android:gravity="center"
         android:layout_height="wrap_content"/>

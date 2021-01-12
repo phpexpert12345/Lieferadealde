@@ -86,4 +86,16 @@
         android:layout_height="wrap_content">
 
     </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/tvDataNot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:textSize="@dimen/sp_15"
+        android:fontFamily="@font/roboto_medium"
+        android:textColor="@color/colorBlack"/>
+
 </RelativeLayout>

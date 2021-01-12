@@ -33,6 +33,11 @@
         <item name="colorControlNormal">@color/lightColorOrange</item>
     </style>
 
+    <style name="Green.RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlActivated">@color/colorPrimaryone</item>
+        <item name="colorControlNormal">@color/gray</item>
+    </style>
+
     <style name="RatingBarr" parent="Theme.AppCompat">
         <item name="colorControlActivated">@color/colorPrimaryone</item>
         <item name="colorControlNormal">@color/colorPrimaryone</item>

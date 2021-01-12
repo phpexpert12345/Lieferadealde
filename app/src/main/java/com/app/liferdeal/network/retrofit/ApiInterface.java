@@ -6,6 +6,7 @@ import com.app.liferdeal.model.GetProfileModel;
 import com.app.liferdeal.model.GetRestaurantDiscountResponse;
 import com.app.liferdeal.model.LanguageModel;
 import com.app.liferdeal.model.LanguageResponse;
+import com.app.liferdeal.model.OrderCancelModel;
 import com.app.liferdeal.model.PhpInitialInfoModel;
 import com.app.liferdeal.model.ProfileResponse;
 import com.app.liferdeal.model.RmGetLoyaltyPointResponse;
@@ -55,6 +56,13 @@ import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 public interface ApiInterface {
+
+
+    @FormUrlEncoded
+    @POST("phpexpert_Customer_Order_Cancelled.php")
+    Observable<OrderCancelModel> setOrderCancel(@Field("api_key") String api_key,
+                                                @Field("lang_code") String lang_code,
+                                                @Field("order_identifyno") String CustomerId);
 
     @FormUrlEncoded
     @POST("phpexpert_customer_account_register.php")
@@ -286,7 +294,8 @@ public interface ApiInterface {
     );
 
     @FormUrlEncoded
-    @POST("phpexpert_CustomerReview.php")
+    @POST("phpexpert_CustomerReview_Android.php")
+//    @POST("phpexpert_CustomerReview.php")
     Observable<ReviewMain> getReviewData(@Field("api_key") String api_key,
                                          @Field("lang_code") String lang_code,
                                          @Field("CustomerId") String CustomerId

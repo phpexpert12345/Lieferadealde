@@ -21,11 +21,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.liferdeal.R;
 import com.app.liferdeal.application.App;
+import com.app.liferdeal.interfaces.CancelClicked;
 import com.app.liferdeal.model.LanguageResponse;
 import com.app.liferdeal.model.restaurant.MYOrderTrackDetailModel;
 import com.app.liferdeal.model.restaurant.Orders;
 import com.app.liferdeal.network.retrofit.ApiInterface;
 import com.app.liferdeal.network.retrofit.RFClient;
+import com.app.liferdeal.ui.activity.restaurant.MyOrderActivity;
 import com.app.liferdeal.ui.activity.restaurant.MyOrderDetailsActivity;
 import com.app.liferdeal.ui.activity.restaurant.OrderTrackActivity;
 import com.app.liferdeal.util.Constants;
@@ -50,9 +52,11 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.Holder> 
     private PrefsHelper prefsHelper;
     private LanguageResponse model = new LanguageResponse();
     DotToCommaClass dotToCommaClass;
+    CancelClicked cancelClicked;
 
     public MyOrderAdapter(Context context, List<Orders.OrderViewResult> listSubCategory) {
         this.mContext = context;
+        cancelClicked = new MyOrderActivity();
         this.listCategory = listSubCategory;
         if (App.retrieveLangFromGson(mContext) != null) {
             model = App.retrieveLangFromGson(mContext);
@@ -104,7 +108,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.Holder> 
         holder.txt_btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((Activity) mContext).finish();
+                cancelClicked.cancleButton(listCategory.get(position).getOrderIdentifyno(),mContext);
             }
         });
     }

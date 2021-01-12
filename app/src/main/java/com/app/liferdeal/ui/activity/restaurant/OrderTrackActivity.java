@@ -152,7 +152,7 @@ public class OrderTrackActivity extends AppCompatActivity implements View.OnClic
     private String currency, menuprice, itemname;
     private long quantity;
     DotToCommaClass dotToCommaClass;
-    String restId;
+    String restId = "";
 
     private void getOrderDetails() {
 
@@ -170,26 +170,20 @@ public class OrderTrackActivity extends AppCompatActivity implements View.OnClic
 
                     @Override
                     public void onNext(MYOrderTrackDetailModel searchResult) {
-                        // showProgress();
-                       /* setAdapterCategory(searchResult.getOrders().getOrderViewResult());
-                        banner_progress.setVisibility(View.GONE);*/
-
                         if (searchResult.getOrderTrackHistory().get(0).getOrderStatus().equalsIgnoreCase("Delivered")) {
                             rvWriteAReview.setVisibility(View.VISIBLE);
                         } else {
                             rvWriteAReview.setVisibility(View.GONE);
                         }
-
-
-                        restId = searchResult.getOrderDetailItem().get(0).getResid().toString();
-                        String orderno = searchResult.getOrderDetailItem().get(0).getOrderIdentifyno().toString();
-                        String orderstatusmsg = searchResult.getOrderDetailItem().get(0).getOrderStatusMsg().toString();
-                        String subtotal = searchResult.getOrderDetailItem().get(0).getSubTotal().toString();
-                        String orderpricetotal = searchResult.getOrderDetailItem().get(0).getOrderPrice().toString();
-                        String restname = searchResult.getOrderDetailItem().get(0).getRestaurantName().toString();
-                        String resuestatdate = searchResult.getOrderDetailItem().get(0).getRequestAtDate().toString();
-                        String resuestattime = searchResult.getOrderDetailItem().get(0).getRequestAtTime().toString();
-                        String customercity = searchResult.getOrderDetailItem().get(0).getCustomerCity().toString();
+                        restId = String.valueOf(searchResult.getOrderDetailItem().get(0).getResid());
+                        String orderno = searchResult.getOrderDetailItem().get(0).getOrderIdentifyno();
+                        String orderstatusmsg = searchResult.getOrderDetailItem().get(0).getOrderStatusMsg();
+                        String subtotal = searchResult.getOrderDetailItem().get(0).getSubTotal();
+                        String orderpricetotal = searchResult.getOrderDetailItem().get(0).getOrderPrice();
+                        String restname = searchResult.getOrderDetailItem().get(0).getRestaurantName();
+                        String resuestatdate = searchResult.getOrderDetailItem().get(0).getRequestAtDate();
+                        String resuestattime = searchResult.getOrderDetailItem().get(0).getRequestAtTime();
+                        String customercity = searchResult.getOrderDetailItem().get(0).getCustomerCity();
 
                         String firstStatus = "", secondStatus = "", thirdStatus = "";
                         String firstDate = "", secondDate = "", thirdDate = "";
@@ -249,7 +243,7 @@ public class OrderTrackActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void showProgress() {
-        progressDialog.setMessage(model.getPlease_wait_text().trim()+"...");
+        progressDialog.setMessage(model.getPlease_wait_text().trim() + "...");
         progressDialog.setCancelable(false);
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
@@ -311,7 +305,6 @@ public class OrderTrackActivity extends AppCompatActivity implements View.OnClic
 
     @OnClick(R.id.rvWriteAReview)
     public void rvWriteAReviewClicked(View view) {
-
         Intent intent = new Intent(getApplicationContext(), WriteAReviewActivity.class);
         intent.putExtra("clickRestId", restId);
         Log.e("RRRRID=", restId);
