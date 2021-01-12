@@ -89,6 +89,7 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
     public static SplashActivity mInstance;
     private ProgressDialog progressDialog;
     private ProgressBar banner_progress;
+    private LanguageResponse model = new LanguageResponse();
 
     @BindView(R.id.tl_tut)
     TabLayout tlTut;
@@ -97,6 +98,9 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_activity_layout);
+        if (App.retrieveLangFromGson(SplashActivity.this) != null) {
+            model = App.retrieveLangFromGson(SplashActivity.this);
+        }
         ButterKnife.bind(this);
         init();
     }
@@ -115,6 +119,7 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
                     @Override
                     public void onNext(LanguageResponse response) {
                         App.addLangToGson(context, response);
+                        model = App.retrieveLangFromGson(SplashActivity.this);
 //                        btn_get_started.setText(response.);
                     }
 
@@ -384,8 +389,6 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
-
     }
 
     private void getDeviceInfo() {
@@ -401,10 +404,8 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void getSplashData() {
-
         apiInterface = RFClient.getClient().create(ApiInterface.class);
         Observable<PhpInitialInfoModel> observable = apiInterface.getSplashData();
-
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<PhpInitialInfoModel>() {
@@ -481,9 +482,7 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        CirclePageIndicator indicator = (CirclePageIndicator)
-                                findViewById(R.id.indicator);
-
+                        CirclePageIndicator indicator = (CirclePageIndicator) findViewById(R.id.indicator);
                         indicator.setViewPager(mImageViewPager);
                         tlTut.setupWithViewPager(mImageViewPager, true);
                         final float density = getResources().getDisplayMetrics().density;
@@ -535,17 +534,16 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
                 });
     }
 
-    public void showProgress() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Please wait...");
-        progressDialog.setCancelable(false);
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.show();
-    }
-
-    public void hideProgress() {
-        if (progressDialog.isShowing())
-            progressDialog.dismiss();
-    }
-
+//    public void showProgress() {
+//        progressDialog = new ProgressDialog(this);
+//        progressDialog.setMessage(model.getPlease_wait_text().trim() + "...");
+//        progressDialog.setCancelable(false);
+//        progressDialog.setCanceledOnTouchOutside(false);
+//        progressDialog.show();
+//    }
+//
+//    public void hideProgress() {
+//        if (progressDialog.isShowing())
+//            progressDialog.dismiss();
+//    }
 }

@@ -657,7 +657,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ProgressDialog progressDialog;
 
     public void showProgress() {
-        progressDialog.setMessage("Please wait...");
+        progressDialog.setMessage(model.getPlease_wait_text()+"...");
         progressDialog.setCancelable(false);
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();

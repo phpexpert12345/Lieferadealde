@@ -207,7 +207,7 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
     public void showProgress() {
         try {
             progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage("Please wait...");
+            progressDialog.setMessage(model.getPlease_wait_text().trim()+"...");
             progressDialog.setCancelable(false);
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();

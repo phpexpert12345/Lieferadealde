@@ -151,7 +151,7 @@ public class DiscountOrderActivity extends AppCompatActivity implements View.OnC
     }
 
     public void showProgress() {
-        progressDialog.setMessage("Please wait...");
+        progressDialog.setMessage(model.getPlease_wait_text().trim()+"...");
         progressDialog.setCancelable(false);
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();

@@ -29,10 +29,11 @@
         </TextView>
         <TextView
             android:id="@+id/tvRatingText"
-            android:textSize="@dimen/_9sdp"
+            android:textSize="@dimen/_10sdp"
             android:layout_below="@+id/tvOrderId"
-            android:textColor="@color/gray"
-            android:fontFamily="@font/montserrat_semi_bold"
+            android:layout_marginTop="@dimen/dp_5"
+            android:textColor="@color/dark_gray"
+            android:fontFamily="@font/roboto_regular"
             android:text="@string/orderId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">

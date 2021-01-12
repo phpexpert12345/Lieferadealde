@@ -492,7 +492,7 @@ public class InfoRestMenuActivity extends AppCompatActivity implements View.OnCl
 
     public void showProgress() {
         try {
-            progressDialog.setMessage("Please wait...");
+            progressDialog.setMessage(model1.getPlease_wait_text().trim()+"...");
             progressDialog.setCancelable(false);
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();

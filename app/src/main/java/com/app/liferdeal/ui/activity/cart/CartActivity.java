@@ -996,7 +996,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
     public void showProgress() {
         try {
-            progressDialog.setMessage("Please wait...");
+            progressDialog.setMessage(model.getPlease_wait_text().trim()+"...");
             progressDialog.setCancelable(false);
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();

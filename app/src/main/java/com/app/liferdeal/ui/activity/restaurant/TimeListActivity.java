@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.liferdeal.R;
+import com.app.liferdeal.application.App;
+import com.app.liferdeal.model.LanguageResponse;
 import com.app.liferdeal.model.restaurant.RestaurantDetailsModel;
 import com.app.liferdeal.model.restaurant.TimeListModel;
 import com.app.liferdeal.network.retrofit.ApiInterface;
@@ -26,6 +28,7 @@ import com.app.liferdeal.ui.adapters.TimeSlotAdapter;
 import com.app.liferdeal.util.Constants;
 import com.app.liferdeal.util.PrefsHelper;
 
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -47,11 +50,15 @@ public class TimeListActivity extends AppCompatActivity implements View.OnClickL
     private RecyclerView recv_time_slot;
     private String restId = "", orderType;
     private ProgressBar banner_progress;
+    private LanguageResponse model = new LanguageResponse();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.get_time_slot_activity);
+        if (App.retrieveLangFromGson(TimeListActivity.this) != null) {
+            model = App.retrieveLangFromGson(TimeListActivity.this);
+        }
         init();
     }
 
@@ -129,7 +136,7 @@ public class TimeListActivity extends AppCompatActivity implements View.OnClickL
 
     public void showProgress() {
         try {
-            progressDialog.setMessage("Please wait...");
+            progressDialog.setMessage(model.getPlease_wait_text().trim() + "...");
             progressDialog.setCancelable(false);
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
@@ -145,7 +152,6 @@ public class TimeListActivity extends AppCompatActivity implements View.OnClickL
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
     }
 
     private void setAdapterCategoryForQuick(List<TimeListModel.TimeList> list) {

@@ -404,7 +404,7 @@ public class EditUpdateProfileActivity extends AppCompatActivity implements View
     private void updateProfile() {
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
-        pDialog.setMessage("Please Wait...");
+        pDialog.setMessage(model.getPlease_wait_text().trim()+"...");
         pDialog.setCancelable(true);
         pDialog.show();
 
@@ -540,7 +540,7 @@ public class EditUpdateProfileActivity extends AppCompatActivity implements View
 
     public void showProgress() {
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Please wait...");
+        progressDialog.setMessage(model.getPlease_wait_text().trim()+"...");
         progressDialog.setCancelable(false);
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();

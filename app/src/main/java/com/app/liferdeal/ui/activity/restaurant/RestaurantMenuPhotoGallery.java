@@ -22,6 +22,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.app.liferdeal.R;
 import com.app.liferdeal.adapter.TabsAdapter;
+import com.app.liferdeal.application.App;
+import com.app.liferdeal.model.LanguageResponse;
 import com.app.liferdeal.model.restaurant.GalleryPhoto;
 import com.app.liferdeal.model.restaurant.RestaurantGalleryModel;
 import com.app.liferdeal.network.retrofit.ApiInterface;
@@ -63,12 +65,16 @@ public class RestaurantMenuPhotoGallery extends AppCompatActivity implements Vie
     private List<GalleryPhoto> listPhoto;
     private ViewPager viewPager;
     private Context mContext;
+    private LanguageResponse model = new LanguageResponse();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.restaurant_photo_gallery);
         ButterKnife.bind(this);
+        if (App.retrieveLangFromGson(RestaurantMenuPhotoGallery.this) != null) {
+            model = App.retrieveLangFromGson(RestaurantMenuPhotoGallery.this);
+        }
         mContext = RestaurantMenuPhotoGallery.this;
         init();
     }
@@ -139,7 +145,7 @@ public class RestaurantMenuPhotoGallery extends AppCompatActivity implements Vie
     public void showProgress() {
         try {
             progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage("Please wait...");
+            progressDialog.setMessage(model.getPlease_wait_text().trim() + "...");
             progressDialog.setCancelable(false);
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Observable;
@@ -19,7 +20,9 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.app.liferdeal.R;
+import com.app.liferdeal.application.App;
 import com.app.liferdeal.model.GetRestaurantDiscountResponse;
+import com.app.liferdeal.model.LanguageResponse;
 import com.app.liferdeal.network.retrofit.ApiInterface;
 import com.app.liferdeal.network.retrofit.RFClient;
 import com.app.liferdeal.util.Constants;
@@ -38,11 +41,15 @@ public class MyReviewActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private ApiInterface apiInterface;
     private PrefsHelper prefsHelper;
+    private LanguageResponse model = new LanguageResponse();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_review);
+        if (App.retrieveLangFromGson(MyReviewActivity.this) != null) {
+            model = App.retrieveLangFromGson(MyReviewActivity.this);
+        }
         ButterKnife.bind(this);
         viewFinds();
 
@@ -87,13 +94,13 @@ public class MyReviewActivity extends AppCompatActivity {
                         hideProgress();
                         //Toast.makeText(getApplicationContext(),"Called api",Toast.LENGTH_LONG).show();
 
-                        ArrayList<List<ReviewMainData>> list=new ArrayList();
+                        ArrayList<List<ReviewMainData>> list = new ArrayList();
                         list.clear();
                         list.addAll(searchResult.getCustomerReviewlistingList());
 
 
                         // Toast.makeText(getApplicationContext(), "Success Called=", Toast.LENGTH_LONG).show();
-                        reviewAdapter=new ReviewAdapter(getApplicationContext(),list);
+                        reviewAdapter = new ReviewAdapter(getApplicationContext(), list);
                         rvReviewList.setAdapter(reviewAdapter);
                     }
 
@@ -112,7 +119,7 @@ public class MyReviewActivity extends AppCompatActivity {
 
     public void showProgress() {
         try {
-            progressDialog.setMessage("Please wait...");
+            progressDialog.setMessage(model.getPlease_wait_text().trim() + "...");
             progressDialog.setCancelable(false);
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();

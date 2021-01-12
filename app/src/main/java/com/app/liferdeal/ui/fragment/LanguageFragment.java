@@ -17,7 +17,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.liferdeal.R;
+import com.app.liferdeal.application.App;
 import com.app.liferdeal.model.LanguageModel;
+import com.app.liferdeal.model.LanguageResponse;
 import com.app.liferdeal.network.retrofit.ApiInterface;
 import com.app.liferdeal.network.retrofit.RFClient;
 import com.app.liferdeal.ui.adapters.LanguageAdapter;
@@ -41,6 +43,7 @@ public class LanguageFragment extends Fragment implements View.OnClickListener {
     private PrefsHelper prefsHelper;
     private ApiInterface apiInterface;
     private ProgressDialog progressDialog;
+    private LanguageResponse model = new LanguageResponse();
 
     public LanguageFragment() {
     }
@@ -70,6 +73,9 @@ public class LanguageFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.language_fragment, container, false);
+        if (App.retrieveLangFromGson(getActivity()) != null) {
+            model = App.retrieveLangFromGson(getActivity());
+        }
         intializingView(view);
         return view;
     }
@@ -135,7 +141,7 @@ public class LanguageFragment extends Fragment implements View.OnClickListener {
 
     public void showProgress() {
         progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setMessage("Please wait...");
+        progressDialog.setMessage(model.getPlease_wait_text().trim() + "...");
         progressDialog.setCancelable(false);
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();

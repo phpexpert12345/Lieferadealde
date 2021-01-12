@@ -597,7 +597,7 @@ public class LocationMapFragment extends AppCompatActivity implements OnMapReady
 
     public void showProgress() {
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Please wait...");
+        progressDialog.setMessage(model.getPlease_wait_text().trim()+"...");
         progressDialog.setCancelable(false);
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
