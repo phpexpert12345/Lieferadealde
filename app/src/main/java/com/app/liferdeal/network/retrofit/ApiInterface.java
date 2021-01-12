@@ -12,6 +12,7 @@ import com.app.liferdeal.model.ProfileResponse;
 import com.app.liferdeal.model.RmGetLoyaltyPointResponse;
 import com.app.liferdeal.model.RmVerifyCouponCodeResponse;
 import com.app.liferdeal.model.RmVerifyLoyaltyPointResponse;
+import com.app.liferdeal.model.WriteReviewModel;
 import com.app.liferdeal.model.loginsignup.SignInModel;
 import com.app.liferdeal.model.loginsignup.SignupModel;
 import com.app.liferdeal.model.menuitems.AllCategoryResponse;
@@ -408,16 +409,16 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("phpexpert_write_review.php")
-    Observable<Void> submitReviewData(@Field("api_key") String api_key,
-                                      @Field("lang_code") String lang_code,
-                                      @Field("CustomerId") String customerId,
-                                      @Field("RestaurantReviewRating") String RestaurantReviewRating,
-                                      @Field("Service_ratingN") String Service_ratingN,
-                                      @Field("Time_ratingN") String Time_ratingN,
-                                      @Field("RestaurantReviewContent") String RestaurantReviewContent,
-                                      @Field("order_identifyno") String order_identifyno,
-                                      @Field("resid") String resid,
-                                      @Field("Quality_ratingN") String Quality_ratingN);
+    Observable<WriteReviewModel> submitReviewData(@Field("api_key") String api_key,
+                                                  @Field("lang_code") String lang_code,
+                                                  @Field("CustomerId") String customerId,
+                                                  @Field("RestaurantReviewRating") String RestaurantReviewRating,
+                                                  @Field("Service_ratingN") String Service_ratingN,
+                                                  @Field("Time_ratingN") String Time_ratingN,
+                                                  @Field("RestaurantReviewContent") String RestaurantReviewContent,
+                                                  @Field("order_identifyno") String order_identifyno,
+                                                  @Field("resid") String resid,
+                                                  @Field("Quality_ratingN") String Quality_ratingN);
 
     @FormUrlEncoded
     @POST("phpexpert_payment_android_submit_guest.php")

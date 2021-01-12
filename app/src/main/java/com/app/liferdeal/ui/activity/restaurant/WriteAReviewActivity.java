@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.app.liferdeal.R;
 import com.app.liferdeal.application.App;
 import com.app.liferdeal.model.LanguageResponse;
+import com.app.liferdeal.model.WriteReviewModel;
 import com.app.liferdeal.network.retrofit.ApiInterface;
 import com.app.liferdeal.network.retrofit.RFClient;
 import com.app.liferdeal.util.CommonMethods;
@@ -34,7 +35,7 @@ public class WriteAReviewActivity extends AppCompatActivity implements View.OnCl
     private PrefsHelper prefsHelper;
     private ApiInterface apiInterface;
     private ProgressDialog progressDialog;
-    private String restid = "", customerId = "";
+    private String restid = "", customerId = "", orderId = "";
     private RatingBar ratingBar;
     private EditText edt_txt_write_review;
     private LanguageResponse model = new LanguageResponse();
@@ -67,7 +68,8 @@ public class WriteAReviewActivity extends AppCompatActivity implements View.OnCl
 
         customerId = prefsHelper.getPref(Constants.CUSTOMER_ID);
         restid = getIntent().getStringExtra("clickRestId");
-        Log.e("REST=",restid.toString());
+        orderId = getIntent().getStringExtra("ORDERNO");
+        Log.e("REST=", restid.toString());
         iv_back.setOnClickListener(this);
         btn_submit.setOnClickListener(this);
     }
@@ -89,21 +91,22 @@ public class WriteAReviewActivity extends AppCompatActivity implements View.OnCl
     private void callApi() {
         showProgress();
         apiInterface = RFClient.getClient().create(ApiInterface.class);
-        Observable<Void> observable = apiInterface.submitReviewData(Constants.API_KEY, prefsHelper.getPref(Constants.LNG_CODE), customerId, String.valueOf(ratingBar.getRating()),
-                "", "", CommonMethods.getStringDataInbase64(edt_txt_write_review.getText().toString().trim()), "", restid, "");
+        Observable<WriteReviewModel> observable = apiInterface.submitReviewData(Constants.API_KEY, prefsHelper.getPref(Constants.LNG_CODE), customerId, String.valueOf(ratingBar.getRating()),
+                String.valueOf(ratingBar.getRating()), String.valueOf(ratingBar.getRating()), CommonMethods.getStringDataInbase64(edt_txt_write_review.getText().toString().trim()), orderId, restid, String.valueOf(ratingBar.getRating()));
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Void>() {
+                .subscribe(new Observer<WriteReviewModel>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(Void searchResult) {
+                    public void onNext(WriteReviewModel searchResult) {
                         // showProgress();
                         hideProgress();
-                        Toast.makeText(getApplicationContext(), "Review submitted successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), searchResult.getSuccessMsg(), Toast.LENGTH_SHORT).show();
+                        finish();
                     }
 
                     @Override
@@ -122,7 +125,7 @@ public class WriteAReviewActivity extends AppCompatActivity implements View.OnCl
     public void showProgress() {
         try {
             progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage(model.getPlease_wait_text().trim()+"...");
+            progressDialog.setMessage(model.getPlease_wait_text().trim() + "...");
             progressDialog.setCancelable(false);
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
