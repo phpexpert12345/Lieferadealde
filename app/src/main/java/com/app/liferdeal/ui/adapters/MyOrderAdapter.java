@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -80,6 +81,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.Holder> 
         holder.tv_address.setText(listCategory.get(position).getRestaurantAddress());
         holder.txt_viewoderid.setText(listCategory.get(position).getOrderIdentifyno());
         holder.txt_order_status.setText(listCategory.get(position).getOrderStatusMsg());
+//        holder.txt_order_status.setTextColor(Color.parseColor(listCategory.get(position).getOrderStatusColorCode()));
         holder.txt_view_orderprice.setText(currencySymbol + dotToCommaClass.changeDot(listCategory.get(position).getOrdPrice()));
 
         holder.txt_date_time.setText(listCategory.get(position).getOrderDate() + " " + listCategory.get(position).getOrderTime());
