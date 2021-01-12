@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -63,8 +64,11 @@ import com.stripe.android.view.PaymentMethodsActivityStarter;
 
 import org.json.JSONException;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Currency;
 import java.util.List;
 
@@ -155,15 +159,61 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
     private String strPostalCode = "", strCityname = "", strFullAddress = "", restId = "", TotalPrice = "", currencySymbol = "", pizzaQuantity = "", Pizzaname = "", selectedPizzaItemPrice = "";
     private String strMainRestName = "", strMainRestLogo = "", pizzaItemid = "", subTotalPrice = "", emailId, strAppCurrency = "";
     private String payment_transaction_paypal = "", quantity = "", deliveryChargeValue = "", SeviceFeesValue = "", ServiceFees = "", ServiceFeesType = "", PackageFeesType = "", PackageFees = "", PackageFeesValue = "", SalesTaxAmount = "", VatTax = "";
-    private String strsizeid, extraItemID, CustomerId, CustomerAddressId, payment_type, order_price, subTotalAmount, delivery_date, delivery_time = "", instructions = "", deliveryCharge,
-            CouponCode = "", CouponCodePrice = "", couponCodeType = "", order_type = "", SpecialInstruction = "", extraTipAddAmount = "", RestaurantNameEstimate = "",
-            discountOfferDescription = "", discountOfferPrice = "", RestaurantoffrType = "", PaymentProcessingFees = "", deliveryChargeValueType = "",
-            WebsiteCodePrice = "", WebsiteCodeType = "", WebsiteCodeNo = "", preorderTime = "", addressId = "", GiftCardPay = "", WalletPay = "",
-            loyptamount = "", table_number_assign = "", customer_country = "", group_member_id = "", loyltPnts = "", branch_id = "", FoodCosts = "",
-            getTotalItemDiscount = "", getFoodTaxTotal7 = "", getFoodTaxTotal19 = "", TotalSavedDiscount = "", discountOfferFreeItems = "", number_of_people = "",
-            customer_allow_register = "", address = "", mealID = "", mealquqntity = "", mealPrice = "", mealItemExtra = "", mealItemOption = "",item_Id;
+    private String strsizeid;
+    private String extraItemID;
+    private String CustomerId;
+    private String CustomerAddressId;
+    private String payment_type;
+    private String order_price;
+    private String subTotalAmount;
+    private String delivery_date;
+    private String delivery_time = "";
+    private String instructions = "";
+    private String deliveryCharge;
+    private String CouponCode = "";
+    private String CouponCodePrice = "";
+    private String couponCodeType = "";
+    private String order_type = "";
+    private String SpecialInstruction = "";
+    private String extraTipAddAmount = "";
+    private String RestaurantNameEstimate = "";
+    private String discountOfferDescription = "";
+    private String discountOfferPrice = "";
+    private String RestaurantoffrType = "";
+    private String PaymentProcessingFees = "";
+    private String deliveryChargeValueType = "";
+    private String WebsiteCodePrice = "";
+    private String WebsiteCodeType = "";
+    private String WebsiteCodeNo = "";
+    private String preorderTime = "";
+    private String addressId = "";
+    private String GiftCardPay = "";
+    private String WalletPay = "";
+    private String loyptamount = "";
+    private String table_number_assign = "";
+    private String customer_country = "";
+    private String group_member_id = "";
+    private String loyltPnts = "";
+    private String branch_id = "";
+    private String FoodCosts = "";
+    private String getTotalItemDiscount = "";
+    private String getFoodTaxTotal7 = "";
+    private String getFoodTaxTotal19 = "";
+    private String TotalSavedDiscount = "";
+    private String discountOfferFreeItems = "";
+    private String number_of_people = "";
+    private String customer_allow_register = "";
+    private String address = "";
+    private String mealID = "";
+    private String mealquqntity = "";
+    private String mealPrice = "";
+    private String mealItemExtra = "";
+    private String mealItemOption = "";
+    private String item_Id;
     DotToCommaClass dotToCommaClass;
     String Price;
+    String extraItemId1;
+    String extraItemId2;
 
 
     @Override
@@ -235,7 +285,7 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
             addressId = getIntent().getStringExtra("addressId");
             instructions = getIntent().getStringExtra("instructions");
             customer_allow_register = "yes";
-            payment_type = "cash";
+            payment_type = "Cash";
         }
 
         sharedPreferencesData = new SharedPreferencesData(getApplicationContext());
@@ -329,8 +379,9 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
         Pizzaname = getIntent().getStringExtra("Pizzaname");
         selectedPizzaItemPrice = getIntent().getStringExtra("selectedPizzaItemPrice");
         instructions = getIntent().getStringExtra("instructions");
+        Log.i("reason",instructions);
         customer_allow_register = "yes";
-        payment_type = "cash";
+        payment_type = "Cash";
 
         //btn_order_placed.setText("Order on pay : " + currencySymbol + " " + "" + String.format("%.2f", Double.parseDouble(TotalPrice)));
 
@@ -443,7 +494,7 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.radioButtonCashOnDelivery:
                 //for cash on delivery payment
-                payment_type = "cash";
+                payment_type = "Cash";
                 radioButtonCreditDebitCard.setChecked(false);
                 radioButtonPaypal.setChecked(false);
                 radioButtonCashOnDelivery.setChecked(true);
@@ -467,7 +518,7 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
                 } else if (payment_type.equalsIgnoreCase("paypal")) {
                     getPayment();
                 } else if (payment_type.equalsIgnoreCase("cash")) {
-                    instructions = CommonMethods.getStringDataInbase64(editTextInstruction.getText().toString().trim());
+                    SpecialInstruction = CommonMethods.getStringDataInbase64(editTextInstruction.getText().toString().trim());
                     getPaymentRequestData();
                     break;
                 }
@@ -495,7 +546,7 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
 //        (getFoodTaxTotal7) & getFoodTaxTotal19 =\(getFoodTaxTotal19) & TotalSavedDiscount =\
 //        (totalSavedDiscount) & discountOfferFreeItems =\
 //        (discountOfferFreeItems) & number_of_people =\(personCount) & resid =\
-//        (self.restaurantInfo.restaurantId) & mealID =\(mealItemID) & mealquqntity =\
+//        (self.restaurantInfo.restaurantId) & mealID =\(mealItemID) & mealquqnti0ty =\
 //        (mealItemQuantity) & mealPrice =\(mealItemPrice) & mealItemExtra =\
 //        (mealItemExtra) & mealItemOption =\(mealItemOption) & discountOfferFreeItems =\
 //        (self.txtFieldFreeFood.text !)"
@@ -504,6 +555,11 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
         //Toast.makeText(getApplicationContext(),"Toast calledin cash on delivery",Toast.LENGTH_LONG).show();
         //delivery_time = "10:15:20AM";
         apiInterface = RFClient.getClient().create(ApiInterface.class);
+        if(delivery_time.equalsIgnoreCase("")){
+            delivery_time=getCurrentTime();
+        }
+        String url="https://www.lieferadeal.de/WebAppAPI/phpexpert_payment_android_submit.php?api_key="+prefsHelper.getPref(Constants.API_KEY)+"&lang_code="+ prefsHelper.getPref(Constants.LNG_CODE)+"&payment_transaction_paypal=&itemId="+item_Id+"&Quantity="+quantity+"&Price="+Price+"&strsizeid="+strsizeid+"&extraItemID="+extraItemID+"&CustomerId="+CustomerId+"&CustomerAddressId="+addressId+"&payment_type=Cash&order_price="+order_price+"&subTotalAmount="+subTotalAmount+"&delivery_date="+delivery_date+"&delivery_time="+delivery_time+"&instructions="+instructions+"&deliveryCharge="+deliveryChargeValue+"&CouponCode="+CouponCode+"&CouponCodePrice="+CouponCodePrice+"&couponCodeType="+couponCodeType+"&SalesTaxAmount="+SalesTaxAmount+"&order_type="+order_type+"&SpecialInstruction="+SpecialInstruction+"&extraTipAddAmount="+extraTipAddAmount+"&RestaurantNameEstimate="+RestaurantNameEstimate+"&discountOfferDescription="+discountOfferDescription+"&discountOfferPrice="+discountOfferPrice+"&RestaurantoffrType="+RestaurantoffrType+"&ServiceFees="+ServiceFees+"&PaymentProcessingFees="+PaymentProcessingFees+"&deliveryChargeValueType="+deliveryChargeValueType+"&ServiceFeesType="+ServiceFeesType+"&PackageFeesType="+PackageFeesType+"&PackageFees="+PackageFees+"&WebsiteCodePrice="+WebsiteCodePrice+"&WebsiteCodeType="+WebsiteCodeType+"&WebsiteCodeNo="+WebsiteCodeNo+"&preorderTime="+preorderTime+"&VatTax="+VatTax+"&GiftCardPay="+GiftCardPay+"&WalletPay="+WalletPay+"&loyptamount="+loyptamount+"&table_number_assign="+table_number_assign+"&customer_country="+customer_country+"&group_member_id="+group_member_id+"&loyltPnts="+loyltPnts+"&branch_id="+branch_id+"&FoodCosts="+FoodCosts+"&getTotalItemDiscount="+getTotalItemDiscount+"&getFoodTaxTotal7="+getFoodTaxTotal7+"&getFoodTaxTotal19="+getFoodTaxTotal19+"&TotalSavedDiscount="+TotalSavedDiscount+"&discountOfferFreeItems="+discountOfferFreeItems+"&number_of_people="+number_of_people+"&resid="+restId+"&mealID="+mealID+"&mealquqntity="+mealquqntity+"&mealPrice="+mealPrice+"&mealItemExtra="+mealItemExtra+"&mealItemOption="+mealItemOption+"&discountOfferFreeItems="+discountOfferFreeItems+"&extraItemID1="+extraItemId1+"&extraItemIDName1="+extraItemId2;
+        Log.i("reason",url);
         Observable<LoginMainData> observable = apiInterface.getPaymentLoginData(prefsHelper.getPref(Constants.API_KEY),
                 prefsHelper.getPref(Constants.LNG_CODE), "", pizzaItemid, quantity, Price, strsizeid, extraItemID,
                 CustomerId, addressId, payment_type, order_price, subTotalAmount, delivery_date, delivery_time, instructions, deliveryChargeValue,
@@ -513,7 +569,7 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
                 VatTax, GiftCardPay, WalletPay, loyptamount, table_number_assign, customer_country, group_member_id, loyltPnts, branch_id, FoodCosts,
                 getTotalItemDiscount, getFoodTaxTotal7, getFoodTaxTotal19, TotalSavedDiscount, discountOfferFreeItems, number_of_people,
 //                customer_allow_register, address, street, floor_no, zipcode, phone, email, name_customer, city,
-                restId, mealID, mealquqntity, mealPrice, mealItemExtra, mealItemOption);
+                restId, mealID, mealquqntity, mealPrice, mealItemExtra, mealItemOption,extraItemId1,extraItemId2);
 
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -606,7 +662,8 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
         StringBuilder price_total=new StringBuilder();
         StringBuilder strsize_all=new StringBuilder();
         StringBuilder extra_all=new StringBuilder();
-
+        StringBuilder extraItemid3=new StringBuilder();
+        StringBuilder extra_name=new StringBuilder();
         Cursor cursor = db.rawQuery("SELECT * FROM item_table", null);
         if (cursor.moveToFirst()) {
             do {
@@ -624,30 +681,57 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
             }
             while (cursor.moveToNext());
             if(raviCartModles.size()>0){
+                double toatl_price=0.0;
                 for(int i=0;i<raviCartModles.size();i++){
+
+                    toatl_price+=Double.parseDouble(raviCartModles.get(i).getPrice());
                     itemId.append(raviCartModles.get(i).getItem_id());
                     itemId.append(",");
                     quant.append(raviCartModles.get(i).getItem_quantity());
                     quant.append(",");
                     price_total.append(raviCartModles.get(i).getPrice());
                     price_total.append(",");
-                    strsize_all.append(raviCartModles.get(i).getSize_item_id());
-                    strsize_all.append("_");
+                    strsize_all.append(raviCartModles.get(i).getItem_id()+"_"+raviCartModles.get(i).getSize_item_id());
+                    strsize_all.append(",");
                     if(raviCartModles.get(i).getExtra_item_id().startsWith("[")){
                         String extra_id=raviCartModles.get(i).getExtra_item_id().substring(1,raviCartModles.get(i).getExtra_item_id().lastIndexOf("]"));
+                        extra_id=extra_id.replaceAll(", ",",");
+                        extraItemid3.append(extra_id.trim());
+                        extraItemid3.append("_");
                         String[] array=extra_id.split(",");
-
-                        StringBuilder extra_check=new StringBuilder();
                         for(int j=0;j<array.length;j++){
-                            extra_check.append(array[j]);
-                            extra_check.append("_");
-                        }
-                        if(extra_check.length()>0){
-                            extra_all.append(extra_check.deleteCharAt(extra_check.lastIndexOf("_"))).toString();
+                            extra_all.append(raviCartModles.get(i).getItem_id()+"_"+raviCartModles.get(i).getSize_item_id()+"_"+array[j].trim());
                             extra_all.append(",");
+                        }
+                        if(extra_all.length()>0){
+                            extra_all=extra_all.deleteCharAt(extra_all.lastIndexOf(","));
+                        }
+
+                    }
+                    else{
+                        extraItemid3.append("0");
+                        extraItemid3.append("_");
+
+                    }
+                    if (raviCartModles.get(i).getExtra_item_name().startsWith("[")){
+                        String extra_name_txt=raviCartModles.get(i).getExtra_item_name().substring(1,raviCartModles.get(i).getExtra_item_name().lastIndexOf("]"));
+                        extra_name_txt=extra_name_txt.replaceAll(", ",",");
+                        extra_all.append(",");
+                        String[] array=extra_name_txt.split(",");
+                        if(array.length>0){
+                            for(int b=0;b<array.length;b++){
+                                extra_name.append("+"+array[b]);
+                            }
 
                         }
+                        extra_name.append("_");
+
                     }
+                    else{
+                        extra_name.append("0");
+                        extra_name.append("_");
+                    }
+                    Log.i("reason",raviCartModles.get(i).getExtra_item_name());
 
                 }
                 if(itemId.length()>0){
@@ -660,14 +744,38 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
                     Price=price_total.deleteCharAt(price_total.lastIndexOf(",")).toString();
                 }
                 if(strsize_all.length()>0){
-                    strsizeid=strsize_all.deleteCharAt(strsize_all.lastIndexOf("_")).toString();
+                    strsizeid=strsize_all.deleteCharAt(strsize_all.lastIndexOf(",")).toString();
                 }
                 if(extra_all.length()>0){
                     extraItemID=extra_all.deleteCharAt(extra_all.lastIndexOf(",")).toString();
                 }
+                if(toatl_price>0.0){
+                    subTotalAmount= String.valueOf(toatl_price);
+                    FoodCosts=subTotalAmount;
+                }
+                if(extraItemid3.length()>0){
+                    extraItemId1=extraItemid3.deleteCharAt(extraItemid3.lastIndexOf("_")).toString();
+                }
+                if(extra_name.length()>0){
+                    extraItemId2=extra_name.deleteCharAt(extra_name.lastIndexOf("_")).toString();
+                }
+                extraItemId2=convertToBase64(extraItemId2);
             }
+
+
         }
-        Log.i("reason",item_Id+" "+quantity+" "+Price+" "+strsizeid+" "+extraItemID);
+        Log.i("reason",item_Id+" "+quantity+" "+Price+" "+strsizeid+" "+extraItemID+" "+subTotalAmount+' '+FoodCosts+" "+extraItemId1+" "+extraItemId2);
+    }
+    public String convertToBase64(String source){
+String base64="";
+        try {
+            byte[] byteArray=source.getBytes("UTF-8");
+            base64= Base64.encodeToString(byteArray,Base64.DEFAULT);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return base64;
+
     }
 
     private void dialogOpen() {
@@ -996,6 +1104,13 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
             }
         });
         dialog.show();
+    }
+    public String getCurrentTime(){
+        Calendar calendar=Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("hh:mm");
+        String time=simpleDateFormat.format(calendar.getTime());
+        Log.i("reason",time);
+        return time;
     }
 
 }
