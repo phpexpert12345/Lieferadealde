@@ -165,11 +165,8 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
 
     private void setRestaurantCancel(String orderId, Context context) {
         prefsHelper = new PrefsHelper(context);
-
         apiInterface = RFClient.getClient().create(ApiInterface.class);
-
         Observable<OrderCancelModel> observable = apiInterface.setOrderCancel(prefsHelper.getPref(Constants.API_KEY), prefsHelper.getPref(Constants.LNG_CODE), orderId);
-
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<OrderCancelModel>() {
@@ -182,6 +179,7 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
                     public void onNext(OrderCancelModel searchResult) {
                         Toast.makeText(context, searchResult.getErrorMsg().toString(), Toast.LENGTH_LONG).show();
                         //getRestSearchInfoInside(context);
+                        getRestSearchInfo();
 
                     }
 
@@ -197,52 +195,6 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
 
                     }
                 });
-
-    }
-
-    private void getRestSearchInfoInside(Context context) {
-        prefsHelper = new PrefsHelper(context);
-        apiInterface = RFClient.getClient().create(ApiInterface.class);
-
-        Observable<MyOrderModel> observable = apiInterface.getMyOrderDetails(prefsHelper.getPref(Constants.API_KEY), prefsHelper.getPref(Constants.LNG_CODE), customerId);
-
-        observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<MyOrderModel>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(MyOrderModel searchResult) {
-                        // showProgress();
-                        if (searchResult.getOrders() != null) {
-                            setAdapterCategory1(searchResult.getOrders().getOrderViewResult(), context);
-
-                            //banner_progress.setVisibility(View.GONE);
-                        } else {
-                            //txt_view_for_no_data.setVisibility(View.VISIBLE);
-                            //txt_view_for_no_data.setText(model.getNOORDERYET());
-                            //banner_progress.setVisibility(View.GONE);
-                        }
-
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        // hideProgress();
-                        Log.d("TAG", "log...." + e);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        //   activity.mySharePreferences.setBundle("login");
-
-                    }
-                });
-
     }
 
     @BindView(R.id.rcv_rest_list)
@@ -254,5 +206,12 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
         rcv_rest_list = findViewById(R.id.rcv_rest_list);
         rcv_rest_list.setAdapter(adapterCategory);
         // hideProgress();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (progressDialog != null && progressDialog.isShowing())
+            progressDialog.dismiss();
     }
 }

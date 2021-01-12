@@ -10,18 +10,26 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.liferdeal.R;
+import com.app.liferdeal.adapter.DetailOrderAdapter;
 import com.app.liferdeal.application.App;
 import com.app.liferdeal.model.LanguageResponse;
+import com.app.liferdeal.model.OrderFoodItem;
 import com.app.liferdeal.model.restaurant.MYOrderTrackDetailModel;
+import com.app.liferdeal.model.restaurant.OrderDetailItem;
+import com.app.liferdeal.model.restaurant.Orders;
 import com.app.liferdeal.network.retrofit.ApiInterface;
 import com.app.liferdeal.network.retrofit.RFClient;
+import com.app.liferdeal.ui.adapters.MyOrderAdapter;
 import com.app.liferdeal.util.Constants;
 import com.app.liferdeal.util.DotToCommaClass;
 import com.app.liferdeal.util.PrefsHelper;
 
 import java.util.Currency;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,10 +48,12 @@ public class MyOrderDetailsActivity extends AppCompatActivity implements View.On
     private ApiInterface apiInterface;
     private ProgressDialog progressDialog;
     private ImageView img_back;
-    private String strordernumber = "", from = "";
+    private String strordernumber = "";
     private LanguageResponse model;
-    @BindView(R.id.tvQuantityMenu)
-    TextView tvQuantityMenu;
+//    @BindView(R.id.tvQuantityMenu)
+//    TextView tvQuantityMenu;
+    @BindView(R.id.rvItemList)
+    RecyclerView rvItemList;
     private String currencySymbol;
     DotToCommaClass dotToCommaClass;
 
@@ -73,8 +83,8 @@ public class MyOrderDetailsActivity extends AppCompatActivity implements View.On
             txt_view_orderstatus = findViewById(R.id.txt_view_orderstatus);
             txt_view_sub_total_price = findViewById(R.id.txt_view_sub_total_price);
             txt_view_total_price = findViewById(R.id.txt_view_total_price);
-            txt_view_sunmenu = findViewById(R.id.txt_view_sunmenu);
-            txt_pizza_section_cuisine = findViewById(R.id.txt_pizza_section_cuisine);
+//            txt_view_sunmenu = findViewById(R.id.txt_view_sunmenu);
+//            txt_pizza_section_cuisine = findViewById(R.id.txt_pizza_section_cuisine);
             txt_view_sub_menu = findViewById(R.id.txt_view_sub_menu);
             txt_view_sub_menu_one = findViewById(R.id.txt_view_sub_menu_one);
             txt_sub_sub_menu_cuisine = findViewById(R.id.txt_sub_sub_menu_cuisine);
@@ -103,9 +113,9 @@ public class MyOrderDetailsActivity extends AppCompatActivity implements View.On
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
+                hideProgress();
                 finish();
                 break;
-
             case R.id.txt_btn_track:
                 Intent i = new Intent(MyOrderDetailsActivity.this, OrderTrackActivity.class);
                 i.putExtra("orderid", strordernumber);
@@ -121,11 +131,8 @@ public class MyOrderDetailsActivity extends AppCompatActivity implements View.On
     private long quantity;
 
     private void getOrderDetails() {
-
         apiInterface = RFClient.getClient().create(ApiInterface.class);
-
         Observable<MYOrderTrackDetailModel> observable = apiInterface.getMyOrderDetailsDisplay(prefsHelper.getPref(Constants.API_KEY), prefsHelper.getPref(Constants.LNG_CODE), strordernumber);
-
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<MYOrderTrackDetailModel>() {
@@ -137,11 +144,11 @@ public class MyOrderDetailsActivity extends AppCompatActivity implements View.On
                     @Override
                     public void onNext(MYOrderTrackDetailModel searchResult) {
                         // showProgress();
-                       /* setAdapterCategory(searchResult.getOrders().getOrderViewResult());
-                        banner_progress.setVisibility(View.GONE);*/
+                        setAdapterCategory(searchResult.getOrderDetailItem().get(0).getOrderFoodItem());
+//                        banner_progress.setVisibility(View.GONE);
                         String orderno = searchResult.getOrderDetailItem().get(0).getOrderIdentifyno();
-                        String orderstatusmsg = searchResult.getOrderDetailItem().get(0).getOrderStatusMsg();
-                        String subtotal = searchResult.getOrderDetailItem().get(0).getSubTotal().toString();
+                        String orderstatusmsg = searchResult.getOrderDetailItem().get(0).getStatus();
+                        String subtotal = searchResult.getOrderDetailItem().get(0).getSubTotal();
                         String orderpricetotal = searchResult.getOrderDetailItem().get(0).getOrderPrice();
                         String restname = searchResult.getOrderDetailItem().get(0).getRestaurantName();
 
@@ -151,14 +158,6 @@ public class MyOrderDetailsActivity extends AppCompatActivity implements View.On
                         quantity = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getQuantity();
                         itemSize = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getItemSize();
 
-                        /*for (int i = 0; i<searchResult.getOrderFoodItem().size(); i++)
-                        {
-                             currency = searchResult.getOrderFoodItem().get(i).getCurrency().toString();
-                             menuprice = searchResult.getOrderFoodItem().get(i).getMenuprice().toString();
-                             itemname = searchResult.getOrderFoodItem().get(i).getItemsName().toString();
-                             quantity = searchResult.getOrderFoodItem().get(i).getQuantity();
-                        }
-*/
 //                        if (getIntent() != null) {
 //                            from = getIntent().getStringExtra("from");
 //                            if (from != null && from.equalsIgnoreCase("track")) {
@@ -184,30 +183,34 @@ public class MyOrderDetailsActivity extends AppCompatActivity implements View.On
 
                     }
                 });
+    }
 
+    private void setAdapterCategory(List<OrderFoodItem> list) {
+        rvItemList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        DetailOrderAdapter adapterCategory = new DetailOrderAdapter(this, list);
+        rvItemList.setAdapter(adapterCategory);
+        // hideProgress();
     }
 
     public void showProgress() {
-        progressDialog.setMessage(model.getPlease_wait_text().trim()+"...");
+        progressDialog.setMessage(model.getPlease_wait_text().trim() + "...");
         progressDialog.setCancelable(false);
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
     }
 
     public void hideProgress() {
-        progressDialog.dismiss();
+        if (progressDialog.isShowing())
+            progressDialog.dismiss();
     }
-
 
     private void setTextData(String orderno, String orderstatusmsg, String subtotal, String orderpricetotal, String restname, String currency, String menuprice, String itemname, long quantity, String itemSize) {
         txt_view_ordernumber.setText(model.getOrderID() + " : " + " " + orderno);
         txt_view_orderstatus.setText(orderstatusmsg);
         txt_view_sub_total_price.setText(currencySymbol + dotToCommaClass.changeDot(subtotal));
         txt_view_total_price.setText(currencySymbol + dotToCommaClass.changeDot(orderpricetotal));
-        txt_view_sunmenu.setText(itemname);
-        txt_pizza_section_cuisine.setText(itemSize);
-        tvQuantityMenu.setText(currencySymbol + dotToCommaClass.changeDot(menuprice) + "×" + quantity);
-
-
+//        txt_view_sunmenu.setText(itemname);
+//        txt_pizza_section_cuisine.setText(itemSize);
+//        tvQuantityMenu.setText(currencySymbol + dotToCommaClass.changeDot(menuprice) + "×" + quantity);
     }
 }

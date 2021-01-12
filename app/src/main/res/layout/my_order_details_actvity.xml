@@ -29,11 +29,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
+                android:fontFamily="@font/roboto_medium"
                 android:layout_centerVertical="true"
                 android:text="My Order"
                 android:textColor="@color/colorBlack"
                 android:textStyle="bold"
                 android:textSize="@dimen/sp_15" />
+
             <RelativeLayout
                 android:visibility="invisible"
                 android:id="@+id/cart_count_layout"
@@ -226,11 +228,18 @@
             android:textColor="@color/colorBlack"
             android:layout_height="wrap_content"/>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvItemList"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/dp_25"
+            android:layout_height="wrap_content"/>
+
         <TextView
             android:textColor="@color/quantum_grey700"
             android:id="@+id/txt_pizza_section_cuisine"
             android:layout_below="@+id/txt_view_sunmenu"
             android:layout_width="wrap_content"
+            android:visibility="gone"
             android:text="Pizza Selection"
             android:textSize="@dimen/_10ssp"
             android:layout_height="wrap_content"/>
@@ -241,12 +250,14 @@
             android:layout_below="@+id/txt_pizza_section_cuisine"
             android:layout_width="wrap_content"
             android:text="Pizza Selection"
+            android:visibility="gone"
             android:textSize="@dimen/_12ssp"
             android:textColor="@color/colorRed"
             android:layout_height="wrap_content"/>
         <View
             android:background="@color/gray"
             android:layout_marginTop="@dimen/_5sdp"
+            android:visibility="gone"
             android:layout_below="@+id/tvQuantityMenu"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_1sdp">

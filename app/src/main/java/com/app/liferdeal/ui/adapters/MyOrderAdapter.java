@@ -90,18 +90,16 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.Holder> 
         holder.txt_btn_track.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Intent i = new Intent(mContext, MyOrderDetailsActivity.class);
-                i.putExtra("orderid", listCategory.get(position).getOrderIdentifyno());
-                i.putExtra("from", "track");
-                mContext.startActivity(i);
+                getOrderDetails(listCategory.get(position).getOrderIdentifyno());
             }
         });
 
         holder.rl_restaurant_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getOrderDetails(listCategory.get(position).getOrderIdentifyno());
+                Intent i = new Intent(mContext, MyOrderDetailsActivity.class);
+                i.putExtra("orderid", listCategory.get(position).getOrderIdentifyno());
+                mContext.startActivity(i);
             }
         });
 
