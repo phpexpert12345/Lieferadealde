@@ -219,6 +219,7 @@ public class RestaurantBookTable extends AppCompatActivity implements View.OnCli
                             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                                 tvBookingDate.setText(day + "/" + (month + 1) + "/" + year);
                                 date = year + "-" + (month + 1) + "-" + day;
+                                tvBookingTime.setText("");
                                 showProgress();
                                 callTimeApi();
                             }
@@ -289,10 +290,10 @@ public class RestaurantBookTable extends AppCompatActivity implements View.OnCli
                 } /*else if (edit_no_person.getText().toString().trim().equalsIgnoreCase("")) {
                     edit_no_person.setError(model.getNoOfPerson());
                     edit_no_person.requestFocus();
-                }*/ else if (edit_specia_instruct.getText().toString().trim().equalsIgnoreCase("")) {
+                } else if (edit_specia_instruct.getText().toString().trim().equalsIgnoreCase("")) {
                     edit_specia_instruct.setError(model.getSpecialInstructions());
                     edit_specia_instruct.requestFocus();
-                } else {
+                } */ else {
                     getBookingTableData();
                 }
                 break;
@@ -386,6 +387,7 @@ public class RestaurantBookTable extends AppCompatActivity implements View.OnCli
 
 
     private Dialog dialog;
+    private String time = "";
 
     private void dialogTimeSelection(List<TimeListModel.TimeList> sessionTypeMainData) {
 
@@ -412,6 +414,8 @@ public class RestaurantBookTable extends AppCompatActivity implements View.OnCli
                     tvSessionType.setText(sessionTypeMainData.get(0).getSessionType());
                 }*/
                 // txt_selected_time.setText();
+                tvBookingTime.setText("" + time);
+
                 dialog.cancel();
             }
         });
@@ -443,7 +447,7 @@ public class RestaurantBookTable extends AppCompatActivity implements View.OnCli
         wvSessionType.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(int index) {
-                tvBookingTime.setText(sessionTypeMainData.get(index).getGetTime());
+                time = sessionTypeMainData.get(index).getGetTime();
                 //txt_selected_time.setText(sessionTypeMainData.get(index).getGetTime());
                 //Toast.makeText(getApplicationContext(), "" + sessionTypeMainData.get(index).getSessionType(), Toast.LENGTH_SHORT).show();
               /*  sessionType = sessionTypeMainData.get(index).getId();

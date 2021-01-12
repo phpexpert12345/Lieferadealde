@@ -18,11 +18,10 @@
 
             <ImageView
                 android:id="@+id/iv_back"
-                android:layout_width="@dimen/dp_30"
-                android:layout_height="@dimen/dp_30"
-                android:layout_centerVertical="true"
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_50"
                 android:layout_marginStart="@dimen/dp_10"
-                android:src="@drawable/quantum_ic_arrow_back_grey600_24" />
+                android:src="@drawable/ic_back_arrow" />
 
             <TextView
                 android:id="@+id/tv_faq"
@@ -30,6 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="Book Table"
+                android:fontFamily="@font/roboto_medium"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/sp_15" />
 
@@ -88,29 +88,19 @@
         android:orientation="vertical"
         android:padding="@dimen/_10sdp">
 
-        <LinearLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/user"/>
-
-            <com.google.android.material.textfield.TextInputLayout
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_name"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorWhite"
-                    android:hint="" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-        </LinearLayout>
+                android:layout_height="match_parent"
+                android:background="@color/colorWhite"
+                android:drawableTint="@color/colorBlack"
+                android:drawableLeft="@drawable/user"
+                android:hint="" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -315,9 +305,11 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_submit"
             android:layout_width="@dimen/_120sdp"
+            android:fontFamily="@font/roboto_bold"
             android:layout_height="@dimen/_30sdp"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/_20sdp"
+            android:textAllCaps="false"
             android:background="@color/colorPrimaryone"
             android:paddingLeft="@dimen/_10sdp"
             android:paddingRight="@dimen/_10sdp"
