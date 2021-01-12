@@ -162,14 +162,14 @@ public class AddClickDetails extends AppCompatActivity implements View.OnClickLi
 
                     @Override
                     public void onNext(FoodItemSizeModel searchResult) {
-                        showProgress();
+//                        showProgress();
                         setAdapterCategory(searchResult.getRestaurantMenItemsSize());
                         banner_progress.setVisibility(View.GONE);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        hideProgress();
+//                        hideProgress();
                         Log.d("TAG", "log...." + e);
                     }
 
@@ -183,7 +183,9 @@ public class AddClickDetails extends AppCompatActivity implements View.OnClickLi
 
     public void showProgress() {
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage(model.getPlease_wait_text().trim()+"...");
+        if(model.getPlease_wait_text()!=null) {
+            progressDialog.setMessage(model.getPlease_wait_text().trim() + "...");
+        }
         progressDialog.setCancelable(false);
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
@@ -214,7 +216,7 @@ public class AddClickDetails extends AppCompatActivity implements View.OnClickLi
 
         adapterCategory = new RestaurantFoodItemSizeAdapter(AddClickDetails.this, list, AddClickDetails.this, selectedList);
         food_item_size_list_rcv.setAdapter(adapterCategory);
-        hideProgress();
+//        hideProgress();
         if (list.size() > 0)
             globExtraAvail = list.get(0).getExtraavailable();
 

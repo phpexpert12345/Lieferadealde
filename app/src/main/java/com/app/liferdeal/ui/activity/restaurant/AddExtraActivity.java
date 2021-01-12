@@ -183,7 +183,7 @@ public class AddExtraActivity extends AppCompatActivity implements View.OnClickL
 
                     @Override
                     public void onNext(FoodExtraModel searchResult) {
-                        showProgress();
+//                        showProgress();
                         setAdapterCategory(searchResult.getMenuItemExtraGroup());
                         try {
                             if (searchResult.getMenuItemExtraGroup().get(0).getSubExtraItemsRecord().get(0).getFreeToppingSelectionAllowed() != null &&
@@ -202,7 +202,7 @@ public class AddExtraActivity extends AppCompatActivity implements View.OnClickL
 
                     @Override
                     public void onError(Throwable e) {
-                        hideProgress();
+//                        hideProgress();
                         Log.d("TAG", "log...." + e);
                     }
 
@@ -216,7 +216,9 @@ public class AddExtraActivity extends AppCompatActivity implements View.OnClickL
 
     public void showProgress() {
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage(model.getPlease_wait_text().trim()+"...");
+        if(model.getPlease_wait_text()!=null) {
+            progressDialog.setMessage(model.getPlease_wait_text().trim() + "...");
+        }
         progressDialog.setCancelable(false);
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
@@ -235,7 +237,7 @@ public class AddExtraActivity extends AppCompatActivity implements View.OnClickL
                 Toast.makeText(getApplicationContext(), model.getDATAISNOTAVAILABLE(), Toast.LENGTH_LONG).show();
             }
 
-            hideProgress();
+//            hideProgress();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -370,7 +372,6 @@ public class AddExtraActivity extends AppCompatActivity implements View.OnClickL
         extra_item_list_name = extraName;
         extra_item_list_price = extraPrice;
         System.out.println("=== extra add inactivity: " + extra_item_list_id + extra_item_list_name + extra_item_list_price);
-
         System.out.println("===== extraItemidWithSizeId tempExtraItemidWithSizeIdd: " + tempExtraItemidWithSizeIdd);
         double total = Double.parseDouble(getIntent().getStringExtra("SUBCATCLICKITEMPRICE"));
 

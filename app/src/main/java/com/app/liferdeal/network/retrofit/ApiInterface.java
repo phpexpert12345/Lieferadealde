@@ -563,6 +563,8 @@ public interface ApiInterface {
                                                   @Field("mealquqntity") String mealquqntity,
                                                   @Field("mealPrice") String mealPrice,
                                                   @Field("mealItemExtra") String mealItemExtra,
-                                                  @Field("mealItemOption") String mealItemOption);
+                                                  @Field("mealItemOption") String mealItemOption,
+                                                  @Field("extraItemID1")   String extraItemID1,
+                                                  @Field("extraItemIDName1") String extraItemIDName1);
 
 }
