@@ -259,6 +259,7 @@
             android:text="Skip"
             android:layout_gravity="center"
             android:textSize="@dimen/sp_15"
+            android:visibility="gone"
             android:padding="@dimen/dp_10"
             android:textColor="@color/colorTextSubSecondary"
             android:gravity="center"

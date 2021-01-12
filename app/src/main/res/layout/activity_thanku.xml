@@ -99,18 +99,18 @@
 
         </TextView>
 
-        <Button
-            android:id="@+id/btnHome"
-            android:textAllCaps="false"
-            android:fontFamily="@font/roboto_bold"
-            android:textColor="@color/colorWhite"
-            android:text="@string/got_to"
-            android:layout_margin="@dimen/_25sdp"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp">
-
-        </Button>
-
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btnHome"
+        android:textAllCaps="false"
+        android:fontFamily="@font/roboto_medium"
+        android:textColor="@color/colorWhite"
+        android:text="@string/got_to"
+        android:padding="@dimen/dp_10"
+        android:textSize="@dimen/sp_15"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"/>
 
 </RelativeLayout>

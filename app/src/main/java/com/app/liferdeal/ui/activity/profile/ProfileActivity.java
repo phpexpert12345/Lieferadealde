@@ -142,6 +142,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             rl_myticket_setting.setOnClickListener(this);
             rl_change_password.setOnClickListener(this);
             lnr_my_order.setOnClickListener(this);
+            userimage.setOnClickListener(this);
 
 //            System.out.println("=== name : " + prefsHelper.getPref(Constants.USER_NAME));
 //            System.out.println("=== name email : " + prefsHelper.getPref(Constants.USER_EMAIL));
@@ -216,7 +217,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private ProgressDialog progressDialog;
 
     public void showProgress() {
-        progressDialog.setMessage(model.getPlease_wait_text().trim()+"...");
+        progressDialog.setMessage(model.getPlease_wait_text().trim() + "...");
         progressDialog.setCancelable(false);
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
@@ -291,6 +292,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 startActivity(new Intent(this, MyOrderActivity.class));
                 break;
 
+            case R.id.userimage:
             case R.id.rl_my_profile:
                 Intent ipro = new Intent(this, EditUpdateProfileActivity.class);
                 startActivity(ipro);
