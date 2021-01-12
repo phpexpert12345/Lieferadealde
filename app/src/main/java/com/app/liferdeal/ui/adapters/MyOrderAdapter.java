@@ -1,9 +1,11 @@
 package com.app.liferdeal.ui.adapters;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +22,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.app.liferdeal.R;
 import com.app.liferdeal.application.App;
 import com.app.liferdeal.model.LanguageResponse;
+import com.app.liferdeal.model.restaurant.MYOrderTrackDetailModel;
 import com.app.liferdeal.model.restaurant.Orders;
+import com.app.liferdeal.network.retrofit.ApiInterface;
+import com.app.liferdeal.network.retrofit.RFClient;
 import com.app.liferdeal.ui.activity.restaurant.MyOrderDetailsActivity;
+import com.app.liferdeal.ui.activity.restaurant.OrderTrackActivity;
 import com.app.liferdeal.util.Constants;
 import com.app.liferdeal.util.DotToCommaClass;
 import com.app.liferdeal.util.PrefsHelper;
@@ -29,6 +35,12 @@ import com.bumptech.glide.Glide;
 
 import java.util.Currency;
 import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.Holder> {
     private List<Orders.OrderViewResult> listCategory;
@@ -74,6 +86,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.Holder> 
         holder.txt_btn_track.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent i = new Intent(mContext, MyOrderDetailsActivity.class);
                 i.putExtra("orderid", listCategory.get(position).getOrderIdentifyno());
                 i.putExtra("from", "track");
@@ -84,19 +97,68 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.Holder> 
         holder.rl_restaurant_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(mContext, MyOrderDetailsActivity.class);
-                i.putExtra("orderid", listCategory.get(position).getOrderIdentifyno());
-                //i.putExtra("from", "track");
-                mContext.startActivity(i);
+                getOrderDetails(listCategory.get(position).getOrderIdentifyno());
             }
         });
 
         holder.txt_btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((Activity)mContext).finish();
+                ((Activity) mContext).finish();
             }
         });
+    }
+
+    private ApiInterface apiInterface;
+
+    private void getOrderDetails(String strordernumber) {
+        apiInterface = RFClient.getClient().create(ApiInterface.class);
+        Observable<MYOrderTrackDetailModel> observable = apiInterface.getMyOrderDetailsDisplay(prefsHelper.getPref(Constants.API_KEY), prefsHelper.getPref(Constants.LNG_CODE), strordernumber);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<MYOrderTrackDetailModel>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(MYOrderTrackDetailModel searchResult) {
+                        showProgress();
+                       /* setAdapterCategory(searchResult.getOrders().getOrderViewResult());
+                        banner_progress.setVisibility(View.GONE);*/
+                        String orderno = searchResult.getOrderDetailItem().get(0).getOrderIdentifyno();
+                        Intent i = new Intent(mContext, OrderTrackActivity.class);
+                        i.putExtra("orderid", orderno);
+                        mContext.startActivity(i);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        hideProgress();
+                        Log.d("TAG", "log...." + e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        //   activity.mySharePreferences.setBundle("login");
+
+                    }
+                });
+
+    }
+
+    private ProgressDialog progressDialog;
+    public void showProgress() {
+        progressDialog = new ProgressDialog(mContext);
+        progressDialog.setMessage(model.getPlease_wait_text().trim() + "...");
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
+    }
+
+    public void hideProgress() {
+        progressDialog.dismiss();
     }
 
     @Override

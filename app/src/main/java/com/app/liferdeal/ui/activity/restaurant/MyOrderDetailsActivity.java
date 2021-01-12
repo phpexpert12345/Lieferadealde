@@ -159,14 +159,14 @@ public class MyOrderDetailsActivity extends AppCompatActivity implements View.On
                              quantity = searchResult.getOrderFoodItem().get(i).getQuantity();
                         }
 */
-                        if (getIntent() != null) {
-                            from = getIntent().getStringExtra("from");
-                            if (from != null && from.equalsIgnoreCase("track")) {
-                                Intent i = new Intent(MyOrderDetailsActivity.this, OrderTrackActivity.class);
-                                i.putExtra("orderid", strordernumber);
-                                startActivity(i);
-                            }
-                        }
+//                        if (getIntent() != null) {
+//                            from = getIntent().getStringExtra("from");
+//                            if (from != null && from.equalsIgnoreCase("track")) {
+//                                Intent i = new Intent(MyOrderDetailsActivity.this, OrderTrackActivity.class);
+//                                i.putExtra("orderid", strordernumber);
+//                                startActivity(i);
+//                            }
+//                        }
                         setTextData(orderno, orderstatusmsg, subtotal, orderpricetotal, restname, currency, menuprice, itemname, quantity, itemSize);
                         //  String orderpricetotal = searchResult.getOrderPrice().toString();
 

@@ -77,7 +77,6 @@ public class RestaurantBookTable extends AppCompatActivity implements View.OnCli
     Calendar calendar;
     Spinner spinner_tableSeat;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -175,7 +174,7 @@ public class RestaurantBookTable extends AppCompatActivity implements View.OnCli
     }
 
     public void showProgress() {
-        progressDialog.setMessage(model.getPlease_wait_text()+"...");
+        progressDialog.setMessage(model.getPlease_wait_text() + "...");
         progressDialog.setCancelable(false);
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
@@ -220,6 +219,8 @@ public class RestaurantBookTable extends AppCompatActivity implements View.OnCli
                             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                                 tvBookingDate.setText(day + "/" + (month + 1) + "/" + year);
                                 date = year + "-" + (month + 1) + "-" + day;
+                                showProgress();
+                                callTimeApi();
                             }
                         }, year, month, dayOfMonth);
                 datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
@@ -228,14 +229,20 @@ public class RestaurantBookTable extends AppCompatActivity implements View.OnCli
 
             case R.id.tvBookingTime:
                 if (tvBookingDate.getText().toString().length() == 0) {
-                    Toast.makeText(getApplicationContext(), model.getPleaseEnterBootingDate(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), model.getSelctBookingDate(), Toast.LENGTH_SHORT).show();
                 } else {
                    /* Intent i = new Intent(RestaurantBookTable.this, ActivityTableTimeList.class);
                     i.putExtra("RestId", restid);
                     i.putExtra("date", date);
                     startActivityForResult(i, x);*/
-                    showProgress();
-                    callTimeApi();
+//                    showProgress();
+//                    callTimeApi();
+                    if (list.size() > 0)
+                        dialogTimeSelection(list);
+                    else {
+                        showProgress();
+                        callTimeApi();
+                    }
                 }
 
 //                Calendar mcurrentTime = Calendar.getInstance();
@@ -446,6 +453,8 @@ public class RestaurantBookTable extends AppCompatActivity implements View.OnCli
         dialog.show();
     }
 
+    private List<TimeListModel.TimeList> list = new ArrayList<TimeListModel.TimeList>();
+
     private void callTimeApi() {
         apiInterface = RFClient.getClient().create(ApiInterface.class);
         Observable<TimeListModel> observable = apiInterface.getTableTimeListData(prefsHelper.getPref(Constants.API_KEY),
@@ -462,14 +471,18 @@ public class RestaurantBookTable extends AppCompatActivity implements View.OnCli
                     public void onNext(TimeListModel searchResult) {
                         hideProgress();
                         if (searchResult.getTimeList() != null && searchResult.getTimeList().size() > 0) {
-                            List<TimeListModel.TimeList> list = new ArrayList<TimeListModel.TimeList>();
-                            list.clear();
+                            if (list.size() > 0)
+                                list.clear();
 //                            TimeListModel.TimeList newList = new TimeListModel.TimeList();
 //                            newList.setGetTime(model.getASSOONASPOSSIBLE());
 //                            newList.setSuccess("true");
 //                            list.add(newList);
-                            list.addAll(searchResult.getTimeList());
-                            dialogTimeSelection(list);
+
+                            if (searchResult.getTimeList().size() == 0) {
+                                Toast.makeText(getApplicationContext(), model.getTimeSlotNotAvailable(), Toast.LENGTH_SHORT).show();
+                            } else {
+                                list.addAll(searchResult.getTimeList());
+                            }
                         }
                     }
 

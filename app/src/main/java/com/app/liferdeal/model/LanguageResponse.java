@@ -6,7 +6,28 @@ import com.google.gson.annotations.SerializedName;
 
 public class LanguageResponse {
 
+    public String getSelctBookingDate() {
+        return selctBookingDate;
+    }
 
+    public void setSelctBookingDate(String selctBookingDate) {
+        this.selctBookingDate = selctBookingDate;
+    }
+
+    public String getTimeSlotNotAvailable() {
+        return timeSlotNotAvailable;
+    }
+
+    public void setTimeSlotNotAvailable(String timeSlotNotAvailable) {
+        this.timeSlotNotAvailable = timeSlotNotAvailable;
+    }
+
+    @SerializedName("Firstly_please_select_booking_date")
+    @Expose
+    private String selctBookingDate;
+    @SerializedName("time_slots_are_not_available_on_this_date")
+    @Expose
+    private String timeSlotNotAvailable;
     @SerializedName("Take_a_Photo")
     @Expose
     private String takePhoto;
