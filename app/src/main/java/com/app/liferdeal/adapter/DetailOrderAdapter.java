@@ -78,7 +78,7 @@ public class DetailOrderAdapter extends RecyclerView.Adapter<DetailOrderAdapter.
     public void onBindViewHolder(@NonNull Holder holder, final int position) {
         Currency hh = Currency.getInstance("" + prefsHelper.getPref(Constants.APP_CURRENCY));
         currencySymbol = hh.getSymbol();
-        holder.tvQuantityMenu.setText(listCategory.get(position).getCurrency() + listCategory.get(position).getMenuprice() + "x" + listCategory.get(position).getQuantity());
+        holder.tvQuantityMenu.setText(currencySymbol + dotToCommaClass.changeDot(listCategory.get(position).getMenuprice()) + "x" + listCategory.get(position).getQuantity());
         holder.txt_pizza_section_cuisine.setText(listCategory.get(position).getItemSize());
         holder.txt_view_sunmenu.setText(listCategory.get(position).getItemsName());
     }

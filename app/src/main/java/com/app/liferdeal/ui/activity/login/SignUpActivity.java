@@ -147,7 +147,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 startActivity(intent);
                 finish();
                 break;
-
             default:
                 break;
         }
@@ -213,7 +212,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                             String cusomerId = signup.getCustomerId();
                             prefsHelper.savePref(Constants.CUSTOMER_ID, cusomerId);
-
+                            prefsHelper.savePref(Constants.IsLogin,true);
 //                            String username = signin.getUserName();
 //                            String mobilenum = signin.getUserPhone();
 //                            String usernemail = signin.getUserEmail();
@@ -274,7 +273,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             userLogin(edt_email_id.getText().toString(), edt_pass.getText().toString());
 //            Intent i = new Intent(SignUpActivity.this, SignInActivity.class);
 //            startActivity(i);
-            finish();
         });
     }
 
@@ -324,6 +322,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                             startActivity(intent);
 
                             hideProgress();
+                            finish();
                             Log.e("CustomerId=", cusomerId);
                             //  initiateHomeFragment();
                             /*Intent i = new Intent(SignInActivity.this, SignInActivity.class);

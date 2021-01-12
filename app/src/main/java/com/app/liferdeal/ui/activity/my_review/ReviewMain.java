@@ -32,13 +32,13 @@ public class ReviewMain {
 
     @SerializedName("CustomerReviewlistingList")
     @Expose
-    private List<List<ReviewMainData>> customerReviewlistingList = null;
+    private List<ReviewMainData> customerReviewlistingList = null;
 
-    public List<List<ReviewMainData>> getCustomerReviewlistingList() {
+    public List<ReviewMainData> getCustomerReviewlistingList() {
         return customerReviewlistingList;
     }
 
-    public void setCustomerReviewlistingList(List<List<ReviewMainData>> customerReviewlistingList) {
+    public void setCustomerReviewlistingList(List<ReviewMainData> customerReviewlistingList) {
         this.customerReviewlistingList = customerReviewlistingList;
     }
 }

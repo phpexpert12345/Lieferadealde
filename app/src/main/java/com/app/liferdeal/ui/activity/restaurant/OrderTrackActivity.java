@@ -261,7 +261,6 @@ public class OrderTrackActivity extends AppCompatActivity implements View.OnClic
 
     private void setTextData(String orderno, String orderstatusmsg, String subtotal, String orderpricetotal, String restname, String resuestatdate, String resuestattime, String customercity, String currency, String menuprice, String itemname, long quantity, String firstStatus, String secondStatus, String thirdStatus, String firstDate, String secondDate, String thirdDate) {
         txt_view_ordernumber.setText(model.getOrderID() + " : " + orderno);
-        txt_orderdattime.setText(resuestatdate + " " + resuestattime);
         //txt_view_sub_menu_one.setText(resuestatdate + " " + resuestattime);
         txt_delivered_city.setText(customercity);
         tvFoodName.setText(itemname);
@@ -270,6 +269,8 @@ public class OrderTrackActivity extends AppCompatActivity implements View.OnClic
         if (!firstStatus.equalsIgnoreCase("")) {
             txt_view_sub_menu.setText(firstStatus);
             txt_view_sub_menu_one.setText(firstDate);
+            txt_orderdattime.setText(firstDate);
+
             rlt_sub_menu.setVisibility(View.VISIBLE);
             viewSquare1.setVisibility(View.VISIBLE);
         } else {

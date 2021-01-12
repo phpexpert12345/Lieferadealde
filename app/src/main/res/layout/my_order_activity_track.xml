@@ -103,7 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:text="Order ID : "
+                android:text=""
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/_12ssp"
                 android:textStyle="bold" />
@@ -135,7 +135,7 @@
             <TextView
                 android:id="@+id/txt_orderdattime"
                 android:layout_width="wrap_content"
-                android:text="Sub Total"
+                android:text=""
                 android:textSize="@dimen/_12ssp"
                 android:layout_alignParentLeft="true"
                 android:textStyle="bold"
@@ -165,7 +165,7 @@
                 android:fontFamily="@font/montserrat_bold"
                 android:id="@+id/tvFoodItems"
                 android:layout_width="wrap_content"
-                android:text="Food Items - "
+                android:text=""
                 android:textSize="@dimen/_12ssp"
                 android:layout_alignParentLeft="true"
                 android:textStyle="bold"
@@ -179,7 +179,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tvFoodItems"
                 android:layout_alignParentLeft="true"
-                android:text="Sub Total"
+                android:text=""
                 android:textColor="@color/quantum_grey700"
                 android:textSize="@dimen/_12ssp"
                 android:textStyle="bold" />
@@ -188,7 +188,7 @@
                 android:layout_below="@+id/tvFoodItems"
                 android:id="@+id/txtPrice"
                 android:layout_width="wrap_content"
-                android:text="19.0"
+                android:text=""
                 android:textSize="@dimen/_12ssp"
                 android:textStyle="bold"
                 android:textColor="@color/quantum_grey700"
@@ -217,7 +217,7 @@
                 android:fontFamily="@font/montserrat_bold"
                 android:id="@+id/txt_vie_menu"
                 android:layout_width="wrap_content"
-                android:text="Delivered To - "
+                android:text=""
                 android:textSize="@dimen/_12ssp"
                 android:textStyle="bold"
                 android:textColor="@color/colorBlack"
@@ -228,13 +228,10 @@
                 android:id="@+id/txt_delivered_city"
                 android:layout_below="@+id/txt_vie_menu"
                 android:layout_width="wrap_content"
-                android:text="Pizza Selection"
+                android:text=""
                 android:textSize="@dimen/_12ssp"
                 android:textColor="@color/quantum_grey700"
                 android:layout_height="wrap_content"/>
-
-
-
 
         </RelativeLayout>
         <RelativeLayout
@@ -256,7 +253,7 @@
                     android:fontFamily="@font/montserrat_bold"
                     android:id="@+id/txt_view_sub_menu"
                     android:layout_width="wrap_content"
-                    android:text="Order Recieved"
+                    android:text=""
                     android:textSize="@dimen/_12ssp"
                     android:textStyle="bold"
                     android:textColor="@color/colorBlack"
@@ -274,7 +271,7 @@
                 <TextView
                     android:layout_below="@+id/txt_view_sub_menu_one"
                     android:layout_width="wrap_content"
-                    android:text="Pizza Selection"
+                    android:text=""
                     android:visibility="gone"
                     android:textSize="@dimen/_10ssp"
                     android:layout_height="wrap_content"/>
@@ -296,7 +293,7 @@
                     android:fontFamily="@font/montserrat_bold"
                     android:id="@+id/txtConfirmed"
                     android:layout_width="wrap_content"
-                    android:text="Order Confirmed"
+                    android:text=""
                     android:textSize="@dimen/_12ssp"
                     android:textStyle="bold"
                     android:textColor="@color/colorBlack"
@@ -306,7 +303,7 @@
                     android:id="@+id/txtConfirmedDate"
                     android:layout_below="@+id/txtConfirmed"
                     android:layout_width="wrap_content"
-                    android:text="2020"
+                    android:text=""
                     android:textSize="@dimen/_12ssp"
                     android:textColor="@color/quantum_grey700"
                     android:layout_height="wrap_content"/>
@@ -335,7 +332,7 @@
                     android:fontFamily="@font/montserrat_bold"
                     android:id="@+id/txtDelivered"
                     android:layout_width="wrap_content"
-                    android:text="Order Delivery"
+                    android:text=""
                     android:textSize="@dimen/_12ssp"
                     android:textStyle="bold"
                     android:textColor="@color/colorBlack"
@@ -345,7 +342,7 @@
                     android:id="@+id/txtDeliveredDate"
                     android:layout_below="@+id/txtDelivered"
                     android:layout_width="wrap_content"
-                    android:text="2020"
+                    android:text=""
                     android:textSize="@dimen/_12ssp"
                     android:textColor="@color/quantum_grey700"
                     android:layout_height="wrap_content"/>
@@ -419,6 +416,7 @@
         <RelativeLayout
             android:id="@+id/rvWriteAReview"
             android:background="@color/gray"
+            android:visibility="invisible"
             android:layout_margin="@dimen/_10sdp"
             android:layout_below="@+id/rvTop"
             android:layout_width="match_parent"

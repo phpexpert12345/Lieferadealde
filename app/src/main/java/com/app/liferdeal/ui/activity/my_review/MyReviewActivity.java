@@ -109,7 +109,7 @@ public class MyReviewActivity extends AppCompatActivity {
                         try {
                             rvReviewList.setVisibility(View.VISIBLE);
                             tvDataNot.setVisibility(View.GONE);
-                            ArrayList<List<ReviewMainData>> list = new ArrayList();
+                            ArrayList<ReviewMainData> list = new ArrayList();
                             list.clear();
                             list.addAll(searchResult.getCustomerReviewlistingList());
                             // Toast.makeText(getApplicationContext(), "Success Called=", Toast.LENGTH_LONG).show();

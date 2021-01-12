@@ -50,7 +50,7 @@ public class MyOrderDetailsActivity extends AppCompatActivity implements View.On
     private ImageView img_back;
     private String strordernumber = "";
     private LanguageResponse model;
-//    @BindView(R.id.tvQuantityMenu)
+    //    @BindView(R.id.tvQuantityMenu)
 //    TextView tvQuantityMenu;
     @BindView(R.id.rvItemList)
     RecyclerView rvItemList;
@@ -144,19 +144,20 @@ public class MyOrderDetailsActivity extends AppCompatActivity implements View.On
                     @Override
                     public void onNext(MYOrderTrackDetailModel searchResult) {
                         // showProgress();
-                        setAdapterCategory(searchResult.getOrderDetailItem().get(0).getOrderFoodItem());
+                        if (searchResult.getOrderDetailItem() != null) {
+                            setAdapterCategory(searchResult.getOrderDetailItem().get(0).getOrderFoodItem());
 //                        banner_progress.setVisibility(View.GONE);
-                        String orderno = searchResult.getOrderDetailItem().get(0).getOrderIdentifyno();
-                        String orderstatusmsg = searchResult.getOrderDetailItem().get(0).getStatus();
-                        String subtotal = searchResult.getOrderDetailItem().get(0).getSubTotal();
-                        String orderpricetotal = searchResult.getOrderDetailItem().get(0).getOrderPrice();
-                        String restname = searchResult.getOrderDetailItem().get(0).getRestaurantName();
+                            String orderno = searchResult.getOrderDetailItem().get(0).getOrderIdentifyno();
+                            String orderstatusmsg = searchResult.getOrderDetailItem().get(0).getStatus();
+                            String subtotal = searchResult.getOrderDetailItem().get(0).getSubTotal();
+                            String orderpricetotal = searchResult.getOrderDetailItem().get(0).getOrderPrice();
+                            String restname = searchResult.getOrderDetailItem().get(0).getRestaurantName();
 
-                        currency = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getCurrency();
-                        menuprice = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getMenuprice();
-                        itemname = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getItemsName();
-                        quantity = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getQuantity();
-                        itemSize = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getItemSize();
+                            currency = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getCurrency();
+                            menuprice = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getMenuprice();
+                            itemname = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getItemsName();
+                            quantity = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getQuantity();
+                            itemSize = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getItemSize();
 
 //                        if (getIntent() != null) {
 //                            from = getIntent().getStringExtra("from");
@@ -166,9 +167,9 @@ public class MyOrderDetailsActivity extends AppCompatActivity implements View.On
 //                                startActivity(i);
 //                            }
 //                        }
-                        setTextData(orderno, orderstatusmsg, subtotal, orderpricetotal, restname, currency, menuprice, itemname, quantity, itemSize);
-                        //  String orderpricetotal = searchResult.getOrderPrice().toString();
-
+                            setTextData(orderno, orderstatusmsg, subtotal, orderpricetotal, restname, currency, menuprice, itemname, quantity, itemSize);
+                            //  String orderpricetotal = searchResult.getOrderPrice().toString();
+                        }
                     }
 
                     @Override
