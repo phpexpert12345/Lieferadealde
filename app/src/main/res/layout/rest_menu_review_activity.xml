@@ -54,6 +54,7 @@
                     android:layout_width="@dimen/dp_30"
                     android:layout_height="@dimen/dp_30"
                     android:layout_margin="0dp"
+                    android:visibility="gone"
                     android:gravity="center"
                     android:tint="@color/colorBlack"
                     android:src="@drawable/vector_cart" />
@@ -66,6 +67,7 @@
                     android:layout_alignTop="@id/hotlist_bell"
                     android:layout_marginEnd="0dp"
                     android:layout_marginTop="0dp"
+                    android:visibility="gone"
                     android:background="@drawable/cart_count"
                     android:gravity="center"
                     android:minWidth="17sp"
