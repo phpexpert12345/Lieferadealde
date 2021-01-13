@@ -8,6 +8,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -386,6 +388,27 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 //    tvTotalFoodCost.setText("+".concat(pound.concat("" +String.valueOf(totalPrice))));
                 // getDiscount();
                 tvTotalItem.setText(model.getTotal() + " " + raviCartModles.size() + " " + model.getItems());
+                if(raviCartModles.size()>0){
+                    double toatl_price=0.0;
+                    StringBuilder stringBuilder=new StringBuilder();
+                    for(int j=0;j<raviCartModles.size();j++){
+                        toatl_price+=Double.parseDouble(raviCartModles.get(j).getPrice());
+                        stringBuilder.append(raviCartModles.get(j).getItem_quantity()+"x"+raviCartModles.get(j).getItem_name()+"("+raviCartModles.get(j).getSize_item_name()+")");
+                        stringBuilder.append("\n");
+
+
+                    }
+                    if(toatl_price>0.0){
+                        selectedPizzaItemPrice= String.valueOf(toatl_price);
+                        subTotalAmount= String.valueOf(toatl_price);
+                        FoodCosts=subTotalAmount;
+                    }
+                    if(stringBuilder.length()>0){
+                        selectedPizzaName=stringBuilder.deleteCharAt(stringBuilder.lastIndexOf("\n")).toString();
+                    }
+
+
+                }
                 CartAdapterravi cartAdapterravi = new CartAdapterravi(CartActivity.this, raviCartModles);
                 linearLayoutManager = new LinearLayoutManager(CartActivity.this, LinearLayoutManager.VERTICAL, false);
                 list_view_items.setLayoutManager(linearLayoutManager);
@@ -593,7 +616,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             rlDineIn.setBackgroundResource(R.drawable.edit_back_with_gray);
             img_delivery.setColorFilter(Color.BLACK);
             img_pickup.setColorFilter(Color.WHITE);
-            tvDeliveryText.setTextColor(Color.BLACK);
+            tvDelivery.setTextColor(Color.BLACK);
             tvPickup.setTextColor(Color.WHITE);
             tvEatIn.setTextColor(Color.BLACK);
 
@@ -608,7 +631,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             img_pickup.setColorFilter(Color.BLACK);
             tvEatIn.setTextColor(Color.WHITE);
             tvPickup.setTextColor(Color.BLACK);
-            tvDeliveryText.setTextColor(Color.WHITE);
+            tvDelivery.setTextColor(Color.WHITE);
             // img_select_picup.setImageResource(R.drawable.unselect);
             // img_select_delivery.setImageResource(R.drawable.img_select);
         }
@@ -616,7 +639,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             rl_delivery.setBackgroundResource(R.drawable.edit_back_with_gray);
             rl_pickup.setBackgroundResource(R.drawable.edit_back_with_gray);
             rlDineIn.setBackgroundResource(R.drawable.circle_background);
-            tvDeliveryText.setTextColor(Color.BLACK);
+            tvDelivery.setTextColor(Color.BLACK);
             tvPickup.setTextColor(Color.BLACK);
             tvEatIn.setTextColor(Color.WHITE);
             // img_select_picup.setImageResource(R.drawable.unselect);
@@ -647,17 +670,17 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
             if (rr.get(position).getSize_item_name().equals("0") && rr.get(position).getExtra_item_name().equals("0")) {
                 holder.tvMenuItemName.setText(rr.get(position).getItem_name());
-                selectedPizzaName = rr.get(position).getItem_name();
+//                selectedPizzaName = rr.get(position).getItem_name();
                 holder.tv_menu_item_extra.setVisibility(View.GONE);
                 holder.tv_menu_item_size.setVisibility(View.GONE);
             } else if (rr.get(position).getSize_item_name() != "0" && rr.get(position).getExtra_item_name().equals("0")) {
                 holder.tvMenuItemName.setText(rr.get(position).getItem_name());
                 holder.tv_menu_item_size.setText("(" + rr.get(position).getSize_item_name() + ")");
-                selectedPizzaName = rr.get(position).getItem_name();
+//                selectedPizzaName = rr.get(position).getItem_name();
                 holder.tv_menu_item_extra.setVisibility(View.GONE);
             } else if (rr.get(position).getSize_item_name().equals("0") && rr.get(position).getExtra_item_name() != "0") {
                 holder.tvMenuItemName.setText(rr.get(position).getItem_name());
-                selectedPizzaName = rr.get(position).getItem_name();
+//                selectedPizzaName = rr.get(position).getItem_name();
 
                 holder.tv_menu_item_extra.setVisibility(View.VISIBLE);
                 String a = rr.get(position).getExtra_item_name().replace("[", "");
@@ -671,7 +694,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             } else if (rr.get(position).getSize_item_name() != "0" && rr.get(position).getExtra_item_name() != "0") {
                 holder.tvMenuItemName.setText(rr.get(position).getItem_name());
                 holder.tv_menu_item_size.setText("(" + rr.get(position).getSize_item_name() + ")");
-                selectedPizzaName = rr.get(position).getItem_name();
+//                selectedPizzaName = rr.get(position).getItem_name();
                 holder.tv_menu_item_extra.setVisibility(View.VISIBLE);
                 String a = rr.get(position).getExtra_item_name().replace("[", "");
                 a = a.replace("]", "");
@@ -683,11 +706,29 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 holder.tv_menu_item_extra.setText("+" + a);
             }
             holder.tv_subcat_item_details.setText(rr.get(position).getItemSubcatDetails());
+            holder.etInstruction.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if(s.length()>0) {
+                        instructions =CommonMethods.getStringDataInbase64(s.toString());
+                    }
+                }
+            });
 
             instructions = CommonMethods.getStringDataInbase64(holder.etInstruction.getText().toString());
             double pp = Double.parseDouble(rr.get(position).getPrice());
             holder.tvItemPrice.setText(currencySymbol + dotToCommaClass.changeDot(String.format("%.2f", pp)));
-            selectedPizzaItemPrice = holder.tvItemPrice.getText().toString();
+//            selectedPizzaItemPrice = holder.tvItemPrice.getText().toString();
             holder.tvQuantity.setText(rr.get(position).getItem_quantity());
 
             holder.ivPlus.setOnClickListener(new View.OnClickListener() {

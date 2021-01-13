@@ -532,6 +532,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Delivery Fees"
+
                             android:textColor="@color/quantum_grey500"
                             android:textSize="13sp"
                             android:layout_marginTop="@dimen/_10sdp"

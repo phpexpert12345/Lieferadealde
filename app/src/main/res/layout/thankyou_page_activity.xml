@@ -264,12 +264,12 @@
             android:text="Amore"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_15ssp"
-            android:fontFamily="@font/roboto_bold"
+            android:fontFamily="@font/roboto_medium"
             android:layout_height="wrap_content"/>
         <TextView
             android:layout_width="match_parent"
             android:id="@+id/tvSizeOf"
-            android:visibility="visible"
+            android:visibility="gone"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_11ssp"
             android:textStyle="bold"
@@ -291,7 +291,7 @@
             android:layout_width="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
-            android:layout_height="@dimen/_30sdp">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="@dimen/_220sdp"
@@ -302,20 +302,24 @@
                     android:id="@+id/txt_pizza_quantity"
                     android:layout_width="wrap_content"
                     android:text="1"
+                    android:visibility="gone"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/_10ssp"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:layout_height="wrap_content"/>
+
                 <TextView
                     android:id="@+id/txt_pizz_name"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/roboto_medium"
+                    android:gravity="center"
+
                     android:text="Pizza Margherita"
                     android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/_10ssp"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:layout_height="wrap_content"/>
+                    android:textSize="@dimen/_14ssp" />
 
             </LinearLayout>
 
@@ -359,7 +363,8 @@
                     android:layout_width="match_parent"
                     android:text="Sub Total"
                     android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/_10ssp"
+                    android:textSize="@dimen/_12ssp"
+                    android:fontFamily="@font/roboto_medium"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:layout_height="wrap_content"/>
@@ -406,6 +411,7 @@
                     android:text="Food Discount"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/_10ssp"
+                    android:fontFamily="@font/roboto_medium"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:layout_height="wrap_content"/>
@@ -453,6 +459,7 @@
                     android:textSize="@dimen/_10ssp"
                     android:layout_gravity="center"
                     android:gravity="center"
+                    android:fontFamily="@font/roboto_medium"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
 
@@ -496,6 +503,7 @@
                     android:text="Sales Tax"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/_10ssp"
+                    android:fontFamily="@font/roboto_medium"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:layout_height="wrap_content"/>
@@ -584,6 +592,7 @@
                     android:id="@+id/tvDeliveryFee"
                     android:layout_width="match_parent"
                     android:text="Delivery Fee"
+                    android:fontFamily="@font/roboto_medium"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/_10ssp"
                     android:layout_gravity="center"

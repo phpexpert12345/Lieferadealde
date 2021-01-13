@@ -27,6 +27,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.cardview.widget.CardView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.app.liferdeal.R;
 import com.app.liferdeal.application.App;
 import com.app.liferdeal.model.LanguageResponse;
@@ -49,6 +55,7 @@ import com.contrarywind.view.WheelView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.radiobutton.MaterialRadioButton;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.gson.Gson;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalPayment;
 import com.paypal.android.sdk.payments.PayPalService;
@@ -63,6 +70,7 @@ import com.stripe.android.view.CardMultilineWidget;
 import com.stripe.android.view.PaymentMethodsActivityStarter;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
@@ -560,31 +568,15 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
         }
         String url="https://www.lieferadeal.de/WebAppAPI/phpexpert_payment_android_submit.php?api_key="+prefsHelper.getPref(Constants.API_KEY)+"&lang_code="+ prefsHelper.getPref(Constants.LNG_CODE)+"&payment_transaction_paypal=&itemId="+item_Id+"&Quantity="+quantity+"&Price="+Price+"&strsizeid="+strsizeid+"&extraItemID="+extraItemID+"&CustomerId="+CustomerId+"&CustomerAddressId="+addressId+"&payment_type=Cash&order_price="+order_price+"&subTotalAmount="+subTotalAmount+"&delivery_date="+delivery_date+"&delivery_time="+delivery_time+"&instructions="+instructions+"&deliveryCharge="+deliveryChargeValue+"&CouponCode="+CouponCode+"&CouponCodePrice="+CouponCodePrice+"&couponCodeType="+couponCodeType+"&SalesTaxAmount="+SalesTaxAmount+"&order_type="+order_type+"&SpecialInstruction="+SpecialInstruction+"&extraTipAddAmount="+extraTipAddAmount+"&RestaurantNameEstimate="+RestaurantNameEstimate+"&discountOfferDescription="+discountOfferDescription+"&discountOfferPrice="+discountOfferPrice+"&RestaurantoffrType="+RestaurantoffrType+"&ServiceFees="+ServiceFees+"&PaymentProcessingFees="+PaymentProcessingFees+"&deliveryChargeValueType="+deliveryChargeValueType+"&ServiceFeesType="+ServiceFeesType+"&PackageFeesType="+PackageFeesType+"&PackageFees="+PackageFees+"&WebsiteCodePrice="+WebsiteCodePrice+"&WebsiteCodeType="+WebsiteCodeType+"&WebsiteCodeNo="+WebsiteCodeNo+"&preorderTime="+preorderTime+"&VatTax="+VatTax+"&GiftCardPay="+GiftCardPay+"&WalletPay="+WalletPay+"&loyptamount="+loyptamount+"&table_number_assign="+table_number_assign+"&customer_country="+customer_country+"&group_member_id="+group_member_id+"&loyltPnts="+loyltPnts+"&branch_id="+branch_id+"&FoodCosts="+FoodCosts+"&getTotalItemDiscount="+getTotalItemDiscount+"&getFoodTaxTotal7="+getFoodTaxTotal7+"&getFoodTaxTotal19="+getFoodTaxTotal19+"&TotalSavedDiscount="+TotalSavedDiscount+"&discountOfferFreeItems="+discountOfferFreeItems+"&number_of_people="+number_of_people+"&resid="+restId+"&mealID="+mealID+"&mealquqntity="+mealquqntity+"&mealPrice="+mealPrice+"&mealItemExtra="+mealItemExtra+"&mealItemOption="+mealItemOption+"&discountOfferFreeItems="+discountOfferFreeItems+"&extraItemID1="+extraItemId1+"&extraItemIDName1="+extraItemId2;
         Log.i("reason",url);
-        Observable<LoginMainData> observable = apiInterface.getPaymentLoginData(prefsHelper.getPref(Constants.API_KEY),
-                prefsHelper.getPref(Constants.LNG_CODE), "", pizzaItemid, quantity, Price, strsizeid, extraItemID,
-                CustomerId, addressId, payment_type, order_price, subTotalAmount, delivery_date, delivery_time, instructions, deliveryChargeValue,
-                CouponCode, CouponCodePrice, couponCodeType, SalesTaxAmount, order_type, SpecialInstruction, extraTipAddAmount, RestaurantNameEstimate,
-                discountOfferDescription, discountOfferPrice, RestaurantoffrType, ServiceFees, PaymentProcessingFees, deliveryChargeValueType,
-                ServiceFeesType, PackageFeesType, PackageFees, WebsiteCodePrice, WebsiteCodeType, WebsiteCodeNo, preorderTime,
-                VatTax, GiftCardPay, WalletPay, loyptamount, table_number_assign, customer_country, group_member_id, loyltPnts, branch_id, FoodCosts,
-                getTotalItemDiscount, getFoodTaxTotal7, getFoodTaxTotal19, TotalSavedDiscount, discountOfferFreeItems, number_of_people,
-//                customer_allow_register, address, street, floor_no, zipcode, phone, email, name_customer, city,
-                restId, mealID, mealquqntity, mealPrice, mealItemExtra, mealItemOption,extraItemId1,extraItemId2);
-
-        observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<LoginMainData>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(LoginMainData searchResult) {
-                        hideProgress();
-
-                        if (searchResult.getSuccess() != null) {
-
+        StringRequest stringRequest=new StringRequest(Request.Method.POST, url, response -> {
+            if(response!=null){
+                Log.i("reason",response);
+                try {
+                    JSONObject jsonObject=new JSONObject(response);
+                    Gson gson=new Gson();
+                    LoginMainData searchResult=gson.fromJson(jsonObject.toString(),LoginMainData.class);
+                    if (searchResult.getSuccess() != null) {
+//
                             System.out.println("==== success");
                             String restname = searchResult.getRestaurantName().toString();
                             String restTime = searchResult.getRequestTime().toString();
@@ -612,24 +604,61 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
                             ii.putExtra("selectedPizzaItemPrice", selectedPizzaItemPrice);
                             startActivity(ii);
                             finish();
-                            hideProgress();
+
                         }
                         hideProgress();
-                    }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                        hideProgress();
-                        Log.d("TAG", "log...." + e);
-                    }
 
-                    @Override
-                    public void onComplete() {
-                        //   activity.mySharePreferences.setBundle("login");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
 
-                    }
-                });
+        }, error -> {
+hideProgress();
+        });
+       RequestQueue queue= Volley.newRequestQueue(this);
+       queue.add(stringRequest);
+
+//        Observable<LoginMainData> observable =
+//                apiInterface.getPaymentLoginData(prefsHelper.getPref(Constants.API_KEY),
+//                prefsHelper.getPref(Constants.LNG_CODE), "", pizzaItemid, quantity, Price, strsizeid, extraItemID,
+//                CustomerId, addressId, payment_type, order_price, subTotalAmount, delivery_date, delivery_time, instructions, deliveryChargeValue,
+//                CouponCode, CouponCodePrice, couponCodeType, SalesTaxAmount, order_type, SpecialInstruction, extraTipAddAmount, RestaurantNameEstimate,
+//                discountOfferDescription, discountOfferPrice, RestaurantoffrType, ServiceFees, PaymentProcessingFees, deliveryChargeValueType,
+//                ServiceFeesType, PackageFeesType, PackageFees, WebsiteCodePrice, WebsiteCodeType, WebsiteCodeNo, preorderTime,
+//                VatTax, GiftCardPay, WalletPay, loyptamount, table_number_assign, customer_country, group_member_id, loyltPnts, branch_id, FoodCosts,
+//                getTotalItemDiscount, getFoodTaxTotal7, getFoodTaxTotal19, TotalSavedDiscount, discountOfferFreeItems, number_of_people,
+////                customer_allow_register, address, street, floor_no, zipcode, phone, email, name_customer, city,
+//                restId, mealID, mealquqntity, mealPrice, mealItemExtra, mealItemOption,extraItemId1,extraItemId2);
+//
+//        observable.subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Observer<LoginMainData>() {
+//                    @Override
+//                    public void onSubscribe(Disposable d) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(LoginMainData searchResult) {
+//                        hideProgress();
+//
+//
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        e.printStackTrace();
+//                        hideProgress();
+//                        Log.d("TAG", "log...." + e);
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//                        //   activity.mySharePreferences.setBundle("login");
+//
+//                    }
+//                });
 
     }
 
@@ -756,6 +785,7 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
                 if(extraItemid3.length()>0){
                     extraItemId1=extraItemid3.deleteCharAt(extraItemid3.lastIndexOf("_")).toString();
                 }
+
                 if(extra_name.length()>0){
                     extraItemId2=extra_name.deleteCharAt(extra_name.lastIndexOf("_")).toString();
                 }
@@ -770,7 +800,7 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
 String base64="";
         try {
             byte[] byteArray=source.getBytes("UTF-8");
-            base64= Base64.encodeToString(byteArray,Base64.DEFAULT);
+            base64= Base64.encodeToString(byteArray,Base64.NO_WRAP);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

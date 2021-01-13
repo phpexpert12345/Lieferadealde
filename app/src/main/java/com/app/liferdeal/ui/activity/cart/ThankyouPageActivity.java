@@ -238,13 +238,13 @@ public class ThankyouPageActivity extends AppCompatActivity implements View.OnCl
 
         tvOrderNoText.setText(orderNumber);
         txt_pizza_quantity.setText(pizzaQuantity);
-        txt_pizz_name.setText("x" + Pizzaname);
+        txt_pizz_name.setText(Pizzaname);
         txt_time_order.setText(restTime);
         txt_rest_name.setText(restname);
         txt_order_number.setText(model.getOrderNumber() + " # " + " " + orderNumber);
         txt_order_date_time.setText(model.getOrderText() + " " + deliveryDate + " " + restTime);
         txt_order_with_rest_name.setText(restname);
-        txt_pizz_price.setText(dotToCommaClass.changeDot(selectedPizzaItemPrice));
+        txt_pizz_price.setText(dotToCommaClass.changeDot(currencySymbol+selectedPizzaItemPrice));
         txt_subtotal_price.setText(dotToCommaClass.changeDot(currencySymbol + oldprice));
         txt_food_discount.setText(dotToCommaClass.changeDot(currencySymbol + oldprice));
         txt_inclusive_food_text.setText(dotToCommaClass.changeDot(currencySymbol + oldprice));
