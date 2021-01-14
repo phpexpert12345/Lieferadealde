@@ -8,6 +8,10 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
+import android.text.method.PasswordTransformationMethod;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -40,6 +44,32 @@ public class Utility {
   /*  public static RFInterface getRetrofitInterface() {
         return RFClient.getClient().create(RFInterface.class);
     }*/
+    public static void ShowHidePassword(EditText editText){
+        editText.setOnTouchListener((v, event) -> {
+            final int DRAWABLE_LEFT = 0;
+            final int DRAWABLE_TOP = 1;
+            final int DRAWABLE_RIGHT = 2;
+            final int DRAWABLE_BOTTOM = 3;
+
+            if(event.getAction() == MotionEvent.ACTION_UP) {
+                if(event.getRawX() >= (editText.getRight() - editText.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                    if(editText.getTransformationMethod()instanceof PasswordTransformationMethod){
+                        editText.setTransformationMethod(null);
+                        editText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.passwordhd, 0, R.drawable.ic_visibility_off, 0);
+
+                    }
+                    else{
+                        editText.setTransformationMethod(new PasswordTransformationMethod());
+                        editText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.passwordhd, 0, R.drawable.ic_visibility, 0);
+                    }
+
+                    return true;
+                }
+            }
+            return false;
+        });
+
+    }
 
     public static ProgressDialog createProgressDialog(Context context) {
         ProgressDialog dialog = new ProgressDialog(context);

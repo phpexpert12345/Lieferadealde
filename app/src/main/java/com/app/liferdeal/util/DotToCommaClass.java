@@ -15,7 +15,7 @@ public class DotToCommaClass {
         if(string.contains(".")) {
             string = string.replace(".", ",");
         }
-        else{
+        else if(!string.contains(",")){
             string=string+",00";
         }
 

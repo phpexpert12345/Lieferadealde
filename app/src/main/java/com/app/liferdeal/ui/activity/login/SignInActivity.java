@@ -5,8 +5,10 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -37,6 +39,7 @@ import com.app.liferdeal.ui.fragment.restaurant.RestaurantMain;
 import com.app.liferdeal.util.Constants;
 import com.app.liferdeal.util.PrefsHelper;
 import com.app.liferdeal.util.SharedPreferencesData;
+import com.app.liferdeal.util.Utility;
 import com.bumptech.glide.Glide;
 
 import java.util.regex.Pattern;
@@ -69,6 +72,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
             restourantBookLimit = getIntent().getStringExtra("RESTBOOKLIMIT");
             from = getIntent().getStringExtra("from");
         }
+
         init();
     }
 
@@ -100,7 +104,8 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                 tvSignIn.setText(model.getLogin());
                 tvSkip.setText(model.getSkip());
             }
-
+            edt_usrPass.setTransformationMethod(new PasswordTransformationMethod());
+Utility.ShowHidePassword(edt_usrPass);
             btn_login.setOnClickListener(this);
             txt_forgot_pass.setOnClickListener(this);
             tvSkip.setOnClickListener(this);

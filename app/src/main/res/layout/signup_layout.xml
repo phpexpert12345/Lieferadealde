@@ -288,6 +288,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/colorBlack"
                         android:background="@null"
+                        android:drawableEnd="@drawable/ic_visibility"
                         android:hint="Password"
                         android:textColorHint="@color/colorTextSubSecondary"
                         android:layout_marginStart="@dimen/dp_5"

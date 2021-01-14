@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -28,6 +29,7 @@ import com.app.liferdeal.ui.activity.MainActivity;
 import com.app.liferdeal.util.CommonMethods;
 import com.app.liferdeal.util.Constants;
 import com.app.liferdeal.util.PrefsHelper;
+import com.app.liferdeal.util.Utility;
 import com.bumptech.glide.Glide;
 
 import java.util.regex.Pattern;
@@ -91,6 +93,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 tvTitle.setText(model.getSIGNUP());
                 tvSignUp.setText(model.getSIGNUP());
             }
+            edt_pass.setTransformationMethod(new PasswordTransformationMethod());
+            Utility.ShowHidePassword(edt_pass);
 
             img_back.setOnClickListener(this);
             btn_signup.setOnClickListener(this);
@@ -101,6 +105,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             deviceId = prefsHelper.getPref(Constants.deviceId);
             devicePlateform = prefsHelper.getPref(Constants.devicePlateform);
             if (!logo.equalsIgnoreCase("")) {
+                Log.i("reason", logo);
                 Glide.with(SignUpActivity.this).load(Uri.parse(logo)).into(img_logo);
             }
         } catch (Exception ex) {
