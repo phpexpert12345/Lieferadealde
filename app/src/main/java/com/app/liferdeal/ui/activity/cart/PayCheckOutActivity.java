@@ -316,9 +316,9 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
 
 
     private void viewFinds() {
-        radioButtonCreditDebitCard.setOnClickListener(this);
-        radioButtonPaypal.setOnClickListener(this);
-        radioButtonCashOnDelivery.setOnClickListener(this);
+        cardViewCreditDebitCard.setOnClickListener(this);
+        cardViewPaypal.setOnClickListener(this);
+        cardViewCashOnDelivery.setOnClickListener(this);
         radioButtonPayLater.setOnClickListener(this);
         buttonMakePayment.setOnClickListener(this);
         rlBack.setOnClickListener(this);
@@ -387,7 +387,6 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
         Pizzaname = getIntent().getStringExtra("Pizzaname");
         selectedPizzaItemPrice = getIntent().getStringExtra("selectedPizzaItemPrice");
         instructions = getIntent().getStringExtra("instructions");
-        Log.i("reason",instructions);
         customer_allow_register = "yes";
         payment_type = "Cash";
 
@@ -483,7 +482,7 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
             case R.id.radioButtonLater:
 
                 break;
-            case R.id.radioButtonCreditDebitCard:
+            case R.id.cardViewCreditDebitCard:
                 // for stripe payment
                 //Toast.makeText(getApplicationContext(),"Test called",Toast.LENGTH_LONG).show();
                 payment_type = "card";
@@ -492,7 +491,7 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
                 radioButtonCashOnDelivery.setChecked(false);
                 radioButtonPayLater.setChecked(false);
                 break;
-            case R.id.radioButtonPaypal:
+            case R.id.cardViewPaypal:
                 //for paypal payment
                 payment_type = "paypal";
                 radioButtonCreditDebitCard.setChecked(false);
@@ -500,7 +499,7 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
                 radioButtonCashOnDelivery.setChecked(false);
                 radioButtonPayLater.setChecked(false);
                 break;
-            case R.id.radioButtonCashOnDelivery:
+            case R.id.cardViewCashOnDelivery:
                 //for cash on delivery payment
                 payment_type = "Cash";
                 radioButtonCreditDebitCard.setChecked(false);

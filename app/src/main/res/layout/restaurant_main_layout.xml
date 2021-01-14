@@ -99,21 +99,46 @@
         android:layout_width="match_parent"
         android:layout_above="@+id/lnr_main_nav_bottom"
         android:layout_height="match_parent"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:id="@+id/linear_no_data"
+        android:orientation="vertical">
+
+
 
     <TextView
         android:id="@+id/tvDataNotAvailable"
-        android:layout_below="@+id/rvFilterlist"
+
         android:layout_width="match_parent"
-        android:layout_centerInParent="true"
+
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_50"
         android:layout_marginStart="@dimen/dp_20"
         android:layout_marginEnd="@dimen/dp_20"
-        android:visibility="gone"
+        android:visibility="visible"
         android:gravity="center_horizontal"
         android:text="Sorry, Data not Available"
         android:textSize="@dimen/sp_15"
         android:textColor="@color/colorBlack"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:textColor="@color/colorWhite"
+        android:text="Back to Resturant list"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:textAllCaps="false"
+
+        android:fontFamily="@font/roboto_medium"
+        android:id="@+id/btn_refresh"
+
+       />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/lnr_main_nav_bottom"

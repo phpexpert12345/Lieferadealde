@@ -10,6 +10,18 @@ public class RestaurantMainModel {
     @Expose
     private List<SearchResult> searchResult = null;
 
+    public String getSuccessMsg() {
+        return successMsg;
+    }
+
+    public void setSuccessMsg(String successMsg) {
+        this.successMsg = successMsg;
+    }
+
+    @SerializedName("success_msg")
+    @Expose
+    private String successMsg="";
+
     public List<SearchResult> getSearchResult() {
         return searchResult;
     }

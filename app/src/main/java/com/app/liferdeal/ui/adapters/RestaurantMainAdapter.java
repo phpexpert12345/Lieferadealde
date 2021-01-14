@@ -29,6 +29,7 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.liferdeal.R;
+import com.app.liferdeal.model.LanguageResponse;
 import com.app.liferdeal.model.restaurant.RestaurantMainModel;
 import com.app.liferdeal.ui.Database.Database;
 import com.app.liferdeal.ui.activity.cart.ThankyouPageActivity;
@@ -53,13 +54,15 @@ public class RestaurantMainAdapter extends RecyclerView.Adapter<RestaurantMainAd
     private Context mContext;
     private PrefsHelper prefsHelper;
     DotToCommaClass dotToCommaClass;
+    LanguageResponse model;
 
-    public RestaurantMainAdapter(Context context, List<RestaurantMainModel.SearchResult> listSubCategory, PrefsHelper prefsHelper) {
+    public RestaurantMainAdapter(Context context, List<RestaurantMainModel.SearchResult> listSubCategory, PrefsHelper prefsHelper,LanguageResponse model) {
         this.mContext = context;
         this.listCategory = listSubCategory;
         this.filterList = new ArrayList<>(listSubCategory);
         this.prefsHelper = prefsHelper;
         dotToCommaClass = new DotToCommaClass(context);
+        this.model=model;
     }
 
     @NonNull
@@ -270,7 +273,7 @@ public class RestaurantMainAdapter extends RecyclerView.Adapter<RestaurantMainAd
 
         if (!listCategory.get(position).getDiscountAvailable().equalsIgnoreCase("")) {
             holder.txt_discount_avail.setVisibility(View.VISIBLE);
-            holder.txt_discount_avail.setText(listCategory.get(position).getDiscountAvailable() + " % Off");
+            holder.txt_discount_avail.setText(listCategory.get(position).getDiscountAvailable() + " % "+model.getOff());
         } else {
             holder.txt_discount_avail.setVisibility(View.GONE);
         }

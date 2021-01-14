@@ -305,6 +305,7 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
 
                         Log.e("response--->", "success");
                         showProgress();
+
                         setCategoryInfo(searchResult.getMenuCat());
 //                        setAdapterCategory(searchResult.getMenuCat());
                         banner_progress.setVisibility(View.GONE);
@@ -325,7 +326,7 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
 
     private void setCategoryInfo(List<MenuCat> menuCat) {
         rcv_rest_details_list.setLayoutManager(new LinearLayoutManager(RestaurantDetails.this));
-        SectionDetailAdapter adapter = new SectionDetailAdapter(RestaurantDetails.this, menuCat);
+        SectionDetailAdapter adapter = new SectionDetailAdapter(RestaurantDetails.this, menuCat,model);
         rcv_rest_details_list.setAdapter(adapter);
         adapter.setClickListener(this);
         hideProgress();

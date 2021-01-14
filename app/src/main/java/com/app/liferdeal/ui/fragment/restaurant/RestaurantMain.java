@@ -12,8 +12,10 @@ import android.view.LayoutInflater;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -84,11 +86,15 @@ public class RestaurantMain extends Fragment implements View.OnClickListener, Cu
     private LanguageResponse model = new LanguageResponse();
     private Double currentLatitude, currentLongitude;
     private FilterInterface filterInterface;
+    LinearLayout linear_no_data;
+    Button btn_refresh;
+    List<CuisineList> cuisineLists=new ArrayList<>();
 
     public RestaurantMain(Double currentLatitude, Double currentLongitude,FilterInterface filterInterface) {
         this.currentLatitude = currentLatitude;
         this.currentLongitude = currentLongitude;
         this.filterInterface=filterInterface;
+
     }
 
     public RestaurantMain() {
@@ -143,6 +149,9 @@ public class RestaurantMain extends Fragment implements View.OnClickListener, Cu
         rcv_rest_list.setLayoutManager(mLayoutManager);
         rcv_rest_list.setItemAnimator(new DefaultItemAnimator());
         banner_progress.setVisibility(View.VISIBLE);
+        linear_no_data=v.findViewById(R.id.linear_no_data);
+        btn_refresh=v.findViewById(R.id.btn_refresh);
+        btn_refresh.setOnClickListener(this);
         //  Glide.with(getActivity()).load(Uri.parse(applogo)).into(home_icon);
 
         img_location.setOnClickListener(this);
@@ -212,9 +221,14 @@ public class RestaurantMain extends Fragment implements View.OnClickListener, Cu
                     @Override
                     public void onNext(CusineFilterModel searchResult) {
 
-
-                        setFilterAdapterCategory(searchResult.getCuisineList());
-                        banner_progress.setVisibility(View.GONE);
+                       if(cuisineLists.size()>0){
+                           cuisineLists.clear();
+                       }
+                       if(searchResult.getCuisineList()!=null) {
+                           cuisineLists.addAll(searchResult.getCuisineList());
+                           setFilterAdapterCategory();
+                           banner_progress.setVisibility(View.GONE);
+                       }
                     }
 
                     @Override
@@ -235,23 +249,37 @@ public class RestaurantMain extends Fragment implements View.OnClickListener, Cu
     private CusineFiltersAdapter adapterCategorys;
     private List<CuisineList> cuisineFilterList;
 
-    private void setFilterAdapterCategory(List<CuisineList> cuisineList) {
-        selectedList = new Boolean[cuisineList.size()];
+    private void setFilterAdapterCategory() {
+        selectedList = new Boolean[cuisineLists.size()];
         cuisineFilterList = new ArrayList<>();
-        cuisineFilterList.addAll(cuisineList);
-        if (cuisineList.size() > 0) {
+        cuisineFilterList.addAll(cuisineLists);
+        if (cuisineLists.size() > 0) {
             if(lists.size()>0){
-                for(int i=0;i<cuisineList.size();i++){
+                for(int i=0;i<cuisineLists.size();i++){
                     for(int j=0;j<lists.size();j++){
-                        if(lists.get(j).getId().equals(cuisineList.get(i).getId())){
-                            cuisineList.get(i).setSelected(true);
+                        if(lists.get(j).getId().equals(cuisineLists.get(i).getId())){
+                            cuisineLists.get(i).setSelected(true);
                         }
                     }
                 }
+                if(selected_cusines.size()>0){
+                    selected_cusines.clear();
+                }
+                for(int i=0;i<lists.size();i++){
+                    selected_cusines.add(lists.get(i).getSeoUrlCall());
+                }
+
+                Gson gson1 = new Gson();
+                filterData = gson1.toJson(selected_cusines, new TypeToken<ArrayList<String>>() {
+                }.getType());
+
+
+                getRestSearchInfo();
+
             }
 
             rvFilterlist.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
-            adapterCategorys = new CusineFiltersAdapter(getActivity(), cuisineList, selectedList);
+            adapterCategorys = new CusineFiltersAdapter(getActivity(), cuisineLists, selectedList);
             rvFilterlist.setAdapter(adapterCategorys);
             adapterCategorys.setClickListener(this);
         }
@@ -264,7 +292,7 @@ public class RestaurantMain extends Fragment implements View.OnClickListener, Cu
 
     private void setAdapterCategory(List<RestaurantMainModel.SearchResult> list) {
         mlist = list;
-        adapterCategory = new RestaurantMainAdapter(getActivity(), list, prefsHelper);
+        adapterCategory = new RestaurantMainAdapter(getActivity(), list, prefsHelper,model);
         rcv_rest_list.setAdapter(adapterCategory);
         // hideProgress();
     }
@@ -289,8 +317,10 @@ public class RestaurantMain extends Fragment implements View.OnClickListener, Cu
         if (fullAddress == null) {
             fullAddress = "";
         }
+        String url="https://www.lieferadeal.de/WebAppAPI/phpexpert_search.php?full_address="+CommonMethods.getStringDataInbase64(fullAddress)+"&current_city="+ CommonMethods.getStringDataInbase64(cityName)+"&current_postcode="+cityPostalcode+"&current_localty="+CommonMethods.getStringDataInbase64(cityState)+"&api_key="+prefsHelper.getPref(Constants.API_KEY)+"&lang_code="+prefsHelper.getPref(Constants.LNG_CODE)+"&current_lat="+String.valueOf(currentLatitude)+"&current_long="+String.valueOf(currentLatitude)+"&cuisine[]="+filterData;
+            Log.i("reason",url);
         observable = apiInterface.getSearchRestData(CommonMethods.getStringDataInbase64(fullAddress), CommonMethods.getStringDataInbase64(cityName), cityPostalcode,
-                CommonMethods.getStringDataInbase64(cityState), Constants.API_KEY, prefsHelper.getPref(Constants.LNG_CODE), String.valueOf(currentLatitude), String.valueOf(currentLongitude), filterData);
+                CommonMethods.getStringDataInbase64(cityState), prefsHelper.getPref(Constants.API_KEY), prefsHelper.getPref(Constants.LNG_CODE), String.valueOf(currentLatitude), String.valueOf(currentLongitude), filterData);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<RestaurantMainModel>() {
@@ -304,11 +334,16 @@ public class RestaurantMain extends Fragment implements View.OnClickListener, Cu
                         pbLoad.setVisibility(View.GONE);
                         if (searchResult.getSearchResult().size() > 0) {
                             setAdapterCategory(searchResult.getSearchResult());
-                            tvDataNotAvailable.setVisibility(View.GONE);
+                            linear_no_data.setVisibility(View.GONE);
                         } else {
                             setAdapterCategory(searchResult.getSearchResult());
-                            tvDataNotAvailable.setText(model.getDATAISNOTAVAILABLE());
-                            tvDataNotAvailable.setVisibility(View.VISIBLE);
+                            linear_no_data.setVisibility(View.VISIBLE);
+                            btn_refresh.setText(model.getBack_to_Restaurant_list());
+                            if(searchResult.getSuccessMsg()!=null){
+                                tvDataNotAvailable.setText(searchResult.getSuccessMsg());
+                            }
+
+
                         }
                         banner_progress.setVisibility(View.GONE);
                     }
@@ -383,6 +418,28 @@ public class RestaurantMain extends Fragment implements View.OnClickListener, Cu
                 }
 
                 break;
+            case R.id.btn_refresh:
+                if(filterData.length()>0)
+                {
+                    filterData="";
+                }
+                if(selected_cusines.size()>0){
+                    selected_cusines.clear();
+                }
+                if(lists.size()>0){
+                    lists.clear();
+                }
+                Gson gson1 = new Gson();
+                filterData = gson1.toJson(selected_cusines, new TypeToken<ArrayList<String>>() {
+                }.getType());
+if(cuisineLists.size()>0){
+    for(int j=0;j<cuisineLists.size();j++){
+        cuisineLists.get(j).setSelected(false);
+    }
+    setFilterAdapterCategory();
+}
+
+                getRestSearchInfo();
 
             default:
                 break;
@@ -416,13 +473,22 @@ public class RestaurantMain extends Fragment implements View.OnClickListener, Cu
             lists.add(cuisineLists.get(pos));
         }
         else{
-            lists.remove(cuisineLists.get(pos));
+            if(pos>=lists.size()) {
+                lists.remove(lists.size()-1);
+            }
+            else{
+                lists.remove(pos);
+            }
         }
         for(int i=0;i<lists.size();i++){
-            selected_cusines.add(lists.get(i).getCuisineName());
+            selected_cusines.add(lists.get(i).getSeoUrlCall());
         }
 
         adapterCategorys.notifyDataSetChanged();
+        if(filterData.length()>0)
+        {
+            filterData="";
+        }
         Gson gson1 = new Gson();
         filterData = gson1.toJson(selected_cusines, new TypeToken<ArrayList<String>>() {
         }.getType());

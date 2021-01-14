@@ -196,7 +196,7 @@ public class SavedAddressActivity extends AppCompatActivity implements DeleteAdd
     }
     public void showDeleteDialog(int id){
         androidx.appcompat.app.AlertDialog.Builder builder=new androidx.appcompat.app.AlertDialog.Builder(this);
-        builder.setMessage(model.getAlertText());
+        builder.setMessage(model.getAre_you_sure());
         builder.setPositiveButton(model.getOKText(), (dialog, which) -> {
             dialog.dismiss();
             deleteAddressCustomer(id);
@@ -212,7 +212,7 @@ public class SavedAddressActivity extends AppCompatActivity implements DeleteAdd
 progress_address.setVisibility(View.VISIBLE);
         apiInterface = RFClient.getClient().create(ApiInterface.class);
         Observable<ModelAddressList> observable = apiInterface.getSavedAddress(String.valueOf(currentLatitude), String.valueOf(currentLongitude),
-                prefsHelper.getPref(Constants.CUSTOMER_ID));
+                prefsHelper.getPref(Constants.CUSTOMER_ID),prefsHelper.getPref(Constants.LNG_CODE));
 
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -233,10 +233,10 @@ progress_address.setVisibility(View.VISIBLE);
                             tvNoData.setVisibility(View.GONE);
                         } else {
                             tvNoData.setVisibility(View.VISIBLE);
-                            tvNoData.setText(model.getDATAISNOTAVAILABLE());
+                            tvNoData.setText(searchResult.getSuccessMsg());
 
-                            Intent intent1 = new Intent(SavedAddressActivity.this, AddAddressActivity.class);
-                            startActivity(intent1);
+//                            Intent intent1 = new Intent(SavedAddressActivity.this, AddAddressActivity.class);
+//                            startActivity(intent1);
                         }
 
                     }
@@ -303,7 +303,7 @@ progress_address.setVisibility(View.VISIBLE);
     private void deleteAddressCustomer(int id) {
         showProgress();
         apiInterface = RFClient.getClient().create(ApiInterface.class);
-        Observable<DeleteAddressResponse> observable = apiInterface.deleteAddress(String.valueOf(id));
+        Observable<DeleteAddressResponse> observable = apiInterface.deleteAddress(String.valueOf(id),prefsHelper.getPref(Constants.LNG_CODE));
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<DeleteAddressResponse>() {

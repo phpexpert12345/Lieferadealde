@@ -199,11 +199,13 @@ public interface ApiInterface {
     @POST("phpexpert_customer_address_list.php")
     Observable<ModelAddressList> getSavedAddress(@Field("customer_long") String customer_long,
                                                  @Field("customer_lat") String customer_lat,
-                                                 @Field("CustomerId") String CustomerId);
+                                                 @Field("CustomerId") String CustomerId,
+                                                 @Field("lang_code") String lang_code);
 
     @FormUrlEncoded
     @POST("customer_address_delete.php")
-    Observable<DeleteAddressResponse> deleteAddress(@Field("CustomerAddressId") String CustomerAddressId);
+    Observable<DeleteAddressResponse> deleteAddress(@Field("CustomerAddressId") String CustomerAddressId,
+                                                    @Field("lang_code") String lang_code);
 
     @FormUrlEncoded
     @POST("phpexpert_customer_profile_inform.php")

@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.liferdeal.R;
+import com.app.liferdeal.model.LanguageModel;
+import com.app.liferdeal.model.LanguageResponse;
 import com.app.liferdeal.model.menuitems.MenuCat;
 import com.app.liferdeal.ui.interfaces.SelectMenuItem;
 import com.bumptech.glide.Glide;
@@ -24,10 +26,12 @@ public class SectionDetailAdapter extends RecyclerView.Adapter<SectionDetailAdap
     private List<MenuCat> listCategory;
     private Context mContext;
     private SelectMenuItem restaurantDetailsAdapterInterface;
+    private LanguageResponse model;
 
-    public SectionDetailAdapter(Context context, List<MenuCat> listCategory) {
+    public SectionDetailAdapter(Context context, List<MenuCat> listCategory,LanguageResponse model) {
         this.mContext = context;
         this.listCategory = listCategory;
+        this.model=model;
     }
 
     public void setClickListener(SelectMenuItem itemClickListener) {
@@ -57,7 +61,7 @@ public class SectionDetailAdapter extends RecyclerView.Adapter<SectionDetailAdap
             holder.shop_img_places_cat.setVisibility(View.GONE);
         }
         holder.rvItemList.setLayoutManager(new LinearLayoutManager(mContext));
-        RestaurantDetailsAdapter adapter = new RestaurantDetailsAdapter(mContext, listCategory.get(position).getSubItemsRecord(), listCategory.get(position).getRestaurantId(), listCategory.get(position).getName());
+        RestaurantDetailsAdapter adapter = new RestaurantDetailsAdapter(mContext, listCategory.get(position).getSubItemsRecord(), listCategory.get(position).getRestaurantId(), listCategory.get(position).getName(),model);
         holder.rvItemList.setAdapter(adapter);
         adapter.setClickListener(this);
     }

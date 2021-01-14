@@ -81,10 +81,12 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.Holder> 
         holder.tv_address.setText(listCategory.get(position).getRestaurantAddress());
         holder.txt_viewoderid.setText(listCategory.get(position).getOrderIdentifyno());
         holder.txt_order_status.setText(listCategory.get(position).getOrderStatusMsg());
-//        holder.txt_order_status.setTextColor(Color.parseColor(listCategory.get(position).getOrderStatusColorCode()));
+        if(listCategory.get(position).getOrderStatusColorCode()!=null) {
+        holder.txt_order_status.setTextColor(Color.parseColor(listCategory.get(position).getOrderStatusColorCode()));
+        }
         holder.txt_view_orderprice.setText(currencySymbol + dotToCommaClass.changeDot(listCategory.get(position).getOrdPrice()));
 
-        holder.txt_date_time.setText(listCategory.get(position).getOrderDate() + " " + listCategory.get(position).getOrderTime());
+        holder.txt_date_time.setText(listCategory.get(position).getOrderDate() + "/" + listCategory.get(position).getOrderTime());
         if (listCategory.get(position).getRestaurantLogo() != null) {
             Glide.with(mContext).load(Uri.parse(listCategory.get(position).getRestaurantLogo())).into(holder.iv_restaurant_logo);
         }
@@ -104,10 +106,9 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.Holder> 
                 mContext.startActivity(i);
             }
         });
-
         if (listCategory.get(position).getOrder_status_close().equalsIgnoreCase("1")) {
             holder.txt_btn_cancel.setVisibility(View.GONE);
-        } else {
+        } else if(listCategory.get(position).getOrder_status_close().equalsIgnoreCase("0")) {
             holder.txt_btn_cancel.setVisibility(View.VISIBLE);
         }
         holder.txt_btn_cancel.setOnClickListener(new View.OnClickListener() {

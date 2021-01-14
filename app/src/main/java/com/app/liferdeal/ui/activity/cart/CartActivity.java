@@ -725,7 +725,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 }
             });
 
-            instructions = CommonMethods.getStringDataInbase64(holder.etInstruction.getText().toString());
             double pp = Double.parseDouble(rr.get(position).getPrice());
             holder.tvItemPrice.setText(currencySymbol + dotToCommaClass.changeDot(String.format("%.2f", pp)));
 //            selectedPizzaItemPrice = holder.tvItemPrice.getText().toString();

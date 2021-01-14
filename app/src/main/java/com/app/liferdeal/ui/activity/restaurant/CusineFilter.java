@@ -62,7 +62,7 @@ public class CusineFilter extends AppCompatActivity implements View.OnClickListe
     private ProgressBar banner_progress;
     private LanguageResponse model = new LanguageResponse();
     Intent intent;
-    List<CuisineList> lists;
+    List<CuisineList> lists=new ArrayList<>();
     List<CuisineList>all_list=new ArrayList<>();
     private SharedPreferencesData sharedPreferencesData;
 
@@ -212,8 +212,9 @@ public class CusineFilter extends AppCompatActivity implements View.OnClickListe
                 lists.add(listcategory.get(pos));
             }
             else{
-                lists.remove(listcategory.get(pos));
+                lists.remove(pos);
             }
+
         }
 
        /* Set<String> set = new HashSet<String>();

@@ -217,6 +217,7 @@
         android:layout_marginLeft="@dimen/_10sdp"
         android:layout_marginRight="@dimen/_10sdp"
         android:layout_width="match_parent"
+        android:textColor="@color/colorBlack"
         android:backgroundTint="@color/color_lighteGray"
         android:layout_height="wrap_content"/>
 

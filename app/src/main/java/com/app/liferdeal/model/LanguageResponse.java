@@ -1343,6 +1343,30 @@ public class LanguageResponse {
     @Expose
     private String please_wait_text;
 
+    public String getOff() {
+        return off;
+    }
+
+    public void setOff(String off) {
+        this.off = off;
+    }
+
+    @SerializedName("OffText")
+    @Expose
+    private String off="";
+
+    public String getBack_to_Restaurant_list() {
+        return Back_to_Restaurant_list;
+    }
+
+    public void setBack_to_Restaurant_list(String back_to_Restaurant_list) {
+        Back_to_Restaurant_list = back_to_Restaurant_list;
+    }
+
+    @SerializedName("Back_to_Restaurant_list")
+    @Expose
+    private String Back_to_Restaurant_list="";
+
     public String getPlease_wait_text() {
         return please_wait_text;
     }

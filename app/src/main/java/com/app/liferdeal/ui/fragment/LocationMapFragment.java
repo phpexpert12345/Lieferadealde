@@ -166,6 +166,7 @@ public class LocationMapFragment extends AppCompatActivity implements OnMapReady
 //        edt_search.setText(model.getSearchForLocation());
 //        ed_search.setHint(model.getSearchForLocation());
         try {
+
             if (model.getSearchForLocation() != null)
                 search.setText("" + model.getSearchLocation().trim());
             else {

@@ -140,7 +140,7 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
     private void getSavedAddress() {
         apiInterface = RFClient.getClient().create(ApiInterface.class);
         Observable<ModelAddressList> observable = apiInterface.getSavedAddress(String.valueOf(currentLatitude), String.valueOf(currentLongitude),
-                prefsHelper.getPref(Constants.CUSTOMER_ID));
+                prefsHelper.getPref(Constants.CUSTOMER_ID),prefsHelper.getPref(Constants.LNG_CODE));
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ModelAddressList>() {
@@ -158,7 +158,7 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
                             tvNoData.setVisibility(View.GONE);
                         } else {
                             tvNoData.setVisibility(View.VISIBLE);
-                            tvNoData.setText(model.getDATAISNOTAVAILABLE());
+                            tvNoData.setText(searchResult.getSuccessMsg());
                         }
 //                        hideProgress();
                     }
@@ -264,7 +264,7 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
     private void deleteAddressCustomer(int id) {
         showProgress();
         apiInterface = RFClient.getClient().create(ApiInterface.class);
-        Observable<DeleteAddressResponse> observable = apiInterface.deleteAddress(String.valueOf(id));
+        Observable<DeleteAddressResponse> observable = apiInterface.deleteAddress(String.valueOf(id),prefsHelper.getPref(Constants.LNG_CODE));
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<DeleteAddressResponse>() {

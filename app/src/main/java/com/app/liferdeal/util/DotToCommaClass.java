@@ -12,7 +12,12 @@ public class DotToCommaClass {
     public String changeDot(String string){
         //prefsHelper=new PrefsHelper(context);
         //if (prefsHelper.getPref(Constants.LNG_CODE).toString().equalsIgnoreCase("de")){
-            string=string.replace(".",",");
+        if(string.contains(".")) {
+            string = string.replace(".", ",");
+        }
+        else{
+            string=string+",00";
+        }
 
        // }
         return string;

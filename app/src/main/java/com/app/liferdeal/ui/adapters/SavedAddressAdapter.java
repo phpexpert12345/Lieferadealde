@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.liferdeal.R;
@@ -61,7 +62,8 @@ public class SavedAddressAdapter extends RecyclerView.Adapter<SavedAddressAdapte
             }
         });
 
-        holder.rbAddressName.setOnClickListener(v -> {
+
+        holder.constraint_address.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onItemSelect(position);
             }
@@ -77,6 +79,7 @@ public class SavedAddressAdapter extends RecyclerView.Adapter<SavedAddressAdapte
         private MaterialTextView tvContactAddress, tvLocation;
         private MaterialRadioButton rbAddressName;
         private AppCompatImageView ivDelete;
+        private ConstraintLayout constraint_address;
 
         public Holder(@NonNull View itemView) {
             super(itemView);
@@ -84,6 +87,7 @@ public class SavedAddressAdapter extends RecyclerView.Adapter<SavedAddressAdapte
             tvLocation = itemView.findViewById(R.id.tvLocation);
             ivDelete = itemView.findViewById(R.id.ivDelete);
             rbAddressName = itemView.findViewById(R.id.rbAddressName);
+            constraint_address=itemView.findViewById(R.id.constraint_address);
         }
     }
 }

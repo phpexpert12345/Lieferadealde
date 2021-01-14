@@ -67,15 +67,16 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnAddAddress"
-        android:layout_width="@dimen/dp_50"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
         android:text="+"
+        android:textStyle="bold"
         android:background="@drawable/button_rounded"
         android:layout_alignParentEnd="true"
         android:layout_above="@+id/tvDeliveryAdd"
         android:layout_margin="@dimen/dp_10"
         android:textColor="@color/colorWhite"
-        android:textSize="@dimen/sp_30"/>
+        android:textSize="30sp"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvDeliveryAdd"

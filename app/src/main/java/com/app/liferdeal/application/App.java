@@ -82,6 +82,7 @@ public class App extends Application {
         SharedPreferences preferences = context.getSharedPreferences(Constants.LANGUAGE_DATA, Context.MODE_PRIVATE);
         Gson gson = new Gson();
         String json = preferences.getString(Constants.LANGUAGE_FORM_DATA, "");
+        Log.i("reason",json);
         return gson.fromJson(json, LanguageResponse.class);
     }
 }

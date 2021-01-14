@@ -4,6 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.net.Uri;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.style.ClickableSpan;
+import android.text.style.StrikethroughSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +24,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.liferdeal.R;
+import com.app.liferdeal.model.LanguageResponse;
 import com.app.liferdeal.model.menuitems.SubItemsRecord;
 import com.app.liferdeal.ui.activity.restaurant.AddClickDetails;
 import com.app.liferdeal.ui.interfaces.SelectMenuItem;
@@ -37,6 +44,7 @@ public class RestaurantDetailsAdapter extends RecyclerView.Adapter<RestaurantDet
     private String mainClickRestId, mainClickRestName;
     private PrefsHelper prefsHelper;
     DotToCommaClass dotToCommaClass;
+    LanguageResponse model;
 
     public interface RestaurantDetailsAdapterInterface {
         void getClickData(int otemId, String itemName);
@@ -46,13 +54,14 @@ public class RestaurantDetailsAdapter extends RecyclerView.Adapter<RestaurantDet
         this.restaurantDetailsAdapterInterface = itemClickListener;
     }
 
-    public RestaurantDetailsAdapter(Context context, List<SubItemsRecord> listFilterSubCategory, String maniRestClickId, String mainRestClickName) {
+    public RestaurantDetailsAdapter(Context context, List<SubItemsRecord> listFilterSubCategory, String maniRestClickId, String mainRestClickName,  LanguageResponse model) {
         this.mContext = context;
         this.listFilterSubCategory = listFilterSubCategory;
         this.mainClickRestId = maniRestClickId;
         this.mainClickRestName = mainRestClickName;
         prefsHelper = new PrefsHelper(mContext);
         dotToCommaClass=new DotToCommaClass(context);
+        this.model=model;
     }
 
     @NonNull
@@ -89,7 +98,8 @@ public class RestaurantDetailsAdapter extends RecyclerView.Adapter<RestaurantDet
             }
         });
 
-        holder.tvCost.setText(dotToCommaClass.changeDot(listFilterSubCategory.get(position).getDiscountFoodAmount()) + "% discount applied. Original price " + dotToCommaClass.changeDot(holder.tv_item_cost_old.getText().toString()));
+setSpan(holder,dotToCommaClass.changeDot(listFilterSubCategory.get(position).getDiscountFoodAmount()) + "% "+model.getDiscountAppliedOriginalPrice(),dotToCommaClass.changeDot(holder.tv_item_cost_old.getText().toString()));
+//        holder.tvCost.setText(dotToCommaClass.changeDot(listFilterSubCategory.get(position).getDiscountFoodAmount()) + "% "+model.getDiscountAppliedOriginalPrice() + dotToCommaClass.changeDot(holder.tv_item_cost_old.getText().toString()));
 
         if (listFilterSubCategory.get(position).getFoodType() != null) {
             Glide.with(mContext).load(Uri.parse(listFilterSubCategory.get(position).getFoodType()))
@@ -234,5 +244,41 @@ public class RestaurantDetailsAdapter extends RecyclerView.Adapter<RestaurantDet
             iv_minus = itemView.findViewById(R.id.iv_minus);
 
         }
+    }
+    public void setSpan(Holder holder,String firstWord,String span){
+        SpannableStringBuilder ssb = new SpannableStringBuilder(firstWord);
+        ssb.setSpan(
+                new ClickableSpan() {
+                    @Override
+                    public void onClick(@NonNull View widget) {
+
+                    }
+
+                    @Override
+                    public void updateDrawState(@NonNull TextPaint ds) {
+                        super.updateDrawState(ds);
+                        ds.setUnderlineText(false);
+                    }
+                },            // the span to add
+                0,                                 // the start of the span (inclusive)
+                ssb.length(),                      // the end of the span (exclusive)
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ssb.append(" ");
+
+// Create a span that will strikethrough the text
+        StrikethroughSpan strikethroughSpan = new StrikethroughSpan();
+
+// Add the secondWord and apply the strikethrough span to only the second word
+        ssb.append(span);
+        ssb.setSpan(
+                strikethroughSpan,
+                ssb.length() - span.length(),
+                ssb.length(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+// Set the TextView text and denote that it is Editable
+// since it's a SpannableStringBuilder
+        holder.tvCost.setText(ssb, TextView.BufferType.EDITABLE);
+
     }
 }

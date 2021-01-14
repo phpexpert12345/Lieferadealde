@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -141,7 +142,7 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     public void showProgress() {
-        progressDialog.setMessage(model.getPlease_wait_text().trim() + "...");
+        progressDialog.setMessage("Please wait" + "...");
         progressDialog.setCancelable(false);
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
@@ -161,11 +162,24 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
     public void cancleButton(String orderId, Context context) {
         Log.e("Called=", orderId);
         setRestaurantCancel(orderId, context);
+//        showCancelDialog(orderId, context);
+
+    }
+    public void showCancelDialog(String orderId,Context context){
+        AlertDialog.Builder builder=new AlertDialog.Builder(MyOrderActivity.this);
+        builder.setMessage(model.getAre_you_sure());
+        builder.setPositiveButton(model.getOKText(),(dialog, which) -> {
+            dialog.dismiss();
+            setRestaurantCancel(orderId, MyOrderActivity.this);
+        }).setNegativeButton(model.getCancel(),(dialog, which) -> {
+            dialog.dismiss();
+        }).create().show();
     }
 
     private void setRestaurantCancel(String orderId, Context context) {
         prefsHelper = new PrefsHelper(context);
         apiInterface = RFClient.getClient().create(ApiInterface.class);
+//        showProgress();
         Observable<OrderCancelModel> observable = apiInterface.setOrderCancel(prefsHelper.getPref(Constants.API_KEY), prefsHelper.getPref(Constants.LNG_CODE), orderId);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -177,7 +191,10 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
 
                     @Override
                     public void onNext(OrderCancelModel searchResult) {
-                        Toast.makeText(context, searchResult.getErrorMsg().toString(), Toast.LENGTH_LONG).show();
+//                        hideProgress();
+                        if(searchResult.getErrorMsg()!=null) {
+                            Toast.makeText(context, searchResult.getErrorMsg().toString(), Toast.LENGTH_LONG).show();
+                        }
                         //getRestSearchInfoInside(context);
                         getRestSearchInfo();
 
