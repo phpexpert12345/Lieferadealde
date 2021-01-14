@@ -44,7 +44,7 @@ public class Utility {
   /*  public static RFInterface getRetrofitInterface() {
         return RFClient.getClient().create(RFInterface.class);
     }*/
-    public static void ShowHidePassword(EditText editText){
+    public static void ShowHidePassword(EditText editText,int type){
         editText.setOnTouchListener((v, event) -> {
             final int DRAWABLE_LEFT = 0;
             final int DRAWABLE_TOP = 1;
@@ -55,12 +55,22 @@ public class Utility {
                 if(event.getRawX() >= (editText.getRight() - editText.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
                     if(editText.getTransformationMethod()instanceof PasswordTransformationMethod){
                         editText.setTransformationMethod(null);
-                        editText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.passwordhd, 0, R.drawable.ic_visibility_off, 0);
+                        if(type==1) {
+                            editText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_visibility_off, 0);
+                        }
+                        else{
+                            editText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.passwordhd, 0, R.drawable.ic_visibility_off, 0);
+                        }
 
                     }
                     else{
                         editText.setTransformationMethod(new PasswordTransformationMethod());
-                        editText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.passwordhd, 0, R.drawable.ic_visibility, 0);
+                        if(type==1) {
+                            editText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_visibility, 0);
+                        }
+                        else{
+                            editText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.passwordhd, 0, R.drawable.ic_visibility, 0);
+                        }
                     }
 
                     return true;

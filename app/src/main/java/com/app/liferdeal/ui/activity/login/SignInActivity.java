@@ -105,7 +105,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                 tvSkip.setText(model.getSkip());
             }
             edt_usrPass.setTransformationMethod(new PasswordTransformationMethod());
-Utility.ShowHidePassword(edt_usrPass);
+Utility.ShowHidePassword(edt_usrPass,0);
             btn_login.setOnClickListener(this);
             txt_forgot_pass.setOnClickListener(this);
             tvSkip.setOnClickListener(this);

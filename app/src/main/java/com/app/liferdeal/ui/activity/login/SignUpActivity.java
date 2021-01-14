@@ -94,7 +94,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 tvSignUp.setText(model.getSIGNUP());
             }
             edt_pass.setTransformationMethod(new PasswordTransformationMethod());
-            Utility.ShowHidePassword(edt_pass);
+            Utility.ShowHidePassword(edt_pass,1);
 
             img_back.setOnClickListener(this);
             btn_signup.setOnClickListener(this);
