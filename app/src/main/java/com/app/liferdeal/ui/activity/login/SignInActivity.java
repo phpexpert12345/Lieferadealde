@@ -32,6 +32,7 @@ import com.app.liferdeal.model.loginsignup.SignInModel;
 import com.app.liferdeal.network.retrofit.ApiInterface;
 import com.app.liferdeal.network.retrofit.RFClient;
 import com.app.liferdeal.ui.activity.MainActivity;
+import com.app.liferdeal.ui.activity.cart.PayCheckOutActivity;
 import com.app.liferdeal.ui.activity.restaurant.RestaurantBookTable;
 import com.app.liferdeal.ui.activity.restaurant.RestaurantDetails;
 import com.app.liferdeal.ui.activity.splash.SplashActivity;
@@ -42,6 +43,7 @@ import com.app.liferdeal.util.SharedPreferencesData;
 import com.app.liferdeal.util.Utility;
 import com.bumptech.glide.Glide;
 
+import java.util.Currency;
 import java.util.regex.Pattern;
 
 import io.reactivex.Observable;
@@ -62,6 +64,9 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     private AppCompatTextView tvSignIn;
     private String clickRestId = "", restourantBookLimit = "", from = "";
     private SharedPreferencesData sharedPreferencesData;
+    String restId,TotalPrice, subTotalPrice,strMainRestName,strMainRestLogo,pizzaItemid,strsizeid,extraItemID,delivery_date,FoodCosts,quantity;
+    String deliveryChargeValue,SeviceFeesValue,ServiceFees,ServiceFeesType,PackageFeesType,PackageFees,PackageFeesValue,SalesTaxAmount,VatTax;
+    String order_type,pizzaQuantity,Pizzaname,selectedPizzaItemPrice,instructions,rest_address;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,6 +76,40 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
             clickRestId = getIntent().getStringExtra("clickRestId");
             restourantBookLimit = getIntent().getStringExtra("RESTBOOKLIMIT");
             from = getIntent().getStringExtra("from");
+            if(from!=null){
+                if(from.equalsIgnoreCase("CartCheckout")){
+                    restId = getIntent().getStringExtra("RestId");
+                    TotalPrice = getIntent().getStringExtra("TotalPrice");
+
+                    subTotalPrice = getIntent().getStringExtra("SubTotalPrice");
+                    strMainRestName = getIntent().getStringExtra("RESTName");
+                    strMainRestLogo = getIntent().getStringExtra("RESTLOGO");
+                    pizzaItemid = getIntent().getStringExtra("subPizzaItemId");
+                    strsizeid = getIntent().getStringExtra("SIZEITEMID");
+                    extraItemID = getIntent().getStringExtra("globTempExtraItemidWithSizeIdd");
+                    delivery_date = getIntent().getStringExtra("delivery_date");
+                    FoodCosts = getIntent().getStringExtra("food_cost");
+                    quantity = getIntent().getStringExtra("quantity");
+                    deliveryChargeValue = getIntent().getStringExtra("deliveryChargeValue");
+                    SeviceFeesValue = getIntent().getStringExtra("SeviceFeesValue");
+                    ServiceFees = getIntent().getStringExtra("ServiceFees");
+                    ServiceFeesType = getIntent().getStringExtra("ServiceFeesType");
+                    PackageFeesType = getIntent().getStringExtra("PackageFeesType");
+                    PackageFees = getIntent().getStringExtra("PackageFees");
+                    PackageFeesValue = getIntent().getStringExtra("PackageFeesValue");
+                    SalesTaxAmount = getIntent().getStringExtra("SalesTaxAmount");
+                    VatTax = getIntent().getStringExtra("VatTax");
+                    order_type = getIntent().getStringExtra("deliveryType");
+                    pizzaQuantity = getIntent().getStringExtra("pizzaQuantity");
+                    Pizzaname = getIntent().getStringExtra("Pizzaname");
+                    selectedPizzaItemPrice = getIntent().getStringExtra("selectedPizzaItemPrice");
+                    instructions = getIntent().getStringExtra("instructions");
+                    rest_address=getIntent().getStringExtra("rest_address");
+
+
+                }
+            }
+
 
         }
 
@@ -129,7 +168,7 @@ Utility.ShowHidePassword(edt_usrPass,0);
         switch (view.getId()) {
             case R.id.img_back:
                 if(from!=null) {
-                    if (from.equalsIgnoreCase("profile")) {
+                    if (from.equalsIgnoreCase("profile")||from.equalsIgnoreCase("sideMenu")||from.equalsIgnoreCase("Home")) {
                         Intent intent = new Intent(this, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -141,6 +180,7 @@ Utility.ShowHidePassword(edt_usrPass,0);
                         booktable.putExtra("RESTBOOKLIMIT", restourantBookLimit);
                         startActivity(booktable);
                     }
+
                 }
                 else{
                     Intent intent = new Intent(this, MainActivity.class);
@@ -242,8 +282,45 @@ Utility.ShowHidePassword(edt_usrPass,0);
                     public void onNext(LanguageResponse response) {
                         hideProgress();
                         App.addLangToGson(SignInActivity.this, response);
-                        Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-                        startActivity(intent);
+                        if (from != null) {
+                            if(from.equalsIgnoreCase("CartCheckout")) {
+
+                                Intent intent = new Intent(SignInActivity.this, PayCheckOutActivity.class);
+                                intent.putExtra("RestId",restId);
+                                intent.putExtra("TotalPrice",TotalPrice);
+                                intent.putExtra("SubTotalPrice",subTotalPrice);
+                                intent.putExtra("RESTName",strMainRestName);
+                                intent.putExtra("RESTLOGO",strMainRestLogo);
+                                intent.putExtra("subPizzaItemId",pizzaItemid);
+                                intent.putExtra("SIZEITEMID",strsizeid);
+                                intent.putExtra("globTempExtraItemidWithSizeIdd",extraItemID);
+                                intent.putExtra("delivery_date",delivery_date);
+                                intent.putExtra("food_cost",FoodCosts);
+                                intent.putExtra("quantity",quantity);
+                                intent.putExtra("deliveryChargeValue",deliveryChargeValue);
+                                intent.putExtra("SeviceFeesValue",SeviceFeesValue);
+                                intent.putExtra("ServiceFeesType",ServiceFeesType);
+                                intent.putExtra("PackageFeesType",PackageFeesType);
+                                intent.putExtra("PackageFees",PackageFees);
+                                intent.putExtra("PackageFeesValue",PackageFeesValue);
+                                intent.putExtra("SalesTaxAmount",SalesTaxAmount);
+                                intent.putExtra("VatTax",VatTax);
+                                intent.putExtra("deliveryType",order_type);
+                                intent.putExtra("pizzaQuantity",pizzaQuantity);
+                                intent.putExtra("Pizzaname",Pizzaname);
+                                intent.putExtra("selectedPizzaItemPrice",selectedPizzaItemPrice);
+                                intent.putExtra("instructions",instructions);
+                                intent.putExtra("rest_address",rest_address);
+
+                                startActivity(intent);
+                            }
+                            else{
+                                startActivity(new Intent(SignInActivity.this, MainActivity.class));
+                            }
+                    }
+                        else{
+                            startActivity(new Intent(SignInActivity.this, MainActivity.class));
+                        }
                         finish();
 //                        btn_get_started.setText(response.);
                     }
@@ -389,11 +466,36 @@ Utility.ShowHidePassword(edt_usrPass,0);
             booktable.putExtra("clickRestId", clickRestId);
             booktable.putExtra("RESTBOOKLIMIT", restourantBookLimit);
             startActivity(booktable);
-        } else {
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        } else if(from != null && from.equalsIgnoreCase("CartCheckout")) {
+            Intent intent = new Intent(this, PayCheckOutActivity.class);
+            intent.putExtra("RestId",restId);
+            intent.putExtra("totalPrice",TotalPrice);
+            intent.putExtra("SubTotalPrice",subTotalPrice);
+            intent.putExtra("RESTName",strMainRestName);
+            intent.putExtra("RESTLOGO",strMainRestLogo);
+            intent.putExtra("subPizzaItemId",pizzaItemid);
+            intent.putExtra("SIZEITEMID",strsizeid);
+            intent.putExtra("globTempExtraItemidWithSizeIdd",extraItemID);
+            intent.putExtra("delivery_date",delivery_date);
+            intent.putExtra("food_cost",FoodCosts);
+            intent.putExtra("quantity",quantity);
+            intent.putExtra("deliveryChargeValue",deliveryChargeValue);
+            intent.putExtra("SeviceFeesValue",SeviceFeesValue);
+            intent.putExtra("ServiceFeesType",ServiceFeesType);
+            intent.putExtra("PackageFeesType",PackageFeesType);
+            intent.putExtra("PackageFees",PackageFees);
+            intent.putExtra("PackageFeesValue",PackageFeesValue);
+            intent.putExtra("SalesTaxAmount",SalesTaxAmount);
+            intent.putExtra("VatTax",VatTax);
+            intent.putExtra("deliveryType",order_type);
+            intent.putExtra("pizzaQuantity",pizzaQuantity);
+            intent.putExtra("Pizzaname",Pizzaname);
+            intent.putExtra("selectedPizzaItemPrice",selectedPizzaItemPrice);
+            intent.putExtra("instructions",instructions);
             startActivity(intent);
+        }
+        else{
+            startActivity(new Intent(this,MainActivity.class));
         }
 
         finish();

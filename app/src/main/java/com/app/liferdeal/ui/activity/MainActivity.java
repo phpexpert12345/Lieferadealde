@@ -173,8 +173,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn_sign = findViewById(R.id.btn_sign);
         // statusBarColor();
         AddExtraActivity.cart_Item_number = 0;
+
         database = new Database(MainActivity.this);
-        database.delete();
+
+        if(!authPreference.isLoggedIn()){
+            database.delete();
+        }
 //      database.deal_delete();
         mTitle = mDrawerTitle = getTitle();
         mNavigationDrawerItemTitles = getResources().getStringArray(R.array.navigation_drawer_items_array);

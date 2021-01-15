@@ -260,13 +260,12 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
 
 
         if (getIntent() != null) {
-            totalPrice = getIntent().getStringExtra("totalPrice");
-            tvToPayPrice.setText(currencySymbol + dotToCommaClass.changeDot(String.format("%.2f", Double.parseDouble(totalPrice))));
+
+
 
             restId = getIntent().getStringExtra("RestId");
             TotalPrice = getIntent().getStringExtra("TotalPrice");
             order_price = TotalPrice;
-
             subTotalPrice = getIntent().getStringExtra("SubTotalPrice");
             subTotalAmount = subTotalPrice;
             strMainRestName = getIntent().getStringExtra("RESTName");
@@ -782,6 +781,9 @@ hideProgress();
                 }
                 if(toatl_price>0.0){
                     subTotalAmount= String.valueOf(toatl_price);
+                    double delivery= Double.parseDouble(deliveryChargeValue);
+                    double total=toatl_price+delivery;
+                    tvToPayPrice.setText(currencySymbol + dotToCommaClass.changeDot(String.format("%.2f", total)));
                     FoodCosts=subTotalAmount;
                 }
                 if(extraItemid3.length()>0){

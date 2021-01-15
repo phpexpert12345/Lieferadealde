@@ -286,6 +286,32 @@ public class CartCheckout extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.tv_signIn:
                 Intent intent = new Intent(CartCheckout.this, SignInActivity.class);
+                intent.putExtra("RestId",restId);
+                intent.putExtra("TotalPrice",TotalPrice);
+                intent.putExtra("SubTotalPrice",subTotalPrice);
+                intent.putExtra("RESTName",strMainRestName);
+                intent.putExtra("RESTLOGO",strMainRestLogo);
+                intent.putExtra("subPizzaItemId",pizzaItemid);
+                intent.putExtra("SIZEITEMID",strsizeid);
+                intent.putExtra("globTempExtraItemidWithSizeIdd",extraItemID);
+                intent.putExtra("delivery_date",delivery_date);
+                intent.putExtra("food_cost",FoodCosts);
+                intent.putExtra("quantity",quantity);
+                intent.putExtra("deliveryChargeValue",deliveryChargeValue);
+                intent.putExtra("SeviceFeesValue",SeviceFeesValue);
+                intent.putExtra("ServiceFeesType",ServiceFeesType);
+                intent.putExtra("PackageFeesType",PackageFeesType);
+                intent.putExtra("PackageFees",PackageFees);
+                intent.putExtra("PackageFeesValue",PackageFeesValue);
+                intent.putExtra("SalesTaxAmount",SalesTaxAmount);
+                intent.putExtra("VatTax",VatTax);
+                intent.putExtra("deliveryType",order_type);
+                intent.putExtra("pizzaQuantity",pizzaQuantity);
+                intent.putExtra("Pizzaname",Pizzaname);
+                intent.putExtra("selectedPizzaItemPrice",selectedPizzaItemPrice);
+                intent.putExtra("instructions",instructions);
+                intent.putExtra("rest_address",rest_address);
+                intent.putExtra("from","CartCheckout");
                 startActivity(intent);
                 break;
 
