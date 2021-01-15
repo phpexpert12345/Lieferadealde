@@ -13,10 +13,14 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.liferdeal.R;
+import com.app.liferdeal.adapter.DetailOrderAdapter;
 import com.app.liferdeal.application.App;
 import com.app.liferdeal.model.LanguageResponse;
+import com.app.liferdeal.model.OrderFoodItem;
 import com.app.liferdeal.model.restaurant.MYOrderTrackDetailModel;
 import com.app.liferdeal.network.retrofit.ApiInterface;
 import com.app.liferdeal.network.retrofit.RFClient;
@@ -24,7 +28,9 @@ import com.app.liferdeal.util.Constants;
 import com.app.liferdeal.util.DotToCommaClass;
 import com.app.liferdeal.util.PrefsHelper;
 
+import java.util.ArrayList;
 import java.util.Currency;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -83,8 +89,18 @@ public class OrderTrackActivity extends AppCompatActivity implements View.OnClic
     TextView txtDeliveredDate;
     @BindView(R.id.tvWrite)
     TextView tvWrite;
-
+    @BindView(R.id.txt_payment_mode)
+     TextView txt_payment_mode;
+    @BindView(R.id.txt_payment_status)
+    TextView txt_payment_status;
+    @BindView(R.id.txt_restro_name)
+    TextView txt_restro_name;
+    @BindView(R.id.txt_restro_address)
+    TextView txt_restro_address;
+    @BindView(R.id.recycler_food_items)
+    RecyclerView recycler_food_items;
     private String currencySymbol;
+    List<OrderFoodItem> foodItems=new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -120,20 +136,37 @@ public class OrderTrackActivity extends AppCompatActivity implements View.OnClic
             tvFoodItems = findViewById(R.id.tvFoodItems);
             txt_view_sub_menu = findViewById(R.id.txt_view_sub_menu);
 
-            tvMyOrder.setText(model.getMyOrder());
+            tvMyOrder.setText(model.getTrack());
             txt_orderdattime.setText(model.getSubtotal());
             tvFoodItems.setText(model.getFoodItems() + "-");
             txt_vie_menu.setText(model.getDeliveredTo() + "-");
             txt_view_sub_menu.setText(model.getOrderComplete() + "-");
             tvWrite.setText(model.getWriteAReview());
+            txt_payment_mode.setText(model.getPayment());
 
             strordernumber = getIntent().getStringExtra("orderid");
+            if(getIntent().hasExtra("food_items")){
+                foodItems=getIntent().getParcelableArrayListExtra("food_items");
+                if(foodItems.size()>0){
+                    setAdapterCategory(foodItems);
+                }
+            }
             img_back.setOnClickListener(this);
             // txt_btn_track.setOnClickListener(this);
             getOrderDetails();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+    private void setAdapterCategory(List<OrderFoodItem> list) {
+        if(list!=null) {
+            if(list.size()>0) {
+                recycler_food_items.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                DetailOrderAdapter adapterCategory = new DetailOrderAdapter(this, list);
+                recycler_food_items.setAdapter(adapterCategory);
+            }
+        }
+        // hideProgress();
     }
 
     @Override
@@ -175,6 +208,7 @@ public class OrderTrackActivity extends AppCompatActivity implements View.OnClic
                         } else {
                             rvWriteAReview.setVisibility(View.GONE);
                         }
+
                         restId = String.valueOf(searchResult.getOrderDetailItem().get(0).getResid());
                         orderNoSend = searchResult.getOrderDetailItem().get(0).getOrderIdentifyno();
                         String orderstatusmsg = searchResult.getOrderDetailItem().get(0).getOrderStatusMsg();
@@ -184,6 +218,17 @@ public class OrderTrackActivity extends AppCompatActivity implements View.OnClic
                         String resuestatdate = searchResult.getOrderDetailItem().get(0).getRequestAtDate();
                         String resuestattime = searchResult.getOrderDetailItem().get(0).getRequestAtTime();
                         String customercity = searchResult.getOrderDetailItem().get(0).getCustomerCity();
+                        String payment_mode=searchResult.getOrderDetailItem().get(0).getPaymentMethod();
+                        txt_payment_status.setText(payment_mode);
+                        String restro_address=searchResult.getOrderDetailItem().get(0).getRestaurantAddress();
+                        txt_restro_name.setText(restname);
+                        txt_restro_address.setText(restro_address);
+                        if(orderstatusmsg.equalsIgnoreCase("Delivered")){
+                            txt_delivered_city.setText(searchResult.getOrderDetailItem().get(0).getCustomerAddress());
+                        }
+                        else {
+                            txt_delivered_city.setText(restro_address);
+                        }
 
                         String firstStatus = "", secondStatus = "", thirdStatus = "";
                         String firstDate = "", secondDate = "", thirdDate = "";

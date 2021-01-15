@@ -108,7 +108,7 @@ public class CartCheckout extends AppCompatActivity implements View.OnClickListe
             PaymentProcessingFees="", deliveryChargeValueType="", WebsiteCodePrice="", WebsiteCodeType="", WebsiteCodeNo="", preorderTime="",
             GiftCardPay="", WalletPay="", loyptamount="", table_number_assign="", customer_country="", group_member_id="", loyltPnts="", branch_id="", FoodCosts,
             getTotalItemDiscount="", getFoodTaxTotal7="", getFoodTaxTotal19="", TotalSavedDiscount="", discountOfferFreeItems="", number_of_people="", customer_allow_register, address,
-            street="", floor_no="", zipcode, phone, email, name_customer, city, mealID="", mealquqntity="", mealPrice="", mealItemExtra="", mealItemOption="";
+            street="", floor_no="", zipcode, phone, email, name_customer, city, mealID="", mealquqntity="", mealPrice="", mealItemExtra="", mealItemOption="",rest_address="";
 
     DotToCommaClass dotToCommaClass;
     private AppCompatTextView tvHaveAccount, tvDeliverAdd, tvPersonalDetails, tvplacing, note2, tvPlsSelectTime, tvPayWith, tvPaypal, tvByClicking, tvToAid;
@@ -126,7 +126,7 @@ public class CartCheckout extends AppCompatActivity implements View.OnClickListe
     ArrayList<RaviCartModle> raviCartModles=new ArrayList<>();
     String Price;
     String extraItemId1;
-    String extraItemId2;
+    String extraItemId2, extra_toppings="";
     String item_Id;
 
     @Override
@@ -250,6 +250,7 @@ public class CartCheckout extends AppCompatActivity implements View.OnClickListe
         instructions = getIntent().getStringExtra("instructions");
         customer_allow_register = "yes";
         payment_type = "cash";
+        rest_address=getIntent().getStringExtra("rest_address");
         Currency hh = Currency.getInstance("" + prefsHelper.getPref(Constants.APP_CURRENCY));
         currencySymbol = hh.getSymbol();
         btn_order_placed.setText(model.getOrderAndPay() + ": " + currencySymbol + " " + "" + dotToCommaClass.changeDot(String.format("%.2f", Double.parseDouble(TotalPrice))));
@@ -680,6 +681,7 @@ public class CartCheckout extends AppCompatActivity implements View.OnClickListe
                 }
                 if(extra_name.length()>0){
                     extraItemId2=extra_name.deleteCharAt(extra_name.lastIndexOf("_")).toString();
+                    extra_toppings=extraItemId2;
                 }
                 extraItemId2=CommonMethods.getStringDataInbase64(extraItemId2);
             }
@@ -737,6 +739,8 @@ Log.i("reason",url);
                             ii.putExtra("strMainRestLogo", strMainRestLogo);
                             ii.putExtra("pizzaQuantity", quantity);
                             ii.putExtra("Pizzaname", Pizzaname);
+                            ii.putExtra("rest_address",rest_address);
+                            ii.putExtra("extra_toppings",extra_toppings);
                             ii.putExtra("selectedPizzaItemPrice", selectedPizzaItemPrice);
 
                             startActivity(ii);

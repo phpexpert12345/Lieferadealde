@@ -238,9 +238,12 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 //                            prefsHelper.savePref(Constants.referralJoinFriends, referralJoinFriends);
 //                            prefsHelper.savePref(Constants.isLoggedIn, true);
 
-                            openDialog(signup.getSuccessMsg());
+                            openDialog(signup.getSuccessMsg(),1);
                         } else {
-                            Toast.makeText(SignUpActivity.this, signup.getError_msg(), Toast.LENGTH_SHORT).show();
+                            if(signup.getError_msg()!=null) {
+                                openDialog(signup.getError_msg(),0);
+//                                Toast.makeText(SignUpActivity.this, signup.getError_msg(), Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
 
@@ -260,7 +263,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
-    private void openDialog(String successMsg) {
+    private void openDialog(String successMsg,int type) {
         final Dialog dialog = new Dialog(SignUpActivity.this, R.style.DialogCustomTheme);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_confirmation);
@@ -275,7 +278,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         tvOk.setOnClickListener(view -> {
             dialog.dismiss();
-            userLogin(edt_email_id.getText().toString(), edt_pass.getText().toString());
+            if(type==1) {
+                userLogin(edt_email_id.getText().toString(), edt_pass.getText().toString());
+            }
 //            Intent i = new Intent(SignUpActivity.this, SignInActivity.class);
 //            startActivity(i);
         });

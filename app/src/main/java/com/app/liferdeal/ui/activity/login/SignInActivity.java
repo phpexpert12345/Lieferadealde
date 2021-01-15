@@ -71,6 +71,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
             clickRestId = getIntent().getStringExtra("clickRestId");
             restourantBookLimit = getIntent().getStringExtra("RESTBOOKLIMIT");
             from = getIntent().getStringExtra("from");
+
         }
 
         init();
@@ -82,6 +83,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
             prefsHelper = new PrefsHelper(this);
             String logo = prefsHelper.getPref(Constants.APP_LOGO);
+            Log.i("reason", logo);
             img_logo = findViewById(R.id.img_logo);
             edt_usrName = findViewById(R.id.edt_usr_name);
             edt_usrPass = findViewById(R.id.edt_usr_pass);
@@ -126,6 +128,26 @@ Utility.ShowHidePassword(edt_usrPass,0);
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
+                if(from!=null) {
+                    if (from.equalsIgnoreCase("profile")) {
+                        Intent intent = new Intent(this, MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    }
+                    else if(from.equalsIgnoreCase("table")){
+                        Intent booktable = new Intent(SignInActivity.this, RestaurantBookTable.class);
+                        booktable.putExtra("clickRestId", clickRestId);
+                        booktable.putExtra("RESTBOOKLIMIT", restourantBookLimit);
+                        startActivity(booktable);
+                    }
+                }
+                else{
+                    Intent intent = new Intent(this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                }
                 finish();
                 break;
             case R.id.tvSkip:
@@ -305,7 +327,7 @@ Utility.ShowHidePassword(edt_usrPass,0);
                             prefsHelper.savePref(Constants.referralEarnPoints, referralEarnPoints);
                             prefsHelper.savePref(Constants.referralJoinFriends, referralJoinFriends);
                             prefsHelper.savePref(Constants.isLoggedIn, true);
-                            openDialog(signin.getSuccessMsg());
+                            openDialog(signin.getSuccessMsg(),1);
                             hideProgress();
                             Log.e("CustomerId=", cusomerId);
                             //  initiateHomeFragment();
@@ -313,7 +335,9 @@ Utility.ShowHidePassword(edt_usrPass,0);
                             startActivity(i);*/
                             // finish();
                         } else {
-                            Toast.makeText(SignInActivity.this, signin.getSuccessMsg(), Toast.LENGTH_SHORT).show();
+                            openDialog(signin.getSuccessMsg(),0);
+
+//                            Toast.makeText(SignInActivity.this, signin.getSuccessMsg(), Toast.LENGTH_SHORT).show();
                             hideProgress();
                         }
 
@@ -333,7 +357,7 @@ Utility.ShowHidePassword(edt_usrPass,0);
                 });
     }
 
-    private void openDialog(String successMsg) {
+    private void openDialog(String successMsg,int type) {
         final Dialog dialog = new Dialog(SignInActivity.this, R.style.DialogCustomTheme);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_confirmation);
@@ -348,7 +372,9 @@ Utility.ShowHidePassword(edt_usrPass,0);
 
         tvOk.setOnClickListener(view -> {
             dialog.dismiss();
-            LoginSuccess();
+            if(type==1) {
+                LoginSuccess();
+            }
         });
     }
 
@@ -369,6 +395,7 @@ Utility.ShowHidePassword(edt_usrPass,0);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
+
         finish();
     }
 

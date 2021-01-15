@@ -205,6 +205,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:maxLength="14"
+                android:maxLines="1"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:layout_marginTop="@dimen/_15sdp"

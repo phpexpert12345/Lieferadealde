@@ -701,6 +701,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_sign:
                 Intent signin = new Intent(MainActivity.this, SignInActivity.class);
+                signin.putExtra("from","Home");
                 startActivity(signin);
                 mDrawerLayout.closeDrawer(rl_main_left_drawer);
                 break;
@@ -755,6 +756,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     startActivity(intent);
                 } else {
                     Intent is = new Intent(MainActivity.this, SignInActivity.class);
+                    is.putExtra("from","Home");
                     is.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(is);
                 }
@@ -944,7 +946,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         new AlertDialog.Builder(MainActivity.this)
                 .setTitle("Liferdeal")
                 .setMessage(model.getAREYOUSUREYOUWANTTOLOGOUT())
-                .setPositiveButton(android.R.string.yes,
+                .setPositiveButton(model.getOKText(),
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(
@@ -962,7 +964,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 openDialog();
                             }
                         })
-                .setNegativeButton(android.R.string.no,
+                .setNegativeButton(model.getCancel(),
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(
@@ -982,6 +984,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         AppCompatTextView tvTitle = dialog.findViewById(R.id.tvTitle);
         AppCompatTextView tvOk = dialog.findViewById(R.id.tvOk);
         AppCompatTextView tvCancel = dialog.findViewById(R.id.tvCancel);
+        tvCancel.setText(model.getCancel());
         tvTitle.setText(model.getSuccessfullLogout());
         dialog.show();
         dialog.setCancelable(false);
@@ -990,6 +993,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tvOk.setOnClickListener(view -> {
             dialog.dismiss();
             Intent intent = new Intent(MainActivity.this, SignInActivity.class);
+            intent.putExtra("from","sideMenu");
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);

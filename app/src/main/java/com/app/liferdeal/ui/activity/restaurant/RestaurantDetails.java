@@ -553,6 +553,7 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
                     Intent intent = new Intent(RestaurantDetails.this, CartActivity.class);
                     intent.putExtra("RESTID", clickRestId);
                     intent.putExtra("RESTName", clickRestName);
+                    intent.putExtra("rest_address",RESTADDRESS);
                     intent.putExtra("RESTLOGO", RESTLOGO);
                     intent.putExtra("subPizzaItemId", "" + subPizzaItemId);
                     intent.putExtra("SIZEITEMID", "" + SIZEITEMID);
@@ -570,6 +571,7 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
                     Intent intent = new Intent(RestaurantDetails.this, CartActivity.class);
                     intent.putExtra("RESTID", clickRestId);
                     intent.putExtra("RESTName", clickRestName);
+                    intent.putExtra("rest_address",RESTADDRESS);
                     intent.putExtra("RESTLOGO", RESTLOGO);
                     intent.putExtra("subPizzaItemId", "" + subPizzaItemId);
                     intent.putExtra("SIZEITEMID", "" + SIZEITEMID);

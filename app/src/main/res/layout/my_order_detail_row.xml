@@ -17,10 +17,17 @@
         android:id="@+id/txt_pizza_section_cuisine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txt_view_sunmenu"
         android:text="Pizza Selection"
+        android:fontFamily="@font/roboto_medium"
         android:textColor="@color/quantum_grey700"
-        android:textSize="@dimen/_10ssp" />
+        android:textSize="@dimen/_12ssp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/_9ssp"
+        android:textColor="@color/colorBlack"
+        android:fontFamily="@font/roboto_regular"
+        android:id="@+id/txt_extra_toppings"/>
 
     <TextView
         android:id="@+id/tvQuantityMenu"
@@ -36,6 +43,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/_1sdp"
+        android:id="@+id/view_detail"
         android:layout_below="@+id/tvQuantityMenu"
         android:layout_marginTop="@dimen/_5sdp"
         android:background="@color/gray" />

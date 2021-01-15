@@ -83,7 +83,7 @@ public class SavedAddressActivity extends AppCompatActivity implements DeleteAdd
             PaymentProcessingFees, deliveryChargeValueType, WebsiteCodePrice, WebsiteCodeType, WebsiteCodeNo, preorderTime, addressId = "",
             GiftCardPay, WalletPay, loyptamount, table_number_assign, customer_country, group_member_id, loyltPnts, branch_id, FoodCosts,
             getTotalItemDiscount, getFoodTaxTotal7, getFoodTaxTotal19, TotalSavedDiscount, discountOfferFreeItems, number_of_people, customer_allow_register, address,
-            street, floor_no, zipcode, phone, email, name_customer, city, mealID, mealquqntity, mealPrice, mealItemExtra, mealItemOption;
+            street, floor_no, zipcode, phone, email, name_customer, city, mealID, mealquqntity, mealPrice, mealItemExtra, mealItemOption,rest_address;
     private LanguageResponse model = new LanguageResponse();
 
     @Override
@@ -135,6 +135,7 @@ public class SavedAddressActivity extends AppCompatActivity implements DeleteAdd
             selectedPizzaItemPrice = getIntent().getStringExtra("selectedPizzaItemPrice");
             instructions = getIntent().getStringExtra("instructions");
             customer_allow_register = "yes";
+            rest_address=getIntent().getStringExtra("rest_address");
             payment_type = "cash";
         }
 
@@ -188,6 +189,7 @@ public class SavedAddressActivity extends AppCompatActivity implements DeleteAdd
                     intent.putExtra("instructions", instructions);
                     intent.putExtra("selectedPizzaItemPrice", selectedPizzaItemPrice);
                     intent.putExtra("totalPrice", totalPrice);
+                    intent.putExtra("rest_address",rest_address);
                     intent.putExtra("addressId", addressId);
                     startActivity(intent);
                 }

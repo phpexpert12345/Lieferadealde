@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -58,6 +59,8 @@ public class TicketList extends Activity implements View.OnClickListener {
     private RecyclerView recyler_view_ticket;
     private ImageView iv_back;
     private LanguageResponse model = new LanguageResponse();
+    @BindView(R.id.progress_tickets)
+    ProgressBar progress_tickets;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -118,6 +121,7 @@ public class TicketList extends Activity implements View.OnClickListener {
         apiInterface = RFClient.getClient().create(ApiInterface.class);
         Observable<TicketListDataModel> observable = apiInterface.getTicketList(prefsHelper.getPref(Constants.API_KEY),
                 prefsHelper.getPref(Constants.LNG_CODE), prefsHelper.getPref(Constants.CUSTOMER_ID));
+        progress_tickets.setVisibility(View.VISIBLE);
 
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -129,7 +133,8 @@ public class TicketList extends Activity implements View.OnClickListener {
 
                     @Override
                     public void onNext(TicketListDataModel searchResult) {
-                        showProgress();
+                        progress_tickets.setVisibility(View.GONE);
+//                        showProgress();
                         if (searchResult.getComplaintsHistory().size() > 0) {
                             if (searchResult.getComplaintsHistory().get(0).getError().equalsIgnoreCase("1")) {
                                 tvNoData.setVisibility(View.VISIBLE);
@@ -142,12 +147,13 @@ public class TicketList extends Activity implements View.OnClickListener {
                             }
                         } else
                             showCustomDialog1decline("No data available");
-                        hideProgress();
+//                        hideProgress();
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        hideProgress();
+//                        hideProgress();
+                        progress_tickets.setVisibility(View.GONE);
                         Log.d("TAG", "log...." + e);
                     }
 

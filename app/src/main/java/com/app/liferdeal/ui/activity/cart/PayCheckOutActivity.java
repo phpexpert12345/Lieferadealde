@@ -221,8 +221,8 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
     DotToCommaClass dotToCommaClass;
     String Price;
     String extraItemId1;
-    String extraItemId2;
-
+    String extraItemId2, extra_toppings="";
+    String rest_address="";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -293,6 +293,7 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
             addressId = getIntent().getStringExtra("addressId");
             instructions = getIntent().getStringExtra("instructions");
             customer_allow_register = "yes";
+            rest_address=getIntent().getStringExtra("rest_address");
             payment_type = "Cash";
         }
 
@@ -600,6 +601,8 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
                             ii.putExtra("strMainRestLogo", strMainRestLogo);
                             ii.putExtra("pizzaQuantity", quantity);
                             ii.putExtra("Pizzaname", Pizzaname);
+                            ii.putExtra("extra_toppings",extra_toppings);
+                            ii.putExtra("rest_address",rest_address);
                             ii.putExtra("selectedPizzaItemPrice", selectedPizzaItemPrice);
                             startActivity(ii);
                             finish();
@@ -787,6 +790,7 @@ hideProgress();
 
                 if(extra_name.length()>0){
                     extraItemId2=extra_name.deleteCharAt(extra_name.lastIndexOf("_")).toString();
+                    extra_toppings=extraItemId2;
                 }
                 extraItemId2=convertToBase64(extraItemId2);
             }

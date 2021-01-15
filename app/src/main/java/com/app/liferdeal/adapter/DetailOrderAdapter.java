@@ -78,9 +78,55 @@ public class DetailOrderAdapter extends RecyclerView.Adapter<DetailOrderAdapter.
     public void onBindViewHolder(@NonNull Holder holder, final int position) {
         Currency hh = Currency.getInstance("" + prefsHelper.getPref(Constants.APP_CURRENCY));
         currencySymbol = hh.getSymbol();
-        holder.tvQuantityMenu.setText(currencySymbol + dotToCommaClass.changeDot(listCategory.get(position).getMenuprice()) + "x" + listCategory.get(position).getQuantity());
-        holder.txt_pizza_section_cuisine.setText(listCategory.get(position).getItemSize());
+        if(listCategory.get(position).getMenuprice()!=null) {
+            holder.tvQuantityMenu.setVisibility(View.VISIBLE);
+            holder.view_detail.setVisibility(View.VISIBLE);
+            holder.tvQuantityMenu.setText(currencySymbol + dotToCommaClass.changeDot(listCategory.get(position).getMenuprice()) + "x" + listCategory.get(position).getQuantity());
+        }
+        else{
+            holder.view_detail.setVisibility(View.GONE);
+            holder.tvQuantityMenu.setVisibility(View.GONE);
+        }
+        if(listCategory.get(position).getItemSize()!=null) {
+            holder.txt_pizza_section_cuisine.setVisibility(View.VISIBLE);
+            holder.txt_pizza_section_cuisine.setText(listCategory.get(position).getItemSize());
+        }
+        else{
+            holder.txt_pizza_section_cuisine.setVisibility(View.GONE);
+        }
         holder.txt_view_sunmenu.setText(listCategory.get(position).getItemsName());
+        String toppings=listCategory.get(position).getExtraTopping();
+        if(toppings!=null) {
+
+            if (toppings.contains("+")) {
+                StringBuilder stringBuilder = new StringBuilder();
+
+                String[] tops = toppings.split("\\+");
+
+                if (tops.length > 0) {
+
+                    for (int j = 1; j < tops.length; j++) {
+                        stringBuilder.append("+" + tops[j]);
+                        stringBuilder.append("\n");
+
+                    }
+                }
+                if (stringBuilder.length() > 0) {
+                    toppings = stringBuilder.deleteCharAt(stringBuilder.lastIndexOf("\n")).toString();
+                }
+            }
+            if(!toppings.equalsIgnoreCase("0")) {
+                holder.txt_extra_toppings.setVisibility(View.VISIBLE);
+                holder.txt_extra_toppings.setText(toppings);
+            }
+            else{
+                holder.txt_extra_toppings.setVisibility(View.GONE);
+            }
+        }
+        else{
+            holder.txt_extra_toppings.setVisibility(View.GONE);
+        }
+
     }
 
     private ApiInterface apiInterface;
@@ -106,13 +152,16 @@ public class DetailOrderAdapter extends RecyclerView.Adapter<DetailOrderAdapter.
 
     class Holder extends RecyclerView.ViewHolder {
 
-        TextView txt_view_sunmenu, txt_pizza_section_cuisine, tvQuantityMenu;
+        TextView txt_view_sunmenu, txt_pizza_section_cuisine, tvQuantityMenu,txt_extra_toppings;
+        View view_detail;
 
         public Holder(@NonNull View itemView) {
             super(itemView);
             txt_view_sunmenu = itemView.findViewById(R.id.txt_view_sunmenu);
             txt_pizza_section_cuisine = itemView.findViewById(R.id.txt_pizza_section_cuisine);
             tvQuantityMenu = itemView.findViewById(R.id.tvQuantityMenu);
+            txt_extra_toppings=itemView.findViewById(R.id.txt_extra_toppings);
+            view_detail=itemView.findViewById(R.id.view_detail);
         }
     }
 }

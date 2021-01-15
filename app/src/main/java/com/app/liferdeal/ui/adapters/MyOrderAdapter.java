@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.app.liferdeal.R;
 import com.app.liferdeal.application.App;
 import com.app.liferdeal.interfaces.CancelClicked;
 import com.app.liferdeal.model.LanguageResponse;
+import com.app.liferdeal.model.OrderFoodItem;
 import com.app.liferdeal.model.restaurant.MYOrderTrackDetailModel;
 import com.app.liferdeal.model.restaurant.Orders;
 import com.app.liferdeal.network.retrofit.ApiInterface;
@@ -36,6 +38,7 @@ import com.app.liferdeal.util.DotToCommaClass;
 import com.app.liferdeal.util.PrefsHelper;
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
 
@@ -137,10 +140,22 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.Holder> 
                         showProgress();
                        /* setAdapterCategory(searchResult.getOrders().getOrderViewResult());
                         banner_progress.setVisibility(View.GONE);*/
-                        String orderno = searchResult.getOrderDetailItem().get(0).getOrderIdentifyno();
-                        Intent i = new Intent(mContext, OrderTrackActivity.class);
-                        i.putExtra("orderid", orderno);
-                        mContext.startActivity(i);
+
+                        if(searchResult.getOrderDetailItem()!=null){
+                            List<OrderFoodItem>foodItems=searchResult.getOrderDetailItem().get(0).getOrderFoodItem();
+                            String orderno = searchResult.getOrderDetailItem().get(0).getOrderIdentifyno();
+                            Intent i = new Intent(mContext, OrderTrackActivity.class);
+                            if(foodItems!=null) {
+                                if(foodItems.size()>0) {
+                                    i.putParcelableArrayListExtra("food_items", (ArrayList<? extends Parcelable>) foodItems);
+                                }
+                            }
+
+                            i.putExtra("orderid", orderno);
+                            mContext.startActivity(i);
+
+                        }
+
                     }
 
                     @Override

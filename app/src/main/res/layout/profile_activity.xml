@@ -22,15 +22,28 @@
             android:src="@drawable/quantum_ic_arrow_back_grey600_24"
             android:tint="@color/colorWhite"
             tools:ignore="UseAppTint" />
+        <RelativeLayout
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="@dimen/_70sdp"
+            android:layout_gravity="center">
 
+
+            <ImageView
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:elevation="@dimen/_10sdp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+
+                android:src="@drawable/ic_edit"/>
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/userimage"
-            android:layout_width="@dimen/dp_70"
-            android:layout_height="@dimen/dp_70"
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="@dimen/_70sdp"
             android:src="@drawable/profile_pic"
-            android:layout_gravity="center"
             android:layout_marginTop="5dp"/>
 
+        </RelativeLayout>
         <TextView
             android:id="@+id/tv_user_name"
             android:layout_width="wrap_content"
@@ -232,7 +245,7 @@
                     android:layout_width="0dp"
                     android:layout_height="@dimen/dp_20"
                     android:src="@drawable/ic_profile"
-                    app:tint = "@color/colorGreenLiteh"
+                    app:tint ="@color/colorGreen"
                     android:layout_weight="0.2"
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/dp_5"
@@ -283,7 +296,7 @@
                     android:layout_weight="0.2"
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/dp_5"
-                    app:tint="@color/colorGreenLiteh" />
+                    app:tint="@color/colorGreen" />
 
                 <TextView
                     android:id="@+id/tvLoyaltyPoint"
@@ -331,7 +344,7 @@
                     android:layout_weight="0.2"
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/dp_5"
-                    app:tint="@color/colorGreenLiteh" />
+                    app:tint="@color/colorGreen" />
 
 
                 <TextView
@@ -572,7 +585,7 @@
                     android:src="@drawable/ic_lock"
                     android:layout_weight="0.2"
                     android:layout_gravity="center"
-                    app:tint="@color/colorGreenLiteh"
+                    app:tint="@color/colorGreen"
                     android:layout_margin="@dimen/dp_5"/>
 
                 <TextView
@@ -601,6 +614,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_1"
+                android:visibility="gone"
                 android:layout_marginTop="@dimen/dp_5"
                 android:background="@color/gray" />
 
@@ -750,7 +764,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_5"
                 android:weightSum="2"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:layout_marginStart="@dimen/dp_10">
 
 
@@ -759,6 +773,7 @@
                     android:layout_height="@dimen/dp_20"
                     android:src="@drawable/refer_earn"
                     android:layout_weight="0.2"
+                    app:tint="@color/colorGreen"
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/dp_5"/>
 
@@ -770,6 +785,7 @@
                     android:text="Refer &amp; Earn"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/sp_15"
+                    android:fontFamily="@font/roboto_medium"
                     android:layout_weight="1.8"
                     android:layout_marginStart="@dimen/dp_5"/>
                 <ImageView
@@ -797,6 +813,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_5"
                 android:weightSum="2"
+                android:visibility="gone"
                 android:layout_marginStart="@dimen/dp_10">
 
                 <ImageView
@@ -842,6 +859,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_5"
                 android:weightSum="2"
+                android:visibility="gone"
                 android:layout_marginStart="@dimen/dp_10">
 
 
@@ -880,6 +898,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_1"
                 android:layout_marginTop="@dimen/dp_5"
+                android:visibility="gone"
                 android:background="@color/gray" />
 
             <LinearLayout

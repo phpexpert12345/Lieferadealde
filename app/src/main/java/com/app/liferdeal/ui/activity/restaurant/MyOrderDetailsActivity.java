@@ -2,7 +2,9 @@ package com.app.liferdeal.ui.activity.restaurant;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -28,6 +30,7 @@ import com.app.liferdeal.util.Constants;
 import com.app.liferdeal.util.DotToCommaClass;
 import com.app.liferdeal.util.PrefsHelper;
 
+import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
 
@@ -54,8 +57,17 @@ public class MyOrderDetailsActivity extends AppCompatActivity implements View.On
 //    TextView tvQuantityMenu;
     @BindView(R.id.rvItemList)
     RecyclerView rvItemList;
+    @BindView(R.id.txt_payment_mode)
+    TextView txt_payment_mode;
+    @BindView(R.id.txt_payment_status)
+    TextView txt_payment_status;
+    @BindView(R.id.txt_restro_name)
+    TextView txt_restro_name;
+    @BindView(R.id.txt_restro_address)
+    TextView txt_restro_address;
     private String currencySymbol;
     DotToCommaClass dotToCommaClass;
+    List<OrderFoodItem> foodItems=new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -93,11 +105,12 @@ public class MyOrderDetailsActivity extends AppCompatActivity implements View.On
             tvTotal = findViewById(R.id.tvTotal);
             txt_vie_menu = findViewById(R.id.txt_vie_menu);
 
-            tvMyOrder.setText(model.getMyOrder());
+            tvMyOrder.setText(model.getOrderDetails());
             tvSubTotal.setText(model.getSubtotal());
             tvTotal.setText(model.getTotal());
             txt_vie_menu.setText(model.getMenu());
             txt_btn_track.setText(model.getTrack());
+            txt_payment_mode.setText(model.getPayment());
 
             strordernumber = getIntent().getStringExtra("orderid");
             Log.e("OrderId=", strordernumber);
@@ -119,6 +132,7 @@ public class MyOrderDetailsActivity extends AppCompatActivity implements View.On
             case R.id.txt_btn_track:
                 Intent i = new Intent(MyOrderDetailsActivity.this, OrderTrackActivity.class);
                 i.putExtra("orderid", strordernumber);
+                i.putParcelableArrayListExtra("food_items", (ArrayList<? extends Parcelable>) foodItems);
                 startActivity(i);
                 break;
 
@@ -127,7 +141,7 @@ public class MyOrderDetailsActivity extends AppCompatActivity implements View.On
         }
     }
 
-    private String currency, menuprice, itemname, itemSize;
+    private String currency, menuprice, itemname, itemSize,extraTopping;
     private long quantity;
 
     private void getOrderDetails() {
@@ -152,12 +166,21 @@ public class MyOrderDetailsActivity extends AppCompatActivity implements View.On
                             String subtotal = searchResult.getOrderDetailItem().get(0).getSubTotal();
                             String orderpricetotal = searchResult.getOrderDetailItem().get(0).getOrderPrice();
                             String restname = searchResult.getOrderDetailItem().get(0).getRestaurantName();
+                            String payment_mode=searchResult.getOrderDetailItem().get(0).getPaymentMethod();
+                            String restro_address=searchResult.getOrderDetailItem().get(0).getRestaurantAddress();
+                            txt_payment_status.setText(payment_mode);
 
                             currency = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getCurrency();
                             menuprice = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getMenuprice();
                             itemname = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getItemsName();
                             quantity = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getQuantity();
                             itemSize = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getItemSize();
+                            extraTopping=searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getExtraTopping();
+                            String statusColor_order=searchResult.getOrderDetailItem().get(0).getOrderStatusColorCode();
+                            if(statusColor_order!=null){
+                                txt_view_orderstatus.setTextColor(Color.parseColor(statusColor_order));
+                            }
+
 
 //                        if (getIntent() != null) {
 //                            from = getIntent().getStringExtra("from");
@@ -167,7 +190,7 @@ public class MyOrderDetailsActivity extends AppCompatActivity implements View.On
 //                                startActivity(i);
 //                            }
 //                        }
-                            setTextData(orderno, orderstatusmsg, subtotal, orderpricetotal, restname, currency, menuprice, itemname, quantity, itemSize);
+                            setTextData(orderno, orderstatusmsg, subtotal, orderpricetotal, restname, restro_address, menuprice, itemname, quantity, itemSize);
                             //  String orderpricetotal = searchResult.getOrderPrice().toString();
                         }
                     }
@@ -187,6 +210,10 @@ public class MyOrderDetailsActivity extends AppCompatActivity implements View.On
     }
 
     private void setAdapterCategory(List<OrderFoodItem> list) {
+        if(foodItems.size()>0){
+            foodItems.clear();
+        }
+        foodItems.addAll(list);
         rvItemList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         DetailOrderAdapter adapterCategory = new DetailOrderAdapter(this, list);
         rvItemList.setAdapter(adapterCategory);
@@ -210,6 +237,8 @@ public class MyOrderDetailsActivity extends AppCompatActivity implements View.On
         txt_view_orderstatus.setText(orderstatusmsg);
         txt_view_sub_total_price.setText(currencySymbol + dotToCommaClass.changeDot(subtotal));
         txt_view_total_price.setText(currencySymbol + dotToCommaClass.changeDot(orderpricetotal));
+        txt_restro_name.setText(restname);
+        txt_restro_address.setText(currency);
 //        txt_view_sunmenu.setText(itemname);
 //        txt_pizza_section_cuisine.setText(itemSize);
 //        tvQuantityMenu.setText(currencySymbol + dotToCommaClass.changeDot(menuprice) + "×" + quantity);

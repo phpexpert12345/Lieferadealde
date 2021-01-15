@@ -52,6 +52,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -170,15 +171,27 @@ public class LocationMapFragment extends AppCompatActivity implements OnMapReady
             if (model.getSearchForLocation() != null)
                 search.setText("" + model.getSearchLocation().trim());
             else {
-                search.setText("Search for Location");
+                if(prefsHelper.getPref(Constants.LNG_CODE).toString().equalsIgnoreCase("de")){
+                    search.setText(getString(R.string.search_for_location));
+                }
+                else {
+                    search.setText("Search for Location");
+                }
+
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         if (model.getConfirmLocation() != null)
             tvConfirmLocation.setText("" + model.getConfirmLocation().trim());
-        else
-            tvConfirmLocation.setText("Confirm Location");
+        else {
+            if(prefsHelper.getPref(Constants.LNG_CODE).toString().equalsIgnoreCase("de")){
+                tvConfirmLocation.setText(getString(R.string.confirm_location));
+            }
+            else {
+                tvConfirmLocation.setText("Confirm Location");
+            }
+        }
 
 //        ed_search.setOnClickListener(this);
         search.setOnClickListener(this);
@@ -201,6 +214,8 @@ public class LocationMapFragment extends AppCompatActivity implements OnMapReady
             public void onSuccess(Location location) {
                 if (location != null) {
                     currentLocation = location;
+                    LatLng latLng=new LatLng(location.getLatitude(),location.getLongitude());
+                    latLongSelected=latLng;
 //                    Toast.makeText(getApplicationContext(), currentLocation.getLatitude() + "" + currentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
                     SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
                     assert supportMapFragment != null;
@@ -260,9 +275,10 @@ public class LocationMapFragment extends AppCompatActivity implements OnMapReady
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
         LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-        markerOptions = new MarkerOptions().position(latLng);
+        markerOptions = new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location));
         googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17.0f));
+
         googleMap.addMarker(markerOptions);
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
@@ -271,7 +287,7 @@ public class LocationMapFragment extends AppCompatActivity implements OnMapReady
                         latLng.latitude + ", " + latLng.longitude,
                         Toast.LENGTH_SHORT).show();*/
                 googleMap.clear();
-                markerOptions.position(latLng);
+                markerOptions.position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location));
                 googleMap.addMarker(markerOptions);
                 latLongSelected = latLng;
                 getAddressFromCurrentLatLong(latLng.latitude + "", latLng.longitude + "");
@@ -353,17 +369,26 @@ public class LocationMapFragment extends AppCompatActivity implements OnMapReady
 
             case R.id.lnr_confirm_location:
                 //  initiateRestFragment();
-
-                if (mPICKUP_ADDRESS == null || mPICKUP_ADDRESS.equalsIgnoreCase("")) {
-                    Toast.makeText(getApplicationContext(), model.getConfirmLocation(), Toast.LENGTH_LONG).show();
-
-                } else {
+                if(latLongSelected!=null){
                     saveSelectedAddress(latLongSelected);
                     Intent i = new Intent(LocationMapFragment.this, MainActivity.class);
                     i.putExtra("SEARCHADDRESS", mPICKUP_ADDRESS);
                     startActivity(i);
                     finish();
                 }
+
+//                if (mPICKUP_ADDRESS == null || mPICKUP_ADDRESS.equalsIgnoreCase("")) {
+//
+//                    getAddressFromCurrentLatLong(String.valueOf(currentLocation.getLatitude()), String.valueOf(currentLocation.getLongitude()));
+//                    Toast.makeText(getApplicationContext(), model.getConfirmLocation(), Toast.LENGTH_LONG).show();
+//
+//                } else {
+//                    saveSelectedAddress(latLongSelected);
+//                    Intent i = new Intent(LocationMapFragment.this, MainActivity.class);
+//                    i.putExtra("SEARCHADDRESS", mPICKUP_ADDRESS);
+//                    startActivity(i);
+//                    finish();
+//                }
 
                 break;
 
@@ -531,7 +556,7 @@ public class LocationMapFragment extends AppCompatActivity implements OnMapReady
                 LatLng latLng = new LatLng(Double.parseDouble(latitudeString), Double.parseDouble(logitudeString));
                 googleMap.clear();
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
-                secondMarker = googleMap.addMarker(new MarkerOptions().position(latLng));//.title((address)));
+                secondMarker = googleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location)));//.title((address)));
                 getAddressFromCurrentLatLong(latitudeString, logitudeString);
 
                 System.out.println("onActivityResult latitudeString...." + latitudeString + "...logitudeString..." + logitudeString);
@@ -547,7 +572,7 @@ public class LocationMapFragment extends AppCompatActivity implements OnMapReady
                 latLongSelected = place.getLatLng();
                 googleMap.clear();
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 12));
-                secondMarker = googleMap.addMarker(new MarkerOptions().position(place.getLatLng()));//.title((address)));
+                secondMarker = googleMap.addMarker(new MarkerOptions().position(place.getLatLng()).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location)));//.title((address)));
                 //getAddressFromCurrentLatLong(latLng.latitude + "", latLng.longitude + "");
                 search.setText(place.getAddress());
                 mPICKUP_ADDRESS = place.getAddress();

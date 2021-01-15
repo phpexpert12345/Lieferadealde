@@ -80,6 +80,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     @BindView(R.id.bottom_navigation)
     BottomNavigationView bottomNavigation;
     PrefsHelper authPreference;
+    @BindView(R.id.refer)
+    LinearLayout refer;
     private LanguageResponse model = new LanguageResponse();
 
     @Override
@@ -143,6 +145,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             rl_change_password.setOnClickListener(this);
             lnr_my_order.setOnClickListener(this);
             userimage.setOnClickListener(this);
+            refer.setOnClickListener(this);
+
 
 //            System.out.println("=== name : " + prefsHelper.getPref(Constants.USER_NAME));
 //            System.out.println("=== name email : " + prefsHelper.getPref(Constants.USER_EMAIL));
@@ -306,6 +310,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.logout:
                 logoutDialog();
                 break;
+            case R.id.refer:
+                startActivity(new Intent(this, ReferEarnFrndActivity.class));
+                break;
 
             default:
                 break;
@@ -321,7 +328,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         new AlertDialog.Builder(ProfileActivity.this)
                 .setTitle("Liferdeal")
                 .setMessage(model.getAREYOUSUREYOUWANTTOLOGOUT())
-                .setPositiveButton(android.R.string.yes,
+                .setPositiveButton(model.getOKText(),
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -342,7 +349,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 //                                finish();
                             }
                         })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                .setNegativeButton(model.getCancel(), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -357,7 +364,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         AppCompatTextView tvTitle = dialog.findViewById(R.id.tvTitle);
         AppCompatTextView tvOk = dialog.findViewById(R.id.tvOk);
+        tvOk.setText(model.getOKText());
         AppCompatTextView tvCancel = dialog.findViewById(R.id.tvCancel);
+        tvCancel.setText(model.getCancel());
         tvTitle.setText(model.getSuccessfullLogout());
         dialog.show();
         dialog.setCancelable(false);
@@ -366,10 +375,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         tvOk.setOnClickListener(view -> {
             dialog.dismiss();
             Intent intent = new Intent(ProfileActivity.this, SignInActivity.class);
+            intent.putExtra("from","Profile");
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
 //            prefsHelper.clearAllPref();
         });
+
     }
 }

@@ -18,12 +18,18 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import com.app.liferdeal.R;
+import com.app.liferdeal.adapter.DetailOrderAdapter;
 import com.app.liferdeal.application.App;
 import com.app.liferdeal.model.LanguageResponse;
+import com.app.liferdeal.model.Order;
+import com.app.liferdeal.model.OrderFoodItem;
 import com.app.liferdeal.ui.Database.Database;
 import com.app.liferdeal.ui.activity.MainActivity;
 import com.app.liferdeal.ui.activity.restaurant.AddExtraActivity;
@@ -44,6 +50,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
 import java.util.Locale;
@@ -59,7 +67,7 @@ public class ThankyouPageActivity extends AppCompatActivity implements View.OnCl
     private TextView txtTotal, txtPackagingFee, txtDeliveryFee, txtVat, txtSalexTax, tvTotal, txtServiceFee, tvClose, tvOrderNoText, tvOrderNumber, tvPlaceAnew, txt_subtotal_price, txt_food_discount, txt_inclusive_food_text, txt_time_order, txt_rest_name, txt_order_with_rest_name, txt_pizz_price, txt_pizza_quantity, txt_pizz_name,
             txt_share_food_tracker, txt_order_number, txt_order_date_time, txt_btn_go_to_home, tvThankuTxt, tvThank, tvSubTotal, tvFoodDiscount, tvFoodTax;
     private String strOrderTime, strRestname, strOrderPrice;
-    private String restname = "", restTime = "", deliveryDate = "", customeName = "", orderNumber = "", orderType = "", oldprice = "", restLogo = "", currencySymbol = "", pizzaQuantity = "", Pizzaname = "", selectedPizzaItemPrice = "";
+    private String restname = "", restTime = "", deliveryDate = "", customeName = "", orderNumber = "", orderType = "", oldprice = "", restLogo = "", currencySymbol = "", pizzaQuantity = "", Pizzaname = "", selectedPizzaItemPrice = "", rest_address="";
     DotToCommaClass dotToCommaClass;
     private LanguageResponse model = new LanguageResponse();
 
@@ -94,14 +102,17 @@ public class ThankyouPageActivity extends AppCompatActivity implements View.OnCl
     View viewDeliveryFees;
     @BindView(R.id.viewPackagingFees)
     View viewPackagingFees;
-
-
+    @BindView(R.id.tvDeliveryFee)
+    TextView tvDeliveryFee;
     @BindView(R.id.tvSizeOf)
     TextView tvSizeOf;
 
 
     @BindView(R.id.rlForgot)
     RelativeLayout rlForgot;
+    String extra_toppings="";
+    @BindView(R.id.recyler_details)
+    RecyclerView recyler_details;
 
 
     @Override
@@ -208,16 +219,50 @@ public class ThankyouPageActivity extends AppCompatActivity implements View.OnCl
         orderType = getIntent().getStringExtra("orderType");
         oldprice = getIntent().getStringExtra("oldprice");
         restLogo = getIntent().getStringExtra("strMainRestLogo");
+        Log.i("reason",restLogo);
         //restLogo = prefsHelper.getPref(Constants.APP_LOGO);
         pizzaQuantity = getIntent().getStringExtra("pizzaQuantity");
         Pizzaname = getIntent().getStringExtra("Pizzaname");
         selectedPizzaItemPrice = getIntent().getStringExtra("selectedPizzaItemPrice");
+        rest_address=getIntent().getStringExtra("rest_address");
+        extra_toppings=getIntent().getStringExtra("extra_toppings");
+        tvDeliveryFee.setText(model.getDeliveryCost());
+        List<OrderFoodItem> orderFoodItems=new ArrayList<>();
+        if(Pizzaname.contains("\n")){
+            String[] pizzas=Pizzaname.split("\n");
+            String[] toppings=extra_toppings.split("_");
+            for(int j=0;j<pizzas.length;j++){
+                OrderFoodItem orderFoodItem=new OrderFoodItem();
+                orderFoodItem.setItemsName(pizzas[j]);
+                if(toppings.length>0) {
+                    orderFoodItem.setExtraTopping(toppings[j]);
+                }
+                orderFoodItems.add(orderFoodItem);
+            }
+        }
+        else{
+
+            OrderFoodItem orderFoodItem=new OrderFoodItem();
+            orderFoodItem.setItemsName(Pizzaname);
+            if(extra_toppings!=null) {
+                orderFoodItem.setExtraTopping(extra_toppings);
+            }
+            orderFoodItems.add(orderFoodItem);
+        }
+        if(orderFoodItems.size()>0){
+            setThankyouAdapter(orderFoodItems);
+        }
+
+
 
         tvThankuTxt.setText(model.getThankYouWeReceivedYourOrder());
-        txt_share_food_tracker.setText(model.getShareFoodTracker());
+        String share_food=model.getShareFoodTracker();
+        Log.i("reason",share_food);
+        txt_share_food_tracker.setText(share_food.trim());
         txt_btn_go_to_home.setText(model.getForgotSomething());
         tvPlaceAnew.setText(model.getPlaceANewOrder());
-        tvThank.setText(model.getThankYouYourOrderWith());
+
+        tvThank.setText(model.getThankYouYourOrderWith().trim());
         tvSubTotal.setText(model.getSubtotal());
         tvFoodTax.setText(model.getFoodTax());
         tvFoodDiscount.setText(model.getFoodDiscount());
@@ -243,8 +288,9 @@ public class ThankyouPageActivity extends AppCompatActivity implements View.OnCl
         txt_rest_name.setText(restname);
         txt_order_number.setText(model.getOrderNumber() + " # " + " " + orderNumber);
         txt_order_date_time.setText(model.getOrderText() + " " + deliveryDate + " " + restTime);
-        txt_order_with_rest_name.setText(restname);
-        txt_pizz_price.setText(dotToCommaClass.changeDot(currencySymbol+selectedPizzaItemPrice));
+        txt_order_with_rest_name.setText(restname.trim());
+        double price= Double.parseDouble(selectedPizzaItemPrice);
+        txt_pizz_price.setText(dotToCommaClass.changeDot(currencySymbol+new DecimalFormat("#.00").format(price)));
         txt_subtotal_price.setText(dotToCommaClass.changeDot(currencySymbol + oldprice));
         txt_food_discount.setText(dotToCommaClass.changeDot(currencySymbol + oldprice));
         txt_inclusive_food_text.setText(dotToCommaClass.changeDot(currencySymbol + oldprice));
@@ -283,7 +329,8 @@ public class ThankyouPageActivity extends AppCompatActivity implements View.OnCl
         if (totalPricePr.equalsIgnoreCase("0.0") || totalPricePr.equalsIgnoreCase("0")) {
             rvTotal.setVisibility(View.GONE);
         }
-        tvSizeOf.setText(sizeOfPizzaPr);
+        tvSizeOf.setVisibility(View.VISIBLE);
+        tvSizeOf.setText(rest_address);
         txt_subtotal_price.setText(dotToCommaClass.changeDot(currencySymbol + subtotalPr));
         txt_food_discount.setText(dotToCommaClass.changeDot(currencySymbol + fooddiscountPr));
         txtServiceFee.setText(dotToCommaClass.changeDot(currencySymbol + servicefeesPr));
@@ -356,6 +403,11 @@ public class ThankyouPageActivity extends AppCompatActivity implements View.OnCl
         intent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
         /*Fire!*/
         startActivity(Intent.createChooser(intent, getString(R.string.share_using)));
+    }
+    public void setThankyouAdapter(List<OrderFoodItem> list){
+        recyler_details.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        DetailOrderAdapter adapterCategory = new DetailOrderAdapter(this, list);
+        recyler_details.setAdapter(adapterCategory);
     }
 
     @Override

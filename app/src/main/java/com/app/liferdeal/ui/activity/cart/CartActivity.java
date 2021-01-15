@@ -101,7 +101,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     private TextView tv_sipping, tv_sub_total, tv_food_item_total;
     private RecyclerView list_view_items;
     private ImageView img_select_picup, img_select_delivery;
-    public String orderType = "", RestId = "", postalCode = "";
+    public String orderType = "", RestId = "", postalCode = "",rest_address="";
     private LinearLayout rl_pickup, rlDineIn, rl_delivery;
     private RelativeLayout card_checkout;
     private TextView tv_total, tv_count, checkout_total_price, tvDeliveryFee, tvTotalItem, tvDeliveryText, tvServiceChargeText, tvServiceCharge, tvDelivery,
@@ -199,9 +199,11 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         //Log.e("REST", RestId);
         strMainRestName = getIntent().getStringExtra("RESTName");
         strMainRestLogo = getIntent().getStringExtra("RESTLOGO");
+        Log.i("reason",strMainRestLogo);
         pizzaItemid = getIntent().getStringExtra("subPizzaItemId");
         strsizeid = getIntent().getStringExtra("SIZEITEMID");
         extraItemID = getIntent().getStringExtra("globTempExtraItemidWithSizeIdd");
+        rest_address=getIntent().getStringExtra("rest_address");
 
         System.out.println("==== rest id in cart activity : " + RestId);
         postalCode = prefsHelper.getPref(Constants.SAVE_POSTAL_CODE);
@@ -393,7 +395,15 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                     StringBuilder stringBuilder=new StringBuilder();
                     for(int j=0;j<raviCartModles.size();j++){
                         toatl_price+=Double.parseDouble(raviCartModles.get(j).getPrice());
-                        stringBuilder.append(raviCartModles.get(j).getItem_quantity()+"x"+raviCartModles.get(j).getItem_name()+"("+raviCartModles.get(j).getSize_item_name()+")");
+                        String size_item=raviCartModles.get(j).getSize_item_name();
+                        if(!size_item.equalsIgnoreCase("0")) {
+                            stringBuilder.append(raviCartModles.get(j).getItem_quantity() + "x" + raviCartModles.get(j).getItem_name() + "(" + size_item + ")");
+
+                        }
+                        else{
+                            stringBuilder.append(raviCartModles.get(j).getItem_quantity() + "x" + raviCartModles.get(j).getItem_name());
+
+                        }
                         stringBuilder.append("\n");
 
 
@@ -530,6 +540,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                             intent.putExtra("deliveryType", orderType);
                             intent.putExtra("pizzaQuantity", quantity);
                             intent.putExtra("Pizzaname", selectedPizzaName);
+                            intent.putExtra("rest_address",rest_address);
                             intent.putExtra("instructions", instructions);
                             intent.putExtra("selectedPizzaItemPrice", selectedPizzaItemPrice);
 
@@ -563,6 +574,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                             i.putExtra("pizzaQuantity", quantity);
                             i.putExtra("Pizzaname", selectedPizzaName);
                             i.putExtra("instructions", instructions);
+                            i.putExtra("rest_address",rest_address);
                             i.putExtra("selectedPizzaItemPrice", selectedPizzaItemPrice);
                             startActivity(i);
                         }
@@ -592,6 +604,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                         i.putExtra("pizzaQuantity", quantity);
                         i.putExtra("Pizzaname", selectedPizzaName);
                         i.putExtra("instructions", instructions);
+                        i.putExtra("rest_address",rest_address);
                         i.putExtra("selectedPizzaItemPrice", selectedPizzaItemPrice);
                         startActivity(i);
                     }

@@ -124,6 +124,8 @@
     <string name="done">Done</string>
     <string name="orderId">Order ID -</string>
     <string name="assonasposible">As soon as possible</string>
+    <string name="confirm_location">Bestätigen Sie den Standort</string>
+    <string name="search_for_location">Suche nach Ort</string>
     <string-array name="navigation_drawer_items_array">
 
         <!--Before Login Item-->

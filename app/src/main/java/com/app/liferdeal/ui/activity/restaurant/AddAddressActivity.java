@@ -169,7 +169,10 @@ public class AddAddressActivity extends AppCompatActivity implements View.OnClic
                         pbLoad.setVisibility(View.GONE);
                         prefsHelper.savePref(Constants.CUSTOMER_ADDRESS_ID, searchResult.getCustomerAddressId());
                         if (searchResult.getSuccess() == 1) {
-                            showCustomDialog1decline(searchResult.getSuccessMsg());
+                            showCustomDialog1decline(searchResult.getSuccessMsg(),1);
+                        }
+                        else{
+                            showCustomDialog1decline(searchResult.getSuccessMsg(),0);
                         }
 //                        hideProgress();
                         //setAdapterCategory(searchResult.getMenuItemExtraGroup());
@@ -191,7 +194,7 @@ public class AddAddressActivity extends AppCompatActivity implements View.OnClic
                 });
     }
 
-    public void showCustomDialog1decline(String s) {
+    public void showCustomDialog1decline(String s,int type) {
         final AlertDialog alertDialog = new AlertDialog.Builder(AddAddressActivity.this).create();
         alertDialog.setTitle("Alert");
         alertDialog.setMessage("" + s);
@@ -200,7 +203,9 @@ public class AddAddressActivity extends AppCompatActivity implements View.OnClic
 
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
-                finish();
+                if(type==1) {
+                    finish();
+                }
             }
         });
         alertDialog.show();
