@@ -58,15 +58,16 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.Holder> 
     DotToCommaClass dotToCommaClass;
     CancelClicked cancelClicked;
 
-    public MyOrderAdapter(Context context, List<Orders.OrderViewResult> listSubCategory) {
+    public MyOrderAdapter(Context context, List<Orders.OrderViewResult> listSubCategory, CancelClicked cancelClicked) {
         this.mContext = context;
-        cancelClicked = new MyOrderActivity();
+       this.cancelClicked=cancelClicked;
         this.listCategory = listSubCategory;
         if (App.retrieveLangFromGson(mContext) != null) {
             model = App.retrieveLangFromGson(mContext);
         }
         dotToCommaClass = new DotToCommaClass(mContext);
         prefsHelper = new PrefsHelper(mContext);
+
     }
 
     @NonNull

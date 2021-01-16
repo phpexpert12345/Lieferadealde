@@ -37,6 +37,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -635,7 +636,8 @@ public class InfoRestMenuActivity extends AppCompatActivity implements View.OnCl
             googleMap.getUiSettings().setZoomGesturesEnabled(false);
             googleMap.getUiSettings().setAllGesturesEnabled(false);
             //googleMaps.addMarker(new MarkerOptions().position(latLong).title((""+getIntent().getStringExtra("resturtantaddress"))));
-            googleMaps.addMarker(new MarkerOptions().position(latLong));//.title((address)));
+            googleMaps.addMarker(new MarkerOptions().position(latLong).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location)).snippet("ResturantLocations"));//.title((address)));
+
 
         } catch (IOException e) {
             e.printStackTrace();

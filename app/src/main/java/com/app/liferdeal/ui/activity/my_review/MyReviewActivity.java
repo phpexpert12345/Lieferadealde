@@ -18,6 +18,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.liferdeal.R;
@@ -39,7 +40,8 @@ public class MyReviewActivity extends AppCompatActivity {
     AppCompatImageView iv_back;
     @BindView(R.id.tvDataNot)
     AppCompatTextView tvDataNot;
-
+    @BindView(R.id.tv_faq)
+    TextView tv_faq;
     ReviewAdapter reviewAdapter;
     private ProgressDialog progressDialog;
     private ApiInterface apiInterface;
@@ -55,6 +57,7 @@ public class MyReviewActivity extends AppCompatActivity {
         }
         ButterKnife.bind(this);
         viewFinds();
+        tv_faq.setText(model.getMyReview());
 
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,22 +105,21 @@ public class MyReviewActivity extends AppCompatActivity {
                                 rvReviewList.setVisibility(View.GONE);
                                 tvDataNot.setVisibility(View.VISIBLE);
                             }
+                            else{
+                                rvReviewList.setVisibility(View.VISIBLE);
+                                tvDataNot.setVisibility(View.GONE);
+                                ArrayList<ReviewMainData> list = new ArrayList();
+                                list.clear();
+                                list.addAll(searchResult.getCustomerReviewlistingList());
+                                // Toast.makeText(getApplicationContext(), "Success Called=", Toast.LENGTH_LONG).show();
+                                reviewAdapter = new ReviewAdapter(getApplicationContext(), list);
+                                rvReviewList.setAdapter(reviewAdapter);
+                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
 
-                        try {
-                            rvReviewList.setVisibility(View.VISIBLE);
-                            tvDataNot.setVisibility(View.GONE);
-                            ArrayList<ReviewMainData> list = new ArrayList();
-                            list.clear();
-                            list.addAll(searchResult.getCustomerReviewlistingList());
-                            // Toast.makeText(getApplicationContext(), "Success Called=", Toast.LENGTH_LONG).show();
-                            reviewAdapter = new ReviewAdapter(getApplicationContext(), list);
-                            rvReviewList.setAdapter(reviewAdapter);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+
                     }
 
                     @Override

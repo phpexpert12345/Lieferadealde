@@ -34,8 +34,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.liferdeal.R;
 import com.app.liferdeal.application.App;
+import com.app.liferdeal.model.CouponApplied;
 import com.app.liferdeal.model.GetRestaurantDiscountResponse;
 import com.app.liferdeal.model.LanguageResponse;
+import com.app.liferdeal.model.LoyaltyApplied;
 import com.app.liferdeal.model.RmGetLoyaltyPointResponse;
 import com.app.liferdeal.model.RmVerifyCouponCodeResponse;
 import com.app.liferdeal.model.RmVerifyLoyaltyPointResponse;
@@ -49,6 +51,7 @@ import com.app.liferdeal.ui.activity.restaurant.RestaurantDetails;
 import com.app.liferdeal.util.CommonMethods;
 import com.app.liferdeal.util.Constants;
 import com.app.liferdeal.util.DotToCommaClass;
+import com.app.liferdeal.util.DroidPrefs;
 import com.app.liferdeal.util.PrefsHelper;
 import com.app.liferdeal.util.SharedPreferencesData;
 
@@ -146,6 +149,10 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     TextView tvLoyaltyText;
     @BindView(R.id.tvLoyaltyFee)
     TextView tvLoyaltyFee;
+    @BindView(R.id.card_coupon)
+    CardView card_coupon;
+    @BindView(R.id.llLoyalityPoint)
+            LinearLayout llLoyalityPoint;
     SharedPreferencesData sharedPreferencesData;
     private LanguageResponse model = new LanguageResponse();
     private DotToCommaClass dotToCommaClass;
@@ -199,7 +206,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         //Log.e("REST", RestId);
         strMainRestName = getIntent().getStringExtra("RESTName");
         strMainRestLogo = getIntent().getStringExtra("RESTLOGO");
-        Log.i("reason",strMainRestLogo);
+
         pizzaItemid = getIntent().getStringExtra("subPizzaItemId");
         strsizeid = getIntent().getStringExtra("SIZEITEMID");
         extraItemID = getIntent().getStringExtra("globTempExtraItemidWithSizeIdd");
@@ -249,11 +256,63 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 //        orderType = "Delivery";
 
         if (prefsHelper.isLoggedIn()) {
-            cardViewLoyality.setVisibility(View.VISIBLE);
-            showProgress();
-            getLoyalityPoitsAll();
+            LoyaltyApplied loyaltyApplied=DroidPrefs.get(this,"loyalty_applied",LoyaltyApplied.class);
+            if(loyaltyApplied!=null){
+                if(loyaltyApplied.is_loyalty_applied){
+                    String price=loyaltyApplied.loyalty_points;
+
+                    if(price!=null){
+                        loyalty_price=Double.parseDouble(price);
+                        tvLoyaltyFee.setVisibility(View.VISIBLE);
+                        tvLoyaltyText.setVisibility(View.VISIBLE);
+                        tvLoyaliteyPoints.setText(model.getLoyaltyPoints());
+                        tvLoyaliteyPoints.setVisibility(View.VISIBLE);
+                        tvLoyaltyFee.setText("-" + currencySymbol + dotToCommaClass.changeDot(price));
+                        updateData();
+
+                    }
+                    cardViewLoyality.setVisibility(View.GONE);
+                }
+                else{
+                    showProgress();
+                    getLoyalityPoitsAll();
+                    cardViewLoyality.setVisibility(View.VISIBLE);
+                }
+            }
+            else{
+                showProgress();
+                getLoyalityPoitsAll();
+                cardViewLoyality.setVisibility(View.VISIBLE);;
+            }
+
+
+
         } else {
             cardViewLoyality.setVisibility(View.GONE);
+        }
+        CouponApplied couponApplied=DroidPrefs.get(this,"coupon_applied",CouponApplied.class);
+        if(couponApplied!=null){
+            if(couponApplied.is_coupon_applied){
+                String price=couponApplied.coupon_value;
+
+                if(price!=null){
+                    coupon_price=Double.parseDouble(price);
+                    tvFoodDiscount.setVisibility(View.VISIBLE);
+                    tv_food_discount_total.setVisibility(View.VISIBLE);
+
+                    tv_food_discount_total.setText("-" + currencySymbol + dotToCommaClass.changeDot(price));
+                    updateData();
+
+                }
+                card_coupon.setVisibility(View.GONE);
+
+            }
+            else {
+                card_coupon.setVisibility(View.VISIBLE);
+            }
+        }
+        else {
+            card_coupon.setVisibility(View.VISIBLE);
         }
 
         if (sharedPreferencesData.getSharedPreferenceData(Constants.FORDELIVERY, Constants.HMDLVRYAVAIL).equalsIgnoreCase("yes")) {
@@ -453,6 +512,8 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             tvEmptyCart.setText(model.getYOURCARTISEMPTY());
             tvLooks.setText(model.getLOOKLIKEYOUHAVE());
             llFull.addView(view);
+            DroidPrefs.getDefaultInstance(this).clearkey("coupon_applied");
+            DroidPrefs.getDefaultInstance(this).clearkey("loyalty_applied");
 //            Toast.makeText(mInstance, "Empty", Toast.LENGTH_SHORT).show();
         } else {
             if (llFull.getVisibility() == View.VISIBLE) {
@@ -1216,8 +1277,18 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                                 Toast.makeText(getApplicationContext(), searchResult.getError_msg(), Toast.LENGTH_LONG).show();
                             } else {
                                 Toast.makeText(getApplicationContext(), searchResult.getSuccessMsg(), Toast.LENGTH_LONG).show();
+                                CouponApplied couponApplied=DroidPrefs.get(CartActivity.this,"coupon_applied",CouponApplied.class);
+                                if(couponApplied!=null){
+                                    if(couponApplied.coupon_value==null){
+                                        couponApplied.coupon_value=searchResult.getCouponCodePrice();
+                                        couponApplied.is_coupon_applied=true;
+                                        DroidPrefs.apply(CartActivity.this,"coupon_applied",couponApplied);
+                                    }
+                                }
+                                card_coupon.setVisibility(View.GONE);
                                 tvFoodDiscount.setVisibility(View.VISIBLE);
                                 tv_food_discount_total.setVisibility(View.VISIBLE);
+
                                 tv_food_discount_total.setText("-" + currencySymbol + dotToCommaClass.changeDot(searchResult.getCouponCodePrice()));
                                 updateData();
                             }
@@ -1298,6 +1369,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                                 loyalty = true;
                                 if (searchResult.getTotalLoyaltyAmount() != null) {
                                     loyalty_price = Double.parseDouble(searchResult.getTotalLoyaltyAmount());
+
 //                        checkout_total_price.setText(new DecimalFormat("##.##").format(totalPrice).toString());
                                     if (loyalty_price == 0 || loyalty_price == 0.00) {
                                         tvLoyaltyText.setVisibility(View.GONE);
@@ -1305,11 +1377,21 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                                     } else {
                                         tvLoyaltyFee.setVisibility(View.VISIBLE);
                                         tvLoyaltyText.setVisibility(View.VISIBLE);
+                                        cardViewLoyality.setVisibility(View.GONE);
+                                        LoyaltyApplied loyaltyApplied= DroidPrefs.get(CartActivity.this,"loyalty_applied",LoyaltyApplied.class);
+                                        if(loyaltyApplied!=null){
+                                            if(loyaltyApplied.loyalty_points==null){
+                                                loyaltyApplied.loyalty_points=searchResult.getTotalLoyaltyAmount();
+                                                loyaltyApplied.is_loyalty_applied=true;
+                                                DroidPrefs.apply(CartActivity.this,"loyalty_applied",loyaltyApplied);
+                                            }
+                                        }
                                         tvLoyaltyFee.setText("-" + currencySymbol + dotToCommaClass.changeDot(searchResult.getTotalLoyaltyAmount()));
                                         updateData();
                                     }
                                 }
                             } else {
+                                cardViewLoyality.setVisibility(View.VISIBLE);
                                 Toast.makeText(getApplicationContext(), searchResult.getSuccessMsg(), Toast.LENGTH_LONG).show();
                             }
                         } catch (Exception e) {

@@ -54,11 +54,9 @@ public class DetailOrderAdapter extends RecyclerView.Adapter<DetailOrderAdapter.
     private PrefsHelper prefsHelper;
     private LanguageResponse model = new LanguageResponse();
     DotToCommaClass dotToCommaClass;
-    CancelClicked cancelClicked;
 
     public DetailOrderAdapter(Context context, List<OrderFoodItem> listSubCategory) {
         this.mContext = context;
-        cancelClicked = new MyOrderActivity();
         this.listCategory = listSubCategory;
         if (App.retrieveLangFromGson(mContext) != null) {
             model = App.retrieveLangFromGson(mContext);

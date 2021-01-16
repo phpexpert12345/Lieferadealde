@@ -33,13 +33,13 @@
             android:textSize="@dimen/sp_18" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="198dp"
+            android:layout_gravity="center"
             android:layout_marginTop="@dimen/dp_10"
             android:backgroundTint="@color/colorGreenLite"
-            android:tint="@color/colorGreenLite"
-            android:layout_gravity="center"
             android:padding="@dimen/dp_10"
+            android:tint="@color/colorGreenLite"
             app:srcCompat="@drawable/ic_shopping_bag" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -49,6 +49,8 @@
             android:layout_below="@+id/tool_activity"
             android:fontFamily="@font/roboto_regular"
             android:gravity="center"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
             android:layout_marginTop="@dimen/dp_10"
             android:text="Looks like you haven't made\nyour choice yet."
             android:textSize="@dimen/sp_18" />

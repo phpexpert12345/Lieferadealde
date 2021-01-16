@@ -37,6 +37,7 @@ import com.app.liferdeal.ui.activity.restaurant.MyOrderDetailsActivity;
 import com.app.liferdeal.ui.activity.restaurant.RestaurantDetails;
 import com.app.liferdeal.util.Constants;
 import com.app.liferdeal.util.DotToCommaClass;
+import com.app.liferdeal.util.DroidPrefs;
 import com.app.liferdeal.util.GPSTracker;
 import com.app.liferdeal.util.PrefsHelper;
 import com.app.liferdeal.util.SharedPreferencesData;
@@ -127,6 +128,7 @@ public class ThankyouPageActivity extends AppCompatActivity implements View.OnCl
 
         Database database = new Database(ThankyouPageActivity.this);
         database.delete();
+        DroidPrefs.getDefaultInstance(this).clear();
         init();
     }
 

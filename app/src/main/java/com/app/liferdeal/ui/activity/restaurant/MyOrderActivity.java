@@ -41,7 +41,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class MyOrderActivity extends AppCompatActivity implements View.OnClickListener, CancelClicked {
+public class MyOrderActivity extends AppCompatActivity implements View.OnClickListener {
     private PrefsHelper prefsHelper;
     private ProgressDialog progressDialog;
     private ApiInterface apiInterface;
@@ -153,18 +153,17 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void setAdapterCategory(List<Orders.OrderViewResult> list) {
-        MyOrderAdapter adapterCategory = new MyOrderAdapter(this, list);
+        MyOrderAdapter adapterCategory = new MyOrderAdapter(this, list, new CancelClicked() {
+            @Override
+            public void cancleButton(String orderId, Context context) {
+                showCancelDialog(orderId, context);
+            }
+        });
         rcv_rest_list.setAdapter(adapterCategory);
         // hideProgress();
     }
 
-    @Override
-    public void cancleButton(String orderId, Context context) {
-        Log.e("Called=", orderId);
-        setRestaurantCancel(orderId, context);
-//        showCancelDialog(orderId, context);
 
-    }
     public void showCancelDialog(String orderId,Context context){
         AlertDialog.Builder builder=new AlertDialog.Builder(MyOrderActivity.this);
         builder.setMessage(model.getAre_you_sure());
@@ -217,13 +216,6 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
     @BindView(R.id.rcv_rest_list)
     RecyclerView rcv_rest_list;
 
-    private void setAdapterCategory1(List<Orders.OrderViewResult> list, Context context) {
-        //MyOrderActivity myOrderActivity=new MyOrderActivity();
-        MyOrderAdapter adapterCategory = new MyOrderAdapter(context, list);
-        rcv_rest_list = findViewById(R.id.rcv_rest_list);
-        rcv_rest_list.setAdapter(adapterCategory);
-        // hideProgress();
-    }
 
     @Override
     protected void onResume() {

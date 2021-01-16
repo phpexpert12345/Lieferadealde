@@ -32,6 +32,7 @@ import com.app.liferdeal.application.App;
 import com.app.liferdeal.model.LanguageResponse;
 import com.app.liferdeal.model.menuitems.AllCategoryResponse;
 import com.app.liferdeal.model.menuitems.MenuCat;
+import com.app.liferdeal.model.restaurant.RaviCartModle;
 import com.app.liferdeal.model.restaurant.RestDetailClickFoodModel;
 import com.app.liferdeal.model.restaurant.RestaurantDetailsModel;
 import com.app.liferdeal.network.retrofit.ApiInterface;
@@ -270,23 +271,15 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
 
         getRestSearchDetailsData();
         getAllMenu();
+        updateCart();
+
 //        } catch (Exception ex) {
 //            ex.printStackTrace();
 //        }
 
-        if (AddExtraActivity.cart_Item_number > 0) {
-            // rl_cart.setVisibility(View.VISIBLE);
-            RestaurantDetails.tvCartItemCount.setText("" + AddExtraActivity.cart_Item_number);
-            RestaurantDetails.tvCartItemCount1.setText("" + AddExtraActivity.cart_Item_number);
 
-            rl_cartt.setVisibility(View.VISIBLE);
-            RestaurantDetails.tv_cart_item_countt.setText("" + AddExtraActivity.cart_Item_number);
-            tvTotalItemCnt.setText("" + AddExtraActivity.cart_Item_number + " " + model.getItems());
-            updateCart();
-        } else {
-            rl_cartt.setVisibility(View.GONE);
-        }
     }
+
 
     private void getAllMenu() {
         banner_progress.setVisibility(View.VISIBLE);
@@ -378,23 +371,25 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        if (AddExtraActivity.cart_Item_number > 0) {
-            // rl_cart.setVisibility(View.VISIBLE);
-            RestaurantDetails.tvCartItemCount.setText("" + AddExtraActivity.cart_Item_number);
-            RestaurantDetails.tvCartItemCount1.setText("" + AddExtraActivity.cart_Item_number);
-
-            rl_cartt.setVisibility(View.VISIBLE);
-            RestaurantDetails.tv_cart_item_countt.setText("" + AddExtraActivity.cart_Item_number);
-            tvTotalItemCnt.setText("" + AddExtraActivity.cart_Item_number + " Items");
-            updateCart();
-        } else {
-            rl_cartt.setVisibility(View.GONE);
-        }
+        updateCart();
+//        if (AddExtraActivity.cart_Item_number > 0) {
+//            // rl_cart.setVisibility(View.VISIBLE);
+//            RestaurantDetails.tvCartItemCount.setText("" + AddExtraActivity.cart_Item_number);
+//            RestaurantDetails.tvCartItemCount1.setText("" + AddExtraActivity.cart_Item_number);
+//
+//            rl_cartt.setVisibility(View.VISIBLE);
+//            RestaurantDetails.tv_cart_item_countt.setText("" + AddExtraActivity.cart_Item_number);
+//            tvTotalItemCnt.setText("" + AddExtraActivity.cart_Item_number + " Items");
+//            updateCart();
+//        } else {
+//            rl_cartt.setVisibility(View.GONE);
+//        }
     }
 
     private void updateCart() {
         try {
             Double totalPrice = 0.0;
+            ArrayList<RaviCartModle> raviCartModles=new ArrayList<>();
             SQLiteDatabase db = database.getReadableDatabase();
             Cursor cursor = db.rawQuery("SELECT * FROM item_table", null);
             //  Cursor cursor1 = db.rawQuery("SELECT * FROM deal_item_table", null);
@@ -408,10 +403,30 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
                         String extra_item_id = cursor.getString(4);
                         String extra_item_name = cursor.getString(5);
                         String price = cursor.getString(6);
-
+                        String subcatdetals = cursor.getString(8);
+                        String item_quantity = cursor.getString(7);
                         totalPrice = totalPrice + Double.parseDouble(price);
+                        raviCartModles.add(new RaviCartModle(item_id, item_name, size_item_id, size_item_name, extra_item_id, extra_item_name, price, item_quantity, subcatdetals));
 
                     } while (cursor.moveToNext());
+
+                    if(raviCartModles.size()>0){
+                        DecimalFormat df2 = new DecimalFormat("#.##");
+//            tv_TotalPrice.setText("€" + df2.format(totalPrice));
+                        RestaurantDetails.tvCartItemCount.setText("" + raviCartModles.size());
+                        RestaurantDetails.tvCartItemCount1.setText("" + raviCartModles.size());
+
+                        rl_cartt.setVisibility(View.VISIBLE);
+                        RestaurantDetails.tv_cart_item_countt.setText("" + raviCartModles.size());
+                        tvTotalItemCnt.setText("" + raviCartModles.size() + " " + model.getItems());
+                        tv_TotalPrice.setText("€" + dotToCommaClass.changeDot(String.format("%.2f", totalPrice)));
+
+                    }
+                    else{
+                        rl_cartt.setVisibility(View.GONE);
+                    }
+
+
                     //  tvTotalFoodCost.setText("+".concat(pound.concat("" + String.format("%.2f", totalPrice))));
                     //    tvTotalFoodCost.setText("+".concat(pound.concat("" +String.valueOf(totalPrice))));
                     // getDiscount();
@@ -422,7 +437,9 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
                 }
             } else {
                 db.close();
-          /*      Ravifinalitem.cart_Item_number = 0;
+                rl_cartt.setVisibility(View.GONE);
+
+                          /*      Ravifinalitem.cart_Item_number = 0;
                 Intent iii = new Intent(CartActivity.this, EmptyCartActivity.class);
                 iii.putExtra("restaurantAddress", restaurantAddress);
                 iii.putExtra("restaurantName", restaurantName);
@@ -431,9 +448,7 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
                 startActivity(iii);
                 finish();*/
             }
-            DecimalFormat df2 = new DecimalFormat("#.##");
-//            tv_TotalPrice.setText("€" + df2.format(totalPrice));
-            tv_TotalPrice.setText("€" + dotToCommaClass.changeDot(String.format("%.2f", totalPrice)));
+
 
         } catch (Exception e) {
             Toast.makeText(this, "" + e, Toast.LENGTH_SHORT).show();

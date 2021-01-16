@@ -361,6 +361,9 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
 */
         restId = getIntent().getStringExtra("RestId");
         TotalPrice = getIntent().getStringExtra("TotalPrice");
+        if(TotalPrice!=null){
+            tvToPayPrice.setText(currencySymbol + dotToCommaClass.changeDot(String.format("%.2f",Double.parseDouble(TotalPrice))));
+        }
         order_price = TotalPrice;
 
         subTotalPrice = getIntent().getStringExtra("SubTotalPrice");
@@ -780,10 +783,15 @@ hideProgress();
                     extraItemID=extra_all.deleteCharAt(extra_all.lastIndexOf(",")).toString();
                 }
                 if(toatl_price>0.0){
+
                     subTotalAmount= String.valueOf(toatl_price);
-                    double delivery= Double.parseDouble(deliveryChargeValue);
-                    double total=toatl_price+delivery;
-                    tvToPayPrice.setText(currencySymbol + dotToCommaClass.changeDot(String.format("%.2f", total)));
+                    if(TotalPrice==null) {
+                        double delivery = Double.parseDouble(deliveryChargeValue);
+                        double total = toatl_price + delivery;
+                        tvToPayPrice.setText(currencySymbol + dotToCommaClass.changeDot(String.format("%.2f", total)));
+                        order_price= String.valueOf(total);
+                    }
+
                     FoodCosts=subTotalAmount;
                 }
                 if(extraItemid3.length()>0){

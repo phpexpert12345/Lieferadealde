@@ -33,6 +33,7 @@ import com.app.liferdeal.ui.activity.restaurant.MyOrderActivity;
 import com.app.liferdeal.ui.activity.tickets.TicketList;
 import com.app.liferdeal.ui.fragment.LocationMapFragment;
 import com.app.liferdeal.util.Constants;
+import com.app.liferdeal.util.DroidPrefs;
 import com.app.liferdeal.util.PrefsHelper;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -341,6 +342,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
 //                                prefsHelper.clearAllPref();
                                 prefsHelper.loggedOut();
+                                DroidPrefs.getDefaultInstance(ProfileActivity.this).clear();
                                 openDialog();
 //                                Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
 //                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

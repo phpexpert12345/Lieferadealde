@@ -30,7 +30,7 @@
 
     <style name="RatingBar" parent="Theme.AppCompat">
         <item name="colorControlActivated">@color/colorOrange</item>
-        <item name="colorControlNormal">@color/gray</item>
+        <item name="colorControlNormal">@color/colorWhite</item>
     </style>
 
     <style name="Green.RatingBar" parent="Theme.AppCompat">

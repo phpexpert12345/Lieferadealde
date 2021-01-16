@@ -81,6 +81,7 @@ import com.app.liferdeal.ui.fragment.restaurant.RestaurantMain;
 import com.app.liferdeal.ui.interfaces.FilterInterface;
 import com.app.liferdeal.ui.interfaces.ItemClickListener;
 import com.app.liferdeal.util.Constants;
+import com.app.liferdeal.util.DroidPrefs;
 import com.app.liferdeal.util.GPSTracker;
 import com.app.liferdeal.util.PrefsHelper;
 import com.bumptech.glide.Glide;
@@ -965,6 +966,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 // new AuthPreference(HomeActivity.this).setCustomerId("");
 //                                authPreference.clearAllPref();//clear the local data
                                 authPreference.loggedOut();
+                                DroidPrefs.getDefaultInstance(MainActivity.this).clear();
                                 openDialog();
                             }
                         })

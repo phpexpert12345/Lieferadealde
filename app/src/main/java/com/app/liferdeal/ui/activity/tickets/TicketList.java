@@ -91,7 +91,7 @@ public class TicketList extends Activity implements View.OnClickListener {
         btnAddAddress.setOnClickListener(this::onClick);
         tvGoHome.setOnClickListener(this::onClick);
         iv_back.setOnClickListener(this::onClick);
-        getTicketData();
+//        getTicketData();
     }
 
     @Override
