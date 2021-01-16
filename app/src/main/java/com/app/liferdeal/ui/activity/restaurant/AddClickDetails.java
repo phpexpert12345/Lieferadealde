@@ -291,7 +291,7 @@ public class AddClickDetails extends AppCompatActivity implements View.OnClickLi
         SQLiteDatabase db = database.getReadableDatabase();
 
         Cursor cursor = db.rawQuery("SELECT * FROM item_table where item_id='" + clickItemtId + "'", null);
-        database.InsertItem(String.valueOf(clickItemtId), CLICKITEMNAME, "0", "0", "0", "0", Double.parseDouble(CLICKITEMPRICE), 1,ClickPizzdesc);
+        database.InsertItem(String.valueOf(clickItemtId), CLICKITEMNAME,String.valueOf(globItemSizeId), selectFoodSizeName, "0", "0", Double.parseDouble(sizePizzaPrice), 1,ClickPizzdesc);
         AddExtraActivity.cart_Item_number = AddExtraActivity.cart_Item_number + 1;
         RestaurantDetails.tvCartItemCount.setText("" + AddExtraActivity.cart_Item_number);
         Intent i = new Intent(this, RestaurantDetails.class);

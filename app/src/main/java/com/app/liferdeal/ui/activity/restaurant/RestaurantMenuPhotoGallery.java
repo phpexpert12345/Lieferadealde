@@ -92,7 +92,7 @@ public class RestaurantMenuPhotoGallery extends AppCompatActivity implements Vie
         clickRestId = getIntent().getStringExtra("clickRestId");
         System.out.println("==== clickRestId in rest gallery activity : " + clickRestId);
         tabLayout = findViewById(R.id.tab_layout);
-        txt_header_name.setText("Menu");
+        txt_header_name.setText(model.getMenu());
         img_back.setOnClickListener(this);
         getPhotoGalleryData();
 

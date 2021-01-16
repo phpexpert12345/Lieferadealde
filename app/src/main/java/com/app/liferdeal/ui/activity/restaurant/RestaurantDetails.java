@@ -284,6 +284,8 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
     private void getAllMenu() {
         banner_progress.setVisibility(View.VISIBLE);
         apiInterface = RFClient.getClient().create(ApiInterface.class);
+        String url="https://www.lieferadeal.de/WebAppAPI/phpexpert_all_category_list.php?api_key="+prefsHelper.getPref(Constants.API_KEY)+"&lang_code="+prefsHelper.getPref(Constants.LNG_CODE)+"&resid="+clickRestId;
+        Log.i("reason",url);
         Observable<AllCategoryResponse> observable = apiInterface.getAllList(prefsHelper.getPref(Constants.API_KEY), prefsHelper.getPref(Constants.LNG_CODE), clickRestId);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

@@ -86,7 +86,30 @@ public class SubItemsRecord implements Section {
     @Expose
     private String sizeavailable;
 
-    public String getAllergyDescription() {
+    public String getFree_Topping_Selection_allowed() {
+        return Free_Topping_Selection_allowed;
+    }
+
+    public void setFree_Topping_Selection_allowed(String free_Topping_Selection_allowed) {
+        Free_Topping_Selection_allowed = free_Topping_Selection_allowed;
+    }
+
+    public String getCHOOSE_ANY_FREE_TOPINGS() {
+        return CHOOSE_ANY_FREE_TOPINGS;
+    }
+
+    public void setCHOOSE_ANY_FREE_TOPINGS(String CHOOSE_ANY_FREE_TOPINGS) {
+        this.CHOOSE_ANY_FREE_TOPINGS = CHOOSE_ANY_FREE_TOPINGS;
+    }
+
+    @SerializedName("Free_Topping_Selection_allowed")
+    @Expose
+    private String Free_Topping_Selection_allowed;
+    @SerializedName("CHOOSE_ANY_FREE_TOPINGS")
+    @Expose
+    private String CHOOSE_ANY_FREE_TOPINGS;
+
+    public String  getAllergyDescription() {
         return allergyDescription;
     }
 

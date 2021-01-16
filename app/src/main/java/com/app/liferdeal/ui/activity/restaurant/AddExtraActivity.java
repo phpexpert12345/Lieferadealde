@@ -186,14 +186,22 @@ public class AddExtraActivity extends AppCompatActivity implements View.OnClickL
 //                        showProgress();
                         setAdapterCategory(searchResult.getMenuItemExtraGroup());
                         try {
-                            if (searchResult.getMenuItemExtraGroup().get(0).getSubExtraItemsRecord().get(0).getFreeToppingSelectionAllowed() != null &&
-                                    !searchResult.getMenuItemExtraGroup().get(0).getSubExtraItemsRecord().get(0).getFreeToppingSelectionAllowed().equalsIgnoreCase("")) {
-                                freeTopping = Integer.parseInt(searchResult.getMenuItemExtraGroup().get(0).getSubExtraItemsRecord().get(0).getFreeToppingSelectionAllowed());
-                                tvChooseTopping.setVisibility(View.VISIBLE);
-                                tvChooseTopping.setText(model.getChooseAny5ToppingFree().replace("$", searchResult.getMenuItemExtraGroup().get(0).getSubExtraItemsRecord().get(0).getFreeToppingSelectionAllowed()));
-                            } else {
+                            if(searchResult.getMenuItemExtraGroup()!=null){
+                                if(searchResult.getMenuItemExtraGroup().size()>0){
+                                    if (searchResult.getMenuItemExtraGroup().get(0).getSubExtraItemsRecord().get(0).getFreeToppingSelectionAllowed() != null &&
+                                            !searchResult.getMenuItemExtraGroup().get(0).getSubExtraItemsRecord().get(0).getFreeToppingSelectionAllowed().equalsIgnoreCase("")) {
+                                        freeTopping = Integer.parseInt(searchResult.getMenuItemExtraGroup().get(0).getSubExtraItemsRecord().get(0).getFreeToppingSelectionAllowed());
+                                        tvChooseTopping.setVisibility(View.VISIBLE);
+                                        tvChooseTopping.setText(model.getChooseAny5ToppingFree().replace("$", searchResult.getMenuItemExtraGroup().get(0).getSubExtraItemsRecord().get(0).getFreeToppingSelectionAllowed()));
+                                    } else {
+                                        tvChooseTopping.setVisibility(View.GONE);
+                                    }
+                                }
+                            }
+                            else {
                                 tvChooseTopping.setVisibility(View.GONE);
                             }
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

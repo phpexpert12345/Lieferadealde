@@ -227,6 +227,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         tv_save_discount_amount_msg.setText(model.getApplyCoupon());
         tvLoyalty.setText(model.getRedeemLoyaltyPoints());
         tvBillDetail.setText(model.getBillDetails());
+        tcSubTotal.setVisibility(View.VISIBLE);
         tcSubTotal.setText(model.getSubtotal());
         tvFoodItems.setText(model.getFoodDiscount());
         tvServiceFeeText.setText(model.getServiceFees());
@@ -788,7 +789,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                    instructions =CommonMethods.getStringDataInbase64(s.toString());
                 }
 
                 @Override
