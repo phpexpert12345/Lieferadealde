@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1001299067241",
+    "project_id": "liefedereal-android",
+    "storage_bucket": "liefedereal-android.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1001299067241:android:028c19bc85a143e912bdf8",
+        "android_client_info": {
+          "package_name": "com.app.liferdeal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1001299067241-vin3glup16t35s43gmf3ist7k9bqblmo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1ftzMqN9t0moY54yISiJB1X7BuyvhZLM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1001299067241-vin3glup16t35s43gmf3ist7k9bqblmo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

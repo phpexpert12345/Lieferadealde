@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -42,6 +43,9 @@ import com.app.liferdeal.util.PrefsHelper;
 import com.app.liferdeal.util.SharedPreferencesData;
 import com.app.liferdeal.util.Utility;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Currency;
 import java.util.regex.Pattern;
@@ -204,7 +208,8 @@ Utility.ShowHidePassword(edt_usrPass,0);
                     edt_usrPass.setError(model.getPASSWORDFIELDISREQUIRED());
                     edt_usrPass.requestFocus();
                 } else {
-                    userLogin(edt_usrName.getText().toString().trim(), edt_usrPass.getText().toString().trim());
+                    getToken();
+
                 }
                 break;
             case R.id.txt_create_acc:
@@ -217,6 +222,30 @@ Utility.ShowHidePassword(edt_usrPass,0);
             default:
                 break;
         }
+    }
+    private void getToken(){
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("reason", "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+
+                        // Get new FCM registration token
+                        String token = task.getResult();
+                        if(token!=null){
+                            Log.i("reason",token);
+                            userLogin(edt_usrName.getText().toString().trim(), edt_usrPass.getText().toString().trim(),token);
+//                            getLogin(token);
+                        }
+
+                        // Log and toast
+
+                    }
+                });
     }
 
     private void getSplashData() {
@@ -366,10 +395,10 @@ Utility.ShowHidePassword(edt_usrPass,0);
         return check;
     }
 
-    private void userLogin(String emailid, String pass) {
+    private void userLogin(String emailid, String pass,String token) {
         showProgress();
         apiInterface = RFClient.getClient().create(ApiInterface.class);
-        Observable<SignInModel> observable = apiInterface.loginUser(emailid, pass, prefsHelper.getPref(Constants.API_KEY), langCode, deviceId, devicePlateform);
+        Observable<SignInModel> observable = apiInterface.loginUser(emailid, pass, prefsHelper.getPref(Constants.API_KEY), langCode, token, devicePlateform);
 
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

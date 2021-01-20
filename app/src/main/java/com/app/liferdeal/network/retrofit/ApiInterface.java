@@ -85,7 +85,7 @@ public interface ApiInterface {
                                       @Field("user_pass") String password,
                                       @Field("api_key") String apiKey,
                                       @Field("lang_code") String langCode,
-                                      @Field("device_id") String device_id,
+                                      @Field("device_android_id") String device_id,
                                       @Field("device_platform") String platform);
 
     @FormUrlEncoded

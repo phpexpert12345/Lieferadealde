@@ -355,7 +355,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
         updateCart();
         getDiscount();
-        getShippingChargeData();
+        getShippingChargeData("Delivery");
         // Log.e("extraItemID=",raviCartModles.get(0).getSize_item_name());
     }
 
@@ -538,7 +538,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 changeSelect("Pickup");
                 orderType = "Pickup";
                 getDiscount();
-                getShippingChargeData();
+                getShippingChargeData("Pickup");
                 //  addQuatity.insert("1","sufiyan");
 //                serviceChargedForDeliveryAndPickup();
                 break;
@@ -546,7 +546,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 changeSelect("Delivery");
                 orderType = "Delivery";
                 getDiscount();
-                getShippingChargeData();
+                getShippingChargeData("Delivery");
                 // addQuatity.updateItem("1","name.....");
 //                serviceChargedForDeliveryAndPickup();
                 break;
@@ -555,7 +555,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 changeSelect("EAT-IN");
                 orderType = "EAT-IN";
                 getDiscount();
-                getShippingChargeData();
+                getShippingChargeData("");
 //                serviceChargedForDeliveryAndPickup();
                 // addQuatity.updateItem("1","name.....");
                 break;
@@ -577,7 +577,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                     sharedPreferencesData.setSharedPreferenceData(Constants.PRICEPREFERENCE, Constants.SIZEOFPIZZA, raviCartModles.get(0).getSize_item_name());
 
                     if (prefsHelper.isLoggedIn()) {
-                        if (orderType.equalsIgnoreCase("Delivery")) {
+
                             Intent intent = new Intent(CartActivity.this, SavedAddressActivity.class);
                             intent.putExtra("RestId", RestId);
                             intent.putExtra("TotalPrice", String.valueOf(grandTotal));
@@ -610,36 +610,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                             //sharedPreferencesData.setSharedPreferenceData(Constants.PRICEPREFERENCE,Constants.PACKAGINGFEES,subTotalAmount);
 
                             startActivity(intent);
-                        } else {
-                            Intent i = new Intent(CartActivity.this, CartCheckout.class);
-                            i.putExtra("RestId", RestId);
-                            i.putExtra("TotalPrice", String.valueOf(grandTotal));
-                            i.putExtra("SubTotalPrice", String.valueOf(grandTotal));
-                            i.putExtra("RESTName", strMainRestName);
-                            i.putExtra("RESTLOGO", strMainRestLogo);
-                            i.putExtra("subPizzaItemId", pizzaItemid);
-                            i.putExtra("SIZEITEMID", strsizeid);
-                            i.putExtra("globTempExtraItemidWithSizeIdd", extraItemID);
-                            i.putExtra("delivery_date", delivery_date);
-                            i.putExtra("food_cost", FoodCosts);
-                            i.putExtra("quantity", quantity);
-                            i.putExtra("deliveryChargeValue", deliveryChargeValue);
-                            i.putExtra("SeviceFeesValue", SeviceFeesValue);
-                            i.putExtra("ServiceFees", ServiceFees);
-                            i.putExtra("ServiceFeesType", ServiceFeesType);
-                            i.putExtra("PackageFeesType", PackageFeesType);
-                            i.putExtra("PackageFees", PackageFees);
-                            i.putExtra("PackageFeesValue", PackageFeesValue);
-                            i.putExtra("SalesTaxAmount", SalesTaxAmount);
-                            i.putExtra("VatTax", VatTax);
-                            i.putExtra("deliveryType", orderType);
-                            i.putExtra("pizzaQuantity", quantity);
-                            i.putExtra("Pizzaname", selectedPizzaName);
-                            i.putExtra("instructions", instructions);
-                            i.putExtra("rest_address",rest_address);
-                            i.putExtra("selectedPizzaItemPrice", selectedPizzaItemPrice);
-                            startActivity(i);
-                        }
+
                     } else {
                         Intent i = new Intent(CartActivity.this, CartCheckout.class);
                         i.putExtra("RestId", RestId);
@@ -828,7 +799,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                     rr.get(position).setItem_quantity(String.valueOf(qunt));
                     updateCart();
                     getDiscount();
-                    getShippingChargeData();
+                    getShippingChargeData(order_type);
                 }
             });
 
@@ -863,7 +834,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                     AddExtraActivity.cart_Item_number = rr.size();
                     updateCart();
                     getDiscount();
-                    getShippingChargeData();
+                    getShippingChargeData(order_type);
                 }
             });
 
@@ -923,7 +894,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         FoodCosts = tv_food_item_total.getText().toString();
     }
 
-    private void getShippingChargeData() {
+    private void getShippingChargeData(String order_type) {
         apiInterface = RFClient.getClient().create(ApiInterface.class);
         Observable<ShippingCartModel> observable = apiInterface.getServiceCharge(prefsHelper.getPref(Constants.API_KEY), prefsHelper.getPref(Constants.LNG_CODE),
                 String.valueOf(totalPrice), RestId, postalCode, orderType);
@@ -940,7 +911,12 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                     public void onNext(ShippingCartModel searchResult) {
                         try {
                             // Toast.makeText(getApplicationContext(), "Success Called=", Toast.LENGTH_LONG).show();
-                            deliveryChargeValue = searchResult.getDeliveryChargeValue();
+                            if(order_type.equalsIgnoreCase("Delivery")) {
+                                deliveryChargeValue = searchResult.getDeliveryChargeValue();
+                            }
+                            else {
+                                deliveryChargeValue="0.0";
+                            }
                             SeviceFeesValue = searchResult.getSeviceFeesValue();
                             ServiceFees = searchResult.getServiceFees();
                             ServiceFeesType = searchResult.getServiceFeesType();
@@ -1084,6 +1060,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                             if (discount == 0.0) {
                                 tvFoodItems.setVisibility(View.GONE);
                                 tv_food_item_total.setVisibility(View.GONE);
+                                updateData();
                             } else {
                                 tvFoodItems.setVisibility(View.VISIBLE);
                                 tv_food_item_total.setVisibility(View.VISIBLE);

@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     useLibrary 'org.apache.http.legacy'
@@ -66,12 +67,12 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui:2.3.2'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation project(path: ':lib')
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     // for ssp and sdp font size
     implementation 'com.intuit.ssp:ssp-android:1.0.4'
-    implementation 'com.intuit.sdp:sdp-android:1.0.4'
+    implementation 'com.intuit.sdp:sdp-android:1.0.6'
     implementation 'com.squareup.retrofit2:retrofit:2.7.2'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.1'
     implementation 'com.squareup.retrofit2:converter-gson:2.7.2'
@@ -127,5 +128,7 @@ dependencies {
 
 
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.google.firebase:firebase-messaging:21.0.1'
+    implementation 'com.google.firebase:firebase-analytics:18.0.1'
 
 }

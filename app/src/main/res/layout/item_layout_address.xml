@@ -20,6 +20,7 @@
             android:fontFamily="@font/montserrat_semi_bold"
             android:text="Address"
             android:textSize="16sp"
+            android:clickable="false"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
