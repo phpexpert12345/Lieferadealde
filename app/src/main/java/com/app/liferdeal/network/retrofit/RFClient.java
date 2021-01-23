@@ -49,7 +49,7 @@ public class RFClient {
                     .build();
 
           /*  retrofitInstanceOne= new Retrofit.Builder()
-                    .baseUrl(Constants.Url.BASE_URL)
+//                    .baseUrl(Constants.Url.BASE_URL)
                     .client(clientBuilder)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();*/

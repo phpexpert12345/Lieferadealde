@@ -176,6 +176,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/food_item_extra_list_rcv"
                     android:layout_width="match_parent"
@@ -259,5 +261,13 @@
             />
 
     </RelativeLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorBlack"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:fontFamily="@font/roboto_medium"
+        android:id="@+id/txt_no_data"/>
 
 </RelativeLayout>

@@ -30,11 +30,11 @@
 
             <LinearLayout
                 android:id="@+id/search_layout"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:layout_marginRight="@dimen/_5sdp"
-                android:layout_toRightOf="@+id/img_back"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_toEndOf="@+id/img_back"
                 android:orientation="horizontal">
 
                 <RelativeLayout

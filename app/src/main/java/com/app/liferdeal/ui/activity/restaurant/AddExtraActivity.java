@@ -80,6 +80,8 @@ public class AddExtraActivity extends AppCompatActivity implements View.OnClickL
     TextView tv_cart_item_count;
     @BindView(R.id.cart_count_layout)
     RelativeLayout cart_count_layout;
+    @BindView(R.id.txt_no_data)
+    TextView txt_no_data;
 
     DotToCommaClass dotToCommaClass;
 
@@ -184,27 +186,45 @@ public class AddExtraActivity extends AppCompatActivity implements View.OnClickL
                     @Override
                     public void onNext(FoodExtraModel searchResult) {
 //                        showProgress();
-                        setAdapterCategory(searchResult.getMenuItemExtraGroup());
-                        try {
-                            if(searchResult.getMenuItemExtraGroup()!=null){
-                                if(searchResult.getMenuItemExtraGroup().size()>0){
-                                    if (searchResult.getMenuItemExtraGroup().get(0).getSubExtraItemsRecord().get(0).getFreeToppingSelectionAllowed() != null &&
-                                            !searchResult.getMenuItemExtraGroup().get(0).getSubExtraItemsRecord().get(0).getFreeToppingSelectionAllowed().equalsIgnoreCase("")) {
-                                        freeTopping = Integer.parseInt(searchResult.getMenuItemExtraGroup().get(0).getSubExtraItemsRecord().get(0).getFreeToppingSelectionAllowed());
-                                        tvChooseTopping.setVisibility(View.VISIBLE);
-                                        tvChooseTopping.setText(model.getChooseAny5ToppingFree().replace("$", searchResult.getMenuItemExtraGroup().get(0).getSubExtraItemsRecord().get(0).getFreeToppingSelectionAllowed()));
-                                    } else {
-                                        tvChooseTopping.setVisibility(View.GONE);
-                                    }
-                                }
-                            }
-                            else {
-                                tvChooseTopping.setVisibility(View.GONE);
-                            }
+                        if(searchResult.getMenuItemExtraGroup()!=null){
+                            setAdapterCategory(searchResult.getMenuItemExtraGroup());
+                            try {
+                                if (searchResult.getMenuItemExtraGroup() != null) {
+                                    if (searchResult.getMenuItemExtraGroup().size() > 0) {
+                                        if (searchResult.getMenuItemExtraGroup().get(0).getSubExtraItemsRecord().get(0).getFreeToppingSelectionAllowed() != null &&
+                                                !searchResult.getMenuItemExtraGroup().get(0).getSubExtraItemsRecord().get(0).getFreeToppingSelectionAllowed().equalsIgnoreCase("")) {
+                                            freeTopping = Integer.parseInt(searchResult.getMenuItemExtraGroup().get(0).getSubExtraItemsRecord().get(0).getFreeToppingSelectionAllowed());
+                                            tvChooseTopping.setVisibility(View.VISIBLE);
+                                            tvChooseTopping.setText(model.getChooseAny5ToppingFree().replace("$", searchResult.getMenuItemExtraGroup().get(0).getSubExtraItemsRecord().get(0).getFreeToppingSelectionAllowed()));
+                                        } else {
 
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                                            tvChooseTopping.setVisibility(View.GONE);
+                                        }
+                                    }
+
+                                } else {
+                                    tvChooseTopping.setVisibility(View.GONE);
+                                }
+
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
+                        else {
+                            if(searchResult.getError().equalsIgnoreCase("1")){
+                                tvExtraTopping.setVisibility(View.GONE);
+                                txt_no_data.setVisibility(View.VISIBLE);
+                                txt_no_data.setText(searchResult.getError_msg());
+                                tvTotal.setVisibility(View.GONE);
+                                txt_add_extra_total.setVisibility(View.GONE);
+                                btn_add_to_cart.setVisibility(View.GONE);
+//                            Toast.makeText(getApplicationContext(), searchResult.getError_msg(), Toast.LENGTH_LONG).show();
+
+                            }
+                        }
+
+
                         banner_progress.setVisibility(View.GONE);
                     }
 
@@ -239,6 +259,11 @@ public class AddExtraActivity extends AppCompatActivity implements View.OnClickL
     private void setAdapterCategory(List<FoodExtraModel.MenuItemExtraGroup> list) {
         try {
             if (list != null && list.size() > 0) {
+                tvExtraTopping.setVisibility(View.VISIBLE);
+                txt_no_data.setVisibility(View.GONE);
+                tvTotal.setVisibility(View.VISIBLE);
+                txt_add_extra_total.setVisibility(View.VISIBLE);
+                btn_add_to_cart.setVisibility(View.VISIBLE);
                 RestaurantFoodItemExtraAdapter adapterCategory = new RestaurantFoodItemExtraAdapter(AddExtraActivity.this, list, list.get(0).getSubExtraItemsRecord(), AddExtraActivity.this, itemId, itemSizeId);
                 food_item_extra_list_rcv.setAdapter(adapterCategory);
             } else {
