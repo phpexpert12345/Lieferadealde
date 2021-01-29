@@ -730,6 +730,22 @@ public class CartCheckout extends AppCompatActivity implements View.OnClickListe
                 delivery_time=delivery_time.replaceAll(" ","%20");
             }
         }
+        if(extraItemID!=null){
+            if(extraItemID.equalsIgnoreCase("null")){
+                extraItemID="0";
+            }
+        }
+        else{
+            extraItemID="0";
+        }
+        if(instructions!=null) {
+            if (instructions.equalsIgnoreCase("null")) {
+                instructions = "";
+            }
+        }
+        else{
+            instructions="";
+        }
 
         String url="https://www.lieferadeal.de/WebAppAPI/phpexpert_payment_android_submit_guest.php?api_key="+prefsHelper.getPref(Constants.API_KEY)+"&lang_code="+prefsHelper.getPref(Constants.LNG_CODE)+"&payment_transaction_paypal="+payment_transaction_paypal+"&itemId="+item_Id+"&Quantity="+quantity+"&Price="+Price+"&strsizeid="+strsizeid+"&extraItemID="+extraItemID+"&CustomerId=&CustomerAddressId=&payment_type="+payment_type+"&order_price="+order_price+"&subTotalAmount="+subTotalAmount+"&delivery_date="+delivery_date+"&delivery_time="+delivery_time+"&instructions="+instructions+"&deliveryCharge="+deliveryChargeValue+"&CouponCode="+CouponCode+"&CouponCodePrice="+CouponCodePrice+"&couponCodeType="+couponCodeType+"&SalesTaxAmount="+SalesTaxAmount+"&order_type="+order_type+"&SpecialInstruction="+SpecialInstruction+"&extraTipAddAmount="+extraTipAddAmount+"&RestaurantNameEstimate="+RestaurantNameEstimate+"&discountOfferDescription="+discountOfferDescription+"&discountOfferPrice="+discountOfferPrice+"&RestaurantoffrType="+RestaurantoffrType+"&ServiceFees="+ServiceFees+"&PaymentProcessingFees="+PaymentProcessingFees+"&deliveryChargeValueType="+deliveryChargeValueType+"&ServiceFeesType="+ServiceFeesType+"&PackageFeesType="+PackageFeesType+"&PackageFees="+PackageFees+"&WebsiteCodePrice="+WebsiteCodePrice+"&WebsiteCodeType="+WebsiteCodeType+"&WebsiteCodeNo="+WebsiteCodeNo+"&preorderTime="+preorderTime+"&VatTax="+VatTax+"&GiftCardPay="+GiftCardPay+"&WalletPay="+WalletPay+"&loyptamount="+loyptamount+"&table_number_assign="+table_number_assign+"&customer_country="+customer_country+"&group_member_id="+group_member_id+"&loyltPnts="+loyltPnts+"&branch_id="+branch_id+"&FoodCosts="+FoodCosts+"&getTotalItemDiscount="+getTotalItemDiscount+"&getFoodTaxTotal7="+getFoodTaxTotal7+"&getFoodTaxTotal19="+getFoodTaxTotal19+"&TotalSavedDiscount="+TotalSavedDiscount+"&discountOfferFreeItems="+discountOfferFreeItems+"&number_of_people="+number_of_people+"&customer_allow_register="+customer_allow_register+"&address="+address+"&street="+street+"&floor_no="+floor_no+"&zipcode="+zipcode+"&phone="+phone+"&email="+email+"&name_customer="+name_customer+"&customer_country="+customer_country+"&city="+city+"&resid="+restId+"&mealID="+mealID+"&mealquqntity="+mealquqntity+"&mealPrice="+mealPrice+"&mealItemExtra="+mealItemExtra+"&mealItemOption="+mealItemOption+"&discountOfferFreeItems="+discountOfferFreeItems+"&extraItemID1="+extraItemId1+"&extraItemIDName1="+extraItemId2;
 Log.i("reason",url);

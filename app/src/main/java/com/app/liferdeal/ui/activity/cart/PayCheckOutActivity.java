@@ -568,9 +568,26 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
         if(delivery_time.equalsIgnoreCase("")){
             delivery_time=getCurrentTime();
         }
+        if(extraItemID!=null){
+            if(extraItemID.equalsIgnoreCase("null")){
+                extraItemID="0";
+            }
+        }
+        else{
+            extraItemID="0";
+        }
+        if(instructions!=null) {
+            if (instructions.equalsIgnoreCase("null")) {
+                instructions = "";
+            }
+        }
+        else{
+            instructions="";
+        }
         String url="https://www.lieferadeal.de/WebAppAPI/phpexpert_payment_android_submit.php?api_key="+prefsHelper.getPref(Constants.API_KEY)+"&lang_code="+ prefsHelper.getPref(Constants.LNG_CODE)+"&payment_transaction_paypal=&itemId="+item_Id+"&Quantity="+quantity+"&Price="+Price+"&strsizeid="+strsizeid+"&extraItemID="+extraItemID+"&CustomerId="+CustomerId+"&CustomerAddressId="+addressId+"&payment_type=Cash&order_price="+order_price+"&subTotalAmount="+subTotalAmount+"&delivery_date="+delivery_date+"&delivery_time="+delivery_time+"&instructions="+instructions+"&deliveryCharge="+deliveryChargeValue+"&CouponCode="+CouponCode+"&CouponCodePrice="+CouponCodePrice+"&couponCodeType="+couponCodeType+"&SalesTaxAmount="+SalesTaxAmount+"&order_type="+order_type+"&SpecialInstruction="+SpecialInstruction+"&extraTipAddAmount="+extraTipAddAmount+"&RestaurantNameEstimate="+RestaurantNameEstimate+"&discountOfferDescription="+discountOfferDescription+"&discountOfferPrice="+discountOfferPrice+"&RestaurantoffrType="+RestaurantoffrType+"&ServiceFees="+ServiceFees+"&PaymentProcessingFees="+PaymentProcessingFees+"&deliveryChargeValueType="+deliveryChargeValueType+"&ServiceFeesType="+ServiceFeesType+"&PackageFeesType="+PackageFeesType+"&PackageFees="+PackageFees+"&WebsiteCodePrice="+WebsiteCodePrice+"&WebsiteCodeType="+WebsiteCodeType+"&WebsiteCodeNo="+WebsiteCodeNo+"&preorderTime="+preorderTime+"&VatTax="+VatTax+"&GiftCardPay="+GiftCardPay+"&WalletPay="+WalletPay+"&loyptamount="+loyptamount+"&table_number_assign="+table_number_assign+"&customer_country="+customer_country+"&group_member_id="+group_member_id+"&loyltPnts="+loyltPnts+"&branch_id="+branch_id+"&FoodCosts="+FoodCosts+"&getTotalItemDiscount="+getTotalItemDiscount+"&getFoodTaxTotal7="+getFoodTaxTotal7+"&getFoodTaxTotal19="+getFoodTaxTotal19+"&TotalSavedDiscount="+TotalSavedDiscount+"&discountOfferFreeItems="+discountOfferFreeItems+"&number_of_people="+number_of_people+"&resid="+restId+"&mealID="+mealID+"&mealquqntity="+mealquqntity+"&mealPrice="+mealPrice+"&mealItemExtra="+mealItemExtra+"&mealItemOption="+mealItemOption+"&discountOfferFreeItems="+discountOfferFreeItems+"&extraItemID1="+extraItemId1+"&extraItemIDName1="+extraItemId2;
         Log.i("reason",url);
         StringRequest stringRequest=new StringRequest(Request.Method.POST, url, response -> {
+            hideProgress();
             if(response!=null){
                 Log.i("reason",response);
                 try {
@@ -610,7 +627,7 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
                             finish();
 
                         }
-                        hideProgress();
+
 
 
                 } catch (JSONException e) {
@@ -1150,7 +1167,7 @@ String base64="";
     }
     public String getCurrentTime(){
         Calendar calendar=Calendar.getInstance();
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("hh:mm");
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("HH:mm");
         String time=simpleDateFormat.format(calendar.getTime());
         Log.i("reason",time);
         return time;
