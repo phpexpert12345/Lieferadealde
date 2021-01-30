@@ -468,16 +468,25 @@ if(cuisineLists.size()>0){
     public void getClickData(List<CuisineList>cuisineLists,int pos) {
 //        selected_cusines = extraName;
         selected_cusines.clear();
+         CuisineList cuisineList=cuisineLists.get(pos);
+
+
 
         if(cuisineLists.get(pos).getSelected()){
             lists.add(cuisineLists.get(pos));
         }
         else{
-            if(pos>=lists.size()) {
-                lists.remove(lists.size()-1);
-            }
-            else{
-                lists.remove(pos);
+            int index=-1;
+           for(int i=0;i<lists.size();i++){
+               if(lists.get(i).getSeoUrlCall().equalsIgnoreCase(cuisineList.getSeoUrlCall())){
+                  index=i;
+                   break;
+
+               }
+           }
+
+            if(index>=0){
+                lists.remove(index);
             }
         }
         for(int i=0;i<lists.size();i++){

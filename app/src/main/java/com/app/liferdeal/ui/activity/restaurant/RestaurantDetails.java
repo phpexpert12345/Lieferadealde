@@ -325,12 +325,11 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
         rcv_rest_details_list.setAdapter(adapter);
         adapter.setClickListener(this);
         hideProgress();
-
         rcv_rest_details_list.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+//                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
 
                     int position = getCurrentItem();
                     Log.e("pos--->", "" + position);
@@ -354,7 +353,7 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
                     }
 
                     oldPos = position;
-                }
+//                }
             }
         });
     }

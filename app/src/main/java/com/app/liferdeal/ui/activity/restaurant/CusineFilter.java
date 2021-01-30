@@ -212,7 +212,20 @@ public class CusineFilter extends AppCompatActivity implements View.OnClickListe
                 lists.add(listcategory.get(pos));
             }
             else{
-                lists.remove(pos);
+                CuisineList cuisineList=listcategory.get(pos);
+                int index=-1;
+                for(int i=0;i<lists.size();i++){
+                    if(lists.get(i).getSeoUrlCall().equalsIgnoreCase(cuisineList.getSeoUrlCall())){
+                        index=i;
+                        break;
+
+                    }
+                }
+
+                if(index>=0){
+                    lists.remove(index);
+                }
+
             }
 
         }

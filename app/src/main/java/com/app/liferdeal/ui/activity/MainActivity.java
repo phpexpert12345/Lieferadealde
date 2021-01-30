@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -138,6 +139,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @BindView(R.id.imgHumbereger)
     ImageView imgHumbereger;
+    @BindView(R.id.relative_main)
+    RelativeLayout main_content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,6 +155,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         progressDialog = new ProgressDialog(this);
         bottomNavigation.setOnNavigationItemSelectedListener(this);
         bottomNavigation.getMenu().findItem(R.id.action_home).setChecked(true);
+
 
      /*   if (authPreference.getPref(Constants.USER_PROFILE_IMAGE).equals("") || (authPreference.getPref(Constants.USER_PROFILE_IMAGE).equals(null))) {
 
@@ -184,6 +188,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mTitle = mDrawerTitle = getTitle();
         mNavigationDrawerItemTitles = getResources().getStringArray(R.array.navigation_drawer_items_array);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(dialog!=null){
+                    if(dialog.isShowing()){
+                        dialog.dismiss();
+                    }
+                }
+            }
+        });
         mDrawerList = findViewById(R.id.main_nav_menu_recyclerview);
 
         rl_main_left_drawer = findViewById(R.id.rl_main_left_drawer);
@@ -466,9 +480,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void dialogOpen(List<LanguageModel.LanguageListList> languageListList) {
         dialog = new Dialog(MainActivity.this);
         dialog.setContentView(R.layout.dialog_language);
-        Window window = dialog.getWindow();
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setCancelable(true);
+//        Window window = dialog.getWindow();
+////        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+//        window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
 //        RadioGroup rgLanguage = dialog.findViewById(R.id.rgLanguage);
 //        RadioButton rbGerman = dialog.findViewById(R.id.rbGerman);
 //        RadioButton rbEng = dialog.findViewById(R.id.rbEng);

@@ -103,13 +103,12 @@ setSpan(holder,dotToCommaClass.changeDot(listFilterSubCategory.get(position).get
 //        holder.tvCost.setText(dotToCommaClass.changeDot(listFilterSubCategory.get(position).getDiscountFoodAmount()) + "% "+model.getDiscountAppliedOriginalPrice() + dotToCommaClass.changeDot(holder.tv_item_cost_old.getText().toString()));
 
         if (listFilterSubCategory.get(position).getFoodType() != null) {
-            Glide.with(mContext).load(Uri.parse(listFilterSubCategory.get(position).getFoodType()))
+            holder.iv_restaurant_logo.setVisibility(View.VISIBLE);
+            Glide.with(mContext).load(listFilterSubCategory.get(position).getFoodIcon())
                     .placeholder(R.drawable.ic_plate)
                     .into(holder.iv_restaurant_logo);
         } else {
-            Glide.with(mContext).load("")
-                    .placeholder(R.drawable.ic_plate)
-                    .into(holder.iv_restaurant_logo);
+            holder.iv_restaurant_logo.setVisibility(View.GONE);
         }
         System.out.println("==== list size : " + listFilterSubCategory.size());
         System.out.println("==== list size 1: " + listFilterSubCategory.get(position));

@@ -39,7 +39,7 @@ public class AboutUsActivity extends AppCompatActivity implements View.OnClickLi
         webView = (WebView) findViewById(R.id.webview);
 
         tv_faq.setText(model.getAboutUs());
-        webView.loadUrl("https://www.justfoodz.com/about_web.php");
+        webView.loadUrl("https://www.lieferadeal.de/about-us/");
     }
 
     private void initializedListener() {

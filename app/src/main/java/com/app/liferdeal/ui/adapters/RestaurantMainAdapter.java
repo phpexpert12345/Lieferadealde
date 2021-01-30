@@ -43,6 +43,9 @@ import com.app.liferdeal.util.PrefsHelper;
 import com.app.liferdeal.util.SharedPreferencesData;
 import com.bumptech.glide.Glide;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.Charset;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Currency;
@@ -198,8 +201,11 @@ public class RestaurantMainAdapter extends RecyclerView.Adapter<RestaurantMainAd
 
             //holder.llTopLayout.setBackgroundColor(mContext.getResources().getColor(R.color.dark_gray));
         }
+String name=listCategory.get(position).getRestaurantName();
+            Log.i("res",name);
 
-        holder.tv_restaurant_name.setText(listCategory.get(position).getRestaurantName());
+            holder.tv_restaurant_name.setText(name);
+
         /*if (listCategory.get(position).getRestaurantOrderAvailable().equalsIgnoreCase("false")) {
             holder.llTopLayout.setBackgroundColor(mContext.getResources().getColor(R.color.dark_gray));
         } else {
