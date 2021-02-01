@@ -31,6 +31,7 @@ import com.app.liferdeal.network.retrofit.RFClient;
 import com.app.liferdeal.ui.Database.Database;
 import com.app.liferdeal.ui.activity.cart.CartActivity;
 import com.app.liferdeal.ui.adapters.RestaurantFoodItemExtraAdapter;
+import com.app.liferdeal.ui.interfaces.RestaurantFoodItemExtraAdapterInterface;
 import com.app.liferdeal.util.Constants;
 import com.app.liferdeal.util.DotToCommaClass;
 import com.app.liferdeal.util.PrefsHelper;
@@ -50,7 +51,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class AddExtraActivity extends AppCompatActivity implements View.OnClickListener, RestaurantFoodItemExtraAdapter.RestaurantFoodItemExtraAdapterInterface {
+public class AddExtraActivity extends AppCompatActivity implements View.OnClickListener, RestaurantFoodItemExtraAdapterInterface {
     @BindView(R.id.iv_restaurant_logo)
     ImageView ivRestaurantLogo;
     @BindView(R.id.tvChooseTopping)
@@ -84,6 +85,7 @@ public class AddExtraActivity extends AppCompatActivity implements View.OnClickL
     TextView txt_no_data;
 
     DotToCommaClass dotToCommaClass;
+    int list_size=0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -174,6 +176,8 @@ public class AddExtraActivity extends AppCompatActivity implements View.OnClickL
 
     private void getItemExtraData(int clickItemtId, int itemSizeId) {
         apiInterface = RFClient.getClient().create(ApiInterface.class);
+        String url="https://www.lieferadeal.de/WebAppAPI/phpexpert_food_items_extra_android.php?api_key="+prefsHelper.getPref(Constants.API_KEY)+"&lang_code="+prefsHelper.getPref(Constants.LNG_CODE)+"&ItemID="+clickItemtId+"&FoodItemSizeID="+itemSizeId;
+        Log.i("url",url);
         Observable<FoodExtraModel> observable = apiInterface.getFoodItemExtra(prefsHelper.getPref(Constants.API_KEY), prefsHelper.getPref(Constants.LNG_CODE), clickItemtId, itemSizeId);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -188,28 +192,28 @@ public class AddExtraActivity extends AppCompatActivity implements View.OnClickL
 //                        showProgress();
                         if(searchResult.getMenuItemExtraGroup()!=null){
                             setAdapterCategory(searchResult.getMenuItemExtraGroup());
-                            try {
-                                if (searchResult.getMenuItemExtraGroup() != null) {
-                                    if (searchResult.getMenuItemExtraGroup().size() > 0) {
-                                        if (searchResult.getMenuItemExtraGroup().get(0).getSubExtraItemsRecord().get(0).getFreeToppingSelectionAllowed() != null &&
-                                                !searchResult.getMenuItemExtraGroup().get(0).getSubExtraItemsRecord().get(0).getFreeToppingSelectionAllowed().equalsIgnoreCase("")) {
-                                            freeTopping = Integer.parseInt(searchResult.getMenuItemExtraGroup().get(0).getSubExtraItemsRecord().get(0).getFreeToppingSelectionAllowed());
-                                            tvChooseTopping.setVisibility(View.VISIBLE);
-                                            tvChooseTopping.setText(model.getChooseAny5ToppingFree().replace("$", searchResult.getMenuItemExtraGroup().get(0).getSubExtraItemsRecord().get(0).getFreeToppingSelectionAllowed()));
-                                        } else {
-
-                                            tvChooseTopping.setVisibility(View.GONE);
-                                        }
-                                    }
-
-                                } else {
-                                    tvChooseTopping.setVisibility(View.GONE);
-                                }
-
-
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+//                            try {
+//                                if (searchResult.getMenuItemExtraGroup() != null) {
+//                                    if (searchResult.getMenuItemExtraGroup().size() > 0) {
+//                                        if (searchResult.getMenuItemExtraGroup().get(0).getSubExtraItemsRecord().get(0).getFreeToppingSelectionAllowed() != null &&
+//                                                !searchResult.getMenuItemExtraGroup().get(0).getSubExtraItemsRecord().get(0).getFreeToppingSelectionAllowed().equalsIgnoreCase("")) {
+//                                            freeTopping = Integer.parseInt(searchResult.getMenuItemExtraGroup().get(0).getSubExtraItemsRecord().get(0).getFreeToppingSelectionAllowed());
+//                                            tvChooseTopping.setVisibility(View.VISIBLE);
+//                                            tvChooseTopping.setText(model.getChooseAny5ToppingFree().replace("$", searchResult.getMenuItemExtraGroup().get(0).getSubExtraItemsRecord().get(0).getFreeToppingSelectionAllowed()));
+//                                        } else {
+//
+//                                            tvChooseTopping.setVisibility(View.GONE);
+//                                        }
+//                                    }
+//
+//                                } else {
+//                                    tvChooseTopping.setVisibility(View.GONE);
+//                                }
+//
+//
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+//                            }
                         }
                         else {
                             if(searchResult.getError().equalsIgnoreCase("1")){
@@ -428,5 +432,56 @@ public class AddExtraActivity extends AppCompatActivity implements View.OnClickL
         System.out.println("=== total price after aff pizz and size price : " + total);
         restDetailsItemPrice = String.valueOf(total);
         txt_add_extra_total.setText(currencySymbol + " " + "" + String.format("%.2f", total));
+    }
+
+    @Override
+    public void getCheckedItem(String item, String price, int id,List<FoodExtraModel.MenuItemExtraGroup.SubExtraItemsRecord> list) {
+        Log.i("url",item+" "+price+" "+id+" "+list.size());
+        if(extra_item_list_name.contains(item)){
+            extra_item_list_name.remove(item);
+            extra_item_list_name.add(item);
+            extra_item_list_price.remove(price);
+            extra_item_list_price.add(price);
+            int id_=extra_item_list_id.indexOf(id);
+            extra_item_list_id.remove(id_);
+            extra_item_list_id.add(id);
+        }
+        else {
+            int added=-1;
+            for(int i=0;i< list.size();i++){
+                for(int j=0;j<extra_item_list_name.size();j++){
+                    if(list.get(i).getFoodAddonsName().equalsIgnoreCase(extra_item_list_name.get(j))){
+                        added=j;
+                        break;
+                    }
+                }
+
+            }
+            if(added>=0){
+                extra_item_list_name.remove(added);
+                extra_item_list_price.remove(added);
+                extra_item_list_id.remove(added);
+
+            }
+            extra_item_list_name.add(item);
+            extra_item_list_price.add(price);
+            extra_item_list_id.add(id);
+        }
+        double total = Double.parseDouble(getIntent().getStringExtra("SUBCATCLICKITEMPRICE"));
+        for (int i = 0; i < extra_item_list_price.size(); i++) {
+            total = total + Double.parseDouble(extra_item_list_price.get(i));
+        }
+        restDetailsItemPrice = String.valueOf(total);
+        txt_add_extra_total.setText(currencySymbol + " " + "" + String.format("%.2f", total));
+
+//       int selected_pos=-1;
+//        for(int i=0;i<list.size();i++){
+//            if(list.get(i).isSelected()){
+//                selected_pos=i;
+//            }
+//        }
+//        if(selected_pos>=0){
+//            extra_item_list_name.add(list.ge)
+//        }
     }
 }

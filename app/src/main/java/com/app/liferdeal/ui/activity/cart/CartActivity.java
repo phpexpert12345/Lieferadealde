@@ -55,6 +55,7 @@ import com.app.liferdeal.util.DroidPrefs;
 import com.app.liferdeal.util.PrefsHelper;
 import com.app.liferdeal.util.SharedPreferencesData;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -156,6 +157,9 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     SharedPreferencesData sharedPreferencesData;
     private LanguageResponse model = new LanguageResponse();
     private DotToCommaClass dotToCommaClass;
+    DecimalFormat decimalFormat=new DecimalFormat("#.##");
+    double offer_per=1.0;
+    double exact_offer=0.0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -297,7 +301,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 String price=couponApplied.coupon_value;
 
                 if(price!=null){
-                    coupon_price=Double.parseDouble(price);
+                    offer_per= Double.valueOf(couponApplied.coupon_per);
                     tvFoodDiscount.setVisibility(View.VISIBLE);
                     tv_food_discount_total.setVisibility(View.VISIBLE);
 
@@ -586,6 +590,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                             intent.putExtra("RESTLOGO", strMainRestLogo);
                             intent.putExtra("subPizzaItemId", pizzaItemid);
                             intent.putExtra("SIZEITEMID", strsizeid);
+                            intent.putExtra("coupon_price", exact_offer);
                             intent.putExtra("globTempExtraItemidWithSizeIdd", extraItemID);
                             intent.putExtra("delivery_date", delivery_date);
                             intent.putExtra("food_cost", FoodCosts);
@@ -638,6 +643,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                         i.putExtra("Pizzaname", selectedPizzaName);
                         i.putExtra("instructions", instructions);
                         i.putExtra("rest_address",rest_address);
+                        i.putExtra("coupon_price",exact_offer);
                         i.putExtra("selectedPizzaItemPrice", selectedPizzaItemPrice);
                         startActivity(i);
                     }
@@ -884,11 +890,20 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void updateData() {
-        grandTotal = totalPrice - discount + service_fee + service_vat + sales_tax + deliveryCost + packagingCost - coupon_price - loyalty_price;
+
+        if(offer_per>1.0) {
+            exact_offer=(offer_per/100)*totalPrice;
+
+        }
+        else{
+            exact_offer=coupon_price;
+        }
+        grandTotal = totalPrice - discount + service_fee + service_vat + sales_tax + deliveryCost + packagingCost - exact_offer - loyalty_price;
         tv_total.setText(currencySymbol + "" + "" + dotToCommaClass.changeDot(String.format("%.2f", grandTotal)));
         checkout_total_price.setText(currencySymbol + "" + "" + dotToCommaClass.changeDot(String.format("%.2f", grandTotal)));
         order_price = String.valueOf(totalPrice);
         subTotalAmount = String.valueOf(totalPrice);
+        tv_food_discount_total.setText("-" + currencySymbol + dotToCommaClass.changeDot(String.format("%.2f", exact_offer)));
         tv_sub_total.setText(currencySymbol + "" + "" + dotToCommaClass.changeDot(String.format("%.2f", totalPrice)));
 //      tv_food_item_total.setText(currencySymbol + "" + "" + String.format("%.2f", totalPrice));
         FoodCosts = tv_food_item_total.getText().toString();
@@ -1226,6 +1241,8 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     private void applyCoupon(String couponCOde, Dialog dialog) {
 
         apiInterface = RFClient.getClient().create(ApiInterface.class);
+        String url="https://www.lieferadeal.de/WebAppAPI/couponCode.php?resid="+RestId+"&api_key="+prefsHelper.getPref(Constants.API_KEY)+"&lang_code=en&subTotal="+String.valueOf(totalPrice)+"&CouponCode="+couponCOde;
+        Log.i("url",url);
         Observable<RmVerifyCouponCodeResponse> observable = apiInterface.getCouponCode(RestId, prefsHelper.getPref(Constants.API_KEY),
                 prefsHelper.getPref(Constants.LNG_CODE), String.valueOf(totalPrice), couponCOde);
 
@@ -1256,10 +1273,12 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                             } else {
                                 Toast.makeText(getApplicationContext(), searchResult.getSuccessMsg(), Toast.LENGTH_LONG).show();
                                 CouponApplied couponApplied=DroidPrefs.get(CartActivity.this,"coupon_applied",CouponApplied.class);
+                                offer_per=(coupon_price*100)/totalPrice;
                                 if(couponApplied!=null){
                                     if(couponApplied.coupon_value==null){
                                         couponApplied.coupon_value=searchResult.getCouponCodePrice();
                                         couponApplied.is_coupon_applied=true;
+                                        couponApplied.coupon_per= String.valueOf(offer_per);
                                         DroidPrefs.apply(CartActivity.this,"coupon_applied",couponApplied);
                                     }
                                 }
@@ -1268,6 +1287,8 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                                 tv_food_discount_total.setVisibility(View.VISIBLE);
 
                                 tv_food_discount_total.setText("-" + currencySymbol + dotToCommaClass.changeDot(searchResult.getCouponCodePrice()));
+
+
                                 updateData();
                             }
                         }

@@ -71,6 +71,7 @@ public class ThankyouPageActivity extends AppCompatActivity implements View.OnCl
     private String restname = "", restTime = "", deliveryDate = "", customeName = "", orderNumber = "", orderType = "", oldprice = "", restLogo = "", currencySymbol = "", pizzaQuantity = "", Pizzaname = "", selectedPizzaItemPrice = "", rest_address="";
     DotToCommaClass dotToCommaClass;
     private LanguageResponse model = new LanguageResponse();
+    double exact_offer=0.0;
 
 
     @BindView(R.id.rvSubtotal)
@@ -221,6 +222,18 @@ public class ThankyouPageActivity extends AppCompatActivity implements View.OnCl
         orderType = getIntent().getStringExtra("orderType");
         oldprice = getIntent().getStringExtra("oldprice");
         restLogo = getIntent().getStringExtra("strMainRestLogo");
+        exact_offer=getIntent().getDoubleExtra("coupon_price",0.0);
+        if(exact_offer>0.0){
+
+            rvFoodDiscount.setVisibility(View.VISIBLE);
+            viewServiceFees.setVisibility(View.VISIBLE);
+            txt_food_discount.setText("-" + currencySymbol + dotToCommaClass.changeDot(String.format("%.2f", exact_offer)));
+
+        }
+        else{
+            rvFoodDiscount.setVisibility(View.GONE);
+            viewServiceFees.setVisibility(View.GONE);
+        }
         Log.i("reason",restLogo);
         //restLogo = prefsHelper.getPref(Constants.APP_LOGO);
         pizzaQuantity = getIntent().getStringExtra("pizzaQuantity");
@@ -294,7 +307,6 @@ public class ThankyouPageActivity extends AppCompatActivity implements View.OnCl
         double price= Double.parseDouble(selectedPizzaItemPrice);
         txt_pizz_price.setText(dotToCommaClass.changeDot(currencySymbol+new DecimalFormat("#.00").format(price)));
         txt_subtotal_price.setText(dotToCommaClass.changeDot(currencySymbol + oldprice));
-        txt_food_discount.setText(dotToCommaClass.changeDot(currencySymbol + oldprice));
         txt_inclusive_food_text.setText(dotToCommaClass.changeDot(currencySymbol + oldprice));
         Glide.with(this).load(Uri.parse(restLogo)).into(img_logo);
         Glide.with(this).load(Uri.parse(prefsHelper.getPref(Constants.APP_LOGO))).into(imgViewLogo);
@@ -304,10 +316,7 @@ public class ThankyouPageActivity extends AppCompatActivity implements View.OnCl
             rvSubtotal.setVisibility(View.GONE);
             viewSubtotal.setVisibility(View.GONE);
         }
-        if (fooddiscountPr.equalsIgnoreCase("0.0") || fooddiscountPr.equalsIgnoreCase("0")) {
-            rvFoodDiscount.setVisibility(View.GONE);
-            viewServiceFees.setVisibility(View.GONE);
-        }
+
         if (servicefeesPr.equalsIgnoreCase("0.0") || servicefeesPr.equalsIgnoreCase("0")) {
             rvServiceFees.setVisibility(View.GONE);
             viewServiceFees.setVisibility(View.GONE);
@@ -334,13 +343,14 @@ public class ThankyouPageActivity extends AppCompatActivity implements View.OnCl
         tvSizeOf.setVisibility(View.VISIBLE);
         tvSizeOf.setText(rest_address);
         txt_subtotal_price.setText(dotToCommaClass.changeDot(currencySymbol + subtotalPr));
-        txt_food_discount.setText(dotToCommaClass.changeDot(currencySymbol + fooddiscountPr));
+
         txtServiceFee.setText(dotToCommaClass.changeDot(currencySymbol + servicefeesPr));
         txtSalexTax.setText(dotToCommaClass.changeDot(currencySymbol + salestaxPr));
         txtVat.setText(dotToCommaClass.changeDot(currencySymbol + vatPr));
         txtDeliveryFee.setText(dotToCommaClass.changeDot(currencySymbol + deliveryFeesPr));
         txtPackagingFee.setText(dotToCommaClass.changeDot(currencySymbol + packagingfeespr));
-        txtTotal.setText(dotToCommaClass.changeDot(currencySymbol + totalPricePr));
+        double order_price= Double.parseDouble(totalPricePr);
+        txtTotal.setText(currencySymbol+dotToCommaClass.changeDot( String.format("%.2f", order_price)));
         tvClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

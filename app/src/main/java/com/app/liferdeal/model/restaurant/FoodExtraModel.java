@@ -133,6 +133,18 @@ public class FoodExtraModel {
             @Expose
             private String freeToppingSelectionAllowed;
 
+            public boolean isSelected() {
+                return selected;
+            }
+
+            public void setSelected(boolean selected) {
+                this.selected = selected;
+            }
+
+            @SerializedName("selected")
+            @Expose
+            private boolean selected;
+
             public Integer getExtraID() {
                 return extraID;
             }

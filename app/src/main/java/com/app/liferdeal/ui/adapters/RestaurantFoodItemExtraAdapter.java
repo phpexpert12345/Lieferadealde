@@ -11,10 +11,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.liferdeal.R;
 import com.app.liferdeal.model.restaurant.FoodExtraModel;
+import com.app.liferdeal.ui.interfaces.RestaurantFoodItemExtraAdapterInterface;
 import com.app.liferdeal.util.Constants;
 import com.app.liferdeal.util.DotToCommaClass;
 import com.app.liferdeal.util.PrefsHelper;
@@ -38,10 +40,9 @@ public class RestaurantFoodItemExtraAdapter extends RecyclerView.Adapter<Restaur
     private CheckBox globalCheckbox = null;
     private RestaurantFoodItemExtraAdapterInterface restaurantFoodItemExtraAdapterInterface;
     DotToCommaClass dotToCommaClass;
+    int selected_pos=-1;
 
-    public interface RestaurantFoodItemExtraAdapterInterface {
-        void getrvcheckeddata(ArrayList<String> tempextraId, ArrayList<Integer> extraId, ArrayList<String> extraName, ArrayList<String> extraPrice);
-    }
+
 
     public RestaurantFoodItemExtraAdapter(Context context, List<FoodExtraModel.MenuItemExtraGroup> listCategory1, List<FoodExtraModel.MenuItemExtraGroup.SubExtraItemsRecord> listSubCategory, RestaurantFoodItemExtraAdapterInterface restaurantFoodItemExtraAdapterInterface1, int itemIdd, int itemSizeIdd) {
         this.mContext = context;
@@ -68,10 +69,8 @@ public class RestaurantFoodItemExtraAdapter extends RecyclerView.Adapter<Restaur
     @Override
     public void onBindViewHolder(@NonNull Holder holder, final int position) {
         // listFilterSubCategory = listCategory.get(position).getSubItemsRecord();
-        holder.txtitemname.setText(listSubCategory.get(position).getFoodAddonsName());
-        Currency hh = Currency.getInstance("" + prefsHelper.getPref(Constants.APP_CURRENCY));
-        String jj = hh.getSymbol();
-        holder.txtprice.setText(jj + " " +dotToCommaClass.changeDot(listSubCategory.get(position).getFoodPriceAddons()) );
+
+
         // holder.txtitemname.setText(listCategory.get(position).getRestaurantPizzaItemName());
       /*  if (listCategory.get(position).getExtraavailable().equalsIgnoreCase("yes"))
         {
@@ -79,34 +78,56 @@ public class RestaurantFoodItemExtraAdapter extends RecyclerView.Adapter<Restaur
         }*/
         if (listCategory.get(0).getFoodAddonsSelectionType().equalsIgnoreCase("Checkbox")) {
             holder.cbitem.setVisibility(View.VISIBLE);
-        } else {
             holder.rbitem.setVisibility(View.GONE);
+            holder.txt_extra_head.setVisibility(View.GONE);
+            holder.txtprice.setVisibility(View.VISIBLE);
+            holder.recyler_extras.setVisibility(View.GONE);
+            holder.txtitemname.setText(listSubCategory.get(position).getFoodAddonsName());
+            holder.view_extra.setVisibility(View.VISIBLE);
+            Currency hh = Currency.getInstance("" + prefsHelper.getPref(Constants.APP_CURRENCY));
+            String jj = hh.getSymbol();
+            holder.txtprice.setText(jj + " " +dotToCommaClass.changeDot(listSubCategory.get(position).getFoodPriceAddons()) );
+        } else {
+            holder.cbitem.setVisibility(View.GONE);
+            holder.rbitem.setVisibility(View.GONE);
+            holder.txt_extra_head.setVisibility(View.VISIBLE);
+            holder.txt_extra_head.setText(listCategory.get(position).getFoodGroupName());
+            holder.txtitemname.setVisibility(View.GONE);
+            holder.txtprice.setVisibility(View.GONE);
+            holder.view_extra.setVisibility(View.GONE);
+            Currency hh = Currency.getInstance("" + prefsHelper.getPref(Constants.APP_CURRENCY));
+            String jj = hh.getSymbol();
+            RestroExtraAdapter restroExtraAdapter=new RestroExtraAdapter(listCategory.get(position).getSubExtraItemsRecord(),listCategory.get(0).getFoodAddonsSelectionType(),jj,mContext,restaurantFoodItemExtraAdapterInterface);
+            LinearLayoutManager linearLayoutManager=new LinearLayoutManager(mContext);
+            holder.recyler_extras.setVisibility(View.VISIBLE);
+            holder.recyler_extras.setAdapter(restroExtraAdapter);
+            holder.recyler_extras.setLayoutManager(linearLayoutManager);
         }
 
-        holder.cbitem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (holder.cbitem.isChecked()) {
-                    System.out.println("==== checkbox is click");
-
-                    extra_item_list_id.add(listSubCategory.get(position).getExtraID());
-                    temp_extra_item_list_id.add(itemId + "_" + itemSizeId + "_" + listSubCategory.get(position).getExtraID().toString());
-                    extra_item_list_name.add(holder.txtitemname.getText().toString());
-                    extra_item_list_price.add(listSubCategory.get(position).getFoodPriceAddons());
-                    restaurantFoodItemExtraAdapterInterface.getrvcheckeddata(temp_extra_item_list_id, extra_item_list_id, extra_item_list_name, extra_item_list_price);
-                } else {
-                    System.out.println("==== checkbox else is click");
-
-                    extra_item_list_id.remove(listSubCategory.get(position).getExtraID());
-                    temp_extra_item_list_id.add(itemId + "_" + itemSizeId + "_" + listSubCategory.get(position).getExtraID().toString());
-                    extra_item_list_name.remove(holder.txtitemname.getText().toString());
-                    extra_item_list_price.remove(listSubCategory.get(position).getFoodPriceAddons());
-                    restaurantFoodItemExtraAdapterInterface.getrvcheckeddata(temp_extra_item_list_id, extra_item_list_id, extra_item_list_name, extra_item_list_price);
-
-                }
-                System.out.println("=== extra add : " + extra_item_list_id + extra_item_list_name + extra_item_list_price);
-            }
-        });
+//        holder.cbitem.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (holder.cbitem.isChecked()) {
+//                    System.out.println("==== checkbox is click");
+//
+//                    extra_item_list_id.add(listSubCategory.get(position).getExtraID());
+//                    temp_extra_item_list_id.add(itemId + "_" + itemSizeId + "_" + listSubCategory.get(position).getExtraID().toString());
+//                    extra_item_list_name.add(holder.txtitemname.getText().toString());
+//                    extra_item_list_price.add(listSubCategory.get(position).getFoodPriceAddons());
+//                    restaurantFoodItemExtraAdapterInterface.getrvcheckeddata(temp_extra_item_list_id, extra_item_list_id, extra_item_list_name, extra_item_list_price);
+//                } else {
+//                    System.out.println("==== checkbox else is click");
+//
+//                    extra_item_list_id.remove(listSubCategory.get(position).getExtraID());
+//                    temp_extra_item_list_id.add(itemId + "_" + itemSizeId + "_" + listSubCategory.get(position).getExtraID().toString());
+//                    extra_item_list_name.remove(holder.txtitemname.getText().toString());
+//                    extra_item_list_price.remove(listSubCategory.get(position).getFoodPriceAddons());
+//                    restaurantFoodItemExtraAdapterInterface.getrvcheckeddata(temp_extra_item_list_id, extra_item_list_id, extra_item_list_name, extra_item_list_price);
+//
+//                }
+//                System.out.println("=== extra add : " + extra_item_list_id + extra_item_list_name + extra_item_list_price);
+//            }
+//        });
 
         /*holder.rbitem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,14 +158,17 @@ public class RestaurantFoodItemExtraAdapter extends RecyclerView.Adapter<Restaur
                 System.out.println("=== extra add rb: " + extra_item_list_id + extra_item_list_name + extra_item_list_price);
             }
         });*/
+        holder.cv_RecyclerView.setTag(position);
 
         holder.cv_RecyclerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int pos= (int) view.getTag();
                 CheckBox checkbox_fb = holder.cbitem;
-                //   checkbox_fb.setChecked(true);
-                if (checkbox_fb.isChecked()) {
-                    System.out.println("==== checkbox is click");
+                if(listCategory.get(0).getFoodAddonsSelectionType().equalsIgnoreCase("Checkbox")) {
+                    //   checkbox_fb.setChecked(true);
+                    if (checkbox_fb.isChecked()) {
+                        System.out.println("==== checkbox is click");
 
                    /* extra_item_list_id.add(listSubCategory.get(position).getExtraID());
                     temp_extra_item_list_id.add(itemId+"_"+itemSizeId+"_"+listSubCategory.get(position).getExtraID().toString());
@@ -152,23 +176,29 @@ public class RestaurantFoodItemExtraAdapter extends RecyclerView.Adapter<Restaur
                     extra_item_list_price.add(listSubCategory.get(position).getFoodPriceAddons());
                     restaurantFoodItemExtraAdapterInterface.getrvcheckeddata(temp_extra_item_list_id,extra_item_list_id, extra_item_list_name, extra_item_list_price);
 */
-                    checkbox_fb.setChecked(false);
-                    extra_item_list_id.remove(listSubCategory.get(position).getExtraID());
-                    temp_extra_item_list_id.add(itemId + "_" + itemSizeId + "_" + listSubCategory.get(position).getExtraID().toString());
-                    extra_item_list_name.remove(holder.txtitemname.getText().toString());
-                    extra_item_list_price.remove(listSubCategory.get(position).getFoodPriceAddons());
-                    restaurantFoodItemExtraAdapterInterface.getrvcheckeddata(temp_extra_item_list_id, extra_item_list_id, extra_item_list_name, extra_item_list_price);
+                        checkbox_fb.setChecked(false);
+                        if (listSubCategory.size() > 0) {
+                            extra_item_list_id.remove(listSubCategory.get(pos).getExtraID());
+                            temp_extra_item_list_id.add(itemId + "_" + itemSizeId + "_" + listSubCategory.get(pos).getExtraID().toString());
+                            extra_item_list_name.remove(holder.txtitemname.getText().toString());
+                            extra_item_list_price.remove(listSubCategory.get(pos).getFoodPriceAddons());
+                            restaurantFoodItemExtraAdapterInterface.getrvcheckeddata(temp_extra_item_list_id, extra_item_list_id, extra_item_list_name, extra_item_list_price);
+                        }
 
-                } else {
-                    System.out.println("==== checkbox else is click");
-                    checkbox_fb.setChecked(true);
-                    extra_item_list_id.add(listSubCategory.get(position).getExtraID());
-                    temp_extra_item_list_id.add(itemId + "_" + itemSizeId + "_" + listSubCategory.get(position).getExtraID().toString());
-                    extra_item_list_name.add(holder.txtitemname.getText().toString());
-                    extra_item_list_price.add(listSubCategory.get(position).getFoodPriceAddons());
-                    restaurantFoodItemExtraAdapterInterface.getrvcheckeddata(temp_extra_item_list_id, extra_item_list_id, extra_item_list_name, extra_item_list_price);
+                    } else {
+                        System.out.println("==== checkbox else is click");
+                        checkbox_fb.setChecked(true);
+                        if (listSubCategory.size() > 0) {
+                            extra_item_list_id.add(listSubCategory.get(pos).getExtraID());
+                            temp_extra_item_list_id.add(itemId + "_" + itemSizeId + "_" + listSubCategory.get(pos).getExtraID().toString());
+                            extra_item_list_name.add(holder.txtitemname.getText().toString());
+                            extra_item_list_price.add(listSubCategory.get(pos).getFoodPriceAddons());
+                            restaurantFoodItemExtraAdapterInterface.getrvcheckeddata(temp_extra_item_list_id, extra_item_list_id, extra_item_list_name, extra_item_list_price);
+                        }
 
+                    }
                 }
+
 
                 System.out.println("=== extra add : " + extra_item_list_id + extra_item_list_name + extra_item_list_price);
             }
@@ -177,7 +207,14 @@ public class RestaurantFoodItemExtraAdapter extends RecyclerView.Adapter<Restaur
 
     @Override
     public int getItemCount() {
-        return listSubCategory.size();
+        if(listCategory.get(0).getFoodAddonsSelectionType().equalsIgnoreCase("Checkbox")){
+            return listSubCategory.size();
+        }
+        else{
+            return listCategory.size();
+        }
+
+
     }
 
     class Holder extends RecyclerView.ViewHolder {
@@ -186,6 +223,9 @@ public class RestaurantFoodItemExtraAdapter extends RecyclerView.Adapter<Restaur
         private RadioButton rbitem;
         private CheckBox cbitem;
         private LinearLayout cv_RecyclerView;
+        private TextView txt_extra_head;
+        private RecyclerView recyler_extras;
+        private View view_extra;
 
         public Holder(@NonNull View itemView) {
             super(itemView);
@@ -194,6 +234,9 @@ public class RestaurantFoodItemExtraAdapter extends RecyclerView.Adapter<Restaur
             cbitem = (CheckBox) itemView.findViewById(R.id.cbitem);
             rbitem = (RadioButton) itemView.findViewById(R.id.rbitem);
             cv_RecyclerView = itemView.findViewById(R.id.cv_RecyclerView);
+            txt_extra_head=itemView.findViewById(R.id.txt_head_extra);
+            recyler_extras=itemView.findViewById(R.id.recyler_extras);
+            view_extra=itemView.findViewById(R.id.view_extra);
         }
     }
 }

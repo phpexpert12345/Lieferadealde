@@ -225,6 +225,7 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
     String extraItemId1;
     String extraItemId2, extra_toppings="";
     String rest_address="";
+    double exact_offer=0.0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -295,6 +296,7 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
             instructions = getIntent().getStringExtra("instructions");
             customer_allow_register = "yes";
             rest_address=getIntent().getStringExtra("rest_address");
+            exact_offer=getIntent().getDoubleExtra("coupon_price",0.0);
             payment_type = "Cash";
         }
 
@@ -629,6 +631,7 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
                             ii.putExtra("extra_toppings",extra_toppings);
                             ii.putExtra("rest_address",rest_address);
                             ii.putExtra("selectedPizzaItemPrice", selectedPizzaItemPrice);
+                            ii.putExtra("coupon_price", exact_offer);
                             startActivity(ii);
                             finish();
 

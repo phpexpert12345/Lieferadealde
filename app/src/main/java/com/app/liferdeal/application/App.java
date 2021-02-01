@@ -3,7 +3,9 @@ package com.app.liferdeal.application;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.os.UserHandle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -14,6 +16,7 @@ import com.app.liferdeal.util.Constants;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.concurrent.Executor;
 
 public class App extends Application {
     private static App instance;

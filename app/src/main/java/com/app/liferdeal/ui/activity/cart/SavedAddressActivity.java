@@ -85,6 +85,7 @@ public class SavedAddressActivity extends AppCompatActivity implements DeleteAdd
             getTotalItemDiscount, getFoodTaxTotal7, getFoodTaxTotal19, TotalSavedDiscount, discountOfferFreeItems, number_of_people, customer_allow_register, address,
             street, floor_no, zipcode, phone, email, name_customer, city, mealID, mealquqntity, mealPrice, mealItemExtra, mealItemOption,rest_address;
     private LanguageResponse model = new LanguageResponse();
+    double exact_offer=0.0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -136,6 +137,7 @@ public class SavedAddressActivity extends AppCompatActivity implements DeleteAdd
             instructions = getIntent().getStringExtra("instructions");
             customer_allow_register = "yes";
             rest_address=getIntent().getStringExtra("rest_address");
+            exact_offer=getIntent().getDoubleExtra("coupon_price",0.0);
             payment_type = "cash";
         }
 
@@ -191,6 +193,7 @@ public class SavedAddressActivity extends AppCompatActivity implements DeleteAdd
                     intent.putExtra("totalPrice", totalPrice);
                     intent.putExtra("rest_address",rest_address);
                     intent.putExtra("addressId", addressId);
+                    intent.putExtra("coupon_price", exact_offer);
                     startActivity(intent);
                 }
                 break;

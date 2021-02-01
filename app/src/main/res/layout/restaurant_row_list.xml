@@ -16,8 +16,8 @@
 
             <ImageView
                 android:id="@+id/iv_restaurant_logo"
-                android:layout_width="@dimen/dp_40"
-                android:layout_height="@dimen/dp_40"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
                 android:layout_gravity="top"
                 android:scaleType="fitXY"
                 android:src="@drawable/defpizzaimg" />
