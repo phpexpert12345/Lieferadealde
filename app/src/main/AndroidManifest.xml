@@ -228,6 +228,10 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+        <activity android:name=".ui.activity.restaurant.ChooseComActivity"
+            android:screenOrientation="locked"/>
+        <activity android:name=".ui.activity.restaurant.ComExtraActivity"
+            android:screenOrientation="locked"/>
 
         <!--  <activity
               android:name=".ui.activity.restaurant.TableTimeListActivity"

@@ -95,6 +95,7 @@ public class Constants {
         public static final String GET_PAY_LATER_PLACE_ORDER = "phpexpert_payment_pay_later.php";
         public static final String GET_PAY_LATER_PLACE_ORDER_DIRECT = "phpexpert_payment_pay_later_direct.php";
         public static final String FORGET_PASSWORD = "phpexpert_customer_forgot_password.php";
+        public static final String COM_DETAILS=BASE_URL+"phpexpert_combo_detail.php";
     }
 
     public static class Header {

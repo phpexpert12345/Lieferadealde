@@ -54,6 +54,7 @@
                     android:id="@+id/hotlist_bell"
                     android:layout_width="@dimen/dp_30"
                     android:layout_height="@dimen/dp_30"
+                    android:visibility="gone"
                     android:layout_margin="0dp"
                     android:gravity="center"
                     android:tint="@color/colorBlack"
@@ -61,6 +62,7 @@
 
                 <TextView
                     android:id="@+id/tv_cart_item_count"
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignEnd="@id/hotlist_bell"
@@ -102,6 +104,7 @@
                 android:id="@+id/iv_restaurant_logo"
                 android:layout_width="@dimen/dp_40"
                 android:layout_height="@dimen/dp_40"
+                android:visibility="gone"
                 android:layout_gravity="center"
                 android:scaleType="fitXY"
                 android:src="@drawable/defpizzaimg" />

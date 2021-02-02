@@ -10,6 +10,7 @@ import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.style.ClickableSpan;
 import android.text.style.StrikethroughSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.liferdeal.R;
 import com.app.liferdeal.model.LanguageResponse;
+import com.app.liferdeal.model.menuitems.ComboList;
 import com.app.liferdeal.model.menuitems.SubItemsRecord;
 import com.app.liferdeal.ui.activity.restaurant.AddClickDetails;
 import com.app.liferdeal.ui.activity.restaurant.AddExtraActivity;
@@ -40,12 +42,14 @@ import java.util.List;
 
 public class RestaurantDetailsAdapter extends RecyclerView.Adapter<RestaurantDetailsAdapter.Holder> implements StickyRecyclerHeadersAdapter<RecyclerView.ViewHolder> {
     private List<SubItemsRecord> listFilterSubCategory;
+    private List<ComboList> comboLists;
     private Context mContext;
     private SelectMenuItem restaurantDetailsAdapterInterface;
     private String mainClickRestId, mainClickRestName;
     private PrefsHelper prefsHelper;
     DotToCommaClass dotToCommaClass;
     LanguageResponse model;
+    String comboAvailable;
 
     public interface RestaurantDetailsAdapterInterface {
         void getClickData(int otemId, String itemName);
@@ -55,7 +59,7 @@ public class RestaurantDetailsAdapter extends RecyclerView.Adapter<RestaurantDet
         this.restaurantDetailsAdapterInterface = itemClickListener;
     }
 
-    public RestaurantDetailsAdapter(Context context, List<SubItemsRecord> listFilterSubCategory, String maniRestClickId, String mainRestClickName,  LanguageResponse model) {
+    public RestaurantDetailsAdapter(Context context, List<SubItemsRecord> listFilterSubCategory, String maniRestClickId, String mainRestClickName, LanguageResponse model, String comboAvailable, List<ComboList> comboLists) {
         this.mContext = context;
         this.listFilterSubCategory = listFilterSubCategory;
         this.mainClickRestId = maniRestClickId;
@@ -63,6 +67,8 @@ public class RestaurantDetailsAdapter extends RecyclerView.Adapter<RestaurantDet
         prefsHelper = new PrefsHelper(mContext);
         dotToCommaClass=new DotToCommaClass(context);
         this.model=model;
+        this.comboAvailable=comboAvailable;
+        this.comboLists=comboLists;
     }
 
     @NonNull
@@ -74,127 +80,144 @@ public class RestaurantDetailsAdapter extends RecyclerView.Adapter<RestaurantDet
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, final int position) {
-        holder.tv_restaurant_no.setText(listFilterSubCategory.get(position).getFoodNameNo() + ".");
-        holder.tv_restaurant_name.setText(listFilterSubCategory.get(position).getRestaurantPizzaItemName());
-        holder.tv_restaurant_pizza_des.setText(listFilterSubCategory.get(position).getResPizzaDescription());
-        Currency hh = Currency.getInstance("" + prefsHelper.getPref(Constants.APP_CURRENCY));
-        String jj = hh.getSymbol();
-        holder.tv_item_cost.setText(jj + "" +dotToCommaClass.changeDot(listFilterSubCategory.get(position).getRestaurantPizzaItemPrice()) );
-        if (!listFilterSubCategory.get(position).getRestaurantPizzaItemOldPrice().equalsIgnoreCase("")) {
-            holder.tv_item_cost_old.setText(jj + "" + dotToCommaClass.changeDot(listFilterSubCategory.get(position).getRestaurantPizzaItemOldPrice()));
-            holder.tv_item_cost_old.setPaintFlags(holder.tv_item_cost_old.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        }
-        if (listFilterSubCategory.get(position).getAllergyDescription() != null &&
-                !listFilterSubCategory.get(position).getAllergyDescription().equalsIgnoreCase("")) {
-            holder.ivInfo.setVisibility(View.VISIBLE);
-        } else {
-            holder.ivInfo.setVisibility(View.GONE);
-        }
-
-        holder.ivInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                holder.tvAllergy.setVisibility(View.VISIBLE);
-                holder.tvAllergy.setText(listFilterSubCategory.get(position).getAllergyDescription());
+holder.tv_restaurant_no.setVisibility(View.VISIBLE);
+            holder.tv_restaurant_no.setText(listFilterSubCategory.get(position).getFoodNameNo() + ".");
+            holder.tv_restaurant_name.setText(listFilterSubCategory.get(position).getRestaurantPizzaItemName());
+            holder.tv_restaurant_pizza_des.setText(listFilterSubCategory.get(position).getResPizzaDescription());
+            Currency hh = Currency.getInstance("" + prefsHelper.getPref(Constants.APP_CURRENCY));
+            String jj = hh.getSymbol();
+            holder.tv_item_cost.setText(jj + "" +dotToCommaClass.changeDot(listFilterSubCategory.get(position).getRestaurantPizzaItemPrice()) );
+            if (!listFilterSubCategory.get(position).getRestaurantPizzaItemOldPrice().equalsIgnoreCase("")) {
+                holder.tv_item_cost_old.setText(jj + "" + dotToCommaClass.changeDot(listFilterSubCategory.get(position).getRestaurantPizzaItemOldPrice()));
+                holder.tv_item_cost_old.setPaintFlags(holder.tv_item_cost_old.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             }
-        });
+            else{
+                holder.tv_item_cost_old.setText(jj + "" + dotToCommaClass.changeDot(listFilterSubCategory.get(position).getRestaurantPizzaItemPrice()));
+                holder.tv_item_cost_old.setPaintFlags(holder.tv_item_cost_old.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            }
+            if (listFilterSubCategory.get(position).getAllergyDescription() != null &&
+                    !listFilterSubCategory.get(position).getAllergyDescription().equalsIgnoreCase("")) {
+                holder.ivInfo.setVisibility(View.VISIBLE);
+            } else {
+                holder.ivInfo.setVisibility(View.GONE);
+            }
 
-setSpan(holder,dotToCommaClass.changeDot(listFilterSubCategory.get(position).getDiscountFoodAmount()) + "% "+model.getDiscountAppliedOriginalPrice(),dotToCommaClass.changeDot(holder.tv_item_cost_old.getText().toString()));
+            holder.ivInfo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    holder.tvAllergy.setVisibility(View.VISIBLE);
+                    holder.tvAllergy.setText(listFilterSubCategory.get(position).getAllergyDescription());
+                }
+            });
+if(listFilterSubCategory.get(position).getDiscountFoodAmount()!=null) {
+    setSpan(holder, dotToCommaClass.changeDot(listFilterSubCategory.get(position).getDiscountFoodAmount()) + "% " + model.getDiscountAppliedOriginalPrice(), dotToCommaClass.changeDot(holder.tv_item_cost_old.getText().toString()));
+}
+else{
+    setSpan(holder,  "0.00% " + model.getDiscountAppliedOriginalPrice(), dotToCommaClass.changeDot(holder.tv_item_cost_old.getText().toString()));
+}
 //        holder.tvCost.setText(dotToCommaClass.changeDot(listFilterSubCategory.get(position).getDiscountFoodAmount()) + "% "+model.getDiscountAppliedOriginalPrice() + dotToCommaClass.changeDot(holder.tv_item_cost_old.getText().toString()));
 
-        if (listFilterSubCategory.get(position).getFoodType() != null) {
-            holder.iv_restaurant_logo.setVisibility(View.VISIBLE);
-            Glide.with(mContext).load(listFilterSubCategory.get(position).getFoodIcon())
-                    .placeholder(R.drawable.ic_plate)
-                    .into(holder.iv_restaurant_logo);
-        } else {
-            holder.iv_restaurant_logo.setVisibility(View.GONE);
-        }
-        System.out.println("==== list size : " + listFilterSubCategory.size());
-        System.out.println("==== list size 1: " + listFilterSubCategory.get(position));
-        //  if (listFilterSubCategory.get(position) == listFilterSubCategory.size())
+            if (listFilterSubCategory.get(position).getFoodType() != null) {
+                holder.iv_restaurant_logo.setVisibility(View.VISIBLE);
+                Glide.with(mContext).load(listFilterSubCategory.get(position).getFoodIcon())
+                        .placeholder(R.drawable.ic_plate)
+                        .into(holder.iv_restaurant_logo);
+            } else {
+                holder.iv_restaurant_logo.setVisibility(View.GONE);
+            }
+            System.out.println("==== list size : " + listFilterSubCategory.size());
+            System.out.println("==== list size 1: " + listFilterSubCategory.get(position));
+            //  if (listFilterSubCategory.get(position) == listFilterSubCategory.size())
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
                /* Intent i = new Intent(mContext, RestaurantDetails.class);
                 mContext.startActivity(i);*/
-                if (listFilterSubCategory.get(position).getSizeavailable().equalsIgnoreCase("yes")) {
+                    if (listFilterSubCategory.get(position).getSizeavailable().equalsIgnoreCase("yes")) {
 //                    restaurantDetailsAdapterInterface.getClickMenuData(listFilterSubCategory.get(position).getItemID(),
 //                            listFilterSubCategory.get(position).getRestaurantPizzaItemName(), listFilterSubCategory.get(position).getRestaurantPizzaItemPrice());
-                    Intent i = new Intent(mContext, AddClickDetails.class);
-                    i.putExtra("CLICKITEMID", listFilterSubCategory.get(position).getItemID());
-                    i.putExtra("CLICKITEMNAME", listFilterSubCategory.get(position).getRestaurantPizzaItemName());
-                    i.putExtra("CLICKITEMPRICE", listFilterSubCategory.get(position).getRestaurantPizzaItemPrice());
-                    i.putExtra("CLICKPIZZDESC", listFilterSubCategory.get(position).getResPizzaDescription());
-                    i.putExtra("mainClickRestId", mainClickRestId);
-                    i.putExtra("mainClickRestName", mainClickRestName);
-                    i.putExtra("extraTopping", listFilterSubCategory.get(position).getExtraavailable());
-                    i.putExtra("img", listFilterSubCategory.get(position).getFoodType());
-                    mContext.startActivity(i);
-                } else {
-                    if(listFilterSubCategory.get(position).getExtraavailable().equalsIgnoreCase("yes")){
-                        Intent i = new Intent(mContext, AddExtraActivity.class);
-                        i.putExtra("ITEMID", listFilterSubCategory.get(position).getItemID());
-                        i.putExtra("FOODITEMSIZEID", "");
-                        i.putExtra("selectFoodItemName", listFilterSubCategory.get(position).getRestaurantPizzaItemName());
-                        i.putExtra("sizePizzaPrice", "0.0");
+                        Intent i = new Intent(mContext, AddClickDetails.class);
+                        i.putExtra("CLICKITEMID", listFilterSubCategory.get(position).getItemID());
+                        i.putExtra("CLICKITEMNAME", listFilterSubCategory.get(position).getRestaurantPizzaItemName());
+                        i.putExtra("CLICKITEMPRICE", listFilterSubCategory.get(position).getRestaurantPizzaItemPrice());
+                        i.putExtra("CLICKPIZZDESC", listFilterSubCategory.get(position).getResPizzaDescription());
                         i.putExtra("mainClickRestId", mainClickRestId);
                         i.putExtra("mainClickRestName", mainClickRestName);
-                        i.putExtra("SUBCATCLICKITEMID", listFilterSubCategory.get(position).getItemID());
-                        i.putExtra("SUBCATCLICKITEMNAME", listFilterSubCategory.get(position).getRestaurantPizzaItemName());
-                        i.putExtra("SUBCATCLICKITEMPRICE", listFilterSubCategory.get(position).getRestaurantPizzaItemPrice());
-                        i.putExtra("SUBCATCLICKITEMDesc", listFilterSubCategory.get(position).getResPizzaDescription());
+                        i.putExtra("extraTopping", listFilterSubCategory.get(position).getExtraavailable());
                         i.putExtra("img", listFilterSubCategory.get(position).getFoodType());
-                        i.putExtra("TotalPriceWithPizzaItemAndSize",  "0.0");
                         mContext.startActivity(i);
-                    }
-                    else {
-                        restaurantDetailsAdapterInterface.getClickMenuData(listFilterSubCategory.get(position).getItemID(),
-                                listFilterSubCategory.get(position).getRestaurantPizzaItemName(), listFilterSubCategory.get(position).getRestaurantPizzaItemPrice(), listFilterSubCategory.get(position).getResPizzaDescription());
+                    } else {
+                        if(listFilterSubCategory.get(position).getExtraavailable().equalsIgnoreCase("yes")){
+                            Intent i = new Intent(mContext, AddExtraActivity.class);
+                            i.putExtra("ITEMID", listFilterSubCategory.get(position).getItemID());
+                            i.putExtra("FOODITEMSIZEID", "");
+                            i.putExtra("selectFoodItemName", listFilterSubCategory.get(position).getRestaurantPizzaItemName());
+                            i.putExtra("sizePizzaPrice", "0.0");
+                            i.putExtra("mainClickRestId", mainClickRestId);
+                            i.putExtra("mainClickRestName", mainClickRestName);
+                            i.putExtra("SUBCATCLICKITEMID", listFilterSubCategory.get(position).getItemID());
+                            i.putExtra("SUBCATCLICKITEMNAME", listFilterSubCategory.get(position).getRestaurantPizzaItemName());
+                            i.putExtra("SUBCATCLICKITEMPRICE", listFilterSubCategory.get(position).getRestaurantPizzaItemPrice());
+                            i.putExtra("SUBCATCLICKITEMDesc", listFilterSubCategory.get(position).getResPizzaDescription());
+                            i.putExtra("img", listFilterSubCategory.get(position).getFoodType());
+                            i.putExtra("TotalPriceWithPizzaItemAndSize",  "0.0");
+                            mContext.startActivity(i);
+                        }
+                        else if(listFilterSubCategory.get(position).isIs_combo()) {
+                            Log.i("url", String.valueOf(listFilterSubCategory.get(position).getRestaurantPizzaID()));
+                            restaurantDetailsAdapterInterface.getClickComboItem(listFilterSubCategory.get(position));
+                        }
+                        else{
+                            restaurantDetailsAdapterInterface.getClickMenuData(listFilterSubCategory.get(position).getItemID(),
+                                    listFilterSubCategory.get(position).getRestaurantPizzaItemName(), listFilterSubCategory.get(position).getRestaurantPizzaItemPrice(), listFilterSubCategory.get(position).getResPizzaDescription());
+                        }
                     }
                 }
-            }
-        });
+            });
 
-        holder.tv_plus_corner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (listFilterSubCategory.get(position).getSizeavailable().equalsIgnoreCase("yes")) {
+            holder.tv_plus_corner.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (listFilterSubCategory.get(position).getSizeavailable().equalsIgnoreCase("yes")) {
 //                    restaurantDetailsAdapterInterface.getClickMenuData(listFilterSubCategory.get(position).getItemID(),
 //                            listFilterSubCategory.get(position).getRestaurantPizzaItemName(), listFilterSubCategory.get(position).getRestaurantPizzaItemPrice());
-                    Intent i = new Intent(mContext, AddClickDetails.class);
-                    i.putExtra("CLICKITEMID", listFilterSubCategory.get(position).getItemID());
-                    i.putExtra("CLICKITEMNAME", listFilterSubCategory.get(position).getRestaurantPizzaItemName());
-                    i.putExtra("CLICKITEMPRICE", listFilterSubCategory.get(position).getRestaurantPizzaItemPrice());
-                    i.putExtra("CLICKPIZZDESC", listFilterSubCategory.get(position).getResPizzaDescription());
-                    i.putExtra("mainClickRestId", mainClickRestId);
-                    i.putExtra("mainClickRestName", mainClickRestName);
-                    i.putExtra("extraTopping", listFilterSubCategory.get(position).getExtraavailable());
-                    i.putExtra("img", listFilterSubCategory.get(position).getFoodType());
-                    mContext.startActivity(i);
-                } else {
-                    if(listFilterSubCategory.get(position).getExtraavailable().equalsIgnoreCase("yes")){
-                        Intent i = new Intent(mContext, AddExtraActivity.class);
-                        i.putExtra("ITEMID", listFilterSubCategory.get(position).getItemID());
-                        i.putExtra("FOODITEMSIZEID", "");
-                        i.putExtra("selectFoodItemName", listFilterSubCategory.get(position).getRestaurantPizzaItemName());
-                        i.putExtra("sizePizzaPrice", "0.0");
+                        Intent i = new Intent(mContext, AddClickDetails.class);
+                        i.putExtra("CLICKITEMID", listFilterSubCategory.get(position).getItemID());
+                        i.putExtra("CLICKITEMNAME", listFilterSubCategory.get(position).getRestaurantPizzaItemName());
+                        i.putExtra("CLICKITEMPRICE", listFilterSubCategory.get(position).getRestaurantPizzaItemPrice());
+                        i.putExtra("CLICKPIZZDESC", listFilterSubCategory.get(position).getResPizzaDescription());
                         i.putExtra("mainClickRestId", mainClickRestId);
                         i.putExtra("mainClickRestName", mainClickRestName);
-                        i.putExtra("SUBCATCLICKITEMID", listFilterSubCategory.get(position).getItemID());
-                        i.putExtra("SUBCATCLICKITEMNAME", listFilterSubCategory.get(position).getRestaurantPizzaItemName());
-                        i.putExtra("SUBCATCLICKITEMPRICE", listFilterSubCategory.get(position).getRestaurantPizzaItemPrice());
-                        i.putExtra("SUBCATCLICKITEMDesc", listFilterSubCategory.get(position).getResPizzaDescription());
+                        i.putExtra("extraTopping", listFilterSubCategory.get(position).getExtraavailable());
                         i.putExtra("img", listFilterSubCategory.get(position).getFoodType());
-                        i.putExtra("TotalPriceWithPizzaItemAndSize",  "0.0");
                         mContext.startActivity(i);
-                    }
-                    else {
-                        restaurantDetailsAdapterInterface.getClickMenuData(listFilterSubCategory.get(position).getItemID(),
-                                listFilterSubCategory.get(position).getRestaurantPizzaItemName(), listFilterSubCategory.get(position).getRestaurantPizzaItemPrice(), listFilterSubCategory.get(position).getResPizzaDescription());
-                    }
+                    } else {
+                        if(listFilterSubCategory.get(position).getExtraavailable().equalsIgnoreCase("yes")){
+                            Intent i = new Intent(mContext, AddExtraActivity.class);
+                            i.putExtra("ITEMID", listFilterSubCategory.get(position).getItemID());
+                            i.putExtra("FOODITEMSIZEID", "");
+                            i.putExtra("selectFoodItemName", listFilterSubCategory.get(position).getRestaurantPizzaItemName());
+                            i.putExtra("sizePizzaPrice", "0.0");
+                            i.putExtra("mainClickRestId", mainClickRestId);
+                            i.putExtra("mainClickRestName", mainClickRestName);
+                            i.putExtra("SUBCATCLICKITEMID", listFilterSubCategory.get(position).getItemID());
+                            i.putExtra("SUBCATCLICKITEMNAME", listFilterSubCategory.get(position).getRestaurantPizzaItemName());
+                            i.putExtra("SUBCATCLICKITEMPRICE", listFilterSubCategory.get(position).getRestaurantPizzaItemPrice());
+                            i.putExtra("SUBCATCLICKITEMDesc", listFilterSubCategory.get(position).getResPizzaDescription());
+                            i.putExtra("img", listFilterSubCategory.get(position).getFoodType());
+                            i.putExtra("TotalPriceWithPizzaItemAndSize",  "0.0");
+                            mContext.startActivity(i);
+                        }
+                        else if(listFilterSubCategory.get(position).isIs_combo()) {
+                            Log.i("url", String.valueOf(listFilterSubCategory.get(position).getRestaurantPizzaID()));
+                            restaurantDetailsAdapterInterface.getClickComboItem(listFilterSubCategory.get(position));
+                        }
+                        else{
+                            restaurantDetailsAdapterInterface.getClickMenuData(listFilterSubCategory.get(position).getItemID(),
+                                    listFilterSubCategory.get(position).getRestaurantPizzaItemName(), listFilterSubCategory.get(position).getRestaurantPizzaItemPrice(), listFilterSubCategory.get(position).getResPizzaDescription());
+                        }
 //                    restaurantDetailsAdapterInterface.getClickMenuData(listFilterSubCategory.get(position).getItemID(),
 //                            listFilterSubCategory.get(position).getRestaurantPizzaItemName(), listFilterSubCategory.get(position).getRestaurantPizzaItemPrice(),listFilterSubCategory.get(position).getResPizzaDescription());
 //                    if (listFilterSubCategory.get(position).getSizeavailable().equalsIgnoreCase("yes")){
@@ -204,33 +227,34 @@ setSpan(holder,dotToCommaClass.changeDot(listFilterSubCategory.get(position).get
 //                        holder.linearOnlyPlus.setVisibility(View.INVISIBLE);
 //                        holder.linearWithQuantity.setVisibility(View.VISIBLE);
 //                    }
+                    }
                 }
-            }
-        });
-        holder.tv_plus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                restaurantDetailsAdapterInterface.getClickMenuData(listFilterSubCategory.get(position).getItemID(),
-                        listFilterSubCategory.get(position).getRestaurantPizzaItemName(), listFilterSubCategory.get(position).getRestaurantPizzaItemPrice(),listFilterSubCategory.get(position).getResPizzaDescription());
-                holder.tv_quantity.setText(String.valueOf(Integer.parseInt(holder.tv_quantity.getText().toString())+1));
-            }
-        });
-        holder.iv_minus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String qty = String.valueOf(Integer.parseInt(holder.tv_quantity.getText().toString())-1);
-                if (qty.equalsIgnoreCase("0")){
-                    holder.linearOnlyPlus.setVisibility(View.VISIBLE);
-                    holder.linearWithQuantity.setVisibility(View.INVISIBLE);
-                }else{
-                    holder.tv_quantity.setText(qty);
+            });
+            holder.tv_plus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    restaurantDetailsAdapterInterface.getClickMenuData(listFilterSubCategory.get(position).getItemID(),
+                            listFilterSubCategory.get(position).getRestaurantPizzaItemName(), listFilterSubCategory.get(position).getRestaurantPizzaItemPrice(),listFilterSubCategory.get(position).getResPizzaDescription());
+                    holder.tv_quantity.setText(String.valueOf(Integer.parseInt(holder.tv_quantity.getText().toString())+1));
                 }
-                restaurantDetailsAdapterInterface.getClickMenuDataRemoved(listFilterSubCategory.get(position).getItemID(),
-                        listFilterSubCategory.get(position).getRestaurantPizzaItemName(), listFilterSubCategory.get(position).getRestaurantPizzaItemPrice(),
-                        Integer.parseInt(qty));
+            });
+            holder.iv_minus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String qty = String.valueOf(Integer.parseInt(holder.tv_quantity.getText().toString())-1);
+                    if (qty.equalsIgnoreCase("0")){
+                        holder.linearOnlyPlus.setVisibility(View.VISIBLE);
+                        holder.linearWithQuantity.setVisibility(View.INVISIBLE);
+                    }else{
+                        holder.tv_quantity.setText(qty);
+                    }
+                    restaurantDetailsAdapterInterface.getClickMenuDataRemoved(listFilterSubCategory.get(position).getItemID(),
+                            listFilterSubCategory.get(position).getRestaurantPizzaItemName(), listFilterSubCategory.get(position).getRestaurantPizzaItemPrice(),
+                            Integer.parseInt(qty));
 
-            }
-        });
+                }
+            });
+
 
     }
 

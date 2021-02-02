@@ -30,10 +30,6 @@ public class RestroExtraAdapter extends RecyclerView.Adapter<RestroExtraAdapter.
     String type;
     String cur;
     DotToCommaClass dotToCommaClass;
-    ArrayList<Integer> extra_item_list_id;
-    ArrayList<String> temp_extra_item_list_id;
-    ArrayList<String> extra_item_list_name;
-    ArrayList<String> extra_item_list_price;
     int selected_pos=-1;
     private RestaurantFoodItemExtraAdapterInterface restaurantFoodItemExtraAdapterInterface;
 
@@ -43,10 +39,6 @@ public class RestroExtraAdapter extends RecyclerView.Adapter<RestroExtraAdapter.
         this.cur=cur;
         dotToCommaClass=new DotToCommaClass(context);
         this.restaurantFoodItemExtraAdapterInterface=restaurantFoodItemExtraAdapterInterface;
-        extra_item_list_id = new ArrayList<>();
-        temp_extra_item_list_id = new ArrayList<>();
-        extra_item_list_name = new ArrayList<>();
-        extra_item_list_price = new ArrayList<>();
     }
     @NonNull
     @Override

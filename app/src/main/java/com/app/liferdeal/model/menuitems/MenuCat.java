@@ -54,6 +54,18 @@ public class MenuCat implements Section {
     @SerializedName("subItemsRecord")
     @Expose
     private List<SubItemsRecord> subItemsRecord = null;
+
+    public List<com.app.liferdeal.model.menuitems.ComboList> getComboList() {
+        return ComboList;
+    }
+
+    public void setComboList(List<com.app.liferdeal.model.menuitems.ComboList> comboList) {
+        ComboList = comboList;
+    }
+
+    @SerializedName("ComboList")
+    @Expose
+    private List<ComboList>  ComboList=null;
     int position;
 
     public MenuCat(int position) {

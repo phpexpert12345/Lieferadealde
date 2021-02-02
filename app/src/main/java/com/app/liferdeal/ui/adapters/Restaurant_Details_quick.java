@@ -16,13 +16,14 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.liferdeal.R;
+import com.app.liferdeal.model.menuitems.MenuCat;
 import com.app.liferdeal.model.restaurant.RestaurantDetailsModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Restaurant_Details_quick extends RecyclerView.Adapter<Restaurant_Details_quick.Holder> {
-    private List<RestaurantDetailsModel.RestaurantMencategory> listCategory;
+    private List<MenuCat> listCategory;
     // private List<ModelSubCategory>listFilterSubCategory;
     private Context mContext;
     private RestaurantDetailsQuickInterface restaurantDetailsQuickInterface;
@@ -35,7 +36,7 @@ public class Restaurant_Details_quick extends RecyclerView.Adapter<Restaurant_De
         public void getRestaaurantQuickClickData(int position, String restId, int catId, String categoryImage, String name);
     }
 
-    public Restaurant_Details_quick(Context context, List<RestaurantDetailsModel.RestaurantMencategory> listSubCategory,
+    public Restaurant_Details_quick(Context context, List<MenuCat> listSubCategory,
                                     RestaurantDetailsQuickInterface restaurantDetailsQuickInterface1, int selectedPos) {
         this.mContext = context;
         this.restaurantDetailsQuickInterface = restaurantDetailsQuickInterface1;

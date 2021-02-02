@@ -85,6 +85,9 @@ public class SubItemsRecord implements Section {
     @SerializedName("sizeavailable")
     @Expose
     private String sizeavailable;
+    @SerializedName("is_combo")
+    @Expose
+    private boolean is_combo=false;
 
     public String getFree_Topping_Selection_allowed() {
         return Free_Topping_Selection_allowed;
@@ -336,5 +339,13 @@ public class SubItemsRecord implements Section {
     @Override
     public int sectionPosition() {
         return section;
+    }
+
+    public boolean isIs_combo() {
+        return is_combo;
+    }
+
+    public void setIs_combo(boolean is_combo) {
+        this.is_combo = is_combo;
     }
 }

@@ -32,6 +32,7 @@ import com.app.liferdeal.application.App;
 import com.app.liferdeal.model.LanguageResponse;
 import com.app.liferdeal.model.menuitems.AllCategoryResponse;
 import com.app.liferdeal.model.menuitems.MenuCat;
+import com.app.liferdeal.model.menuitems.SubItemsRecord;
 import com.app.liferdeal.model.restaurant.RaviCartModle;
 import com.app.liferdeal.model.restaurant.RestDetailClickFoodModel;
 import com.app.liferdeal.model.restaurant.RestaurantDetailsModel;
@@ -112,7 +113,7 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
     private Restaurant_Details_quick adapterCategory;
     private Boolean[] selectedItem;
     private int selectedPos = 0;
-    private List<RestaurantDetailsModel.RestaurantMencategory> listnew;
+    private List<MenuCat> listnew;
     private String globcategoryImage = "", globRestId = "", colorCode, table_booking = "";
     private int globSelectedCatId;
     private ArrayList<String> itemCount = new ArrayList<>();
@@ -284,8 +285,6 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
     private void getAllMenu() {
         banner_progress.setVisibility(View.VISIBLE);
         apiInterface = RFClient.getClient().create(ApiInterface.class);
-        String url="https://www.lieferadeal.de/WebAppAPI/phpexpert_all_category_list.php?api_key="+prefsHelper.getPref(Constants.API_KEY)+"&lang_code="+prefsHelper.getPref(Constants.LNG_CODE)+"&resid="+clickRestId;
-        Log.i("reason",url);
         Observable<AllCategoryResponse> observable = apiInterface.getAllList(prefsHelper.getPref(Constants.API_KEY), prefsHelper.getPref(Constants.LNG_CODE), clickRestId);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -322,9 +321,15 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
     private void setCategoryInfo(List<MenuCat> menuCat) {
         rcv_rest_details_list.setLayoutManager(new LinearLayoutManager(RestaurantDetails.this));
         SectionDetailAdapter adapter = new SectionDetailAdapter(RestaurantDetails.this, menuCat,model);
+        listnew = new ArrayList<>();
+        listnew = menuCat;
+
+        adapterCategory = new Restaurant_Details_quick(RestaurantDetails.this, listnew, RestaurantDetails.this, selectedPos);
+        quickrecycler.setAdapter(adapterCategory);
         rcv_rest_details_list.setAdapter(adapter);
         adapter.setClickListener(this);
         hideProgress();
+
         rcv_rest_details_list.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -491,11 +496,7 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
 //                selectedItem[i] = false;
 //            }
 //        }
-        listnew = new ArrayList<>();
-        listnew = list;
 
-        adapterCategory = new Restaurant_Details_quick(RestaurantDetails.this, list, RestaurantDetails.this, selectedPos);
-        quickrecycler.setAdapter(adapterCategory);
         // adapterCategory.notifyDataSetChanged();
         hideProgress();
     }
@@ -759,6 +760,11 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
         tvTotalItemCnt.setText("" + AddExtraActivity.cart_Item_number + " Items");
         database.close();
         updateCart();
+    }
+
+    @Override
+    public void getClickComboItem(SubItemsRecord subItemsRecord) {
+
     }
 
     @Override
