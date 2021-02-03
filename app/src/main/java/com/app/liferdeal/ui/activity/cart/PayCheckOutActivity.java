@@ -735,7 +735,8 @@ hideProgress();
                 String price = cursor.getString(6);
                 String subcatdetals = cursor.getString(8);
                 String item_quantity = cursor.getString(7);
-                raviCartModles.add(new RaviCartModle(item_id, item_name, size_item_id, size_item_name, extra_item_id, extra_item_name, price, item_quantity, subcatdetals));
+                int combo=cursor.getInt(9);
+                raviCartModles.add(new RaviCartModle(item_id, item_name, size_item_id, size_item_name, extra_item_id, extra_item_name, price, item_quantity, subcatdetals,combo));
 
             }
             while (cursor.moveToNext());

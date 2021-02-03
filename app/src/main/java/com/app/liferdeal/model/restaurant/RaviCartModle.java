@@ -10,6 +10,16 @@ public class RaviCartModle {
     String price;
     String item_quantity;
 
+    public int getCombo() {
+        return combo;
+    }
+
+    public void setCombo(int combo) {
+        this.combo = combo;
+    }
+
+    int combo;
+
     public String getItemSubcatDetails() {
         return itemSubcatDetails;
     }
@@ -20,7 +30,7 @@ public class RaviCartModle {
 
     String itemSubcatDetails;
 
-    public RaviCartModle(String item_id ,String item_name,String size_item_id,String size_item_name,String extra_item_id,String extra_item_name,String price,String item_quantity,String itemSubcatDetails)
+    public RaviCartModle(String item_id ,String item_name,String size_item_id,String size_item_name,String extra_item_id,String extra_item_name,String price,String item_quantity,String itemSubcatDetails,int combo)
     {
         this.item_id = item_id;
         this.item_name = item_name;
@@ -31,6 +41,7 @@ public class RaviCartModle {
         this.price = price;
         this.item_quantity = item_quantity;
         this.itemSubcatDetails = itemSubcatDetails;
+        this.combo=combo;
     }
 
     public String getItem_id() {

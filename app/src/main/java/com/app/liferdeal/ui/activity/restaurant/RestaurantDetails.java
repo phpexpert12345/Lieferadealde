@@ -31,6 +31,7 @@ import com.app.liferdeal.R;
 import com.app.liferdeal.application.App;
 import com.app.liferdeal.model.LanguageResponse;
 import com.app.liferdeal.model.menuitems.AllCategoryResponse;
+import com.app.liferdeal.model.menuitems.ComItemList;
 import com.app.liferdeal.model.menuitems.MenuCat;
 import com.app.liferdeal.model.menuitems.SubItemsRecord;
 import com.app.liferdeal.model.restaurant.RaviCartModle;
@@ -47,12 +48,16 @@ import com.app.liferdeal.ui.interfaces.Section;
 import com.app.liferdeal.ui.interfaces.SelectMenuItem;
 import com.app.liferdeal.util.Constants;
 import com.app.liferdeal.util.DotToCommaClass;
+import com.app.liferdeal.util.DroidPrefs;
 import com.app.liferdeal.util.PrefsHelper;
 import com.app.liferdeal.util.SharedPreferencesData;
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.shuhart.stickyheader.StickyAdapter;
 import com.shuhart.stickyheader.StickyHeaderItemDecorator;
 
+import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -411,12 +416,30 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
                         String price = cursor.getString(6);
                         String subcatdetals = cursor.getString(8);
                         String item_quantity = cursor.getString(7);
+                        int com=cursor.getInt(9);
                         totalPrice = totalPrice + Double.parseDouble(price);
-                        raviCartModles.add(new RaviCartModle(item_id, item_name, size_item_id, size_item_name, extra_item_id, extra_item_name, price, item_quantity, subcatdetals));
+                        raviCartModles.add(new RaviCartModle(item_id, item_name, size_item_id, size_item_name, extra_item_id, extra_item_name, price, item_quantity, subcatdetals,com));
 
                     } while (cursor.moveToNext());
+                    String com_list=DroidPrefs.get(this,"com_list",String.class);
+                    if(com_list!=null) {
+                        Gson gson = new Gson();
+                        Type listType = new TypeToken<List<ComItemList>>() {
+                        }.getType();
+                        List<ComItemList> comItemLists = gson.fromJson(com_list, listType);
+                        if (comItemLists != null) {
+                            for (ComItemList comItemList : comItemLists) {
+                                int quat=comItemList.quantity;
+                                totalPrice+=Double.parseDouble(comItemList.price)*quat;
+                                raviCartModles.add(new RaviCartModle(comItemList.combo_name,comItemList.combo_name,comItemList.sec_value,comItemList.com_sec,"",comItemList.combo_top,comItemList.price,String.valueOf(comItemList.quantity),comItemList.combo_desc,1));
+                            }
 
-                    if(raviCartModles.size()>0){
+                        }
+                    }
+
+
+
+                        if(raviCartModles.size()>0){
                         DecimalFormat df2 = new DecimalFormat("#.##");
 //            tv_TotalPrice.setText("€" + df2.format(totalPrice));
                         RestaurantDetails.tvCartItemCount.setText("" + raviCartModles.size());
@@ -443,7 +466,28 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
                 }
             } else {
                 db.close();
-                rl_cartt.setVisibility(View.GONE);
+                String com_list=DroidPrefs.get(this,"com_list",String.class);
+                if(com_list!=null){
+                    Gson gson=new Gson();
+                    Type listType=new TypeToken<List<ComItemList>>(){}.getType();
+                    List<ComItemList> comItemLists=gson.fromJson(com_list,listType);
+                    if(comItemLists!=null) {
+                        rl_cartt.setVisibility(View.VISIBLE);
+                        RestaurantDetails.tv_cart_item_countt.setText("" + comItemLists.size());
+                        tvTotalItemCnt.setText("" + comItemLists.size() + " " + model.getItems());
+                        for(ComItemList comItemList:comItemLists){
+                            int quat=comItemList.quantity;
+
+                            totalPrice+=Double.parseDouble(comItemList.price)*quat;
+                        }
+                        tv_TotalPrice.setText("€" + dotToCommaClass.changeDot(String.format("%.2f", totalPrice)));
+                    }
+                    else{
+                        rl_cartt.setVisibility(View.GONE);
+                    }
+
+                }
+
 
                           /*      Ravifinalitem.cart_Item_number = 0;
                 Intent iii = new Intent(CartActivity.this, EmptyCartActivity.class);
@@ -577,6 +621,22 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
                     intent.putExtra("globTempExtraItemidWithSizeIdd", "" + globTempExtraItemidWithSizeIdd);
                     startActivity(intent);
                 } else {
+                    String com_list=DroidPrefs.get(this,"com_list",String.class);
+                    if(com_list!=null){
+                        Gson gson=new Gson();
+                        Type listType=new TypeToken<List<ComItemList>>(){}.getType();
+                        List<ComItemList> comItemLists=gson.fromJson(com_list,listType);
+                        if(comItemLists!=null) {
+                            Intent intent = new Intent(RestaurantDetails.this, CartActivity.class);
+                            intent.putExtra("RESTID", clickRestId);
+                            intent.putExtra("RESTName", clickRestName);
+                            intent.putExtra("RESTLOGO", RESTLOGO);
+                            intent.putExtra("subPizzaItemId", "" + subPizzaItemId);
+                            intent.putExtra("SIZEITEMID", "" + SIZEITEMID);
+                            intent.putExtra("globTempExtraItemidWithSizeIdd", "" + globTempExtraItemidWithSizeIdd);
+                            startActivity(intent);
+                        }
+                    }
                     /// showCustomDialog1decline("Cart is empty,please add item in cart.");
                 }
                 break;
@@ -595,6 +655,22 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
                     intent.putExtra("globTempExtraItemidWithSizeIdd", "" + globTempExtraItemidWithSizeIdd);
                     startActivity(intent);
                 } else {
+                    String com_list=DroidPrefs.get(this,"com_list",String.class);
+                    if(com_list!=null){
+                        Gson gson=new Gson();
+                        Type listType=new TypeToken<List<ComItemList>>(){}.getType();
+                        List<ComItemList> comItemLists=gson.fromJson(com_list,listType);
+                        if(comItemLists!=null) {
+                            Intent intent = new Intent(RestaurantDetails.this, CartActivity.class);
+                            intent.putExtra("RESTID", clickRestId);
+                            intent.putExtra("RESTName", clickRestName);
+                            intent.putExtra("RESTLOGO", RESTLOGO);
+                            intent.putExtra("subPizzaItemId", "" + subPizzaItemId);
+                            intent.putExtra("SIZEITEMID", "" + SIZEITEMID);
+                            intent.putExtra("globTempExtraItemidWithSizeIdd", "" + globTempExtraItemidWithSizeIdd);
+                            startActivity(intent);
+                        }
+                    }
                     /// showCustomDialog1decline("Cart is empty,please add item in cart.");
                 }
                 break;
@@ -796,7 +872,7 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
             price = price * qunt;
             database.update_item(String.valueOf(subPizzaItemId), qunt, price);
         } else {
-            database.InsertItem(String.valueOf(itemId), itemName, "0", "0", "0", "0", Double.parseDouble(amt), 1, subcatItemDetails);
+            database.InsertItem(String.valueOf(itemId), itemName, "0", "0", "0", "0", Double.parseDouble(amt), 1, subcatItemDetails,0);
             AddExtraActivity.cart_Item_number = AddExtraActivity.cart_Item_number + 1;
         }
         tvTotalItemCnt.setText("" + AddExtraActivity.cart_Item_number + " Items");
@@ -837,6 +913,22 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
             intent.putExtra("globTempExtraItemidWithSizeIdd", "" + globTempExtraItemidWithSizeIdd);
             startActivity(intent);
         } else {
+            String com_list=DroidPrefs.get(this,"com_list",String.class);
+            if(com_list!=null){
+                Gson gson=new Gson();
+                Type listType=new TypeToken<List<ComItemList>>(){}.getType();
+                List<ComItemList> comItemLists=gson.fromJson(com_list,listType);
+                if(comItemLists!=null) {
+                    Intent intent = new Intent(RestaurantDetails.this, CartActivity.class);
+                    intent.putExtra("RESTID", clickRestId);
+                    intent.putExtra("RESTName", clickRestName);
+                    intent.putExtra("RESTLOGO", RESTLOGO);
+                    intent.putExtra("subPizzaItemId", "" + subPizzaItemId);
+                    intent.putExtra("SIZEITEMID", "" + SIZEITEMID);
+                    intent.putExtra("globTempExtraItemidWithSizeIdd", "" + globTempExtraItemidWithSizeIdd);
+                    startActivity(intent);
+                }
+                }
             /// showCustomDialog1decline("Cart is empty,please add item in cart.");
         }
     }
