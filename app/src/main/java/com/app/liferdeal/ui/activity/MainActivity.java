@@ -183,6 +183,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if(!authPreference.isLoggedIn()){
             database.delete();
+            DroidPrefs.getDefaultInstance(this).clear();
         }
 //      database.deal_delete();
         mTitle = mDrawerTitle = getTitle();

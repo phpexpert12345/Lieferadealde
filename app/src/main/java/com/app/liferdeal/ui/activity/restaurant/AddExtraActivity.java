@@ -329,7 +329,8 @@ public class AddExtraActivity extends AppCompatActivity implements View.OnClickL
                          String price_str = cursor.getString(6);
                          String subcatdetals = cursor.getString(8);
                          String item_quantity = cursor.getString(7);
-                         raviCartModles.add(new RaviCartModle(item_id, item_name, size_item_id, size_item_name, extra_item_id, extra_item_name, price_str, item_quantity, subcatdetals));
+                         int com=cursor.getInt(9);
+                         raviCartModles.add(new RaviCartModle(item_id, item_name, size_item_id, size_item_name, extra_item_id, extra_item_name, price_str, item_quantity, subcatdetals,com));
 
                      }
                      while (cursor.moveToNext());
@@ -379,9 +380,9 @@ public class AddExtraActivity extends AppCompatActivity implements View.OnClickL
                  }
                  else{
                      if (extra_item_list_id.size() > 0)
-                         database.InsertItem(String.valueOf(restDetailsItemId), restDetailsItemName, String.valueOf(itemSizeId), selectFoodItemName, "" + extra_item_list_id, "" + extra_item_list_name, Double.parseDouble(restDetailsItemPrice), 1,SUBCATCLICKITEMDesc);
+                         database.InsertItem(String.valueOf(restDetailsItemId), restDetailsItemName, String.valueOf(itemSizeId), selectFoodItemName, "" + extra_item_list_id, "" + extra_item_list_name, Double.parseDouble(restDetailsItemPrice), 1,SUBCATCLICKITEMDesc,0);
                      else {
-                         database.InsertItem(String.valueOf(restDetailsItemId), restDetailsItemName, String.valueOf(itemSizeId), selectFoodItemName, "0", "0", Double.parseDouble(restDetailsItemPrice), 1,SUBCATCLICKITEMDesc);
+                         database.InsertItem(String.valueOf(restDetailsItemId), restDetailsItemName, String.valueOf(itemSizeId), selectFoodItemName, "0", "0", Double.parseDouble(restDetailsItemPrice), 1,SUBCATCLICKITEMDesc,0);
                      }
                      cart_Item_number = cart_Item_number + 1;
                      RestaurantDetails.tvCartItemCount.setText("" + cart_Item_number);

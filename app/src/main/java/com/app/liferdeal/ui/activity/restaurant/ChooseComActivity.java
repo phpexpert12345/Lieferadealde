@@ -1,5 +1,8 @@
 package com.app.liferdeal.ui.activity.restaurant;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,12 +23,16 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.app.liferdeal.R;
+import com.app.liferdeal.model.menuitems.ComItemList;
 import com.app.liferdeal.model.menuitems.ComValue;
+import com.app.liferdeal.model.menuitems.ComValueItem;
 import com.app.liferdeal.model.menuitems.ComboSection;
+import com.app.liferdeal.ui.Database.Database;
 import com.app.liferdeal.ui.adapters.ComValueAdapter;
 import com.app.liferdeal.ui.adapters.ComboSectionAdapter;
 import com.app.liferdeal.ui.interfaces.SelectSec;
 import com.app.liferdeal.util.Constants;
+import com.app.liferdeal.util.DroidPrefs;
 import com.app.liferdeal.util.PrefsHelper;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -66,6 +73,14 @@ public class ChooseComActivity extends AppCompatActivity {
     String desc="";
     String price="";
     List<ComboSection>comboSections=new ArrayList<>();
+    private Database database;
+    StringBuilder com_tops=new StringBuilder();
+    StringBuilder sec_item=new StringBuilder();
+    StringBuilder sec_value=new StringBuilder();
+    String sec_="";
+    String value="";
+    String com_price="";
+    double com_p=0.0;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +100,12 @@ public class ChooseComActivity extends AppCompatActivity {
             }
         });
         getComDetails();
+        btn_add_to_cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SaveComboToDatabase();
+            }
+        });
 
     }
     private void getComDetails(){
@@ -142,6 +163,7 @@ public class ChooseComActivity extends AppCompatActivity {
         ComboSectionAdapter comboSectionAdapter=new ComboSectionAdapter(comboSections, new SelectSec() {
             @Override
             public void getClickSec(int pos) {
+
                 setComboSectionValueAdapter(comboSections.get(pos).getComboSectionValue());
             }
         });
@@ -150,9 +172,103 @@ public class ChooseComActivity extends AppCompatActivity {
     }
     private void setComboSectionValueAdapter(List<ComValue>comValues){
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
-        ComValueAdapter comValueAdapter=new ComValueAdapter(comValues,this,price,combo,desc);
+        ComValueAdapter comValueAdapter=new ComValueAdapter(comValues, this, new ComValueAdapter.ComValueClicked() {
+            @Override
+            public void ComClicked(ComValueItem subItemsRecord,int comslot_id,String com) {
+                Intent intent=new Intent(ChooseComActivity.this, ComExtraActivity.class);
+                intent.putExtra("price",price);
+                intent.putExtra("item_id",subItemsRecord.getItemID());
+                if(!subItemsRecord.getFoodItemSizeID().equalsIgnoreCase("")){
+                    intent.putExtra("size_id",Integer.parseInt(subItemsRecord.getFoodItemSizeID()));
+                }
+                else {
+                    intent.putExtra("size_id",0);
+                }
+                intent.putExtra("name",combo);
+                intent.putExtra("desc",desc);
+                intent.putExtra("top_allowed",subItemsRecord.getCombo_Topping_Allow());
+                intent.putExtra("com_slot",comslot_id);
+sec_=com;
+value=subItemsRecord.getCombo_Slot_ItemName();
+                startActivityForResult(intent,5);
+            }
+        });
         recyler_sec.setAdapter(comValueAdapter);
         recyler_sec.setLayoutManager(linearLayoutManager);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode== Activity.RESULT_OK){
+            if(requestCode==5) {
+                if (data != null) {
+                    if (data.hasExtra("price")) {
+                        String p = data.getStringExtra("price");
+                        String item = data.getStringExtra("item");
+                        String ids = data.getStringExtra("ids");
+if(com_tops.length()>0) {
+    com_tops.append(",");
+
+}
+if(sec_item.length()>0){
+    sec_item.append(",");
+}
+if(sec_value.length()>0){
+    sec_value.append(",");
+}
+
+double pr=Double.parseDouble(price);
+double price_demo= Double.parseDouble(p);
+                        if(sec_item.length()>0){
+com_p=com_p+price_demo;
+                        }
+                        else{
+                          com_p=com_p+pr+price_demo;
+                        }
+                        com_price=String.valueOf(com_p);
+                        com_tops.append(item);
+                        sec_item.append(sec_);
+                        sec_value.append(value);
+
+                }
+                    Log.i("url", price + ", " + com_tops.toString() + ", " + sec_item.toString()+", "+sec_value);
+                }
+            }
+        }
+    }
+
+
+    private void SaveComboToDatabase(){
+        String com_list=DroidPrefs.get(this,"com_list",String.class);
+        if(com_list!=null){
+            Gson gson=new Gson();
+            Type listType=new TypeToken<List<ComItemList>>(){}.getType();
+            List<ComItemList> comItemLists=gson.fromJson(com_list,listType);
+            if(comItemLists!=null) {
+            }
+            else {
+                comItemLists=new ArrayList<>();
+            }
+                ComItemList comItemList = new ComItemList();
+                comItemList.com_sec = sec_item.toString();
+                comItemList.combo_name = combo;
+                comItemList.sec_value = sec_value.toString();
+                comItemList.combo_desc = desc;
+            comItemList.combo_top=com_tops.toString();
+            comItemList.quantity=1;
+                comItemList.price = com_price;
+                comItemLists.add(comItemList);
+                String com = gson.toJson(comItemLists);
+                DroidPrefs.apply(this, "com_list", com);
+
+        }
+        finish();
+
+
+
+
+    }
+
 
 }

@@ -41,6 +41,8 @@ import com.app.liferdeal.model.LoyaltyApplied;
 import com.app.liferdeal.model.RmGetLoyaltyPointResponse;
 import com.app.liferdeal.model.RmVerifyCouponCodeResponse;
 import com.app.liferdeal.model.RmVerifyLoyaltyPointResponse;
+import com.app.liferdeal.model.menuitems.ComItemList;
+import com.app.liferdeal.model.menuitems.SingleCom;
 import com.app.liferdeal.model.restaurant.RaviCartModle;
 import com.app.liferdeal.model.restaurant.ShippingCartModel;
 import com.app.liferdeal.network.retrofit.ApiInterface;
@@ -48,19 +50,24 @@ import com.app.liferdeal.network.retrofit.RFClient;
 import com.app.liferdeal.ui.Database.Database;
 import com.app.liferdeal.ui.activity.restaurant.AddExtraActivity;
 import com.app.liferdeal.ui.activity.restaurant.RestaurantDetails;
+import com.app.liferdeal.ui.adapters.SingleComAdapter;
 import com.app.liferdeal.util.CommonMethods;
 import com.app.liferdeal.util.Constants;
 import com.app.liferdeal.util.DotToCommaClass;
 import com.app.liferdeal.util.DroidPrefs;
 import com.app.liferdeal.util.PrefsHelper;
 import com.app.liferdeal.util.SharedPreferencesData;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Currency;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -357,7 +364,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
            changeSelect(orderType);
         }
 
-        updateCart();
         getDiscount();
         getShippingChargeData("Delivery");
         // Log.e("extraItemID=",raviCartModles.get(0).getSize_item_name());
@@ -367,25 +373,24 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     protected void onStop() {
         super.onStop();
 //        database.deal_delete();
-        updateCart();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        updateCart();
+
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        updateCart();
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        updateCart();
+
     }
 
     @Override
@@ -402,7 +407,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     private void updateCart() {
 //        try {
         //made by me
-        totalPrice = 0.0;
         raviCartModles.clear();
         SQLiteDatabase db = database.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM item_table", null);
@@ -418,8 +422,8 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                     String extra_item_name = cursor.getString(5);
                     String price = cursor.getString(6);
                     String subcatdetals = cursor.getString(8);
-                    totalPrice = totalPrice + Double.parseDouble(price);
-                    totalPrice = (double) Math.round(totalPrice * 100) / 100;
+                    int com=cursor.getInt(9);
+
                     String item_quantity = cursor.getString(7);
                     extraItemNameG = extra_item_name;
                     extraItemIDG = extra_item_id;
@@ -429,14 +433,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 //                        tv_total.setText(currencySymbol + "" + "" + String.format("%.2f", totalPrice));
 //                        checkout_total_price.setText(currencySymbol + "" + "" + String.format("%.2f", totalPrice));
 
-                    grandTotal = totalPrice - discount - coupon_price - loyalty_price + service_fee + service_vat + sales_tax + deliveryCost + packagingCost;
-                    tv_total.setText(currencySymbol + "" + "" + dotToCommaClass.changeDot(String.format("%.2f", grandTotal)));
-                    checkout_total_price.setText(currencySymbol + "" + "" + dotToCommaClass.changeDot(String.format("%.2f", grandTotal)));
-                    order_price = String.valueOf(totalPrice);
-                    subTotalAmount = String.valueOf(totalPrice);
-                    tv_sub_total.setText(currencySymbol + "" + "" + dotToCommaClass.changeDot(String.format("%.2f", totalPrice)));
-//                        tv_food_item_total.setText(currencySymbol + "" + "" + String.format("%.2f", totalPrice));
-                    FoodCosts = tv_food_item_total.getText().toString();
+
 
 //                        if (deliveryCharge != null) {
 //                            tvDeliveryFee.setText(currencySymbol + "" + "" + String.format("%.2f", deliveryCharge));
@@ -447,38 +444,52 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                     } else {
                         llFull.setVisibility(View.GONE);
                     }
-                    raviCartModles.add(new RaviCartModle(item_id, item_name, size_item_id, size_item_name, extra_item_id, extra_item_name, price, item_quantity, subcatdetals));
+
+                    raviCartModles.add(new RaviCartModle(item_id, item_name, size_item_id, size_item_name, extra_item_id, extra_item_name, price, item_quantity, subcatdetals,com));
                     AddExtraActivity.cart_Item_number = raviCartModles.size();
                 } while (cursor.moveToNext());
                 //  tvTotalFoodCost.setText("+".concat(pound.concat("" + String.format("%.2f", totalPrice))));
                 //    tvTotalFoodCost.setText("+".concat(pound.concat("" +String.valueOf(totalPrice))));
                 // getDiscount();
-                tvTotalItem.setText(model.getTotal() + " " + raviCartModles.size() + " " + model.getItems());
+                String com_list=DroidPrefs.get(this,"com_list",String.class);
+                if(com_list!=null) {
+                    Gson gson = new Gson();
+                    Type listType = new TypeToken<List<ComItemList>>() {
+                    }.getType();
+                    List<ComItemList> comItemLists = gson.fromJson(com_list, listType);
+                    if(comItemLists!=null){
+                        for(ComItemList comItemList:comItemLists){
+                            raviCartModles.add(new RaviCartModle(comItemList.combo_name,comItemList.combo_name,comItemList.sec_value,comItemList.com_sec,"",comItemList.combo_top,comItemList.price,String.valueOf(comItemList.quantity),comItemList.combo_desc,1));
+                        }
+                    }
+                }
+
                 if(raviCartModles.size()>0){
                     double toatl_price=0.0;
                     StringBuilder stringBuilder=new StringBuilder();
-                    for(int j=0;j<raviCartModles.size();j++){
-                        toatl_price+=Double.parseDouble(raviCartModles.get(j).getPrice());
-                        String size_item=raviCartModles.get(j).getSize_item_name();
-                        if(!size_item.equalsIgnoreCase("0")) {
-                            stringBuilder.append(raviCartModles.get(j).getItem_quantity() + "x" + raviCartModles.get(j).getItem_name() + "(" + size_item + ")");
+                    for(int j=0;j<raviCartModles.size();j++) {
+                       int quat= Integer.parseInt(raviCartModles.get(j).getItem_quantity());
+                        toatl_price += Double.parseDouble(raviCartModles.get(j).getPrice())*quat;
+                            if(raviCartModles.get(j).getCombo()==0){
+                            String size_item = raviCartModles.get(j).getSize_item_name();
+                            if (!size_item.equalsIgnoreCase("0")) {
+                                stringBuilder.append(raviCartModles.get(j).getItem_quantity() + "x" + raviCartModles.get(j).getItem_name() + "(" + size_item + ")");
+
+                            } else {
+                                stringBuilder.append(raviCartModles.get(j).getItem_quantity() + "x" + raviCartModles.get(j).getItem_name());
+
+                            }
+                            stringBuilder.append("\n");
+
 
                         }
-                        else{
-                            stringBuilder.append(raviCartModles.get(j).getItem_quantity() + "x" + raviCartModles.get(j).getItem_name());
-
+                        if (toatl_price > 0.0) {
+                            totalPrice=toatl_price;
+                            updateData();
                         }
-                        stringBuilder.append("\n");
-
-
-                    }
-                    if(toatl_price>0.0){
-                        selectedPizzaItemPrice= String.valueOf(toatl_price);
-                        subTotalAmount= String.valueOf(toatl_price);
-                        FoodCosts=subTotalAmount;
-                    }
-                    if(stringBuilder.length()>0){
-                        selectedPizzaName=stringBuilder.deleteCharAt(stringBuilder.lastIndexOf("\n")).toString();
+//                        if (stringBuilder.length() > 0) {
+//                            selectedPizzaName = stringBuilder.deleteCharAt(stringBuilder.lastIndexOf("\n")).toString();
+//                        }
                     }
 
 
@@ -492,6 +503,54 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             }
         } else {
             db.close();
+            String com_list=DroidPrefs.get(this,"com_list",String.class);
+            if(com_list!=null) {
+                Gson gson = new Gson();
+                Type listType = new TypeToken<List<ComItemList>>() {
+                }.getType();
+                List<ComItemList> comItemLists = gson.fromJson(com_list, listType);
+                if(comItemLists!=null){
+                    for(ComItemList comItemList:comItemLists){
+                        raviCartModles.add(new RaviCartModle(comItemList.combo_name,comItemList.combo_name,comItemList.sec_value,comItemList.com_sec,"",comItemList.combo_top,comItemList.price,String.valueOf(comItemList.quantity),comItemList.combo_desc,1));
+                    }
+                }
+            }
+            tvTotalItem.setText(model.getTotal() + " " + raviCartModles.size() + " " + model.getItems());
+            if(raviCartModles.size()>0){
+                double toatl_price=0.0;
+                StringBuilder stringBuilder=new StringBuilder();
+                for(int j=0;j<raviCartModles.size();j++) {
+
+                    toatl_price += Double.parseDouble(raviCartModles.get(j).getPrice());
+                    if(raviCartModles.get(j).getCombo()==0){
+                        String size_item = raviCartModles.get(j).getSize_item_name();
+                        if (!size_item.equalsIgnoreCase("0")) {
+                            stringBuilder.append(raviCartModles.get(j).getItem_quantity() + "x" + raviCartModles.get(j).getItem_name() + "(" + size_item + ")");
+
+                        } else {
+                            stringBuilder.append(raviCartModles.get(j).getItem_quantity() + "x" + raviCartModles.get(j).getItem_name());
+
+                        }
+                        stringBuilder.append("\n");
+
+
+                    }
+                    if (toatl_price > 0.0) {
+                        totalPrice=toatl_price;
+                        updateData();
+                    }
+                    if (stringBuilder.length() > 0) {
+                        selectedPizzaName = stringBuilder.deleteCharAt(stringBuilder.lastIndexOf("\n")).toString();
+                    }
+                }
+
+
+            }
+            CartAdapterravi cartAdapterravi = new CartAdapterravi(CartActivity.this, raviCartModles);
+            linearLayoutManager = new LinearLayoutManager(CartActivity.this, LinearLayoutManager.VERTICAL, false);
+            list_view_items.setLayoutManager(linearLayoutManager);
+            list_view_items.setAdapter(cartAdapterravi);
+
           /*      Ravifinalitem.cart_Item_number = 0;
                 Intent iii = new Intent(CartActivity.this, EmptyCartActivity.class);
                 iii.putExtra("restaurantAddress", restaurantAddress);
@@ -699,9 +758,11 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public class CartAdapterravi extends RecyclerView.Adapter<CartAdapterravi.ViewHolder> {
+    public class CartAdapterravi extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         Context context;
         ArrayList<RaviCartModle> rr;
+        private  int COMbO=100;
+        private int SIZE=200;
 
         public CartAdapterravi(Context c, ArrayList<RaviCartModle> r) {
             this.context = c;
@@ -710,155 +771,253 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
         @NonNull
         @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater;
             layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+            if(viewType==COMbO){
+                View vv = layoutInflater.inflate(R.layout.layout_com_cart, parent, false);
+                return new ComViewHolder(vv);
+            }
+            else if(viewType==SIZE){
+                View vv = layoutInflater.inflate(R.layout.recyclerview_cart_item, parent, false);
+                return new ViewHolder(vv);
+            }
             View vv = layoutInflater.inflate(R.layout.recyclerview_cart_item, parent, false);
             return new ViewHolder(vv);
+
+
         }
 
         @Override
-        public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-
-            if (rr.get(position).getSize_item_name().equals("0") && rr.get(position).getExtra_item_name().equals("0")) {
-                holder.tvMenuItemName.setText(rr.get(position).getItem_name());
-//                selectedPizzaName = rr.get(position).getItem_name();
-                holder.tv_menu_item_extra.setVisibility(View.GONE);
-                holder.tv_menu_item_size.setVisibility(View.GONE);
-            } else if (rr.get(position).getSize_item_name() != "0" && rr.get(position).getExtra_item_name().equals("0")) {
-                holder.tvMenuItemName.setText(rr.get(position).getItem_name());
-                holder.tv_menu_item_size.setText("(" + rr.get(position).getSize_item_name() + ")");
-//                selectedPizzaName = rr.get(position).getItem_name();
-                holder.tv_menu_item_extra.setVisibility(View.GONE);
-            } else if (rr.get(position).getSize_item_name().equals("0") && rr.get(position).getExtra_item_name() != "0") {
-                holder.tvMenuItemName.setText(rr.get(position).getItem_name());
-//                selectedPizzaName = rr.get(position).getItem_name();
-
-                holder.tv_menu_item_extra.setVisibility(View.VISIBLE);
-                String a = rr.get(position).getExtra_item_name().replace("[", "");
-                a = a.replace("]", "");
-                a = a.replace(",", "\n+");
-                extraItemNameG = a;
-                extraItemIDG = rr.get(position).getExtra_item_id();
-                System.out.println("==== extraname 1: " + extraItemNameG);
-                System.out.println("==== extraname 1: " + extraItemIDG);
-                holder.tv_menu_item_extra.setText("+" + a);
-            } else if (rr.get(position).getSize_item_name() != "0" && rr.get(position).getExtra_item_name() != "0") {
-                holder.tvMenuItemName.setText(rr.get(position).getItem_name());
-                holder.tv_menu_item_size.setText("(" + rr.get(position).getSize_item_name() + ")");
-//                selectedPizzaName = rr.get(position).getItem_name();
-                holder.tv_menu_item_extra.setVisibility(View.VISIBLE);
-                String a = rr.get(position).getExtra_item_name().replace("[", "");
-                a = a.replace("]", "");
-                a = a.replace(",", "\n+");
-                extraItemNameG = a;
-                extraItemIDG = rr.get(position).getExtra_item_id();
-                System.out.println("==== extraname 1: " + extraItemNameG);
-                System.out.println("==== extraname 1: " + extraItemIDG);
-                holder.tv_menu_item_extra.setText("+" + a);
+        public int getItemViewType(int position) {
+            if(rr.get(position).getCombo()==0){
+                return SIZE;
             }
-            holder.tv_subcat_item_details.setText(rr.get(position).getItemSubcatDetails());
-            holder.etInstruction.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            else if(rr.get(position).getCombo()==1){
+                return COMbO;
+            }
+            return COMbO;
 
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder hold, final int position) {
+            if(rr.get(position).getCombo()==0) {
+                ViewHolder holder= (ViewHolder) hold;
+                if (rr.get(position).getSize_item_name().equals("0") && rr.get(position).getExtra_item_name().equals("0")) {
+                    holder.tvMenuItemName.setText(rr.get(position).getItem_name());
+//                selectedPizzaName = rr.get(position).getItem_name();
+                    holder.tv_menu_item_extra.setVisibility(View.GONE);
+                    holder.tv_menu_item_size.setVisibility(View.GONE);
+                } else if (rr.get(position).getSize_item_name() != "0" && rr.get(position).getExtra_item_name().equals("0")) {
+                    holder.tvMenuItemName.setText(rr.get(position).getItem_name());
+                    holder.tv_menu_item_size.setText("(" + rr.get(position).getSize_item_name() + ")");
+//                selectedPizzaName = rr.get(position).getItem_name();
+                    holder.tv_menu_item_extra.setVisibility(View.GONE);
+                } else if (rr.get(position).getSize_item_name().equals("0") && rr.get(position).getExtra_item_name() != "0") {
+                    holder.tvMenuItemName.setText(rr.get(position).getItem_name());
+//                selectedPizzaName = rr.get(position).getItem_name();
+
+                    holder.tv_menu_item_extra.setVisibility(View.VISIBLE);
+                    String a = rr.get(position).getExtra_item_name().replace("[", "");
+                    a = a.replace("]", "");
+                    a = a.replace(",", "\n+");
+                    extraItemNameG = a;
+                    extraItemIDG = rr.get(position).getExtra_item_id();
+                    System.out.println("==== extraname 1: " + extraItemNameG);
+                    System.out.println("==== extraname 1: " + extraItemIDG);
+                    holder.tv_menu_item_extra.setText("+" + a);
+                } else if (rr.get(position).getSize_item_name() != "0" && rr.get(position).getExtra_item_name() != "0") {
+                    holder.tvMenuItemName.setText(rr.get(position).getItem_name());
+                    holder.tv_menu_item_size.setText("(" + rr.get(position).getSize_item_name() + ")");
+//                selectedPizzaName = rr.get(position).getItem_name();
+                    holder.tv_menu_item_extra.setVisibility(View.VISIBLE);
+                    String a = rr.get(position).getExtra_item_name().replace("[", "");
+                    a = a.replace("]", "");
+                    a = a.replace(",", "\n+");
+                    extraItemNameG = a;
+                    extraItemIDG = rr.get(position).getExtra_item_id();
+                    System.out.println("==== extraname 1: " + extraItemNameG);
+                    System.out.println("==== extraname 1: " + extraItemIDG);
+                    holder.tv_menu_item_extra.setText("+" + a);
                 }
+                holder.tv_subcat_item_details.setText(rr.get(position).getItemSubcatDetails());
+                holder.etInstruction.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    instructions =CommonMethods.getStringDataInbase64(s.toString());
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    if(s.length()>0) {
-                        instructions =CommonMethods.getStringDataInbase64(s.toString());
                     }
-                }
-            });
 
-            double pp = Double.parseDouble(rr.get(position).getPrice());
-            holder.tvItemPrice.setText(currencySymbol + dotToCommaClass.changeDot(String.format("%.2f", pp)));
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        instructions = CommonMethods.getStringDataInbase64(s.toString());
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        if (s.length() > 0) {
+                            instructions = CommonMethods.getStringDataInbase64(s.toString());
+                        }
+                    }
+                });
+
+                double pp = Double.parseDouble(rr.get(position).getPrice());
+                holder.tvItemPrice.setText(currencySymbol + dotToCommaClass.changeDot(String.format("%.2f", pp)));
 //            selectedPizzaItemPrice = holder.tvItemPrice.getText().toString();
-            holder.tvQuantity.setText(rr.get(position).getItem_quantity());
+                holder.tvQuantity.setText(rr.get(position).getItem_quantity());
 
-            holder.ivPlus.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int qunt = 0;
-                    double price = 0.0;
-                    String subMenuItemId = rr.get(position).getItem_id();
-                    String size_id = rr.get(position).getSize_item_id();
-                    SQLiteDatabase db = database.getReadableDatabase();
-                    Cursor cursor = db.rawQuery("SELECT * FROM item_table where item_id='" + subMenuItemId + "' AND size_item_id='"
-                            + size_id + "' AND extra_item_id='" + rr.get(position).getExtra_item_id() + "'", null);
-                    if (cursor.moveToNext()) {
-                        qunt = Integer.parseInt(cursor.getString(7));
-                        price = Double.parseDouble(rr.get(position).getPrice());
-                        price = price / qunt;
-                        price = (double) Math.round(price * 100) / 100;
-                        qunt = qunt + 1;
-                        price = price * qunt;
-                        totalPrice = price;
-                    }
-                    database.update_item_size_with_topping(subMenuItemId, size_id, rr.get(position).getExtra_item_id(), qunt, price);
-                    rr.get(position).setItem_quantity(String.valueOf(qunt));
-                    updateCart();
-                    getDiscount();
-                    getShippingChargeData(order_type);
-                }
-            });
-
-            holder.ivMinus.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int qunt = 0;
-                    double price = 0.0;
-                    String subMenuItemId = rr.get(position).getItem_id();
-                    String size_id = rr.get(position).getSize_item_id();
-                    SQLiteDatabase db = database.getReadableDatabase();
-                    Cursor cursor = db.rawQuery("SELECT * FROM item_table where item_id='" + subMenuItemId + "' AND size_item_id='"
-                            + size_id + "' AND extra_item_id='" + rr.get(position).getExtra_item_id() + "'", null);
-                    if (cursor.moveToNext()) {
-                        qunt = Integer.parseInt(cursor.getString(7));
-                        price = Double.parseDouble(rr.get(position).getPrice());
-                        price = price / qunt;
-                        price = (double) Math.round(price * 100) / 100;
-                        qunt = qunt - 1;
-                        price = price * qunt;
-                        totalPrice = price;
-                    }
-                    if (qunt == 0) {
-                        database.delete_Item_size(rr.get(position).getItem_id(), rr.get(position).getSize_item_id(), rr.get(position).getExtra_item_id());
-                        RestaurantDetails.cart_Item_number = RestaurantDetails.cart_Item_number - 1;
-                        rr.remove(position);
-                        notifyDataSetChanged();
-                    } else {
+                holder.ivPlus.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int qunt = 0;
+                        double price = 0.0;
+                        String subMenuItemId = rr.get(position).getItem_id();
+                        String size_id = rr.get(position).getSize_item_id();
+                        SQLiteDatabase db = database.getReadableDatabase();
+                        Cursor cursor = db.rawQuery("SELECT * FROM item_table where item_id='" + subMenuItemId + "' AND size_item_id='"
+                                + size_id + "' AND extra_item_id='" + rr.get(position).getExtra_item_id() + "'", null);
+                        if (cursor.moveToNext()) {
+                            qunt = Integer.parseInt(cursor.getString(7));
+                            price = Double.parseDouble(rr.get(position).getPrice());
+                            price = price / qunt;
+                            price = (double) Math.round(price * 100) / 100;
+                            qunt = qunt + 1;
+                            price = price * qunt;
+                            totalPrice = price;
+                        }
                         database.update_item_size_with_topping(subMenuItemId, size_id, rr.get(position).getExtra_item_id(), qunt, price);
                         rr.get(position).setItem_quantity(String.valueOf(qunt));
+                        updateCart();
+                        getDiscount();
+                        getShippingChargeData(order_type);
                     }
-                    AddExtraActivity.cart_Item_number = rr.size();
-                    updateCart();
-                    getDiscount();
-                    getShippingChargeData(order_type);
-                }
-            });
+                });
 
-            holder.cartDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!rr.get(position).getSize_item_name().equalsIgnoreCase("0") && rr.get(position).getExtra_item_name().equals("0")) {
-                        database.delete_Item_size(rr.get(position).getItem_id(), rr.get(position).getSize_item_id());
-                        RestaurantDetails.cart_Item_number = RestaurantDetails.cart_Item_number - 1;
-                    } else {
-                        database.delete_Item_size(rr.get(position).getItem_id(), rr.get(position).getSize_item_id());
-
-                        database.delete_Item(rr.get(position).getItem_id());
-                        RestaurantDetails.cart_Item_number = RestaurantDetails.cart_Item_number - 1;
+                holder.ivMinus.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int qunt = 0;
+                        double price = 0.0;
+                        String subMenuItemId = rr.get(position).getItem_id();
+                        String size_id = rr.get(position).getSize_item_id();
+                        SQLiteDatabase db = database.getReadableDatabase();
+                        Cursor cursor = db.rawQuery("SELECT * FROM item_table where item_id='" + subMenuItemId + "' AND size_item_id='"
+                                + size_id + "' AND extra_item_id='" + rr.get(position).getExtra_item_id() + "'", null);
+                        if (cursor.moveToNext()) {
+                            qunt = Integer.parseInt(cursor.getString(7));
+                            price = Double.parseDouble(rr.get(position).getPrice());
+                            price = price / qunt;
+                            price = (double) Math.round(price * 100) / 100;
+                            qunt = qunt - 1;
+                            price = price * qunt;
+                            totalPrice = price;
+                        }
+                        if (qunt == 0) {
+                            database.delete_Item_size(rr.get(position).getItem_id(), rr.get(position).getSize_item_id(), rr.get(position).getExtra_item_id());
+                            RestaurantDetails.cart_Item_number = RestaurantDetails.cart_Item_number - 1;
+                            rr.remove(position);
+                            notifyDataSetChanged();
+                        } else {
+                            database.update_item_size_with_topping(subMenuItemId, size_id, rr.get(position).getExtra_item_id(), qunt, price);
+                            rr.get(position).setItem_quantity(String.valueOf(qunt));
+                        }
+                        AddExtraActivity.cart_Item_number = rr.size();
+                        updateCart();
+                        getDiscount();
+                        getShippingChargeData(order_type);
                     }
-                    updateData();
+                });
+
+                holder.cartDelete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!rr.get(position).getSize_item_name().equalsIgnoreCase("0") && rr.get(position).getExtra_item_name().equals("0")) {
+                            database.delete_Item_size(rr.get(position).getItem_id(), rr.get(position).getSize_item_id());
+                            RestaurantDetails.cart_Item_number = RestaurantDetails.cart_Item_number - 1;
+                        } else {
+                            database.delete_Item_size(rr.get(position).getItem_id(), rr.get(position).getSize_item_id());
+
+                            database.delete_Item(rr.get(position).getItem_id());
+                            RestaurantDetails.cart_Item_number = RestaurantDetails.cart_Item_number - 1;
+                        }
+                        updateData();
+                    }
+                });
+            }
+            else{
+                ComViewHolder holder= (ComViewHolder) hold;
+                RaviCartModle com=rr.get(position);
+                holder.tv_quantity.setText(com.getItem_quantity());
+                holder.tv_menu_item_name.setText(com.getItem_name());
+                holder.tv_subcat_item_details.setText(com.getItemSubcatDetails());
+                double pp = Double.parseDouble(com.getPrice());
+                holder.tv_item_price.setText(currencySymbol + dotToCommaClass.changeDot(String.format("%.2f", pp)));
+                List<SingleCom>singleComs=new ArrayList<>();
+                if(com.getSize_item_name().contains(",")){
+                    String[] sec=com.getSize_item_name().split(",");
+                    String [] size=com.getSize_item_id().split(",");
+                    String[] tops=com.getExtra_item_name().split(",");
+                    for(int i=0;i<sec.length;i++){
+                        SingleCom singleCom=new SingleCom();
+                        singleCom.section=sec[i];
+                        singleCom.size=size[i];
+                        singleCom.tops=tops[i];
+                        singleComs.add(singleCom);
+                    }
                 }
-            });
+                else{
+                    SingleCom singleCom=new SingleCom();
+                    singleCom.section=com.getSize_item_name();
+                    singleCom.size=com.getSize_item_id();
+                    singleCom.tops=com.getExtra_item_name();
+                    singleComs.add(singleCom);
+                }
+                if (singleComs.size() > 0) {
+
+                    LinearLayoutManager linearLayoutManager=new LinearLayoutManager(context);
+                    SingleComAdapter singleComAdapter=new SingleComAdapter(singleComs);
+                    holder.recyler_com.setAdapter(singleComAdapter);
+                    holder.recyler_com.setLayoutManager(linearLayoutManager);
+                }
+                holder.iv_plus.setTag(position);
+
+                holder.iv_plus.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int pos= (int) v.getTag();
+                        RaviCartModle raviCartModle=rr.get(position);
+                        String com_list=DroidPrefs.get(context,"com_list",String.class);
+                        if(com_list!=null){
+                           Gson gson = new Gson();
+                        Type listType = new TypeToken<List<ComItemList>>() {
+                        }.getType();
+                        List<ComItemList> comItemLists = gson.fromJson(com_list, listType);
+                        int check=-1;
+                        if(comItemLists.size()>0){
+
+                            for(int i=0; i<comItemLists.size();i++){
+                                if(comItemLists.get(i).combo_name.equalsIgnoreCase(raviCartModle.getItem_name())){
+                                    check=i;
+                                    break;
+                                }
+                            }
+                            if(check>=0){
+                                int quat=comItemLists.get(check).quantity;
+                                quat=quat+1;
+                                totalPrice=Double.parseDouble(comItemLists.get(check).price)*quat;
+                                comItemLists.get(check).quantity=quat;
+                                String com=gson.toJson(comItemLists);
+                                DroidPrefs.apply(context,"com_list",com);
+                                updateCart();
+                            }
+                        }
+                        }
+
+                    }
+                });
+            }
+
         }
 
         @Override
@@ -885,6 +1044,27 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 tv_subcat_item_details = itemView.findViewById(R.id.tv_subcat_item_details);
 
                 etInstruction.setHint(model.getInstruction());
+            }
+        }
+        public class ComViewHolder extends RecyclerView.ViewHolder {
+            @BindView(R.id.tv_menu_item_name)
+            TextView  tv_menu_item_name;
+            @BindView(R.id.tv_subcat_item_details)
+            TextView tv_subcat_item_details;
+            @BindView(R.id.recyler_com)
+            RecyclerView recyler_com;
+            @BindView(R.id.iv_minus)
+            TextView iv_minus;
+            @BindView(R.id.iv_plus)
+            TextView iv_plus;
+            @BindView(R.id.tv_quantity)
+            TextView tv_quantity;
+            @BindView(R.id.tv_item_price)
+            TextView tv_item_price;
+            public ComViewHolder(@NonNull View itemView) {
+                super(itemView);
+                ButterKnife.bind(this,itemView);
+
             }
         }
     }

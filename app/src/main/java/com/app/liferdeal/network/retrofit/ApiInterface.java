@@ -180,6 +180,13 @@ public interface ApiInterface {
                                                 @Field("FoodItemSizeID") int FoodItemSizeID);
 
     @FormUrlEncoded
+    @POST("phpexpert_food_combo_items_extra.php")
+    Observable<FoodExtraModel> getcomboFoodItemExtra(@Field("api_key") String api_key,
+                                                @Field("lang_code") String lang_code,
+                                                @Field("comboslot_id") int comboslot_id,
+                                                @Field("ItemID") int resid,
+                                                @Field("FoodItemSizeID") int FoodItemSizeID);
+    @FormUrlEncoded
     @POST("phpexpert_customer_add_new_address.php")
     Observable<SaveAddressModel> saveNewAddress(@Field("api_key") String api_key,
                                                 @Field("lang_code") String lang_code,

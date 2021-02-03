@@ -629,13 +629,13 @@ android:visibility="gone"
 
                 <TextView
                     android:id="@+id/tvTotal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="18dp"
                     android:layout_height="match_parent"
-                    android:text="Total"
+                    android:fontFamily="@font/roboto_medium"
                     android:gravity="center"
+                    android:text="Total"
                     android:textColor="@color/colorBlack"
-                    android:textSize="15sp"
-                    android:fontFamily="@font/roboto_medium"/>
+                    android:textSize="15sp" />
                 <TextView
                     android:id="@+id/tv_total"
                     android:layout_width="wrap_content"

@@ -12,7 +12,7 @@ public class Database extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("Create TABLE item_table (item_id text,item_name text,size_item_id text,size_item_name text,extra_item_id text,extra_item_name text,price number,item_quantity number,item_subcat_details text)");
+        sqLiteDatabase.execSQL("Create TABLE item_table (item_id text,item_name text,size_item_id text,size_item_name text,extra_item_id text,extra_item_name text,price number,item_quantity number,item_subcat_details text,combo number)");
         //  sqLiteDatabase.execSQL("Create TABLE deal_item_table (deal_item_id text,deal_item_name text,deal_price number,deal_item_quantity number)");
     }
 
@@ -29,9 +29,9 @@ public class Database extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void InsertItem(String item_id, String item_name, String size_item_id, String size_item_name, String extra_item_id, String extra_item_name, double price, int quant,String itemSubCatDetails) {
+    public void InsertItem(String item_id, String item_name, String size_item_id, String size_item_name, String extra_item_id, String extra_item_name, double price, int quant,String itemSubCatDetails,int combo) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String insert = "insert into item_table(item_id,item_name,size_item_id,size_item_name,extra_item_id,extra_item_name,price,item_quantity,item_subcat_details) values('" + item_id + "','" + item_name + "','" + size_item_id + "','" + size_item_name + "','" + extra_item_id + "','" + extra_item_name + "','" + price + "','" + quant + "','" + itemSubCatDetails + "')";
+        String insert = "insert into item_table(item_id,item_name,size_item_id,size_item_name,extra_item_id,extra_item_name,price,item_quantity,item_subcat_details,combo) values('" + item_id + "','" + item_name + "','" + size_item_id + "','" + size_item_name + "','" + extra_item_id + "','" + extra_item_name + "','" + price + "','" + quant + "','" + itemSubCatDetails + "','"+ combo +"')";
         db.execSQL(insert);
         db.close();
     }
