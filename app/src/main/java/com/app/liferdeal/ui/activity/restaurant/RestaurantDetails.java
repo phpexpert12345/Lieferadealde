@@ -472,15 +472,20 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
                     Type listType=new TypeToken<List<ComItemList>>(){}.getType();
                     List<ComItemList> comItemLists=gson.fromJson(com_list,listType);
                     if(comItemLists!=null) {
-                        rl_cartt.setVisibility(View.VISIBLE);
-                        RestaurantDetails.tv_cart_item_countt.setText("" + comItemLists.size());
-                        tvTotalItemCnt.setText("" + comItemLists.size() + " " + model.getItems());
-                        for(ComItemList comItemList:comItemLists){
-                            int quat=comItemList.quantity;
+                        if(comItemLists.size()>0) {
+                            rl_cartt.setVisibility(View.VISIBLE);
+                            RestaurantDetails.tv_cart_item_countt.setText("" + comItemLists.size());
+                            tvTotalItemCnt.setText("" + comItemLists.size() + " " + model.getItems());
+                            for (ComItemList comItemList : comItemLists) {
+                                int quat = comItemList.quantity;
 
-                            totalPrice+=Double.parseDouble(comItemList.price)*quat;
+                                totalPrice += Double.parseDouble(comItemList.price) * quat;
+                            }
+                            tv_TotalPrice.setText("€" + dotToCommaClass.changeDot(String.format("%.2f", totalPrice)));
                         }
-                        tv_TotalPrice.setText("€" + dotToCommaClass.changeDot(String.format("%.2f", totalPrice)));
+                        else{
+                            rl_cartt.setVisibility(View.GONE);
+                        }
                     }
                     else{
                         rl_cartt.setVisibility(View.GONE);

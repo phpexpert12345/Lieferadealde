@@ -469,7 +469,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                     StringBuilder stringBuilder=new StringBuilder();
                     for(int j=0;j<raviCartModles.size();j++) {
                        int quat= Integer.parseInt(raviCartModles.get(j).getItem_quantity());
-                        toatl_price += Double.parseDouble(raviCartModles.get(j).getPrice())*quat;
+                        toatl_price =toatl_price+ (Double.parseDouble(raviCartModles.get(j).getPrice()))*quat;
                             if(raviCartModles.get(j).getCombo()==0){
                             String size_item = raviCartModles.get(j).getSize_item_name();
                             if (!size_item.equalsIgnoreCase("0")) {
@@ -520,8 +520,9 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 double toatl_price=0.0;
                 StringBuilder stringBuilder=new StringBuilder();
                 for(int j=0;j<raviCartModles.size();j++) {
+                    int quat= Integer.parseInt(raviCartModles.get(j).getItem_quantity());
 
-                    toatl_price += Double.parseDouble(raviCartModles.get(j).getPrice());
+                    toatl_price =toatl_price+ (Double.parseDouble(raviCartModles.get(j).getPrice()))*quat;
                     if(raviCartModles.get(j).getCombo()==0){
                         String size_item = raviCartModles.get(j).getSize_item_name();
                         if (!size_item.equalsIgnoreCase("0")) {
@@ -986,7 +987,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onClick(View v) {
                         int pos= (int) v.getTag();
-                        RaviCartModle raviCartModle=rr.get(position);
+                        RaviCartModle raviCartModle=rr.get(pos);
                         String com_list=DroidPrefs.get(context,"com_list",String.class);
                         if(com_list!=null){
                            Gson gson = new Gson();
@@ -1005,7 +1006,6 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                             if(check>=0){
                                 int quat=comItemLists.get(check).quantity;
                                 quat=quat+1;
-                                totalPrice=Double.parseDouble(comItemLists.get(check).price)*quat;
                                 comItemLists.get(check).quantity=quat;
                                 String com=gson.toJson(comItemLists);
                                 DroidPrefs.apply(context,"com_list",com);
@@ -1013,6 +1013,47 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                             }
                         }
                         }
+
+                    }
+                });
+                holder.iv_minus.setTag(position);
+                holder.iv_minus.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int pos= (int) v.getTag();
+                        RaviCartModle raviCartModle=rr.get(pos);
+                         String com_list=DroidPrefs.get(context,"com_list",String.class);
+                        if(com_list!=null) {
+                            Gson gson = new Gson();
+                            Type listType = new TypeToken<List<ComItemList>>() {
+                            }.getType();
+                            List<ComItemList> comItemLists = gson.fromJson(com_list, listType);
+                            int check = -1;
+                            if (comItemLists.size() > 0) {
+
+                                for (int i = 0; i < comItemLists.size(); i++) {
+                                    if (comItemLists.get(i).combo_name.equalsIgnoreCase(raviCartModle.getItem_name())) {
+                                        check = i;
+                                        break;
+                                    }
+                                }
+                                if(check>=0){
+
+                                    int quat=comItemLists.get(check).quantity;
+                                    if(quat==1){
+                                        comItemLists.remove(check);
+                                    }
+                                    else {
+                                        quat = quat - 1;
+                                        comItemLists.get(check).quantity = quat;
+                                    }
+                                    String com=gson.toJson(comItemLists);
+                                    DroidPrefs.apply(context,"com_list",com);
+                                    updateCart();
+                                }
+                            }
+                        }
+
 
                     }
                 });
