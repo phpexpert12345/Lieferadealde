@@ -36,6 +36,7 @@ import com.android.volley.toolbox.Volley;
 import com.app.liferdeal.R;
 import com.app.liferdeal.application.App;
 import com.app.liferdeal.model.LanguageResponse;
+import com.app.liferdeal.model.menuitems.ComItemList;
 import com.app.liferdeal.model.restaurant.RaviCartModle;
 import com.app.liferdeal.model.restaurant.TimeListModel;
 import com.app.liferdeal.network.retrofit.ApiInterface;
@@ -47,6 +48,7 @@ import com.app.liferdeal.ui.activity.restaurant.TimeListActivity;
 import com.app.liferdeal.util.CommonMethods;
 import com.app.liferdeal.util.Constants;
 import com.app.liferdeal.util.DotToCommaClass;
+import com.app.liferdeal.util.DroidPrefs;
 import com.app.liferdeal.util.PrefsHelper;
 import com.app.liferdeal.util.SharedPreferencesData;
 import com.contrarywind.adapter.WheelAdapter;
@@ -56,6 +58,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.radiobutton.MaterialRadioButton;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalPayment;
 import com.paypal.android.sdk.payments.PayPalService;
@@ -73,9 +76,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Currency;
 import java.util.List;
@@ -630,7 +635,7 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
                             ii.putExtra("Pizzaname", Pizzaname);
                             ii.putExtra("extra_toppings",extra_toppings);
                             ii.putExtra("rest_address",rest_address);
-                            ii.putExtra("selectedPizzaItemPrice", selectedPizzaItemPrice);
+                            ii.putExtra("selectedPizzaItemPrice", oldprice);
                             ii.putExtra("coupon_price", exact_offer);
                             startActivity(ii);
                             finish();
@@ -717,12 +722,18 @@ hideProgress();
     public void getCartData(){
         SQLiteDatabase db = database.getReadableDatabase();
         StringBuilder itemId=new StringBuilder();
+        StringBuilder meal_quatity=new StringBuilder();
+        StringBuilder meal_id=new StringBuilder();
+        StringBuilder meal_price=new StringBuilder();
+        StringBuilder meal_extra_opt=new StringBuilder();
+        StringBuilder meal_item_extra=new StringBuilder();
         StringBuilder quant=new StringBuilder();
         StringBuilder price_total=new StringBuilder();
         StringBuilder strsize_all=new StringBuilder();
         StringBuilder extra_all=new StringBuilder();
         StringBuilder extraItemid3=new StringBuilder();
         StringBuilder extra_name=new StringBuilder();
+        double toatl_price=0.0;
         Cursor cursor = db.rawQuery("SELECT * FROM item_table", null);
         if (cursor.moveToFirst()) {
             do {
@@ -740,8 +751,9 @@ hideProgress();
 
             }
             while (cursor.moveToNext());
+
             if(raviCartModles.size()>0){
-                double toatl_price=0.0;
+
                 for(int i=0;i<raviCartModles.size();i++){
 
                     toatl_price+=Double.parseDouble(raviCartModles.get(i).getPrice());
@@ -809,21 +821,11 @@ hideProgress();
                 if(extra_all.length()>0){
                     extraItemID=extra_all.deleteCharAt(extra_all.lastIndexOf(",")).toString();
                 }
-                if(toatl_price>0.0){
 
-                    subTotalAmount= String.valueOf(toatl_price);
-                    if(TotalPrice==null) {
-                        double delivery = Double.parseDouble(deliveryChargeValue);
-                        double total = toatl_price + delivery;
-                        tvToPayPrice.setText(currencySymbol + dotToCommaClass.changeDot(String.format("%.2f", total)));
-                        order_price= String.valueOf(total);
-                    }
-
-                    FoodCosts=subTotalAmount;
-                }
                 if(extraItemid3.length()>0){
                     extraItemId1=extraItemid3.deleteCharAt(extraItemid3.lastIndexOf("_")).toString();
                 }
+
 
                 if(extra_name.length()>0){
                     extraItemId2=extra_name.deleteCharAt(extra_name.lastIndexOf("_")).toString();
@@ -834,6 +836,110 @@ hideProgress();
 
 
         }
+        String com_list= DroidPrefs.get(this,"com_list",String.class);
+        if(com_list!=null) {
+            Gson gson = new Gson();
+            Type listType = new TypeToken<List<ComItemList>>() {
+            }.getType();
+            List<ComItemList> comItemLists = gson.fromJson(com_list, listType);
+            if(comItemLists!=null){
+                for(ComItemList comItemList:comItemLists){
+                    toatl_price+=Double.parseDouble(comItemList.price);
+                    String [] item_ids=comItemList.ItemID.split(",");
+                    String [] food_ids=comItemList.FoodItemSizeID.split(",");
+                    String [] slot_id=comItemList.comboslot_id.split(",");
+                    String [] comslot_item=comItemList.Combo_Slot_ItemID.split(",");
+                    if(meal_item_extra.length()>0){
+                        meal_item_extra.append("=");
+                    }
+                    if(meal_quatity.length()>0){
+                        meal_quatity.append(",");
+                    }
+                    if(meal_price.length()>0){
+                        meal_price.append(",");
+                    }
+                    if(meal_id.length()>0){
+                        meal_id.append(",");
+                    }
+                    if(meal_extra_opt.length()>0){
+                        meal_extra_opt.append("=");
+                    }
+                    meal_quatity.append(comItemList.quantity);
+                    meal_price.append(comItemList.price);
+                    meal_id.append(comItemList.deal_id);
+                    if(item_ids.length>0){
+                        for(int i=0;i<item_ids.length;i++){
+                            if (meal_extra_opt.length() > 0) {
+                                meal_extra_opt.append(",");
+                            }
+                            meal_extra_opt.append(slot_id[i]);
+                            meal_extra_opt.append("_");
+                            meal_extra_opt.append(comslot_item[i]);
+                            meal_extra_opt.append("_");
+                            meal_extra_opt.append(item_ids[i]);
+                            meal_extra_opt.append("_");
+                            meal_extra_opt.append(food_ids[i]);
+                            String[] com_tops=comItemList.combo_top_id.split(",");
+                            if(com_tops.length>0){
+                                for(int j=0;j<com_tops.length;j++){
+                                    if(i==j) {
+                                        String top_item = com_tops[j];
+                                        if (top_item.contains("_")) {
+                                            String[] s = top_item.split("_");
+                                            for (int t = 0; t < s.length; t++) {
+                                                if (meal_item_extra.length() > 0) {
+                                                    meal_item_extra.append(",");
+                                                }
+                                                meal_item_extra.append(s[t]);
+                                                meal_item_extra.append("_");
+                                                meal_item_extra.append(slot_id[i]);
+                                                meal_item_extra.append("_");
+                                                meal_item_extra.append(comslot_item[i]);
+                                                meal_item_extra.append("_");
+                                                meal_item_extra.append(item_ids[i]);
+                                                meal_item_extra.append("_");
+                                                meal_item_extra.append(food_ids[i]);
+                                                meal_item_extra.append("_");
+                                                meal_item_extra.append(slot_id[i]);
+                                                meal_item_extra.append("_");
+                                                meal_item_extra.append(comItemList.deal_id);
+                                            }
+
+
+                                        }
+                                    }
+                                }
+
+                            }
+                        }
+
+                    }
+
+
+
+                }
+
+                mealID=meal_id.toString();
+                mealquqntity=meal_quatity.toString();
+                mealPrice=meal_price.toString();
+                mealItemOption=meal_extra_opt.toString();
+                mealItemExtra=meal_item_extra.toString();
+                Log.i("reason",mealID+", "+mealquqntity+", "+mealPrice+", "+mealItemOption+", "+mealItemExtra);
+            }
+        }
+        if(toatl_price>0.0){
+
+            subTotalAmount= String.valueOf(toatl_price);
+            if(TotalPrice==null) {
+                double delivery = Double.parseDouble(deliveryChargeValue);
+                double total = toatl_price + delivery;
+                tvToPayPrice.setText(currencySymbol + dotToCommaClass.changeDot(String.format("%.2f", total)));
+                order_price= String.valueOf(total);
+            }
+
+            FoodCosts=subTotalAmount;
+        }
+
         Log.i("reason",item_Id+" "+quantity+" "+Price+" "+strsizeid+" "+extraItemID+" "+subTotalAmount+' '+FoodCosts+" "+extraItemId1+" "+extraItemId2);
     }
     public String convertToBase64(String source){

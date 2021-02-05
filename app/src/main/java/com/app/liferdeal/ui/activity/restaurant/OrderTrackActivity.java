@@ -203,56 +203,58 @@ public class OrderTrackActivity extends AppCompatActivity implements View.OnClic
 
                     @Override
                     public void onNext(MYOrderTrackDetailModel searchResult) {
-                        if (searchResult.getOrderTrackHistory().get(0).getOrderStatus().equalsIgnoreCase("Delivered")) {
-                            rvWriteAReview.setVisibility(View.VISIBLE);
-                        } else {
-                            rvWriteAReview.setVisibility(View.GONE);
-                        }
+                        if (searchResult.getOrderTrackHistory().size() > 0) {
 
-                        restId = String.valueOf(searchResult.getOrderDetailItem().get(0).getResid());
-                        orderNoSend = searchResult.getOrderDetailItem().get(0).getOrderIdentifyno();
-                        String orderstatusmsg = searchResult.getOrderDetailItem().get(0).getOrderStatusMsg();
-                        String subtotal = searchResult.getOrderDetailItem().get(0).getSubTotal();
-                        String orderpricetotal = searchResult.getOrderDetailItem().get(0).getOrderPrice();
-                        String restname = searchResult.getOrderDetailItem().get(0).getRestaurantName();
-                        String resuestatdate = searchResult.getOrderDetailItem().get(0).getRequestAtDate();
-                        String resuestattime = searchResult.getOrderDetailItem().get(0).getRequestAtTime();
-                        String customercity = searchResult.getOrderDetailItem().get(0).getCustomerCity();
-                        String payment_mode=searchResult.getOrderDetailItem().get(0).getPaymentMethod();
-                        txt_payment_status.setText(payment_mode);
-                        String restro_address=searchResult.getOrderDetailItem().get(0).getRestaurantAddress();
-                        txt_restro_name.setText(restname);
-                        txt_restro_address.setText(restro_address);
-                        if(orderstatusmsg.equalsIgnoreCase("Delivered")){
-                            txt_delivered_city.setText(searchResult.getOrderDetailItem().get(0).getCustomerAddress());
-                        }
-                        else {
-                            txt_delivered_city.setText(restro_address);
-                        }
 
-                        String firstStatus = "", secondStatus = "", thirdStatus = "";
-                        String firstDate = "", secondDate = "", thirdDate = "";
-                        //Toast.makeText(getApplicationContext(),searchResult.getOrderTrackHistory().get(0).getOrderStatus(),Toast.LENGTH_LONG).show();
+                            if (searchResult.getOrderTrackHistory().get(0).getOrderStatus().equalsIgnoreCase("Delivered")) {
+                                rvWriteAReview.setVisibility(View.VISIBLE);
+                            } else {
+                                rvWriteAReview.setVisibility(View.GONE);
+                            }
 
-                        if (searchResult.getOrderTrackHistory() != null && searchResult.getOrderTrackHistory().get(0) != null) {
-                            firstStatus = searchResult.getOrderTrackHistory().get(0).getOrderStatus();
-                            firstDate = searchResult.getOrderTrackHistory().get(0).getOrderStatusDate() + " " + searchResult.getOrderTrackHistory().get(0).getOrderStatusTime();
-                        } else {
-                            firstStatus = "";
-                        }
-                        if (searchResult.getOrderTrackHistory() != null && searchResult.getOrderTrackHistory().size() > 1) {
-                            secondStatus = searchResult.getOrderTrackHistory().get(1).getOrderStatus();
-                            secondDate = searchResult.getOrderTrackHistory().get(1).getOrderStatusDate() + " " + searchResult.getOrderTrackHistory().get(1).getOrderStatusTime();
-                        } else {
-                            secondStatus = "";
-                        }
-                        if (searchResult.getOrderTrackHistory() != null && searchResult.getOrderTrackHistory().size() > 2) {
-                            thirdStatus = searchResult.getOrderTrackHistory().get(2).getOrderStatus();
-                            thirdDate = searchResult.getOrderTrackHistory().get(2).getOrderStatusDate() + " " + searchResult.getOrderTrackHistory().get(2).getOrderStatusTime();
-                        } else {
-                            thirdStatus = "";
-                        }
-                        // String itemsName = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getItemsName();
+                            restId = String.valueOf(searchResult.getOrderDetailItem().get(0).getResid());
+                            orderNoSend = searchResult.getOrderDetailItem().get(0).getOrderIdentifyno();
+                            String orderstatusmsg = searchResult.getOrderDetailItem().get(0).getOrderStatusMsg();
+                            String subtotal = searchResult.getOrderDetailItem().get(0).getSubTotal();
+                            String orderpricetotal = searchResult.getOrderDetailItem().get(0).getOrderPrice();
+                            String restname = searchResult.getOrderDetailItem().get(0).getRestaurantName();
+                            String resuestatdate = searchResult.getOrderDetailItem().get(0).getRequestAtDate();
+                            String resuestattime = searchResult.getOrderDetailItem().get(0).getRequestAtTime();
+                            String customercity = searchResult.getOrderDetailItem().get(0).getCustomerCity();
+                            String payment_mode = searchResult.getOrderDetailItem().get(0).getPaymentMethod();
+                            txt_payment_status.setText(payment_mode);
+                            String restro_address = searchResult.getOrderDetailItem().get(0).getRestaurantAddress();
+                            txt_restro_name.setText(restname);
+                            txt_restro_address.setText(restro_address);
+                            if (orderstatusmsg.equalsIgnoreCase("Delivered")) {
+                                txt_delivered_city.setText(searchResult.getOrderDetailItem().get(0).getCustomerAddress());
+                            } else {
+                                txt_delivered_city.setText(restro_address);
+                            }
+
+                            String firstStatus = "", secondStatus = "", thirdStatus = "";
+                            String firstDate = "", secondDate = "", thirdDate = "";
+                            //Toast.makeText(getApplicationContext(),searchResult.getOrderTrackHistory().get(0).getOrderStatus(),Toast.LENGTH_LONG).show();
+
+                            if (searchResult.getOrderTrackHistory() != null && searchResult.getOrderTrackHistory().get(0) != null) {
+                                firstStatus = searchResult.getOrderTrackHistory().get(0).getOrderStatus();
+                                firstDate = searchResult.getOrderTrackHistory().get(0).getOrderStatusDate() + " " + searchResult.getOrderTrackHistory().get(0).getOrderStatusTime();
+                            } else {
+                                firstStatus = "";
+                            }
+                            if (searchResult.getOrderTrackHistory() != null && searchResult.getOrderTrackHistory().size() > 1) {
+                                secondStatus = searchResult.getOrderTrackHistory().get(1).getOrderStatus();
+                                secondDate = searchResult.getOrderTrackHistory().get(1).getOrderStatusDate() + " " + searchResult.getOrderTrackHistory().get(1).getOrderStatusTime();
+                            } else {
+                                secondStatus = "";
+                            }
+                            if (searchResult.getOrderTrackHistory() != null && searchResult.getOrderTrackHistory().size() > 2) {
+                                thirdStatus = searchResult.getOrderTrackHistory().get(2).getOrderStatus();
+                                thirdDate = searchResult.getOrderTrackHistory().get(2).getOrderStatusDate() + " " + searchResult.getOrderTrackHistory().get(2).getOrderStatusTime();
+                            } else {
+                                thirdStatus = "";
+                            }
+                            // String itemsName = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getItemsName();
 
                      /*   currency = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getCurrency().toString();
                         menuprice = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getMenuprice().toString();
@@ -267,9 +269,10 @@ public class OrderTrackActivity extends AppCompatActivity implements View.OnClic
                              quantity = searchResult.getOrderFoodItem().get(i).getQuantity();
                         }
 */
-                        setTextData(orderNoSend, orderstatusmsg, subtotal, orderpricetotal, restname, resuestatdate, resuestattime, customercity, currency, menuprice, itemname, quantity, firstStatus, secondStatus, thirdStatus, firstDate, secondDate, thirdDate);
-                        //  String orderpricetotal = searchResult.getOrderPrice().toString();
+                            setTextData(orderNoSend, orderstatusmsg, subtotal, orderpricetotal, restname, resuestatdate, resuestattime, customercity, currency, menuprice, itemname, quantity, firstStatus, secondStatus, thirdStatus, firstDate, secondDate, thirdDate);
+                            //  String orderpricetotal = searchResult.getOrderPrice().toString();
 
+                        }
                     }
 
                     @Override

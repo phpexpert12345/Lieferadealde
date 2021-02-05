@@ -15,11 +15,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.app.liferdeal.R;
 import com.app.liferdeal.adapter.DetailOrderAdapter;
 import com.app.liferdeal.application.App;
 import com.app.liferdeal.model.LanguageResponse;
 import com.app.liferdeal.model.OrderFoodItem;
+import com.app.liferdeal.model.menuitems.OrderComboItemExtras;
+import com.app.liferdeal.model.menuitems.OrderComboItemOptions;
+import com.app.liferdeal.model.menuitems.OrderMealItems;
 import com.app.liferdeal.model.restaurant.MYOrderTrackDetailModel;
 import com.app.liferdeal.model.restaurant.OrderDetailItem;
 import com.app.liferdeal.model.restaurant.Orders;
@@ -29,7 +38,11 @@ import com.app.liferdeal.ui.adapters.MyOrderAdapter;
 import com.app.liferdeal.util.Constants;
 import com.app.liferdeal.util.DotToCommaClass;
 import com.app.liferdeal.util.PrefsHelper;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
@@ -146,40 +159,81 @@ public class MyOrderDetailsActivity extends AppCompatActivity implements View.On
 
     private void getOrderDetails() {
         apiInterface = RFClient.getClient().create(ApiInterface.class);
-        Observable<MYOrderTrackDetailModel> observable = apiInterface.getMyOrderDetailsDisplay(prefsHelper.getPref(Constants.API_KEY), prefsHelper.getPref(Constants.LNG_CODE), strordernumber);
-        observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<MYOrderTrackDetailModel>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
+        String url=Constants.Url.BASE_URL+"phpexpert_Order_DetailsDisplay.php?api_key="+prefsHelper.getPref(Constants.API_KEY)+"&lang_code="+ prefsHelper.getPref(Constants.LNG_CODE)+"&order_identifyno="+strordernumber;
+        Log.i("url",url);
+        StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Gson gson=new Gson();
+                Type type= new TypeToken<MYOrderTrackDetailModel>(){}.getType();
+                MYOrderTrackDetailModel searchResult=gson.fromJson(response,type);
 
-                    }
+                if(foodItems.size()>0){
+                    foodItems.clear();
+                }
+                if (searchResult.getOrderDetailItem() != null) {
+                    foodItems=searchResult.getOrderDetailItem().get(0).getOrderFoodItem();
+                            if(searchResult.getOrderDetailItem().get(0).getOrderMealItem().size()>0){
+                                for(OrderMealItems orderMealItems:searchResult.getOrderDetailItem().get(0).getOrderMealItem()){
+                                    OrderFoodItem orderFoodItem=new OrderFoodItem();
+                                    orderFoodItem.setItemsName(orderMealItems.getItemsName());
+                                    orderFoodItem.setDesc(orderMealItems.getItemsDescriptionName());
+                                    orderFoodItem.setQuantity((long) orderMealItems.getQuqntity());
+                                    orderFoodItem.setMenuprice(orderMealItems.getMenuprice());
+                                    StringBuilder sizes=new StringBuilder();
+                                    StringBuilder tops=new StringBuilder();
+                                    if(orderMealItems.getOrderComboItemOption().size()>0){
+                                        for(OrderComboItemOptions orderComboItemOptions:orderMealItems.getOrderComboItemOption()){
+                                            if(sizes.length()>0){
+                                                sizes.append(",");
+                                            }
+                                            if(tops.length()>0){
+                                                tops.append(",");
+                                            }
+                                            sizes.append(orderComboItemOptions.getComboOptionName());
+                                            sizes.append(orderComboItemOptions.getComboOptionItemName());
+                                            sizes.append(orderComboItemOptions.getComboOptionItemSizeName());
+                                            if(orderComboItemOptions.getOrderComboItemExtra().size()>0){
+                                                for(OrderComboItemExtras orderComboItemExtras:orderComboItemOptions.getOrderComboItemExtra()){
+                                                    if(tops.length()>0){
+                                                        tops.append("_");
+                                                    }
+                                                    tops.append(orderComboItemExtras.getComboExtraItemName());
 
-                    @Override
-                    public void onNext(MYOrderTrackDetailModel searchResult) {
-                        // showProgress();
-                        if (searchResult.getOrderDetailItem() != null) {
-                            setAdapterCategory(searchResult.getOrderDetailItem().get(0).getOrderFoodItem());
-//                        banner_progress.setVisibility(View.GONE);
-                            String orderno = searchResult.getOrderDetailItem().get(0).getOrderIdentifyno();
-                            String orderstatusmsg = searchResult.getOrderDetailItem().get(0).getStatus();
-                            String subtotal = searchResult.getOrderDetailItem().get(0).getSubTotal();
-                            String orderpricetotal = searchResult.getOrderDetailItem().get(0).getOrderPrice();
-                            String restname = searchResult.getOrderDetailItem().get(0).getRestaurantName();
-                            String payment_mode=searchResult.getOrderDetailItem().get(0).getPaymentMethod();
-                            String restro_address=searchResult.getOrderDetailItem().get(0).getRestaurantAddress();
-                            txt_payment_status.setText(payment_mode);
+                                                }
+                                            }
 
-                            currency = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getCurrency();
-                            menuprice = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getMenuprice();
-                            itemname = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getItemsName();
-                            quantity = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getQuantity();
-                            itemSize = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getItemSize();
-                            extraTopping=searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getExtraTopping();
-                            String statusColor_order=searchResult.getOrderDetailItem().get(0).getOrderStatusColorCode();
-                            if(statusColor_order!=null){
-                                txt_view_orderstatus.setTextColor(Color.parseColor(statusColor_order));
+                                        }
+                                    }
+                                    orderFoodItem.setItemSize(sizes.toString());
+                                    orderFoodItem.setExtraTopping(tops.toString());
+                                    orderFoodItem.setIs_com(1);
+                                    foodItems.add(orderFoodItem);
+
+                                }
                             }
+                    setAdapterCategory();
+
+//                        banner_progress.setVisibility(View.GONE);
+                    String orderno = searchResult.getOrderDetailItem().get(0).getOrderIdentifyno();
+                    String orderstatusmsg = searchResult.getOrderDetailItem().get(0).getStatus();
+                    String subtotal = searchResult.getOrderDetailItem().get(0).getSubTotal();
+                    String orderpricetotal = searchResult.getOrderDetailItem().get(0).getOrderPrice();
+                    String restname = searchResult.getOrderDetailItem().get(0).getRestaurantName();
+                    String payment_mode=searchResult.getOrderDetailItem().get(0).getPaymentMethod();
+                    String restro_address=searchResult.getOrderDetailItem().get(0).getRestaurantAddress();
+                    txt_payment_status.setText(payment_mode);
+
+                    currency = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getCurrency();
+                    menuprice = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getMenuprice();
+                    itemname = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getItemsName();
+                    quantity = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getQuantity();
+                    itemSize = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getItemSize();
+                    extraTopping=searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getExtraTopping();
+                    String statusColor_order=searchResult.getOrderDetailItem().get(0).getOrderStatusColorCode();
+                    if(statusColor_order!=null){
+                        txt_view_orderstatus.setTextColor(Color.parseColor(statusColor_order));
+                    }
 
 
 //                        if (getIntent() != null) {
@@ -190,32 +244,49 @@ public class MyOrderDetailsActivity extends AppCompatActivity implements View.On
 //                                startActivity(i);
 //                            }
 //                        }
-                            setTextData(orderno, orderstatusmsg, subtotal, orderpricetotal, restname, restro_address, menuprice, itemname, quantity, itemSize);
-                            //  String orderpricetotal = searchResult.getOrderPrice().toString();
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        // hideProgress();
-                        Log.d("TAG", "log...." + e);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        //   activity.mySharePreferences.setBundle("login");
-
-                    }
-                });
+                    setTextData(orderno, orderstatusmsg, subtotal, orderpricetotal, restname, restro_address, menuprice, itemname, quantity, itemSize);
+                    //  String orderpricetotal = searchResult.getOrderPrice().toString();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+Log.i("url",error.getMessage());
+            }
+        });
+        RequestQueue queue= Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+//        Observable<MYOrderTrackDetailModel> observable = apiInterface.getMyOrderDetailsDisplay(prefsHelper.getPref(Constants.API_KEY), prefsHelper.getPref(Constants.LNG_CODE), strordernumber);
+//        observable.subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Observer<MYOrderTrackDetailModel>() {
+//                    @Override
+//                    public void onSubscribe(Disposable d) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(MYOrderTrackDetailModel searchResult) {
+//                        // showProgress();
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        // hideProgress();
+//                        Log.d("TAG", "log...." + e);
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//                        //   activity.mySharePreferences.setBundle("login");
+//
+//                    }
+//                });
     }
 
-    private void setAdapterCategory(List<OrderFoodItem> list) {
-        if(foodItems.size()>0){
-            foodItems.clear();
-        }
-        foodItems.addAll(list);
+    private void setAdapterCategory() {
         rvItemList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        DetailOrderAdapter adapterCategory = new DetailOrderAdapter(this, list);
+        DetailOrderAdapter adapterCategory = new DetailOrderAdapter(this, foodItems);
         rvItemList.setAdapter(adapterCategory);
         // hideProgress();
     }

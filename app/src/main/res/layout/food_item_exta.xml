@@ -138,6 +138,17 @@
 
         </LinearLayout>
 
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/_5sdp"
+    android:fontFamily="@font/roboto_medium"
+    android:layout_marginTop="@dimen/_10sdp"
+    android:textColor="@color/colorPrimaryone"
+    android:textSize="@dimen/sp_18"
+    android:text="45"
+    android:visibility="gone"
+    android:id="@+id/txt_free_toppings"/>
         <TextView
             android:id="@+id/tvExtraTopping"
             android:layout_width="wrap_content"

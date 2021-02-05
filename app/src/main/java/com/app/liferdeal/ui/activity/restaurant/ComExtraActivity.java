@@ -92,7 +92,12 @@ public class ComExtraActivity extends AppCompatActivity implements RestaurantFoo
     private ArrayList<Integer> temp_extra_item_list_id;
     private ArrayList<String> extra_item_list_name;
     private ArrayList<String> extra_item_list_price;
+    int free_allowed=0;
+    int free_selection_allowed=0;
     String topp_price="";
+    @BindView(R.id.txt_free_toppings)
+    TextView  txt_free_toppings;
+
 
 
     @Override
@@ -106,6 +111,9 @@ public class ComExtraActivity extends AppCompatActivity implements RestaurantFoo
         desc=getIntent().getStringExtra("desc");
         price=getIntent().getStringExtra("price");
         com_slot=getIntent().getIntExtra("com_slot",0);
+        free_allowed= getIntent().getIntExtra("free_allowed",0);
+        free_selection_allowed=getIntent().getIntExtra("free_selection_allowed",0);
+
         txt_view_name.setText(name);
         txt_view_cusine_name.setText(desc);
         extra_item_list_id = new ArrayList<>();
@@ -122,6 +130,15 @@ public class ComExtraActivity extends AppCompatActivity implements RestaurantFoo
                 finish();
             }
         });
+        if(free_allowed>0){
+            txt_free_toppings.setVisibility(View.VISIBLE);
+            String free=model.getCHOOSEANYFREETOPINGS();
+            free=free.replace("$",String.valueOf(free_allowed));
+            txt_free_toppings.setText(free);
+        }
+        else{
+            txt_free_toppings.setVisibility(View.GONE);
+        }
         prefsHelper = new PrefsHelper(this);
         dotToCommaClass=new DotToCommaClass(getApplicationContext());
         tvExtraTopping.setText(model.getAddExtraTopping());
@@ -302,9 +319,18 @@ public class ComExtraActivity extends AppCompatActivity implements RestaurantFoo
         extra_item_list_price = extraPrice;
         double total = Double.parseDouble(price);
         double top_price=0.0;
-        for (int i = 0; i < extra_item_list_price.size(); i++) {
-            top_price=top_price+Double.parseDouble(extra_item_list_price.get(i));
-            total = total + Double.parseDouble(extra_item_list_price.get(i));
+        if(free_allowed>0){
+            for (int i = free_allowed; i < extra_item_list_price.size(); i++) {
+                top_price = top_price + Double.parseDouble(extra_item_list_price.get(i));
+                total = total + Double.parseDouble(extra_item_list_price.get(i));
+            }
+
+        }
+        else {
+            for (int i = 0; i < extra_item_list_price.size(); i++) {
+                top_price = top_price + Double.parseDouble(extra_item_list_price.get(i));
+                total = total + Double.parseDouble(extra_item_list_price.get(i));
+            }
         }
         topp_price=String.valueOf(top_price);
 

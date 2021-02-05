@@ -487,9 +487,14 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                             totalPrice=toatl_price;
                             updateData();
                         }
-//                        if (stringBuilder.length() > 0) {
-//                            selectedPizzaName = stringBuilder.deleteCharAt(stringBuilder.lastIndexOf("\n")).toString();
-//                        }
+                        if (stringBuilder.length() > 0) {
+                            if(stringBuilder.toString().contains("\n")) {
+                                selectedPizzaName = stringBuilder.deleteCharAt(stringBuilder.lastIndexOf("\n")).toString();
+                            }
+                            else{
+                                selectedPizzaName = stringBuilder.toString();
+                            }
+                        }
                     }
 
 
@@ -865,7 +870,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
                 double pp = Double.parseDouble(rr.get(position).getPrice());
                 holder.tvItemPrice.setText(currencySymbol + dotToCommaClass.changeDot(String.format("%.2f", pp)));
-//            selectedPizzaItemPrice = holder.tvItemPrice.getText().toString();
+            selectedPizzaItemPrice = holder.tvItemPrice.getText().toString();
                 holder.tvQuantity.setText(rr.get(position).getItem_quantity());
 
                 holder.ivPlus.setOnClickListener(new View.OnClickListener() {

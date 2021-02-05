@@ -1,9 +1,11 @@
 package com.app.liferdeal.model.restaurant;
 
 import com.app.liferdeal.model.OrderFoodItem;
+import com.app.liferdeal.model.menuitems.OrderMealItems;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrderDetailItem {
@@ -211,9 +213,18 @@ public class OrderDetailItem {
     @SerializedName("OrderFoodItem")
     @Expose
     private List<OrderFoodItem> orderFoodItem = null;
+
+    public List<OrderMealItems> getOrderMealItem() {
+        return orderMealItem;
+    }
+
+    public void setOrderMealItem(List<OrderMealItems> orderMealItem) {
+        this.orderMealItem = orderMealItem;
+    }
+
     @SerializedName("OrderMealItem")
     @Expose
-    private List<Object> orderMealItem = null;
+    private List<OrderMealItems> orderMealItem = new ArrayList<>();
 
     public Integer getError() {
         return error;
@@ -759,11 +770,4 @@ public class OrderDetailItem {
         this.orderFoodItem = orderFoodItem;
     }
 
-    public List<Object> getOrderMealItem() {
-        return orderMealItem;
-    }
-
-    public void setOrderMealItem(List<Object> orderMealItem) {
-        this.orderMealItem = orderMealItem;
-    }
 }

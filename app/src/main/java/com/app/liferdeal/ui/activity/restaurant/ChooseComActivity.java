@@ -26,6 +26,7 @@ import com.app.liferdeal.R;
 import com.app.liferdeal.model.menuitems.ComItemList;
 import com.app.liferdeal.model.menuitems.ComValue;
 import com.app.liferdeal.model.menuitems.ComValueItem;
+import com.app.liferdeal.model.menuitems.ComboList;
 import com.app.liferdeal.model.menuitems.ComboSection;
 import com.app.liferdeal.ui.Database.Database;
 import com.app.liferdeal.ui.adapters.ComValueAdapter;
@@ -72,11 +73,18 @@ public class ChooseComActivity extends AppCompatActivity {
     String combo="";
     String desc="";
     String price="";
+   int Free_allowed;
+         int  Free_Topping_Selection_allowed;
     List<ComboSection>comboSections=new ArrayList<>();
     private Database database;
     StringBuilder com_tops=new StringBuilder();
     StringBuilder sec_item=new StringBuilder();
     StringBuilder sec_value=new StringBuilder();
+    StringBuilder com_tops_id=new StringBuilder();
+    StringBuilder item_ids=new StringBuilder();
+    StringBuilder  comboslot_ids=new StringBuilder();
+    StringBuilder  Combo_Slot_ItemIDs=new StringBuilder();
+    StringBuilder  FoodItemSizeIDs=new StringBuilder();
     String sec_="";
     String value="";
     String com_price="";
@@ -175,6 +183,25 @@ public class ChooseComActivity extends AppCompatActivity {
         ComValueAdapter comValueAdapter=new ComValueAdapter(comValues, this, new ComValueAdapter.ComValueClicked() {
             @Override
             public void ComClicked(ComValueItem subItemsRecord,int comslot_id,String com) {
+                if(item_ids.length()>0){
+                    item_ids.append(",");
+                }
+                if(FoodItemSizeIDs.length()>0){
+                    FoodItemSizeIDs.append(",");
+                }
+                if(Combo_Slot_ItemIDs.length()>0){
+                    Combo_Slot_ItemIDs.append(",");
+                }
+
+                item_ids.append(subItemsRecord.getItemID());
+                if(!subItemsRecord.getFoodItemSizeID().equalsIgnoreCase("")) {
+                    FoodItemSizeIDs.append(subItemsRecord.getFoodItemSizeID());
+                }
+                else{
+                    FoodItemSizeIDs.append("0");
+                }
+                Combo_Slot_ItemIDs.append(subItemsRecord.getCombo_Slot_ItemID());
+
                 Intent intent=new Intent(ChooseComActivity.this, ComExtraActivity.class);
                 intent.putExtra("price",price);
                 intent.putExtra("item_id",subItemsRecord.getItemID());
@@ -188,9 +215,23 @@ public class ChooseComActivity extends AppCompatActivity {
                 intent.putExtra("desc",desc);
                 intent.putExtra("top_allowed",subItemsRecord.getCombo_Topping_Allow());
                 intent.putExtra("com_slot",comslot_id);
+                intent.putExtra("free_allowed",Free_allowed);
+                intent.putExtra("free_selection_allowed",Free_Topping_Selection_allowed);
 sec_=com;
 value=subItemsRecord.getCombo_Slot_ItemName();
                 startActivityForResult(intent,5);
+            }
+
+            @Override
+            public void ComValueClicked(ComValue comValue) {
+                if(comboslot_ids.length()>0){
+                    comboslot_ids.append(",");
+                }
+                comboslot_ids.append(comValue.getComboslot_id());
+                if(!comValue.getFree_allowed().equalsIgnoreCase("")) {
+                    Free_allowed = Integer.parseInt(comValue.getFree_allowed());
+                    Free_Topping_Selection_allowed=Integer.parseInt(comValue.getFree_Topping_Selection_allowed());
+                }
             }
         });
         recyler_sec.setAdapter(comValueAdapter);
@@ -217,6 +258,10 @@ if(sec_item.length()>0){
 if(sec_value.length()>0){
     sec_value.append(",");
 }
+if(com_tops_id.length()>0){
+    com_tops_id.append(",");
+}
+
 
 double pr=Double.parseDouble(price);
 double price_demo= Double.parseDouble(p);
@@ -230,9 +275,10 @@ com_p=com_p+price_demo;
                         com_tops.append(item);
                         sec_item.append(sec_);
                         sec_value.append(value);
+                        com_tops_id.append(ids);
 
                 }
-                    Log.i("url", price + ", " + com_tops.toString() + ", " + sec_item.toString()+", "+sec_value);
+                    Log.i("url", price + ", " + com_tops.toString() + ", " + sec_item.toString()+", "+sec_value+", "+com_tops_id);
                 }
             }
         }
@@ -256,7 +302,13 @@ com_p=com_p+price_demo;
                 comItemList.sec_value = sec_value.toString();
                 comItemList.combo_desc = desc;
             comItemList.combo_top=com_tops.toString();
+            comItemList.combo_top_id=com_tops_id.toString();
+            comItemList.ItemID=item_ids.toString();
+            comItemList.Combo_Slot_ItemID= Combo_Slot_ItemIDs.toString();
+            comItemList.FoodItemSizeID=FoodItemSizeIDs.toString();
+            comItemList.comboslot_id=comboslot_ids.toString();
             comItemList.quantity=1;
+            comItemList.deal_id= String.valueOf(com_id);
                 comItemList.price = com_price;
                 comItemLists.add(comItemList);
                 String com = gson.toJson(comItemLists);

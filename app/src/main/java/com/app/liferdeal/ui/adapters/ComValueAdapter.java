@@ -32,6 +32,7 @@ public class ComValueAdapter extends RecyclerView.Adapter<ComValueAdapter.ComVal
     String desc;
    public interface ComValueClicked{
         void ComClicked(ComValueItem subItemsRecord,int comslot_id,String sec_);
+        void ComValueClicked(ComValue comValue);
     }
     ComValueClicked comValueClicked;
     public ComValueAdapter(List<ComValue>comValues, Context context,ComValueClicked comValueClicked){
@@ -53,6 +54,8 @@ holder.relative_sec.setTag(position);
 holder.relative_sec.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
+        int pos= (int) v.getTag();
+        comValueClicked.ComValueClicked(comValues.get(pos));
         if(holder.recyler_sec_item.getVisibility()==View.VISIBLE){
             holder.recyler_sec_item.setVisibility(View.GONE);
             holder.img_plus.setImageResource(R.drawable.plusbtn);

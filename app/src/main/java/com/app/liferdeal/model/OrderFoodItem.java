@@ -20,6 +20,27 @@ public class OrderFoodItem implements Parcelable {
     private String menuprice;
     @SerializedName("quantity")
     private Long quantity;
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    @SerializedName("desc")
+    private String desc;
+    public int getIs_com() {
+        return is_com;
+    }
+
+    public void setIs_com(int is_com) {
+        this.is_com = is_com;
+    }
+
+    @SerializedName("is_com")
+    private int is_com=0;
 public OrderFoodItem(){
 
 }
@@ -34,6 +55,8 @@ public OrderFoodItem(){
         } else {
             quantity = in.readLong();
         }
+        is_com=in.readInt();
+        desc=in.readString();
     }
 
     public static final Creator<OrderFoodItem> CREATOR = new Creator<OrderFoodItem>() {
@@ -114,5 +137,7 @@ public OrderFoodItem(){
             dest.writeByte((byte) 1);
             dest.writeLong(quantity);
         }
+        dest.writeInt(is_com);
+        dest.writeString(desc);
     }
 }

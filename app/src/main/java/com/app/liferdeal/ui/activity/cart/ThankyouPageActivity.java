@@ -30,11 +30,14 @@ import com.app.liferdeal.application.App;
 import com.app.liferdeal.model.LanguageResponse;
 import com.app.liferdeal.model.Order;
 import com.app.liferdeal.model.OrderFoodItem;
+import com.app.liferdeal.model.menuitems.ComItemList;
+import com.app.liferdeal.model.restaurant.RaviCartModle;
 import com.app.liferdeal.ui.Database.Database;
 import com.app.liferdeal.ui.activity.MainActivity;
 import com.app.liferdeal.ui.activity.restaurant.AddExtraActivity;
 import com.app.liferdeal.ui.activity.restaurant.MyOrderDetailsActivity;
 import com.app.liferdeal.ui.activity.restaurant.RestaurantDetails;
+import com.app.liferdeal.ui.adapters.ComThakAdapter;
 import com.app.liferdeal.util.Constants;
 import com.app.liferdeal.util.DotToCommaClass;
 import com.app.liferdeal.util.DroidPrefs;
@@ -49,8 +52,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Currency;
@@ -115,6 +121,8 @@ public class ThankyouPageActivity extends AppCompatActivity implements View.OnCl
     String extra_toppings="";
     @BindView(R.id.recyler_details)
     RecyclerView recyler_details;
+    @BindView(R.id.recyler_com_details)
+    RecyclerView recyler_com_details;
 
 
     @Override
@@ -129,7 +137,7 @@ public class ThankyouPageActivity extends AppCompatActivity implements View.OnCl
 
         Database database = new Database(ThankyouPageActivity.this);
         database.delete();
-        DroidPrefs.getDefaultInstance(this).clear();
+
         init();
     }
 
@@ -141,10 +149,12 @@ public class ThankyouPageActivity extends AppCompatActivity implements View.OnCl
             AddExtraActivity.cart_Item_number = 0;
             Database database = new Database(getApplicationContext());
             database.delete();
+            DroidPrefs.getDefaultInstance(this).clearkey("com_list");
             Intent i = new Intent(ThankyouPageActivity.this, MainActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(i);
+
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -267,6 +277,7 @@ public class ThankyouPageActivity extends AppCompatActivity implements View.OnCl
         if(orderFoodItems.size()>0){
             setThankyouAdapter(orderFoodItems);
         }
+        setComboAdapter();
 
 
 
@@ -475,6 +486,28 @@ public class ThankyouPageActivity extends AppCompatActivity implements View.OnCl
             //   googleMaps.moveCamera(CameraUpdateFactory.newLatLngZoom(latLong, 17));
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+    private void setComboAdapter(){
+        String com_list=DroidPrefs.get(this,"com_list",String.class);
+        if(com_list!=null) {
+            Gson gson = new Gson();
+            Type listType = new TypeToken<List<ComItemList>>() {
+            }.getType();
+            List<ComItemList> comItemLists = gson.fromJson(com_list, listType);
+            if(comItemLists!=null){
+                ArrayList<RaviCartModle> raviCartModles=new ArrayList<>();
+                for(ComItemList comItemList:comItemLists){
+                    raviCartModles.add(new RaviCartModle(comItemList.combo_name,comItemList.combo_name,comItemList.sec_value,comItemList.com_sec,"",comItemList.combo_top,comItemList.price,String.valueOf(comItemList.quantity),comItemList.combo_desc,1));
+                }
+                if(raviCartModles.size()>0){
+                   LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
+                    ComThakAdapter comThakAdapter=new ComThakAdapter(this,raviCartModles);
+                    recyler_com_details.setAdapter(comThakAdapter);
+                    recyler_com_details.setLayoutManager(linearLayoutManager);
+                    DroidPrefs.getDefaultInstance(this).clearkey("com_list");
+                }
+            }
         }
     }
 }
