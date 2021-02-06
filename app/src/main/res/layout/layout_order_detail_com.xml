@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txt_view_sunmenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_bold"
+        android:text="Pizza Selection"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/_12ssp" />
+
+   <androidx.recyclerview.widget.RecyclerView
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:id="@+id/recyler_order_details"/>
+
+    <TextView
+        android:id="@+id/tvQuantityMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:fontFamily="@font/montserrat_bold"
+        android:text="Pizza Selection"
+        android:textColor="@color/colorRed"
+        android:textSize="@dimen/_12ssp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:id="@+id/view_detail"
+        android:layout_below="@+id/tvQuantityMenu"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:background="@color/gray" />
+
+</LinearLayout>

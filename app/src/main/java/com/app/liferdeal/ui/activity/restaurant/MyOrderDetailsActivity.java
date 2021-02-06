@@ -191,6 +191,7 @@ public class MyOrderDetailsActivity extends AppCompatActivity implements View.On
                                                 tops.append(",");
                                             }
                                             sizes.append(orderComboItemOptions.getComboOptionName());
+                                            sizes.append("_");
                                             sizes.append(orderComboItemOptions.getComboOptionItemName());
                                             sizes.append(orderComboItemOptions.getComboOptionItemSizeName());
                                             if(orderComboItemOptions.getOrderComboItemExtra().size()>0){
@@ -202,6 +203,7 @@ public class MyOrderDetailsActivity extends AppCompatActivity implements View.On
 
                                                 }
                                             }
+
 
                                         }
                                     }

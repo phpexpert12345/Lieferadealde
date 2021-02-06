@@ -33,6 +33,9 @@ SingleCom singleCom=singleComs.get(position);
 holder.tv_menu_item_sec.setText(singleCom.section);
 holder.tv_menu_item_size.setText(singleCom.size);
 if(singleCom.tops.contains("_")){
+    if(singleCom.tops.startsWith("_")){
+        singleCom.tops=singleCom.tops.substring(1);
+    }
         String[] extra=singleCom.tops.split("_");
         if(extra.length>0){
             StringBuilder stringBuilder=new StringBuilder();
