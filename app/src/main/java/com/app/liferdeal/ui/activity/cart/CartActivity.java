@@ -1107,9 +1107,12 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             TextView tv_quantity;
             @BindView(R.id.tv_item_price)
             TextView tv_item_price;
+            @BindView(R.id.etInstruction)
+            EditText etInstruction;
             public ComViewHolder(@NonNull View itemView) {
                 super(itemView);
                 ButterKnife.bind(this,itemView);
+                etInstruction.setHint(model.getInstruction());
 
             }
         }

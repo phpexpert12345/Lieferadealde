@@ -23,6 +23,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.app.liferdeal.R;
+import com.app.liferdeal.application.App;
+import com.app.liferdeal.model.LanguageResponse;
 import com.app.liferdeal.model.menuitems.ComItemList;
 import com.app.liferdeal.model.menuitems.ComValue;
 import com.app.liferdeal.model.menuitems.ComValueItem;
@@ -89,6 +91,7 @@ public class ChooseComActivity extends AppCompatActivity {
     String value="";
     String com_price="";
     double com_p=0.0;
+    private LanguageResponse model = new LanguageResponse();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,6 +102,12 @@ public class ChooseComActivity extends AppCompatActivity {
         combo=getIntent().getStringExtra("combo");
         desc=getIntent().getStringExtra("desc");
         price=getIntent().getStringExtra("price");
+        if (App.retrieveLangFromGson(this) != null) {
+            model = App.retrieveLangFromGson(this);
+            txt_com_details.setText(model.getChooseCombo());
+            btn_add_to_cart.setText(model.getAddToCart());
+
+        }
         txt_com_desc.setText(desc);
         txt_com_name.setText(combo);
         img_back.setOnClickListener(new View.OnClickListener() {
