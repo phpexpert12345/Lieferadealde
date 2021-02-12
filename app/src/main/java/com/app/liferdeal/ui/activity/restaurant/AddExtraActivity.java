@@ -146,8 +146,13 @@ public class AddExtraActivity extends AppCompatActivity implements View.OnClickL
         SUBCATCLICKITEMDesc = getIntent().getStringExtra("SUBCATCLICKITEMDesc");
         imgName = getIntent().getStringExtra("img");
         TotalPriceWithPizzaItemAndSize = getIntent().getStringExtra("TotalPriceWithPizzaItemAndSize");
-
-        Glide.with(mContext).load(Uri.parse(imgName)).placeholder(R.drawable.ic_plate).into(ivRestaurantLogo);
+if(!imgName.equalsIgnoreCase("")) {
+    ivRestaurantLogo.setVisibility(View.VISIBLE);
+    Glide.with(mContext).load(Uri.parse(imgName)).placeholder(R.drawable.ic_plate).into(ivRestaurantLogo);
+}
+else{
+    ivRestaurantLogo.setVisibility(View.GONE);
+}
 
         if (restDetailsItemId != 0) {
             restDealisItemId = String.valueOf(restDetailsItemId);

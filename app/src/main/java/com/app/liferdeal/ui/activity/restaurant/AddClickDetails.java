@@ -132,8 +132,13 @@ public class AddClickDetails extends AppCompatActivity implements View.OnClickLi
         mainClickRestName = getIntent().getStringExtra("mainClickRestName");
         imgName = getIntent().getStringExtra("img");
         extraTopping = getIntent().getStringExtra("extraTopping");
-
-        Glide.with(mContext).load(Uri.parse(imgName)).placeholder(R.drawable.ic_plate).into(ivRestaurantLogo);
+if(!imgName.equalsIgnoreCase("")) {
+    ivRestaurantLogo.setVisibility(View.VISIBLE);
+    Glide.with(mContext).load(Uri.parse(imgName)).placeholder(R.drawable.ic_plate).into(ivRestaurantLogo);
+}
+else{
+    ivRestaurantLogo.setVisibility(View.GONE);
+}
 
         System.out.println("=== clickItemtId : " + clickItemtId + "CLICKITEMNAME" + CLICKITEMNAME + "CLICKITEMPRICE" + CLICKITEMPRICE + "mainClickRestId" + mainClickRestId + "mainClickRestName" + mainClickRestName);
         Currency hh = Currency.getInstance("" + prefsHelper.getPref(Constants.APP_CURRENCY));

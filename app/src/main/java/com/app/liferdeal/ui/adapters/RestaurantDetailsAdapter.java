@@ -118,10 +118,16 @@ else{
 //        holder.tvCost.setText(dotToCommaClass.changeDot(listFilterSubCategory.get(position).getDiscountFoodAmount()) + "% "+model.getDiscountAppliedOriginalPrice() + dotToCommaClass.changeDot(holder.tv_item_cost_old.getText().toString()));
 
             if (listFilterSubCategory.get(position).getFoodType() != null) {
-                holder.iv_restaurant_logo.setVisibility(View.VISIBLE);
-                Glide.with(mContext).load(listFilterSubCategory.get(position).getFoodIcon())
-                        .placeholder(R.drawable.ic_plate)
-                        .into(holder.iv_restaurant_logo);
+                Log.e("logo",listFilterSubCategory.get(position).getFoodIcon());
+                if(!listFilterSubCategory.get(position).getFoodType().equalsIgnoreCase("")) {
+                    holder.iv_restaurant_logo.setVisibility(View.VISIBLE);
+                    Glide.with(mContext).load(listFilterSubCategory.get(position).getFoodIcon())
+                            .placeholder(R.drawable.ic_plate)
+                            .into(holder.iv_restaurant_logo);
+                }
+                else{
+                    holder.iv_restaurant_logo.setVisibility(View.GONE);
+                }
             } else {
                 holder.iv_restaurant_logo.setVisibility(View.GONE);
             }
