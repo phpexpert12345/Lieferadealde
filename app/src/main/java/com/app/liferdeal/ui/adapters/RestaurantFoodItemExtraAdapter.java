@@ -86,7 +86,13 @@ public class RestaurantFoodItemExtraAdapter extends RecyclerView.Adapter<Restaur
             holder.view_extra.setVisibility(View.VISIBLE);
             Currency hh = Currency.getInstance("" + prefsHelper.getPref(Constants.APP_CURRENCY));
             String jj = hh.getSymbol();
-            holder.txtprice.setText(jj + " " +dotToCommaClass.changeDot(listSubCategory.get(position).getFoodPriceAddons()) );
+            if(listSubCategory.get(position).getFoodPriceAddons().equalsIgnoreCase("0.00")){
+                holder.txtprice.setVisibility(View.GONE);
+            }
+            else {
+                holder.txtprice.setVisibility(View.VISIBLE);
+                holder.txtprice.setText(jj + " " + dotToCommaClass.changeDot(listSubCategory.get(position).getFoodPriceAddons()));
+            }
         } else {
             holder.cbitem.setVisibility(View.GONE);
             holder.rbitem.setVisibility(View.GONE);

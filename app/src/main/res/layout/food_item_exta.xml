@@ -104,7 +104,7 @@
                 android:id="@+id/iv_restaurant_logo"
                 android:layout_width="@dimen/dp_40"
                 android:layout_height="@dimen/dp_40"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:layout_gravity="center"
                 android:scaleType="fitXY"
                 android:src="@drawable/defpizzaimg" />
@@ -117,12 +117,12 @@
                 <TextView
                     android:id="@+id/txt_view_name"
                     android:layout_width="wrap_content"
-                    android:text="Pizza"
-                    android:fontFamily="@font/roboto_bold"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_10"
-                    android:textSize="@dimen/sp_15"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="Pizza"
                     android:textColor="@color/colorBlack"
-                    android:layout_height="wrap_content"/>
+                    android:textSize="@dimen/sp_15" />
 
                 <TextView
                     android:id="@+id/txt_view_cusine_name"

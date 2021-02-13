@@ -66,7 +66,13 @@ else{
 }
         FoodExtraModel.MenuItemExtraGroup.SubExtraItemsRecord subExtraItemsRecord=extra_items.get(position);
 holder.txtitemname.setText(subExtraItemsRecord.getFoodAddonsName());
-holder.txtprice.setText(cur + " " +dotToCommaClass.changeDot(extra_items.get(position).getFoodPriceAddons()));
+if(extra_items.get(position).getFoodPriceAddons().equalsIgnoreCase("0.00")){
+    holder.txtprice.setVisibility(View.GONE);
+}
+else {
+    holder.txtprice.setVisibility(View.VISIBLE);
+    holder.txtprice.setText(cur + " " + dotToCommaClass.changeDot(extra_items.get(position).getFoodPriceAddons()));
+}
 holder.cv_RecyclerView.setTag(position);
 holder.cv_RecyclerView.setOnClickListener(new View.OnClickListener() {
     @Override

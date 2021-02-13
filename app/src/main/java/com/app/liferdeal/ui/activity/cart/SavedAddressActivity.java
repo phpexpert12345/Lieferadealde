@@ -248,7 +248,8 @@ progress_address.setVisibility(View.VISIBLE);
 
                     @Override
                     public void onError(Throwable e) {
-                        hideProgress();
+                        progress_address.setVisibility(View.GONE);
+//                        hideProgress();
                         Log.d("TAG", "log...." + e);
                     }
 

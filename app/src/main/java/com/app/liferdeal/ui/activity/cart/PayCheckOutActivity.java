@@ -962,6 +962,7 @@ String base64="";
         window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         CardMultilineWidget card_details = dialog.findViewById(R.id.card_details);
         Button btnPay = dialog.findViewById(R.id.btnPay);
+        btnPay.setText(model.getToPay());
         btnPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
