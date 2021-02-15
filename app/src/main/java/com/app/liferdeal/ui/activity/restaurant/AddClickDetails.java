@@ -131,6 +131,7 @@ public class AddClickDetails extends AppCompatActivity implements View.OnClickLi
         mainClickRestId = getIntent().getStringExtra("mainClickRestId");
         mainClickRestName = getIntent().getStringExtra("mainClickRestName");
         imgName = getIntent().getStringExtra("img");
+        Log.e("img",imgName);
         extraTopping = getIntent().getStringExtra("extraTopping");
 if(!imgName.equalsIgnoreCase("")) {
     ivRestaurantLogo.setVisibility(View.VISIBLE);
@@ -323,7 +324,7 @@ else{
         totalPriceAdd = /*Double.parseDouble(CLICKITEMPRICE) +*/ Double.parseDouble(sizePizzaPrice);
         System.out.println("==== totalprice Add : " + totalPriceAdd);
 
-        txt_total.setText(currencySymbol + " " + "" + "" + String.format("%.2f", totalPriceAdd));
+        txt_total.setText(currencySymbol + " " + "" + "" +dotToCommaClass.changeDot( String.format("%.2f", totalPriceAdd)));
         if (extraAvail.equalsIgnoreCase("yes")) {
             btn_add_extra.setText(model.getAddExtraTopping());
 //            btn_add_extra.setVisibility(View.VISIBLE);

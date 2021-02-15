@@ -57,6 +57,7 @@ import com.app.liferdeal.util.DotToCommaClass;
 import com.app.liferdeal.util.DroidPrefs;
 import com.app.liferdeal.util.PrefsHelper;
 import com.app.liferdeal.util.SharedPreferencesData;
+import com.app.liferdeal.util.Utility;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -179,6 +180,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
         init();
     }
+
 
     private void init() {
         dotToCommaClass = new DotToCommaClass(getApplicationContext());
@@ -326,12 +328,13 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
         else {
             card_coupon.setVisibility(View.VISIBLE);
         }
-
+//        orderType = "Delivery";
+//
+//        changeSelect(orderType);
+//        rlDineIn.setVisibility(View.GONE);
         if (sharedPreferencesData.getSharedPreferenceData(Constants.FORDELIVERY, Constants.HMDLVRYAVAIL).equalsIgnoreCase("yes")) {
             rl_delivery.setVisibility(View.VISIBLE);
-            orderType = "Delivery";
 
-           changeSelect(orderType);
         } else {
             rl_delivery.setVisibility(View.GONE);
         }
@@ -606,6 +609,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.rl_pickup:
                 changeSelect("Pickup");
                 orderType = "Pickup";
+                Utility.hideKeyboard(this);
                 getDiscount();
                 getShippingChargeData("Pickup");
                 //  addQuatity.insert("1","sufiyan");
@@ -614,6 +618,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.rl_delivery:
                 changeSelect("Delivery");
                 orderType = "Delivery";
+                Utility.hideKeyboard(this);
                 getDiscount();
                 getShippingChargeData("Delivery");
                 // addQuatity.updateItem("1","name.....");
@@ -623,6 +628,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.rlDineIn:
                 changeSelect("EAT-IN");
                 orderType = "EAT-IN";
+                Utility.hideKeyboard(this);
                 getDiscount();
                 getShippingChargeData("");
 //                serviceChargedForDeliveryAndPickup();
@@ -957,7 +963,8 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 holder.tv_quantity.setText(com.getItem_quantity());
                 holder.tv_menu_item_name.setText(com.getItem_name());
                 holder.tv_subcat_item_details.setText(com.getItemSubcatDetails());
-                double pp = Double.parseDouble(com.getPrice());
+                int quantity= Integer.parseInt(com.getItem_quantity());
+                double pp = Double.parseDouble(com.getPrice())*quantity;
                 holder.tv_item_price.setText(currencySymbol + dotToCommaClass.changeDot(String.format("%.2f", pp)));
                 List<SingleCom>singleComs=new ArrayList<>();
                 if(com.getSize_item_name().contains(",")){

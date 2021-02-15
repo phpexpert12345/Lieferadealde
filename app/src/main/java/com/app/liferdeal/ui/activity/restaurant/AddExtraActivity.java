@@ -437,7 +437,7 @@ else{
 //        total = total + Double.parseDouble(TotalPriceWithPizzaItemAndSize);
         System.out.println("=== total price after aff pizz and size price : " + total);
         restDetailsItemPrice = String.valueOf(total);
-        txt_add_extra_total.setText(currencySymbol + " " + "" + String.format("%.2f", total));
+        txt_add_extra_total.setText(currencySymbol + " " + "" +dotToCommaClass.changeDot(String.format("%.2f", total)));
     }
 
     @Override
@@ -478,7 +478,7 @@ else{
             total = total + Double.parseDouble(extra_item_list_price.get(i));
         }
         restDetailsItemPrice = String.valueOf(total);
-        txt_add_extra_total.setText(currencySymbol + " " + "" + String.format("%.2f", total));
+        txt_add_extra_total.setText(currencySymbol + " " + "" + dotToCommaClass.changeDot(String.format("%.2f", total)));
 
 //       int selected_pos=-1;
 //        for(int i=0;i<list.size();i++){

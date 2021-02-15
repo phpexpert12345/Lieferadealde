@@ -118,8 +118,7 @@ else{
 //        holder.tvCost.setText(dotToCommaClass.changeDot(listFilterSubCategory.get(position).getDiscountFoodAmount()) + "% "+model.getDiscountAppliedOriginalPrice() + dotToCommaClass.changeDot(holder.tv_item_cost_old.getText().toString()));
 
             if (listFilterSubCategory.get(position).getFoodType() != null) {
-                Log.e("logo",listFilterSubCategory.get(position).getFoodIcon());
-                if(!listFilterSubCategory.get(position).getFoodType().equalsIgnoreCase("")) {
+                if(!listFilterSubCategory.get(position).getFoodIcon().equalsIgnoreCase("")) {
                     holder.iv_restaurant_logo.setVisibility(View.VISIBLE);
                     Glide.with(mContext).load(listFilterSubCategory.get(position).getFoodIcon())
                             .placeholder(R.drawable.ic_plate)
@@ -152,7 +151,7 @@ else{
                         i.putExtra("mainClickRestId", mainClickRestId);
                         i.putExtra("mainClickRestName", mainClickRestName);
                         i.putExtra("extraTopping", listFilterSubCategory.get(position).getExtraavailable());
-                        i.putExtra("img", listFilterSubCategory.get(position).getFoodType());
+                        i.putExtra("img", listFilterSubCategory.get(position).getFoodIcon());
                         mContext.startActivity(i);
                     } else {
                         if(listFilterSubCategory.get(position).getExtraavailable().equalsIgnoreCase("yes")){
@@ -167,7 +166,7 @@ else{
                             i.putExtra("SUBCATCLICKITEMNAME", listFilterSubCategory.get(position).getRestaurantPizzaItemName());
                             i.putExtra("SUBCATCLICKITEMPRICE", listFilterSubCategory.get(position).getRestaurantPizzaItemPrice());
                             i.putExtra("SUBCATCLICKITEMDesc", listFilterSubCategory.get(position).getResPizzaDescription());
-                            i.putExtra("img", listFilterSubCategory.get(position).getFoodType());
+                            i.putExtra("img", listFilterSubCategory.get(position).getFoodIcon());
                             i.putExtra("TotalPriceWithPizzaItemAndSize",  "0.0");
                             mContext.startActivity(i);
                         }
