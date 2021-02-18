@@ -143,7 +143,7 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
 
     public void showProgress() {
         progressDialog.setMessage("Please wait" + "...");
-        progressDialog.setCancelable(false);
+        progressDialog.setCancelable(true);
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
     }
@@ -158,6 +158,8 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
             public void cancleButton(String orderId, Context context) {
                 showCancelDialog(orderId, context);
             }
+
+
         });
         rcv_rest_list.setAdapter(adapterCategory);
         // hideProgress();
@@ -220,7 +222,7 @@ public class MyOrderActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onResume() {
         super.onResume();
-        if (progressDialog != null && progressDialog.isShowing())
-            progressDialog.dismiss();
+        progressDialog.dismiss();
+
     }
 }

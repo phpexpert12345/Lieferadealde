@@ -26,6 +26,9 @@ import com.app.liferdeal.application.App;
 import com.app.liferdeal.interfaces.CancelClicked;
 import com.app.liferdeal.model.LanguageResponse;
 import com.app.liferdeal.model.OrderFoodItem;
+import com.app.liferdeal.model.menuitems.OrderComboItemExtras;
+import com.app.liferdeal.model.menuitems.OrderComboItemOptions;
+import com.app.liferdeal.model.menuitems.OrderMealItems;
 import com.app.liferdeal.model.restaurant.MYOrderTrackDetailModel;
 import com.app.liferdeal.model.restaurant.Orders;
 import com.app.liferdeal.network.retrofit.ApiInterface;
@@ -126,6 +129,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.Holder> 
     private ApiInterface apiInterface;
 
     private void getOrderDetails(String strordernumber) {
+        showProgress();
         apiInterface = RFClient.getClient().create(ApiInterface.class);
         Observable<MYOrderTrackDetailModel> observable = apiInterface.getMyOrderDetailsDisplay(prefsHelper.getPref(Constants.API_KEY), prefsHelper.getPref(Constants.LNG_CODE), strordernumber);
         observable.subscribeOn(Schedulers.io())
@@ -138,13 +142,54 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.Holder> 
 
                     @Override
                     public void onNext(MYOrderTrackDetailModel searchResult) {
-                        showProgress();
+                        hideProgress();
                        /* setAdapterCategory(searchResult.getOrders().getOrderViewResult());
                         banner_progress.setVisibility(View.GONE);*/
 
                         if(searchResult.getOrderDetailItem()!=null){
                             List<OrderFoodItem>foodItems=searchResult.getOrderDetailItem().get(0).getOrderFoodItem();
                             String orderno = searchResult.getOrderDetailItem().get(0).getOrderIdentifyno();
+                            if(searchResult.getOrderDetailItem().get(0).getOrderMealItem().size()>0){
+                                for(OrderMealItems orderMealItems:searchResult.getOrderDetailItem().get(0).getOrderMealItem()){
+                                    OrderFoodItem orderFoodItem=new OrderFoodItem();
+                                    orderFoodItem.setItemsName(orderMealItems.getItemsName());
+                                    orderFoodItem.setDesc(orderMealItems.getItemsDescriptionName());
+                                    orderFoodItem.setQuantity((long) orderMealItems.getQuqntity());
+                                    orderFoodItem.setMenuprice(orderMealItems.getMenuprice());
+                                    StringBuilder sizes=new StringBuilder();
+                                    StringBuilder tops=new StringBuilder();
+                                    if(orderMealItems.getOrderComboItemOption().size()>0){
+                                        for(OrderComboItemOptions orderComboItemOptions:orderMealItems.getOrderComboItemOption()){
+                                            if(sizes.length()>0){
+                                                sizes.append(",");
+                                            }
+                                            if(tops.length()>0){
+                                                tops.append(",");
+                                            }
+                                            sizes.append(orderComboItemOptions.getComboOptionName());
+                                            sizes.append("_");
+                                            sizes.append(orderComboItemOptions.getComboOptionItemName());
+                                            sizes.append(orderComboItemOptions.getComboOptionItemSizeName());
+                                            if(orderComboItemOptions.getOrderComboItemExtra().size()>0){
+                                                for(OrderComboItemExtras orderComboItemExtras:orderComboItemOptions.getOrderComboItemExtra()){
+                                                    if(tops.length()>0){
+                                                        tops.append("_");
+                                                    }
+                                                    tops.append(orderComboItemExtras.getComboExtraItemName());
+
+                                                }
+                                            }
+
+
+                                        }
+                                    }
+                                    orderFoodItem.setItemSize(sizes.toString());
+                                    orderFoodItem.setExtraTopping(tops.toString());
+                                    orderFoodItem.setIs_com(1);
+                                    foodItems.add(orderFoodItem);
+
+                                }
+                            }
                             Intent i = new Intent(mContext, OrderTrackActivity.class);
                             if(foodItems!=null) {
                                 if(foodItems.size()>0) {
