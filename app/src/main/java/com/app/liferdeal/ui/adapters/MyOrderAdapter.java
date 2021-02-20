@@ -70,7 +70,6 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.Holder> 
         }
         dotToCommaClass = new DotToCommaClass(mContext);
         prefsHelper = new PrefsHelper(mContext);
-
     }
 
     @NonNull

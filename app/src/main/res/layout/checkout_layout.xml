@@ -136,127 +136,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_1sdp"
                 android:background="@color/gray"/>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvDeliverAdd"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:text="Delivery Address"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/_12sdp"
-                android:textStyle="bold"/>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:textSize="@dimen/_9sdp"/>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/ipStreet"
-                android:hint="Street and house number"
-                android:textColorHint="@color/colorBlack"
-                android:theme="@style/MyHintStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:background="@color/colorWhite"
-                    android:textColor="@color/colorBlack"
-                    android:id="@+id/deleviry_add"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                  />
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/ipPostCode"
-                    android:hint="Postcode"
-                    android:textColorHint="@color/colorBlack"
-                    android:theme="@style/MyHintStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/_5sdp"
-                    android:layout_weight=".5">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edit_post_code"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint=""
-                        android:textColor="@color/colorBlack"
-                        android:background="@color/colorWhite"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/ipCityName"
-                    android:hint="Cityname"
-                    android:textColorHint="@color/colorBlack"
-                    android:theme="@style/MyHintStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_5sdp"
-
-                    android:layout_weight=".5">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edt_city_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint=""
-                        android:textColor="@color/colorBlack"
-                        android:background="@color/colorWhite">
-
-                    </com.google.android.material.textfield.TextInputEditText>
-
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/ipCompany"
-                android:hint="Company name"
-                android:textColorHint="@color/colorBlack"
-                android:theme="@style/MyHintStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:textColor="@color/colorBlack"
-                    android:background="@color/colorWhite"
-                    android:id="@+id/edit_company_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint=""/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/ipNote"
-                android:hint="Add a note for delivery"
-                android:textColorHint="@color/colorBlack"
-                android:theme="@style/MyHintStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:textColor="@color/colorBlack"
-                    android:background="@color/colorWhite"
-                    android:id="@+id/edit_add_note"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_50sdp"
-                    android:hint=""/>
-            </com.google.android.material.textfield.TextInputLayout>
-
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvPersonalDetails"
                 android:layout_width="match_parent"
@@ -332,6 +211,128 @@
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/sp_11"
                 android:textStyle="bold"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvDeliverAdd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="Delivery Address"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="bold"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:textSize="@dimen/_9sdp"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ipStreet"
+                android:hint="Street and house number"
+                android:textColorHint="@color/colorBlack"
+                android:theme="@style/MyHintStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:background="@color/colorWhite"
+                    android:textColor="@color/colorBlack"
+                    android:id="@+id/deleviry_add"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                  />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ipCompany"
+                android:hint="Company name"
+                android:textColorHint="@color/colorBlack"
+                android:theme="@style/MyHintStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:textColor="@color/colorBlack"
+                    android:background="@color/colorWhite"
+                    android:id="@+id/edit_company_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint=""/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ipPostCode"
+                    android:hint="Postcode"
+                    android:textColorHint="@color/colorBlack"
+                    android:theme="@style/MyHintStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:layout_weight=".5">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_post_code"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint=""
+                        android:textColor="@color/colorBlack"
+                        android:background="@color/colorWhite"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ipCityName"
+                    android:hint="Cityname"
+                    android:textColorHint="@color/colorBlack"
+                    android:theme="@style/MyHintStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_5sdp"
+
+                    android:layout_weight=".5">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edt_city_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint=""
+                        android:textColor="@color/colorBlack"
+                        android:background="@color/colorWhite">
+
+                    </com.google.android.material.textfield.TextInputEditText>
+
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ipNote"
+                android:hint="Add a note for delivery"
+                android:textColorHint="@color/colorBlack"
+                android:theme="@style/MyHintStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:textColor="@color/colorBlack"
+                    android:background="@color/colorWhite"
+                    android:id="@+id/edit_add_note"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_50sdp"
+                    android:hint=""/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+
 
 
             <RelativeLayout
