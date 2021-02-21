@@ -210,6 +210,7 @@
                                     android:background="@color/colorRed"
                                     android:gravity="center"
                                     android:text="Cancel"
+                                    android:visibility="gone"
                                     android:textColor="@color/colorWhite"
                                     android:textSize="@dimen/_10ssp" />
 

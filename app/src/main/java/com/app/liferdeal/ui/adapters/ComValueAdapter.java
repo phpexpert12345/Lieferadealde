@@ -68,9 +68,11 @@ holder.relative_sec.setOnClickListener(new View.OnClickListener() {
     }
 });
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(context);
+        holder.recyler_sec_item.setVisibility(View.VISIBLE);
         ComValueItemAdapter comValueAdapter=new ComValueItemAdapter(comValue.getComboSectionValueItems(), new SelectSecItem() {
             @Override
             public void getClickSecComboItem(ComValueItem subItemsRecord) {
+                holder.recyler_sec_item.setVisibility(View.GONE);
           comValueClicked.ComClicked(subItemsRecord,Integer.parseInt(comValue.getComboslot_id()),comValue.getSlot_Option_Name());
             }
         });

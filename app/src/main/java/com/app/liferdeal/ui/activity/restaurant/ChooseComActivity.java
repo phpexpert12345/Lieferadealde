@@ -229,6 +229,7 @@ public class ChooseComActivity extends AppCompatActivity {
 sec_=com;
 value=subItemsRecord.getCombo_Slot_ItemName();
                 startActivityForResult(intent,5);
+
             }
 
             @Override

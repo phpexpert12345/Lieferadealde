@@ -112,11 +112,11 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.Holder> 
                 mContext.startActivity(i);
             }
         });
-        if (listCategory.get(position).getOrder_status_close().equalsIgnoreCase("1")) {
-            holder.txt_btn_cancel.setVisibility(View.GONE);
-        } else if(listCategory.get(position).getOrder_status_close().equalsIgnoreCase("0")) {
-            holder.txt_btn_cancel.setVisibility(View.VISIBLE);
-        }
+//        if (listCategory.get(position).getOrder_status_close().equalsIgnoreCase("1")) {
+//            holder.txt_btn_cancel.setVisibility(View.GONE);
+//        } else if(listCategory.get(position).getOrder_status_close().equalsIgnoreCase("0")) {
+//            holder.txt_btn_cancel.setVisibility(View.VISIBLE);
+//        }
         holder.txt_btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
