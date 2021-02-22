@@ -824,6 +824,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            customerId = authPreference.getPref(Constants.CUSTOMER_ID);
             System.out.println("===== drawer click : " + customerId + "position : " + position);
             if (customerId != null && authPreference.isLoggedIn()) {
                 System.out.println("===== drawer click if ");
