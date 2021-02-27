@@ -105,9 +105,9 @@ public class OrderTrackActivity extends AppCompatActivity implements View.OnClic
     @BindView(R.id.txt_view_sub_total_price)
     TextView txt_view_sub_total_price;
     @BindView(R.id.tvTotal)
-            TextView tvTotal;
+    TextView tvTotal;
     @BindView(R.id.txt_view_total_price)
-            TextView txt_view_total_price;
+    TextView txt_view_total_price;
     List<OrderFoodItem> foodItems=new ArrayList<>();
 
     @Override

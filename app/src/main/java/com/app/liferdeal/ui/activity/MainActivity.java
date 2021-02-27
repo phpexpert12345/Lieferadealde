@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -885,6 +886,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mDrawerLayout.closeDrawer(rl_main_left_drawer);
                 break;
             case 9:// rate us
+                try{ startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id="+getPackageName())));
+                }
+                catch (ActivityNotFoundException e){
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id="+getPackageName())));
+                }
                 mDrawerLayout.closeDrawer(rl_main_left_drawer);
                 break;
 //            case 11:// language setting
