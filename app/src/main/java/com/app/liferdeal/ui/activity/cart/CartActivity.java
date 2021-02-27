@@ -1418,7 +1418,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                        redeemPointsUser(etLoyaltyPoint.getText().toString(), dialog);
                    }
                    else{
-                       Toast.makeText(getApplicationContext(), model.getPleaseEnterLoyaltyPoint(), Toast.LENGTH_LONG).show();
+                       Toast.makeText(getApplicationContext(), "Please enter loyalty points less or equal to "+redeemPointsTotal, Toast.LENGTH_LONG).show();
                    }
                 } else {
                     Toast.makeText(getApplicationContext(), model.getPleaseEnterLoyaltyPoint(), Toast.LENGTH_LONG).show();

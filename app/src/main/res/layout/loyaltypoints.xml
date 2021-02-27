@@ -40,6 +40,20 @@
 
     </androidx.cardview.widget.CardView>
 
+
+        <TextView
+            android:id="@+id/txt_LoyaltyPoint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/roboto_medium"
+            android:text=""
+            android:textColor="@color/colorOrange"
+            android:textSize="18sp" />
+
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcv_loyality_points_list"
         android:layout_width="match_parent"

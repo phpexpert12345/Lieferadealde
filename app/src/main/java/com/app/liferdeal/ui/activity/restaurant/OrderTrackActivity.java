@@ -100,6 +100,14 @@ public class OrderTrackActivity extends AppCompatActivity implements View.OnClic
     @BindView(R.id.recycler_food_items)
     RecyclerView recycler_food_items;
     private String currencySymbol;
+    @BindView(R.id.tvSubTotal)
+    TextView tvSubTotal;
+    @BindView(R.id.txt_view_sub_total_price)
+    TextView txt_view_sub_total_price;
+    @BindView(R.id.tvTotal)
+            TextView tvTotal;
+    @BindView(R.id.txt_view_total_price)
+            TextView txt_view_total_price;
     List<OrderFoodItem> foodItems=new ArrayList<>();
 
     @Override
@@ -143,6 +151,8 @@ public class OrderTrackActivity extends AppCompatActivity implements View.OnClic
             txt_view_sub_menu.setText(model.getOrderComplete() + "-");
             tvWrite.setText(model.getWriteAReview());
             txt_payment_mode.setText(model.getPayment());
+            tvSubTotal.setText(model.getSubtotal());
+            tvTotal.setText(model.getTotal());
 
             strordernumber = getIntent().getStringExtra("orderid");
             if(getIntent().hasExtra("food_items")){
@@ -203,10 +213,10 @@ public class OrderTrackActivity extends AppCompatActivity implements View.OnClic
 
                     @Override
                     public void onNext(MYOrderTrackDetailModel searchResult) {
-                        if (searchResult.getOrderTrackHistory().size() > 0) {
+                        if (searchResult.getOrderDetailItem().size() > 0) {
 
 
-                            if (searchResult.getOrderTrackHistory().get(0).getOrderStatus().equalsIgnoreCase("Delivered")) {
+                            if (searchResult.getOrderDetailItem().get(0).getStatus().equalsIgnoreCase("Delivered")) {
                                 rvWriteAReview.setVisibility(View.VISIBLE);
                             } else {
                                 rvWriteAReview.setVisibility(View.GONE);
@@ -217,10 +227,15 @@ public class OrderTrackActivity extends AppCompatActivity implements View.OnClic
                             String orderstatusmsg = searchResult.getOrderDetailItem().get(0).getOrderStatusMsg();
                             String subtotal = searchResult.getOrderDetailItem().get(0).getSubTotal();
                             String orderpricetotal = searchResult.getOrderDetailItem().get(0).getOrderPrice();
+                            txt_view_sub_total_price.setText(currencySymbol + dotToCommaClass.changeDot(subtotal));
+                            txt_view_total_price.setText(currencySymbol + dotToCommaClass.changeDot(orderpricetotal));
                             String restname = searchResult.getOrderDetailItem().get(0).getRestaurantName();
                             String resuestatdate = searchResult.getOrderDetailItem().get(0).getRequestAtDate();
                             String resuestattime = searchResult.getOrderDetailItem().get(0).getRequestAtTime();
                             String customercity = searchResult.getOrderDetailItem().get(0).getCustomerCity();
+                            if(!customercity.equalsIgnoreCase("")){
+
+                            }
                             String payment_mode = searchResult.getOrderDetailItem().get(0).getPaymentMethod();
                             txt_payment_status.setText(payment_mode);
                             String restro_address = searchResult.getOrderDetailItem().get(0).getRestaurantAddress();
@@ -235,25 +250,36 @@ public class OrderTrackActivity extends AppCompatActivity implements View.OnClic
                             String firstStatus = "", secondStatus = "", thirdStatus = "";
                             String firstDate = "", secondDate = "", thirdDate = "";
                             //Toast.makeText(getApplicationContext(),searchResult.getOrderTrackHistory().get(0).getOrderStatus(),Toast.LENGTH_LONG).show();
-
-                            if (searchResult.getOrderTrackHistory() != null && searchResult.getOrderTrackHistory().get(0) != null) {
-                                firstStatus = searchResult.getOrderTrackHistory().get(0).getOrderStatus();
-                                firstDate = searchResult.getOrderTrackHistory().get(0).getOrderStatusDate() + " " + searchResult.getOrderTrackHistory().get(0).getOrderStatusTime();
-                            } else {
-                                firstStatus = "";
-                            }
-                            if (searchResult.getOrderTrackHistory() != null && searchResult.getOrderTrackHistory().size() > 1) {
-                                secondStatus = searchResult.getOrderTrackHistory().get(1).getOrderStatus();
-                                secondDate = searchResult.getOrderTrackHistory().get(1).getOrderStatusDate() + " " + searchResult.getOrderTrackHistory().get(1).getOrderStatusTime();
-                            } else {
-                                secondStatus = "";
-                            }
-                            if (searchResult.getOrderTrackHistory() != null && searchResult.getOrderTrackHistory().size() > 2) {
-                                thirdStatus = searchResult.getOrderTrackHistory().get(2).getOrderStatus();
-                                thirdDate = searchResult.getOrderTrackHistory().get(2).getOrderStatusDate() + " " + searchResult.getOrderTrackHistory().get(2).getOrderStatusTime();
-                            } else {
-                                thirdStatus = "";
-                            }
+if(searchResult.getOrderTrackHistory().size()>0){
+    if(searchResult.getOrderTrackHistory().size()>=1){
+        firstStatus = searchResult.getOrderTrackHistory().get(0).getOrderStatus();
+        firstDate = searchResult.getOrderTrackHistory().get(0).getOrderStatusDate() + " " + searchResult.getOrderTrackHistory().get(0).getOrderStatusTime();
+    }
+    else if(searchResult.getOrderTrackHistory().size()>=2){
+        secondStatus = searchResult.getOrderTrackHistory().get(1).getOrderStatus();
+        secondDate = searchResult.getOrderTrackHistory().get(1).getOrderStatusDate() + " " + searchResult.getOrderTrackHistory().get(1).getOrderStatusTime();
+    }
+    else if(searchResult.getOrderTrackHistory().size()>=3){
+        thirdStatus = searchResult.getOrderTrackHistory().get(2).getOrderStatus();
+        thirdDate = searchResult.getOrderTrackHistory().get(2).getOrderStatusDate() + " " + searchResult.getOrderTrackHistory().get(2).getOrderStatusTime();
+    }
+}
+//                            if (searchResult.getOrderTrackHistory() != null && searchResult.getOrderTrackHistory().get(0) != null) {
+//                                firstStatus = searchResult.getOrderTrackHistory().get(0).getOrderStatus();
+//                                firstDate = searchResult.getOrderTrackHistory().get(0).getOrderStatusDate() + " " + searchResult.getOrderTrackHistory().get(0).getOrderStatusTime();
+//                            } else {
+//                                firstStatus = "";
+//                            }
+//                            if (searchResult.getOrderTrackHistory() != null && searchResult.getOrderTrackHistory().size() > 1) {
+//
+//                            } else {
+//                                secondStatus = "";
+//                            }
+//                            if (searchResult.getOrderTrackHistory() != null && searchResult.getOrderTrackHistory().size() > 2) {
+//
+//                            } else {
+//                                thirdStatus = "";
+//                            }
                             // String itemsName = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getItemsName();
 
                      /*   currency = searchResult.getOrderDetailItem().get(0).getOrderFoodItem().get(0).getCurrency().toString();
@@ -310,7 +336,15 @@ public class OrderTrackActivity extends AppCompatActivity implements View.OnClic
     private void setTextData(String orderno, String orderstatusmsg, String subtotal, String orderpricetotal, String restname, String resuestatdate, String resuestattime, String customercity, String currency, String menuprice, String itemname, long quantity, String firstStatus, String secondStatus, String thirdStatus, String firstDate, String secondDate, String thirdDate) {
         txt_view_ordernumber.setText(model.getOrderID() + " : " + orderno);
         //txt_view_sub_menu_one.setText(resuestatdate + " " + resuestattime);
-        txt_delivered_city.setText(customercity);
+        if(!customercity.equalsIgnoreCase("")){
+            txt_vie_menu.setVisibility(View.VISIBLE);
+            txt_delivered_city.setVisibility(View.VISIBLE);
+            txt_delivered_city.setText(customercity);
+        }
+        else{
+            txt_delivered_city.setVisibility(View.GONE);
+            txt_vie_menu.setVisibility(View.GONE);
+        }
         tvFoodName.setText(itemname);
         txtPrice.setText(currencySymbol + dotToCommaClass.changeDot(subtotal));
 
@@ -318,12 +352,14 @@ public class OrderTrackActivity extends AppCompatActivity implements View.OnClic
             txt_view_sub_menu.setText(firstStatus);
             txt_view_sub_menu_one.setText(firstDate);
             txt_orderdattime.setText(firstDate);
+            txt_orderdattime.setVisibility(View.VISIBLE);
 
             rlt_sub_menu.setVisibility(View.VISIBLE);
             viewSquare1.setVisibility(View.VISIBLE);
         } else {
             rlt_sub_menu.setVisibility(View.GONE);
             viewSquare1.setVisibility(View.GONE);
+            txt_orderdattime.setVisibility(View.GONE);
         }
 
         if (!secondStatus.equalsIgnoreCase("")) {

@@ -136,7 +136,12 @@ public class ContactUs extends AppCompatActivity implements View.OnClickListener
                 } else if (edit_mobile.getText().toString().trim().equalsIgnoreCase("")) {
                     edit_mobile.setError(model.getPleaseEnterMobileNo());
                     edit_mobile.requestFocus();
-                } else if (edit_message.getText().toString().trim().equalsIgnoreCase("")) {
+                }
+                else if(edit_mobile.getText().toString().length()<10){
+                    edit_mobile.setError(model.getPleaseEnterPhoneNo());
+                    edit_mobile.requestFocus();
+                }
+                else if (edit_message.getText().toString().trim().equalsIgnoreCase("")) {
                     edit_message.setError(model.getPleaseEnterMessage());
                     edit_message.requestFocus();
                 } else {

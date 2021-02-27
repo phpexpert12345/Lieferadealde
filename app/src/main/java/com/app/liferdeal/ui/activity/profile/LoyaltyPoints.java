@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.app.liferdeal.R;
 import com.app.liferdeal.application.App;
 import com.app.liferdeal.model.LanguageResponse;
+import com.app.liferdeal.model.RmGetLoyaltyPointResponse;
 import com.app.liferdeal.model.restaurant.LoyalityPointsModel;
 import com.app.liferdeal.network.retrofit.ApiInterface;
 import com.app.liferdeal.network.retrofit.RFClient;
@@ -78,15 +80,20 @@ public class LoyaltyPoints extends AppCompatActivity implements View.OnClickList
     TextView tvPointtttttt;
     @BindView(R.id.tvPointtttttttt)
     TextView tvPointtttttttt;
+    @BindView(R.id.txt_LoyaltyPoint)
+    TextView txt_LoyaltyPoint;
     private ProgressDialog progressDialog;
     private ApiInterface apiInterface;
     private PrefsHelper prefsHelper;
     private RecyclerView rcv_loyality_points_list;
+    private String redeemPointsTotal = "";
     List<LoyalityPointsModel> listt;
     private ImageView iv_back;
     private TextView tv_free_signup_points, tv_place_fst_order_points, tv_item_points, tv_place_point_order, tv_bday_celebrate_points, tvRefer, tvReferfriend,
             tv_social_media_points, tv_refer_points, tv_spen_more_points, tvHead, tv_loyality_des, tvPointttttttttt, tvEuro, tvEuroDes, tv_euro_point;
     private LanguageResponse model;
+    private String CustomerId;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -102,6 +109,9 @@ public class LoyaltyPoints extends AppCompatActivity implements View.OnClickList
     private void init() {
         try {
             prefsHelper = new PrefsHelper(this);
+            if (prefsHelper.isLoggedIn()) {
+                CustomerId = prefsHelper.getPref(Constants.CUSTOMER_ID);
+            }
             progressDialog = new ProgressDialog(this);
             iv_back = findViewById(R.id.iv_back);
             tvHead = findViewById(R.id.tvHead);
@@ -158,9 +168,59 @@ public class LoyaltyPoints extends AppCompatActivity implements View.OnClickList
 
             iv_back.setOnClickListener(this);
             getLoyalty();
+            if(CustomerId!=null){
+                txt_LoyaltyPoint.setVisibility(View.VISIBLE);
+                getLoyalityPoitsAll();
+            }
+            else{
+                txt_LoyaltyPoint.setVisibility(View.GONE);
+            }
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+
+
+    }
+    private void getLoyalityPoitsAll() {
+showProgress();
+        apiInterface = RFClient.getClient().create(ApiInterface.class);
+        Observable<RmGetLoyaltyPointResponse> observable = apiInterface.getTotalLoyaltyPoint(CustomerId);
+
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<RmGetLoyaltyPointResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        //hideProgress();
+                    }
+
+                    @Override
+                    public void onNext(RmGetLoyaltyPointResponse searchResult) {
+                        hideProgress();
+                        redeemPointsTotal=searchResult.getTotalLoyaltyPoints();
+                        if (redeemPointsTotal.equalsIgnoreCase("") || redeemPointsTotal.equalsIgnoreCase("0")) {
+                            txt_LoyaltyPoint.setText(model.getYouHave() + " " + "0" + " " + model.getLoyaltyPoints());
+                        }
+                        else {
+                            txt_LoyaltyPoint.setText(model.getYouHave() + " " + searchResult.getTotalLoyaltyPoints() + " " + model.getLoyaltyPoints());
+                        }
+                        //Toast.makeText(getApplicationContext(),searchResult.getTotalLoyaltyPoints().toString(),Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        hideProgress();
+                        Log.d("TAG", "log...." + e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        //   activity.mySharePreferences.setBundle("login");
+                        hideProgress();
+
+                    }
+                });
     }
 
     private void getLoyalty() {
