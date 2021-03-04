@@ -110,8 +110,13 @@ holder.tv_restaurant_no.setVisibility(View.VISIBLE);
                 }
             });
 if(listFilterSubCategory.get(position).getDiscountFoodAmount()!=null) {
-    holder.tv_item_cost_old.setVisibility(View.VISIBLE);
-    setSpan(holder, dotToCommaClass.changeDot(listFilterSubCategory.get(position).getDiscountFoodAmount()) + "% " + model.getDiscountAppliedOriginalPrice(), dotToCommaClass.changeDot(holder.tv_item_cost_old.getText().toString()));
+    if(!listFilterSubCategory.get(position).getDiscountFoodAmount().equalsIgnoreCase("")) {
+        holder.tv_item_cost_old.setVisibility(View.VISIBLE);
+        setSpan(holder, dotToCommaClass.changeDot(listFilterSubCategory.get(position).getDiscountFoodAmount()) + "% " + model.getDiscountAppliedOriginalPrice(), dotToCommaClass.changeDot(holder.tv_item_cost_old.getText().toString()));
+    }
+    else{
+        holder.tv_item_cost_old.setVisibility(View.GONE);
+    }
 }
 else{
     holder.tv_item_cost_old.setVisibility(View.GONE);
