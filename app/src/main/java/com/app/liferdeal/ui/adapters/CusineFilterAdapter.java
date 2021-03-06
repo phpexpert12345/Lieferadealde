@@ -55,6 +55,7 @@ public class CusineFilterAdapter extends RecyclerView.Adapter<CusineFilterAdapte
 
     @Override
     public void onBindViewHolder(@NonNull CusineFilterAdapter.Holder holder, final int position) {
+
         if(listCategory.get(position).getSelected()){
             holder.cbitem.setChecked(true);
         }
@@ -67,14 +68,18 @@ public class CusineFilterAdapter extends RecyclerView.Adapter<CusineFilterAdapte
             @Override
             public void onClick(View view) {
                 int pos= (int) view.getTag();
-                if(holder.cbitem.isChecked()) {
-                   listCategory.get(position).setSelected(true);
-                    cusineFilterAdapterInterface.getClickData(listCategory, pos);
-
-                } else {
-                    listCategory.get(position).setSelected(false);
-                    cusineFilterAdapterInterface.getClickData(listCategory, pos);
+                if(listCategory.get(pos).getSelected()){
+                    listCategory.get(pos).setSelected(false);
                 }
+                else{
+                    for(int i=0;i<listCategory.size();i++){
+                        listCategory.get(i).setSelected(false);
+                    }
+                    listCategory.get(pos).setSelected(true);
+                }
+                cusineFilterAdapterInterface.getClickData(listCategory, pos);
+                notifyDataSetChanged();
+
             }
         });
     }

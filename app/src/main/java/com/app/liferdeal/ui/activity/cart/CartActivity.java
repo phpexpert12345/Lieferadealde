@@ -1148,7 +1148,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     private void getShippingChargeData(String order_type) {
         apiInterface = RFClient.getClient().create(ApiInterface.class);
         Observable<ShippingCartModel> observable = apiInterface.getServiceCharge(prefsHelper.getPref(Constants.API_KEY), prefsHelper.getPref(Constants.LNG_CODE),
-                String.valueOf(totalPrice), RestId, postalCode, orderType);
+                String.valueOf(totalPrice), RestId, postalCode, orderType,postalCode);
 
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

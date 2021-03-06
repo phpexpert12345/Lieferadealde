@@ -334,9 +334,11 @@ public class RestaurantMain extends Fragment implements View.OnClickListener, Cu
                         pbLoad.setVisibility(View.GONE);
                         if (searchResult.getSearchResult().size() > 0) {
                             setAdapterCategory(searchResult.getSearchResult());
+                            rcv_rest_list.setVisibility(View.VISIBLE);
                             linear_no_data.setVisibility(View.GONE);
                         } else {
-                            setAdapterCategory(searchResult.getSearchResult());
+                            rcv_rest_list.setVisibility(View.GONE);
+//                            setAdapterCategory(searchResult.getSearchResult());
                             linear_no_data.setVisibility(View.VISIBLE);
                             btn_refresh.setText(model.getBack_to_Restaurant_list());
                             if(searchResult.getSuccessMsg()!=null){
@@ -352,6 +354,13 @@ public class RestaurantMain extends Fragment implements View.OnClickListener, Cu
                     public void onError(Throwable e) {
                         banner_progress.setVisibility(View.GONE);
                         pbLoad.setVisibility(View.GONE);
+                        rcv_rest_list.setVisibility(View.GONE);
+//                            setAdapterCategory(searchResult.getSearchResult());
+                        linear_no_data.setVisibility(View.VISIBLE);
+                        btn_refresh.setText(model.getBack_to_Restaurant_list());
+//                        if(searchResult.getSuccessMsg()!=null){
+//                            tvDataNotAvailable.setText(searchResult.getSuccessMsg());
+//                        }
                         Log.d("TAG", "log...." + e);
                     }
 
@@ -359,6 +368,7 @@ public class RestaurantMain extends Fragment implements View.OnClickListener, Cu
                     public void onComplete() {
                         banner_progress.setVisibility(View.GONE);
                         pbLoad.setVisibility(View.GONE);
+
                         //   activity.mySharePreferences.setBundle("login");
 
                     }
@@ -468,6 +478,7 @@ if(cuisineLists.size()>0){
     public void getClickData(List<CuisineList>cuisineLists,int pos) {
 //        selected_cusines = extraName;
         selected_cusines.clear();
+        lists.clear();
          CuisineList cuisineList=cuisineLists.get(pos);
 
 

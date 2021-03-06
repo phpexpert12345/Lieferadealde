@@ -62,12 +62,12 @@ public class PrivacyAndPolicy extends AppCompatActivity implements View.OnClickL
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
 
-            hideProgress();
+//            hideProgress();
         }
     }
 
     private void initialization() {
-        showProgress();
+//        showProgress();
         ivBack = findViewById(R.id.iv_back);
         pbLoad = findViewById(R.id.pbLoad);
         //pbLoad.setVisibility(View.VISIBLE);
@@ -83,6 +83,7 @@ public class PrivacyAndPolicy extends AppCompatActivity implements View.OnClickL
                 webView.getSettings().setJavaScriptEnabled(true);
                 webView.setWebViewClient(new MyWebViewClient());
                 webView.loadUrl(Constants.Url.BASE_URL + "privacy_statement_web.php");
+                pbLoad.setVisibility(View.GONE);
                 //hideProgress();
                 //Toast.makeText(getApplicationContext(),"Calllllleddd",Toast.LENGTH_LONG).show();
                 //pbLoad.setVisibility(View.GONE);
@@ -98,6 +99,7 @@ public class PrivacyAndPolicy extends AppCompatActivity implements View.OnClickL
         } else {
             tv_terms_condition.setText(model.getTermsOfService());
             webView.loadUrl(Constants.Url.BASE_URL + "terms_of_use_web.php");
+            pbLoad.setVisibility(View.GONE);
             // hideProgress();
             //pbLoad.setVisibility(View.GONE);
         }

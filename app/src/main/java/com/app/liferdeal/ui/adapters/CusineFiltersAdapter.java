@@ -28,6 +28,7 @@ public class CusineFiltersAdapter extends RecyclerView.Adapter<CusineFiltersAdap
     ArrayList<Integer> selected_cusines_id;
     private CusineFilterAdapterInterface mClickListener;
     private Boolean[] selectedList;
+    int selected_pos=-1;
 
     public interface CusineFilterAdapterInterface {
         void getClickData(List<CuisineList> listCategory,int pos);
@@ -70,36 +71,67 @@ public class CusineFiltersAdapter extends RecyclerView.Adapter<CusineFiltersAdap
             holder.txtitemname.setBackgroundColor(mContext.getResources().getColor(R.color.colorWhite));
             holder.txtitemname.setTextColor(mContext.getResources().getColor(R.color.colorBlack));
         }
+//        if(listCategory.get(position).getSelected()){
+//            holder.txtitemname.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.button_rounded_bottom));
+//            holder.txtitemname.setTextColor(mContext.getResources().getColor(R.color.colorWhite));
+//        }
+//        else{
+//            holder.txtitemname.setBackgroundColor(mContext.getResources().getColor(R.color.colorWhite));
+//            holder.txtitemname.setTextColor(mContext.getResources().getColor(R.color.colorBlack));
+//        }
 
 
 holder.txtitemname.setTag(position);
 
         holder.txtitemname.setOnClickListener(view -> {
             int pos= (int) view.getTag();
+
             if(listCategory.get(pos).getSelected()){
                 listCategory.get(pos).setSelected(false);
+
             }
             else{
+                for(int i=0;i<listCategory.size();i++){
+                    listCategory.get(i).setSelected(false);
+                }
+                selected_pos=pos;
                 listCategory.get(pos).setSelected(true);
             }
 
             if (mClickListener != null) {
                 mClickListener.getClickData(listCategory,pos);
             }
+            notifyDataSetChanged();
+
+
+
+
+//            if(listCategory.get(pos).getSelected()){
+//                listCategory.get(pos).setSelected(false);
+//
+//            }
+//            else{
+//                listCategory.get(pos).setSelected(true);
+//            }
         });
 holder.ivHorizontal.setTag(position);
         holder.ivHorizontal.setOnClickListener(view -> {
             int pos= (int) view.getTag();
             if(listCategory.get(pos).getSelected()){
                 listCategory.get(pos).setSelected(false);
+
             }
             else{
+                for(int i=0;i<listCategory.size();i++){
+                    listCategory.get(i).setSelected(false);
+                }
                 listCategory.get(pos).setSelected(true);
             }
 
             if (mClickListener != null) {
                 mClickListener.getClickData(listCategory,pos);
             }
+            notifyDataSetChanged();
         });
     }
 
