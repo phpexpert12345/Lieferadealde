@@ -300,7 +300,8 @@ public interface ApiInterface {
                                                    @Field("subTotal") String subTotal,
                                                    @Field("resid") String resid,
                                                    @Field("restaurant_locality") String restaurant_locality,
-                                                   @Field("Order_Type") String Order_Type
+                                                   @Field("Order_Type") String Order_Type,
+                                                   @Field("customer_postcode")String customer_postcode
     );
 
     @FormUrlEncoded
