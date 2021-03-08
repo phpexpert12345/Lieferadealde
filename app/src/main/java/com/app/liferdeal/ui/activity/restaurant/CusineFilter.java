@@ -207,6 +207,7 @@ public class CusineFilter extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void getClickData(List<CuisineList>listcategory, int pos) {
+        lists.clear();
         if(listcategory.size()>0){
             if(listcategory.get(pos).getSelected()){
                 lists.add(listcategory.get(pos));

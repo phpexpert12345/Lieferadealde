@@ -275,7 +275,7 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
 
         tv_item_discount_cost.setBackgroundColor(Color.parseColor(colorCode));
 
-        getRestSearchDetailsData();
+
         getAllMenu();
         updateCart();
 
@@ -318,6 +318,7 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
 
                     @Override
                     public void onComplete() {
+                        getRestSearchDetailsData();
                         //   activity.mySharePreferences.setBundle("login");
                     }
                 });

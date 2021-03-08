@@ -91,6 +91,8 @@ public class ChooseComActivity extends AppCompatActivity {
     String value="";
     String com_price="";
     double com_p=0.0;
+    ComValue selected_value;
+    List<ComValue>comValues=new ArrayList<>();
     private LanguageResponse model = new LanguageResponse();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -180,7 +182,10 @@ public class ChooseComActivity extends AppCompatActivity {
         ComboSectionAdapter comboSectionAdapter=new ComboSectionAdapter(comboSections, new SelectSec() {
             @Override
             public void getClickSec(int pos) {
-
+if(comValues.size()>0){
+    comValues.clear();
+}
+comValues=comboSections.get(pos).getComboSectionValue();
                 setComboSectionValueAdapter(comboSections.get(pos).getComboSectionValue());
             }
         });
@@ -191,7 +196,8 @@ public class ChooseComActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
         ComValueAdapter comValueAdapter=new ComValueAdapter(comValues, this, new ComValueAdapter.ComValueClicked() {
             @Override
-            public void ComClicked(ComValueItem subItemsRecord,int comslot_id,String com) {
+            public void ComClicked(ComValueItem subItemsRecord,int comslot_id,String com,ComValue comValue) {
+                selected_value=comValue;
                 if(item_ids.length()>0){
                     item_ids.append(",");
                 }
@@ -238,6 +244,7 @@ value=subItemsRecord.getCombo_Slot_ItemName();
                     comboslot_ids.append(",");
                 }
                 comboslot_ids.append(comValue.getComboslot_id());
+
                 if(!comValue.getFree_allowed().equalsIgnoreCase("")) {
                     Free_allowed = Integer.parseInt(comValue.getFree_allowed());
                     Free_Topping_Selection_allowed=Integer.parseInt(comValue.getFree_Topping_Selection_allowed());
@@ -290,6 +297,9 @@ com_p=com_p+price_demo;
                 }
                     Log.i("url", price + ", " + com_tops.toString() + ", " + sec_item.toString()+", "+sec_value+", "+com_tops_id);
                 }
+                int dex=comValues.indexOf(selected_value);
+                comValues.get(dex).setTopping_Selected(1);
+                setComboSectionValueAdapter(comValues);
             }
         }
     }

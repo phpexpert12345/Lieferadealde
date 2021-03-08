@@ -113,7 +113,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     private TextView tv_sipping, tv_sub_total, tv_food_item_total;
     private RecyclerView list_view_items;
     private ImageView img_select_picup, img_select_delivery;
-    public String orderType = "", RestId = "", postalCode = "",rest_address="";
+    public String orderType = "", RestId = "", postalCode = "",rest_address="",rest_locality="";
     private LinearLayout rl_pickup, rlDineIn, rl_delivery;
     private RelativeLayout card_checkout;
     private TextView tv_total, tv_count, checkout_total_price, tvDeliveryFee, tvTotalItem, tvDeliveryText, tvServiceChargeText, tvServiceCharge, tvDelivery,
@@ -227,6 +227,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
 
         System.out.println("==== rest id in cart activity : " + RestId);
         postalCode = prefsHelper.getPref(Constants.SAVE_POSTAL_CODE);
+        rest_locality = prefsHelper.getPref(Constants.SAVE_CITY_NAME);
         if (prefsHelper.isLoggedIn()) {
             CustomerId = prefsHelper.getPref(Constants.CUSTOMER_ID);
             CustomerAddressId = prefsHelper.getPref(Constants.CUSTOMER_ADDRESS_ID);
@@ -1148,7 +1149,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
     private void getShippingChargeData(String order_type) {
         apiInterface = RFClient.getClient().create(ApiInterface.class);
         Observable<ShippingCartModel> observable = apiInterface.getServiceCharge(prefsHelper.getPref(Constants.API_KEY), prefsHelper.getPref(Constants.LNG_CODE),
-                String.valueOf(totalPrice), RestId, postalCode, orderType,postalCode);
+                String.valueOf(totalPrice), RestId, rest_locality, orderType,postalCode);
 
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

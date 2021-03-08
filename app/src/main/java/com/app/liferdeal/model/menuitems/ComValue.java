@@ -40,6 +40,18 @@ public class ComValue {
     @Expose
     private String Free_Topping_Selection_allowed;
 
+    public int getTopping_Selected() {
+        return Topping_Selected;
+    }
+
+    public void setTopping_Selected(int topping_Selected) {
+        Topping_Selected = topping_Selected;
+    }
+
+    @SerializedName("Topping_Selected")
+    @Expose
+    private int Topping_Selected=0;
+
     public String getError() {
         return error;
     }

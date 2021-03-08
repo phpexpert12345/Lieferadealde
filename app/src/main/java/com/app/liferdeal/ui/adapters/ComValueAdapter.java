@@ -31,7 +31,7 @@ public class ComValueAdapter extends RecyclerView.Adapter<ComValueAdapter.ComVal
     String name;
     String desc;
    public interface ComValueClicked{
-        void ComClicked(ComValueItem subItemsRecord,int comslot_id,String sec_);
+        void ComClicked(ComValueItem subItemsRecord,int comslot_id,String sec_,ComValue comValue);
         void ComValueClicked(ComValue comValue);
     }
     ComValueClicked comValueClicked;
@@ -49,6 +49,12 @@ public class ComValueAdapter extends RecyclerView.Adapter<ComValueAdapter.ComVal
     @Override
     public void onBindViewHolder(@NonNull ComValueViewHolder holder, int position) {
 ComValue comValue=comValues.get(position);
+if(comValue.getTopping_Selected()==1){
+    holder.img_check.setVisibility(View.VISIBLE);
+}
+else{
+    holder.img_check.setVisibility(View.GONE);
+}
 holder.txt_sec_text.setText(comValue.getSlot_Option_Name());
 holder.relative_sec.setTag(position);
 holder.relative_sec.setOnClickListener(new View.OnClickListener() {
@@ -73,7 +79,7 @@ holder.relative_sec.setOnClickListener(new View.OnClickListener() {
             @Override
             public void getClickSecComboItem(ComValueItem subItemsRecord) {
                 holder.recyler_sec_item.setVisibility(View.GONE);
-          comValueClicked.ComClicked(subItemsRecord,Integer.parseInt(comValue.getComboslot_id()),comValue.getSlot_Option_Name());
+          comValueClicked.ComClicked(subItemsRecord,Integer.parseInt(comValue.getComboslot_id()),comValue.getSlot_Option_Name(),comValue);
             }
         });
         holder.recyler_sec_item.setAdapter(comValueAdapter);
@@ -96,6 +102,8 @@ holder.relative_sec.setOnClickListener(new View.OnClickListener() {
         RecyclerView recyler_sec_item;
         @BindView(R.id.relative_sec)
         RelativeLayout relative_sec;
+        @BindView(R.id.img_check)
+        ImageView img_check;
         public ComValueViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
