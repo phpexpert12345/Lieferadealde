@@ -418,7 +418,8 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
                         String subcatdetals = cursor.getString(8);
                         String item_quantity = cursor.getString(7);
                         int com=cursor.getInt(9);
-                        totalPrice = totalPrice + Double.parseDouble(price);
+                        int item_quat=Integer.parseInt(item_quantity);
+                        totalPrice +=Double.parseDouble(price)*item_quat;
                         raviCartModles.add(new RaviCartModle(item_id, item_name, size_item_id, size_item_name, extra_item_id, extra_item_name, price, item_quantity, subcatdetals,com));
 
                     } while (cursor.moveToNext());
@@ -827,7 +828,6 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
 //            price = price / qunt;
 //            price = (double) Math.round(price * 100) / 100;
             qunt = qunt - 1;
-            price = price * qunt;
 
         }
         if (qunt > 0) {
@@ -875,7 +875,6 @@ public class RestaurantDetails extends AppCompatActivity implements View.OnClick
 //            price = price / qunt;
 //            price = (double) Math.round(pQArice * 100) / 100;
             qunt = qunt + 1;
-            price = price * qunt;
             database.update_item(String.valueOf(subPizzaItemId), qunt, price);
         } else {
             database.InsertItem(String.valueOf(itemId), itemName, "0", "0", "0", "0", Double.parseDouble(amt), 1, subcatItemDetails,0);

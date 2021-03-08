@@ -216,7 +216,15 @@ comValues=comboSections.get(pos).getComboSectionValue();
                     FoodItemSizeIDs.append("0");
                 }
                 Combo_Slot_ItemIDs.append(subItemsRecord.getCombo_Slot_ItemID());
+                if(comboslot_ids.length()>0){
+                    comboslot_ids.append(",");
+                }
+                comboslot_ids.append(comValue.getComboslot_id());
 
+                if(!comValue.getFree_allowed().equalsIgnoreCase("")) {
+                    Free_allowed = Integer.parseInt(comValue.getFree_allowed());
+                    Free_Topping_Selection_allowed=Integer.parseInt(comValue.getFree_Topping_Selection_allowed());
+                }
                 Intent intent=new Intent(ChooseComActivity.this, ComExtraActivity.class);
                 intent.putExtra("price",price);
                 intent.putExtra("item_id",subItemsRecord.getItemID());
@@ -240,15 +248,7 @@ value=subItemsRecord.getCombo_Slot_ItemName();
 
             @Override
             public void ComValueClicked(ComValue comValue) {
-                if(comboslot_ids.length()>0){
-                    comboslot_ids.append(",");
-                }
-                comboslot_ids.append(comValue.getComboslot_id());
 
-                if(!comValue.getFree_allowed().equalsIgnoreCase("")) {
-                    Free_allowed = Integer.parseInt(comValue.getFree_allowed());
-                    Free_Topping_Selection_allowed=Integer.parseInt(comValue.getFree_Topping_Selection_allowed());
-                }
             }
         });
         recyler_sec.setAdapter(comValueAdapter);

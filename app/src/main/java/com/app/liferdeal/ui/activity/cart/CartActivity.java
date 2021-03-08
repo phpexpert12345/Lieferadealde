@@ -476,6 +476,9 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                         toatl_price =toatl_price+ (Double.parseDouble(raviCartModles.get(j).getPrice()))*quat;
                             if(raviCartModles.get(j).getCombo()==0){
                             String size_item = raviCartModles.get(j).getSize_item_name();
+                            if(stringBuilder.length()>0){
+                                stringBuilder.append(",");
+                            }
                             if (!size_item.equalsIgnoreCase("0")) {
                                 stringBuilder.append(raviCartModles.get(j).getItem_quantity() + "x" + raviCartModles.get(j).getItem_name() + "(" + size_item + ")");
 
@@ -483,7 +486,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                                 stringBuilder.append(raviCartModles.get(j).getItem_quantity() + "x" + raviCartModles.get(j).getItem_name());
 
                             }
-                            stringBuilder.append("\n");
+
 
 
                         }
@@ -492,12 +495,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                             updateData();
                         }
                         if (stringBuilder.length() > 0) {
-                            if(stringBuilder.toString().contains("\n")) {
-                                selectedPizzaName = stringBuilder.deleteCharAt(stringBuilder.lastIndexOf("\n")).toString();
-                            }
-                            else{
-                                selectedPizzaName = stringBuilder.toString();
-                            }
+                            selectedPizzaName = stringBuilder.toString();
                         }
                     }
 
@@ -527,6 +525,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
             tvTotalItem.setText(model.getTotal() + " " + raviCartModles.size() + " " + model.getItems());
             if(raviCartModles.size()>0){
                 double toatl_price=0.0;
+
                 StringBuilder stringBuilder=new StringBuilder();
                 for(int j=0;j<raviCartModles.size();j++) {
                     int quat= Integer.parseInt(raviCartModles.get(j).getItem_quantity());
@@ -876,6 +875,8 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                 });
 
                 double pp = Double.parseDouble(rr.get(position).getPrice());
+                int item_quat= Integer.parseInt(rr.get(position).getItem_quantity());
+                pp=pp*item_quat;
                 holder.tvItemPrice.setText(currencySymbol + dotToCommaClass.changeDot(String.format("%.2f", pp)));
             selectedPizzaItemPrice = holder.tvItemPrice.getText().toString();
                 holder.tvQuantity.setText(rr.get(position).getItem_quantity());
@@ -885,6 +886,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                     public void onClick(View v) {
                         int qunt = 0;
                         double price = 0.0;
+                        price = Double.parseDouble(rr.get(position).getPrice());
                         String subMenuItemId = rr.get(position).getItem_id();
                         String size_id = rr.get(position).getSize_item_id();
                         SQLiteDatabase db = database.getReadableDatabase();
@@ -892,12 +894,7 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                                 + size_id + "' AND extra_item_id='" + rr.get(position).getExtra_item_id() + "'", null);
                         if (cursor.moveToNext()) {
                             qunt = Integer.parseInt(cursor.getString(7));
-                            price = Double.parseDouble(rr.get(position).getPrice());
-                            price = price / qunt;
-                            price = (double) Math.round(price * 100) / 100;
                             qunt = qunt + 1;
-                            price = price * qunt;
-                            totalPrice = price;
                         }
                         database.update_item_size_with_topping(subMenuItemId, size_id, rr.get(position).getExtra_item_id(), qunt, price);
                         rr.get(position).setItem_quantity(String.valueOf(qunt));
@@ -912,19 +909,16 @@ public class CartActivity extends AppCompatActivity implements View.OnClickListe
                     public void onClick(View v) {
                         int qunt = 0;
                         double price = 0.0;
+                        price = Double.parseDouble(rr.get(position).getPrice());
                         String subMenuItemId = rr.get(position).getItem_id();
                         String size_id = rr.get(position).getSize_item_id();
                         SQLiteDatabase db = database.getReadableDatabase();
                         Cursor cursor = db.rawQuery("SELECT * FROM item_table where item_id='" + subMenuItemId + "' AND size_item_id='"
                                 + size_id + "' AND extra_item_id='" + rr.get(position).getExtra_item_id() + "'", null);
                         if (cursor.moveToNext()) {
+
                             qunt = Integer.parseInt(cursor.getString(7));
-                            price = Double.parseDouble(rr.get(position).getPrice());
-                            price = price / qunt;
-                            price = (double) Math.round(price * 100) / 100;
                             qunt = qunt - 1;
-                            price = price * qunt;
-                            totalPrice = price;
                         }
                         if (qunt == 0) {
                             database.delete_Item_size(rr.get(position).getItem_id(), rr.get(position).getSize_item_id(), rr.get(position).getExtra_item_id());

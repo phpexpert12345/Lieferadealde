@@ -253,8 +253,8 @@ public class ThankyouPageActivity extends AppCompatActivity implements View.OnCl
         extra_toppings=getIntent().getStringExtra("extra_toppings");
         tvDeliveryFee.setText(model.getDeliveryCost());
         List<OrderFoodItem> orderFoodItems=new ArrayList<>();
-        if(Pizzaname.contains("\n")){
-            String[] pizzas=Pizzaname.split("\n");
+        if(Pizzaname.contains(",")){
+            String[] pizzas=Pizzaname.split(",");
             String[] toppings=extra_toppings.split("_");
             for(int j=0;j<pizzas.length;j++){
                 OrderFoodItem orderFoodItem=new OrderFoodItem();

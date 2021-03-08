@@ -51,6 +51,7 @@ import com.app.liferdeal.util.DotToCommaClass;
 import com.app.liferdeal.util.DroidPrefs;
 import com.app.liferdeal.util.PrefsHelper;
 import com.app.liferdeal.util.SharedPreferencesData;
+import com.app.liferdeal.util.StripePay;
 import com.contrarywind.adapter.WheelAdapter;
 import com.contrarywind.listener.OnItemSelectedListener;
 import com.contrarywind.view.WheelView;
@@ -66,6 +67,7 @@ import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
 import com.stripe.android.ApiResultCallback;
 import com.stripe.android.Stripe;
+import com.stripe.android.exception.CardException;
 import com.stripe.android.model.Card;
 import com.stripe.android.model.PaymentMethod;
 import com.stripe.android.model.Token;
@@ -91,6 +93,7 @@ import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
@@ -159,6 +162,7 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
     AppCompatTextView tvLeaveMsg;
     private String allergy_Data="";
     Database database;
+    StripePay stripePay;
 
     ArrayList<RaviCartModle> raviCartModles;
     private String totalPrice = "";
@@ -537,8 +541,10 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
 
                 if (payment_type.equalsIgnoreCase("card")) {
                     dialogOpen();
+                    break;
                 } else if (payment_type.equalsIgnoreCase("paypal")) {
                     getPayment();
+                    break;
                 } else if (payment_type.equalsIgnoreCase("cash")) {
                     SpecialInstruction = CommonMethods.getStringDataInbase64(editTextInstruction.getText().toString().trim());
                     getPaymentRequestData();
@@ -973,6 +979,32 @@ String base64="";
 
         dialog.show();
     }
+    private void Paymentkey(){
+        apiInterface = RFClient.getClient().create(ApiInterface.class);
+        Observable<StripePay> observable=apiInterface.getStripePaymentkey(prefsHelper.getPref(Constants.API_KEY), prefsHelper.getPref(Constants.LNG_CODE));
+        observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<StripePay>(){
+
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(@NonNull StripePay stripeModel) {
+stripePay=stripeModel;
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+    }
 
     //stripe payment token send to server for success
     private void stripePayment(String stripeToken) {
@@ -1023,7 +1055,7 @@ String base64="";
         showProgress();
         //pk_test_51I04dtKD2jSEa72lEFrtZpRLIdB41dgp5cv421yfPcQ2bPjW6dXswhLYlZoSUTuhbGyMtHjI7n4dMHCcp4N8gqKf00kKQTk8UX
         // live==  pk_live_51H335kI4oh76Z6dpfFRYuAHNcBAQtEZGtf6D7Hs2IG92vaM0x9Do2YFgNBmFNUx5d7fdAv9zsHyUxPjkydKfUCEX00j0eCL1ae
-        Stripe stripe = new Stripe(PayCheckOutActivity.this, "pk_test_51H335kI4oh76Z6dpZGTM13kKY5tMuzpQpGAzDOxhjLIHvzgD3IUWsznINS83NYvmTtXWOugAVvlnMfIDC5c8X2cm00V8TXD3tL");
+        Stripe stripe = new Stripe(PayCheckOutActivity.this, stripePay.stripe_publishKey);
         final Card cardToSave = card_details.getCard();
         if (cardToSave != null) {
             //Toast.makeText(getApplicationContext(),getResources().getString(R.string.wait),Toast.LENGTH_LONG).show();
@@ -1042,7 +1074,12 @@ String base64="";
             stripe.createToken(cardToSave, new ApiResultCallback<Token>() {
                 @Override
                 public void onError(Exception error) {
-                    Toast.makeText(PayCheckOutActivity.this, "Please try again", Toast.LENGTH_SHORT).show();
+//                    if(error instanceof CardException){
+//                        CardException cardException= (CardException) error;
+//                        cardException.det
+//                    }
+                    hideProgress();
+                    Toast.makeText(PayCheckOutActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
                     //progressBar.setVisibility(View.GONE);
                 }
 
@@ -1207,6 +1244,7 @@ String base64="";
                     @Override
                     public void onComplete() {
                         hideProgress();
+                        Paymentkey();
                         //   activity.mySharePreferences.setBundle("login");
 
                     }

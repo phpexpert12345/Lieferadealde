@@ -163,6 +163,7 @@ public class SavedAddressActivity extends AppCompatActivity implements DeleteAdd
             case R.id.tvDeliveryAdd:
                 if(addressList.size()>0){
                     if(!addressId.equalsIgnoreCase("")){
+                        addressId="";
                         gotoPayCheckout();
                     }
                     else{

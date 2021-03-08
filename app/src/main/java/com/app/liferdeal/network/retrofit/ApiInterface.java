@@ -44,6 +44,7 @@ import com.app.liferdeal.ui.activity.cart.AlergyMain;
 import com.app.liferdeal.ui.activity.cart.LoginMainData;
 import com.app.liferdeal.ui.activity.cart.StripeModel;
 import com.app.liferdeal.ui.activity.my_review.ReviewMain;
+import com.app.liferdeal.util.StripePay;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
@@ -125,7 +126,10 @@ public interface ApiInterface {
 
     @GET("phpexpert_website_information.php")
     Observable<PhpInitialInfoModel> getSplashData();
-
+    @FormUrlEncoded
+    @POST("phpexpert_payment_key.php")
+    Observable<StripePay>getStripePaymentkey(@Field("api_key") String api_key,
+                                             @Field("lang_code") String lang_code);
     @FormUrlEncoded
     @POST("phpexpert_restaurant_app_splash_gallery.php")
     Observable<SplashModel> getSplashImageData(@Field("api_key") String api_key,
