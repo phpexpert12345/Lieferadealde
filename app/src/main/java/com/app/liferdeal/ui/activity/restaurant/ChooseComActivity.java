@@ -76,7 +76,7 @@ public class ChooseComActivity extends AppCompatActivity {
     String desc="";
     String price="";
    int Free_allowed;
-         int  Free_Topping_Selection_allowed;
+   int  Free_Topping_Selection_allowed;
     List<ComboSection>comboSections=new ArrayList<>();
     private Database database;
     StringBuilder com_tops=new StringBuilder();

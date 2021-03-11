@@ -316,9 +316,9 @@ public class ThankyouPageActivity extends AppCompatActivity implements View.OnCl
         txt_order_date_time.setText(model.getOrderText() + " " + deliveryDate + " " + restTime);
         txt_order_with_rest_name.setText(restname.trim());
         double price= Double.parseDouble(selectedPizzaItemPrice);
-        txt_pizz_price.setText(dotToCommaClass.changeDot(currencySymbol+new DecimalFormat("#.00").format(price)));
-        txt_subtotal_price.setText(dotToCommaClass.changeDot(currencySymbol + oldprice));
-        txt_inclusive_food_text.setText(dotToCommaClass.changeDot(currencySymbol + oldprice));
+        txt_pizz_price.setText(currencySymbol+dotToCommaClass.changeDot(String.format("%.2f",price)));
+        txt_subtotal_price.setText(currencySymbol+dotToCommaClass.changeDot(String.format("%.2f",Double.parseDouble(oldprice))));
+        txt_inclusive_food_text.setText(currencySymbol+dotToCommaClass.changeDot( String.format("%.2f",Double.parseDouble(oldprice))));
         Glide.with(this).load(Uri.parse(restLogo)).into(img_logo);
         Glide.with(this).load(Uri.parse(prefsHelper.getPref(Constants.APP_LOGO))).into(imgViewLogo);
 
@@ -353,7 +353,7 @@ public class ThankyouPageActivity extends AppCompatActivity implements View.OnCl
         }
         tvSizeOf.setVisibility(View.VISIBLE);
         tvSizeOf.setText(rest_address);
-        txt_subtotal_price.setText(dotToCommaClass.changeDot(currencySymbol + subtotalPr));
+        txt_subtotal_price.setText(currencySymbol+dotToCommaClass.changeDot(String.format("%.2f",Double.parseDouble(subtotalPr)) ));
 
         txtServiceFee.setText(dotToCommaClass.changeDot(currencySymbol + servicefeesPr));
         txtSalexTax.setText(dotToCommaClass.changeDot(currencySymbol + salestaxPr));
