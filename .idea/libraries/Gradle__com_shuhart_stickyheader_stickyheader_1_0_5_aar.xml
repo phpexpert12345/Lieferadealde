@@ -1,9 +1,15 @@
 <component name="libraryTable">
   <library name="Gradle: com.shuhart.stickyheader:stickyheader:1.0.5@aar">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/7dace1d70b38cab6793f37d940536f57/jetified-stickyheader-1.0.5/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/7dace1d70b38cab6793f37d940536f57/jetified-stickyheader-1.0.5/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/7dace1d70b38cab6793f37d940536f57/jetified-stickyheader-1.0.5/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/475b58bf7fb846dc041d0422ff6accf4/jetified-stickyheader-1.0.5/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/475b58bf7fb846dc041d0422ff6accf4/jetified-stickyheader-1.0.5/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/475b58bf7fb846dc041d0422ff6accf4/jetified-stickyheader-1.0.5/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c1d94d2ae8a52a94a0c1e617250df88b/jetified-stickyheader-1.0.5/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c1d94d2ae8a52a94a0c1e617250df88b/jetified-stickyheader-1.0.5/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c1d94d2ae8a52a94a0c1e617250df88b/jetified-stickyheader-1.0.5/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ccfe1cf45a82a8e68f354d8649785440/jetified-stickyheader-1.0.5/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ccfe1cf45a82a8e68f354d8649785440/jetified-stickyheader-1.0.5/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ccfe1cf45a82a8e68f354d8649785440/jetified-stickyheader-1.0.5/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

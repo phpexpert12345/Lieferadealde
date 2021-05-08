@@ -2,9 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Liferdeal.iml" filepath="$PROJECT_DIR$/.idea/modules/Liferdeal.iml" group="Liferdeal" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="Liferdeal/app" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/lib/lib.iml" filepath="$PROJECT_DIR$/.idea/modules/lib/lib.iml" group="Liferdeal/lib" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Lieferadealde11Th.Liferdeal.iml" filepath="$PROJECT_DIR$/.idea/modules/Lieferadealde11Th.Liferdeal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/lib/Lieferadealde11Th.Liferdeal.lib.iml" filepath="$PROJECT_DIR$/.idea/modules/lib/Lieferadealde11Th.Liferdeal.lib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Liferdeal.iml" filepath="$PROJECT_DIR$/.idea/modules/Liferdeal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Liferdeal.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Liferdeal.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/lib/Liferdeal.lib.iml" filepath="$PROJECT_DIR$/.idea/modules/lib/Liferdeal.lib.iml" />
     </modules>
   </component>
 </project>

@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.contrarywind:wheelview:4.1.0@aar">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d8bd131ec63907d62d84f188aa229c9e/jetified-wheelview-4.1.0/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d8bd131ec63907d62d84f188aa229c9e/jetified-wheelview-4.1.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d8bd131ec63907d62d84f188aa229c9e/jetified-wheelview-4.1.0/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d0805ae0845cf378f8c0f7506bf3e6ed/jetified-wheelview-4.1.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d0805ae0845cf378f8c0f7506bf3e6ed/jetified-wheelview-4.1.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d0805ae0845cf378f8c0f7506bf3e6ed/jetified-wheelview-4.1.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.contrarywind/wheelview/4.1.0/de96a76ec9af0cd2809e0f3313c4597f65eb5da8/wheelview-4.1.0-javadoc.jar!/" />

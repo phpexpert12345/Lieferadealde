@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -267,7 +268,7 @@ String name=listCategory.get(position).getRestaurantName();
         //holder.tv_restaurant_miles.setText("(" + listCategory.get(position).getRestaurantDeliveryDistance() + ")");
 
         com.app.liferdeal.ui.activity.restaurant.GPSTracker gpsTracker = new GPSTracker(mContext);
-        String distanceCalculate = distance(listCategory.get(position).getRestaurantLatitudePoint(), listCategory.get(position).getRestaurantLongitudePoint(), gpsTracker.getLatitude() + "", gpsTracker.getLongitude() + "") + " miles";
+        String distanceCalculate = distance(listCategory.get(position).getRestaurantLatitudePoint(), listCategory.get(position).getRestaurantLongitudePoint(), gpsTracker.getLatitude() + "", gpsTracker.getLongitude() + "") + " Kms";
         holder.tv_restaurant_miles.setText(distanceCalculate);
         if (listCategory.get(position).getRestaurantLogo() != null) {
             Glide.with(mContext).load(Uri.parse(listCategory.get(position).getRestaurantLogo())).into(holder.iv_restaurant_logo);
@@ -349,19 +350,29 @@ String name=listCategory.get(position).getRestaurantName();
     }
 
     private String distance(String lat1, String lon1, String lat2, String lon2) {
-
-        double theta = Double.parseDouble(lon1) - Double.parseDouble(lon2);
-        double dist = Math.sin(deg2rad(Double.parseDouble(lat1)))
-                * Math.sin(deg2rad(Double.parseDouble(lat2)))
-                + Math.cos(deg2rad(Double.parseDouble(lat1)))
-                * Math.cos(deg2rad(Double.parseDouble(lat2)))
-                * Math.cos(deg2rad(theta));
-        dist = Math.acos(dist);
-        dist = rad2deg(dist);
-        dist = dist * 60 * 1.1515;
+        Location loc1 = new Location("");
+        loc1.setLatitude(Double.parseDouble(lat1));
+        loc1.setLongitude(Double.parseDouble(lon1));
+        Location loc2 = new Location("");
+        loc2.setLatitude(Double.parseDouble(lat2));
+        loc2.setLongitude(Double.parseDouble(lon2));
+        float distanceInMeters = loc1.distanceTo(loc2);
         DecimalFormat df2 = new DecimalFormat("#.##");
-
-        return (df2.format(dist));
+        String dis=df2.format(distanceInMeters/1000);
+        dis=dotToCommaClass.changeDot(dis);
+        return dis;
+//        double theta = Double.parseDouble(lon1) - Double.parseDouble(lon2);
+//        double dist = Math.sin(deg2rad(Double.parseDouble(lat1)))
+//                * Math.sin(deg2rad(Double.parseDouble(lat2)))
+//                + Math.cos(deg2rad(Double.parseDouble(lat1)))
+//                * Math.cos(deg2rad(Double.parseDouble(lat2)))
+//                * Math.cos(deg2rad(theta));
+//        dist = Math.acos(dist);
+//        dist = rad2deg(dist);
+//        dist = dist * 60 ;
+//
+//
+//        return (df2.format(dist));
     }
 
     private double deg2rad(double deg) {

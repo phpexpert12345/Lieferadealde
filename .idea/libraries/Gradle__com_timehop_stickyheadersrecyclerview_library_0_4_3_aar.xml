@@ -1,9 +1,15 @@
 <component name="libraryTable">
   <library name="Gradle: com.timehop.stickyheadersrecyclerview:library:0.4.3@aar">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4babd8807fbca538a1caa72e2e244a9b/jetified-library-0.4.3/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4babd8807fbca538a1caa72e2e244a9b/jetified-library-0.4.3/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4babd8807fbca538a1caa72e2e244a9b/jetified-library-0.4.3/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/6650dba165ba7182064d939ce3a2b3af/jetified-library-0.4.3/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/6650dba165ba7182064d939ce3a2b3af/jetified-library-0.4.3/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/6650dba165ba7182064d939ce3a2b3af/jetified-library-0.4.3/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2931c010a302ff24b83822bd07aacea2/jetified-library-0.4.3/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2931c010a302ff24b83822bd07aacea2/jetified-library-0.4.3/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2931c010a302ff24b83822bd07aacea2/jetified-library-0.4.3/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3a5f6fe960b1bec0218bc68a81fcc3c8/jetified-library-0.4.3/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3a5f6fe960b1bec0218bc68a81fcc3c8/jetified-library-0.4.3/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3a5f6fe960b1bec0218bc68a81fcc3c8/jetified-library-0.4.3/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.timehop.stickyheadersrecyclerview/library/0.4.3/db32b2ffdfd9c410874c6e7df3ee30bee7df54d8/library-0.4.3-javadoc.jar!/" />

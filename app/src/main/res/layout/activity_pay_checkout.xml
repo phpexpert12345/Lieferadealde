@@ -116,7 +116,7 @@
                         <com.google.android.material.radiobutton.MaterialRadioButton
                             android:id="@+id/radioButtonASAP"
                             android:layout_width="@dimen/dp_0"
-                            android:layout_height="16dp"
+                            android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:checked="true"
                             android:text="@string/asap"
