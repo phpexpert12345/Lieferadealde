@@ -125,7 +125,7 @@ public interface ApiInterface {
                                                       @Field("cuisine[]") String cuisine);
 
     @GET("phpexpert_website_information.php")
-    Observable<PhpInitialInfoModel> getSplashData();
+    Observable<PhpInitialInfoModel>getSplashData();
     @FormUrlEncoded
     @POST("phpexpert_payment_key.php")
     Observable<StripePay>getStripePaymentkey(@Field("api_key") String api_key,

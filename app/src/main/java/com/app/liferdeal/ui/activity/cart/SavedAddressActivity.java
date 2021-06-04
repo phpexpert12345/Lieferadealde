@@ -163,7 +163,6 @@ public class SavedAddressActivity extends AppCompatActivity implements DeleteAdd
             case R.id.tvDeliveryAdd:
                 if(addressList.size()>0){
                     if(!addressId.equalsIgnoreCase("")){
-                        addressId="";
                         gotoPayCheckout();
                     }
                     else{
@@ -221,6 +220,7 @@ public class SavedAddressActivity extends AppCompatActivity implements DeleteAdd
         intent.putExtra("rest_address",rest_address);
         intent.putExtra("addressId", addressId);
         intent.putExtra("coupon_price", exact_offer);
+        addressId="";
         startActivity(intent);
     }
 
