@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -75,6 +76,7 @@ import com.stripe.android.view.PaymentMethodsActivityStarter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -645,7 +647,8 @@ public class CartCheckout extends AppCompatActivity implements View.OnClickListe
 
                 for(int i=0;i<raviCartModles.size();i++){
                     Pizzaname=raviCartModles.get(i).getItem_quantity()+"x"+raviCartModles.get(i).getItem_name()+"("+raviCartModles.get(i).getSize_item_name()+")";
-                    toatl_price+=Double.parseDouble(raviCartModles.get(i).getPrice());
+                    int quantity= Integer.parseInt(raviCartModles.get(i).getItem_quantity());
+                    toatl_price+=Double.parseDouble(raviCartModles.get(i).getPrice())*quantity;
                     itemId.append(raviCartModles.get(i).getItem_id());
                     itemId.append(",");
                     quant.append(raviCartModles.get(i).getItem_quantity());
@@ -730,7 +733,7 @@ public class CartCheckout extends AppCompatActivity implements View.OnClickListe
             List<ComItemList> comItemLists = gson.fromJson(com_list, listType);
             if(comItemLists!=null){
                 for(ComItemList comItemList:comItemLists){
-                    toatl_price+=Double.parseDouble(comItemList.price);
+                    toatl_price+=Double.parseDouble(comItemList.price)*comItemList.quantity;
                     String [] item_ids=comItemList.ItemID.split(",");
                     String [] food_ids=comItemList.FoodItemSizeID.split(",");
                     String [] slot_id=comItemList.comboslot_id.split(",");
@@ -768,29 +771,31 @@ public class CartCheckout extends AppCompatActivity implements View.OnClickListe
                             String[] com_tops=comItemList.combo_top_id.split(",");
                             if(com_tops.length>0){
                                 for(int j=0;j<com_tops.length;j++){
-                                    String top_item=com_tops[j];
-                                    if(top_item.contains("_")){
-                                        String[] s=top_item.split("_");
-                                        for(int t=0;t<s.length;t++){
-                                            if(meal_item_extra.length()>0){
-                                                meal_item_extra.append(",");
+                                    if(i==j) {
+                                        String top_item = com_tops[j];
+                                        if (top_item.contains("_")) {
+                                            String[] s = top_item.split("_");
+                                            for (int t = 0; t < s.length; t++) {
+                                                if (meal_item_extra.length() > 0) {
+                                                    meal_item_extra.append(",");
+                                                }
+                                                meal_item_extra.append(s[t]);
+                                                meal_item_extra.append("_");
+                                                meal_item_extra.append(slot_id[i]);
+                                                meal_item_extra.append("_");
+                                                meal_item_extra.append(comslot_item[i]);
+                                                meal_item_extra.append("_");
+                                                meal_item_extra.append(item_ids[i]);
+                                                meal_item_extra.append("_");
+                                                meal_item_extra.append(food_ids[i]);
+                                                meal_item_extra.append("_");
+                                                meal_item_extra.append(slot_id[i]);
+                                                meal_item_extra.append("_");
+                                                meal_item_extra.append(comItemList.deal_id);
                                             }
-                                            meal_item_extra.append(s[t]);
-                                            meal_item_extra.append("_");
-                                            meal_item_extra.append(slot_id[i]);
-                                            meal_item_extra.append("_");
-                                            meal_item_extra.append(comslot_item[i]);
-                                            meal_item_extra.append("_");
-                                            meal_item_extra.append(item_ids[i]);
-                                            meal_item_extra.append("_");
-                                            meal_item_extra.append(food_ids[i]);
-                                            meal_item_extra.append("_");
-                                            meal_item_extra.append(slot_id[i]);
-                                            meal_item_extra.append("_");
-                                            meal_item_extra.append(comItemList.deal_id);
+
+
                                         }
-
-
                                     }
                                 }
 
@@ -824,6 +829,17 @@ public class CartCheckout extends AppCompatActivity implements View.OnClickListe
         super.onNewIntent(intent);
         System.out.println("==== intent : " + intent);
     }
+    public String convertToBase64(String source){
+        String base64="";
+        try {
+            byte[] byteArray=source.getBytes("UTF-8");
+            base64= Base64.encodeToString(byteArray,Base64.NO_WRAP);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return base64;
+
+    }
 
     private void getPaymentRequestData() {
         if(delivery_time!=null){
@@ -831,6 +847,7 @@ public class CartCheckout extends AppCompatActivity implements View.OnClickListe
                 delivery_time=delivery_time.replaceAll(" ","%20");
             }
         }
+      String   base_64_time=convertToBase64(delivery_time);
         if(extraItemID!=null){
             if(extraItemID.equalsIgnoreCase("null")){
                 extraItemID="0";
@@ -848,7 +865,7 @@ public class CartCheckout extends AppCompatActivity implements View.OnClickListe
             instructions="";
         }
 
-        String url="https://www.lieferadeal.de/WebAppAPI/phpexpert_payment_android_submit_guest.php?api_key="+prefsHelper.getPref(Constants.API_KEY)+"&lang_code="+prefsHelper.getPref(Constants.LNG_CODE)+"&payment_transaction_paypal="+payment_transaction_paypal+"&itemId="+item_Id+"&Quantity="+quantity+"&Price="+Price+"&strsizeid="+strsizeid+"&extraItemID="+extraItemID+"&CustomerId=&CustomerAddressId=&payment_type="+payment_type+"&order_price="+order_price+"&subTotalAmount="+subTotalAmount+"&delivery_date="+delivery_date+"&delivery_time="+delivery_time+"&instructions="+instructions+"&deliveryCharge="+deliveryChargeValue+"&CouponCode="+CouponCode+"&CouponCodePrice="+CouponCodePrice+"&couponCodeType="+couponCodeType+"&SalesTaxAmount="+SalesTaxAmount+"&order_type="+order_type+"&SpecialInstruction="+SpecialInstruction+"&extraTipAddAmount="+extraTipAddAmount+"&RestaurantNameEstimate="+RestaurantNameEstimate+"&discountOfferDescription="+discountOfferDescription+"&discountOfferPrice="+discountOfferPrice+"&RestaurantoffrType="+RestaurantoffrType+"&ServiceFees="+ServiceFees+"&PaymentProcessingFees="+PaymentProcessingFees+"&deliveryChargeValueType="+deliveryChargeValueType+"&ServiceFeesType="+ServiceFeesType+"&PackageFeesType="+PackageFeesType+"&PackageFees="+PackageFees+"&WebsiteCodePrice="+WebsiteCodePrice+"&WebsiteCodeType="+WebsiteCodeType+"&WebsiteCodeNo="+WebsiteCodeNo+"&preorderTime="+preorderTime+"&VatTax="+VatTax+"&GiftCardPay="+GiftCardPay+"&WalletPay="+WalletPay+"&loyptamount="+loyptamount+"&table_number_assign="+table_number_assign+"&customer_country="+customer_country+"&group_member_id="+group_member_id+"&loyltPnts="+loyltPnts+"&branch_id="+branch_id+"&FoodCosts="+FoodCosts+"&getTotalItemDiscount="+getTotalItemDiscount+"&getFoodTaxTotal7="+getFoodTaxTotal7+"&getFoodTaxTotal19="+getFoodTaxTotal19+"&TotalSavedDiscount="+TotalSavedDiscount+"&discountOfferFreeItems="+discountOfferFreeItems+"&number_of_people="+number_of_people+"&customer_allow_register="+customer_allow_register+"&address="+address+"&street="+street+"&floor_no="+floor_no+"&zipcode="+zipcode+"&phone="+phone+"&email="+email+"&name_customer="+name_customer+"&customer_country="+customer_country+"&city="+city+"&resid="+restId+"&mealID="+mealID+"&mealquqntity="+mealquqntity+"&mealPrice="+mealPrice+"&mealItemExtra="+mealItemExtra+"&mealItemOption="+mealItemOption+"&discountOfferFreeItems="+discountOfferFreeItems+"&extraItemID1="+extraItemId1+"&extraItemIDName1="+extraItemId2;
+        String url="https://www.lieferadeal.de/WebAppAPI/phpexpert_payment_android_submit_guest.php?api_key="+prefsHelper.getPref(Constants.API_KEY)+"&lang_code="+prefsHelper.getPref(Constants.LNG_CODE)+"&payment_transaction_paypal="+payment_transaction_paypal+"&itemId="+item_Id+"&Quantity="+quantity+"&Price="+Price+"&strsizeid="+strsizeid+"&extraItemID="+extraItemID+"&CustomerId=&CustomerAddressId=&payment_type="+payment_type+"&order_price="+order_price+"&subTotalAmount="+subTotalAmount+"&delivery_date="+delivery_date+"&delivery_time="+base_64_time+"&instructions="+instructions+"&deliveryCharge="+deliveryChargeValue+"&CouponCode="+CouponCode+"&CouponCodePrice="+CouponCodePrice+"&couponCodeType="+couponCodeType+"&SalesTaxAmount="+SalesTaxAmount+"&order_type="+order_type+"&SpecialInstruction="+SpecialInstruction+"&extraTipAddAmount="+extraTipAddAmount+"&RestaurantNameEstimate="+RestaurantNameEstimate+"&discountOfferDescription="+discountOfferDescription+"&discountOfferPrice="+discountOfferPrice+"&RestaurantoffrType="+RestaurantoffrType+"&ServiceFees="+ServiceFees+"&PaymentProcessingFees="+PaymentProcessingFees+"&deliveryChargeValueType="+deliveryChargeValueType+"&ServiceFeesType="+ServiceFeesType+"&PackageFeesType="+PackageFeesType+"&PackageFees="+PackageFees+"&WebsiteCodePrice="+WebsiteCodePrice+"&WebsiteCodeType="+WebsiteCodeType+"&WebsiteCodeNo="+WebsiteCodeNo+"&preorderTime="+preorderTime+"&VatTax="+VatTax+"&GiftCardPay="+GiftCardPay+"&WalletPay="+WalletPay+"&loyptamount="+loyptamount+"&table_number_assign="+table_number_assign+"&customer_country="+customer_country+"&group_member_id="+group_member_id+"&loyltPnts="+loyltPnts+"&branch_id="+branch_id+"&FoodCosts="+FoodCosts+"&getTotalItemDiscount="+getTotalItemDiscount+"&getFoodTaxTotal7="+getFoodTaxTotal7+"&getFoodTaxTotal19="+getFoodTaxTotal19+"&TotalSavedDiscount="+TotalSavedDiscount+"&discountOfferFreeItems="+discountOfferFreeItems+"&number_of_people="+number_of_people+"&customer_allow_register="+customer_allow_register+"&address="+address+"&street="+street+"&floor_no="+floor_no+"&zipcode="+zipcode+"&phone="+phone+"&email="+email+"&name_customer="+name_customer+"&customer_country="+customer_country+"&city="+city+"&resid="+restId+"&mealID="+mealID+"&mealquqntity="+mealquqntity+"&mealPrice="+mealPrice+"&mealItemExtra="+mealItemExtra+"&mealItemOption="+mealItemOption+"&discountOfferFreeItems="+discountOfferFreeItems+"&extraItemID1="+extraItemId1+"&extraItemIDName1="+extraItemId2;
 Log.i("reason",url);
         StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override

@@ -315,8 +315,14 @@ public class ThankyouPageActivity extends AppCompatActivity implements View.OnCl
         txt_order_number.setText(model.getOrderNumber() + " # " + " " + orderNumber);
         txt_order_date_time.setText(model.getOrderText() + " " + deliveryDate + " " + restTime);
         txt_order_with_rest_name.setText(restname.trim());
-        double price= Double.parseDouble(selectedPizzaItemPrice);
-        txt_pizz_price.setText(currencySymbol+dotToCommaClass.changeDot(String.format("%.2f",price)));
+        if(selectedPizzaItemPrice.contains(",")){
+            txt_pizz_price.setText(selectedPizzaItemPrice);
+        }
+        else {
+            double price = Double.parseDouble(selectedPizzaItemPrice);
+
+            txt_pizz_price.setText(currencySymbol + dotToCommaClass.changeDot(String.format("%.2f", price)));
+        }
         txt_subtotal_price.setText(currencySymbol+dotToCommaClass.changeDot(String.format("%.2f",Double.parseDouble(oldprice))));
         txt_inclusive_food_text.setText(currencySymbol+dotToCommaClass.changeDot( String.format("%.2f",Double.parseDouble(oldprice))));
         Glide.with(this).load(Uri.parse(restLogo)).into(img_logo);

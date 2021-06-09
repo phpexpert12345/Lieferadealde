@@ -761,8 +761,8 @@ hideProgress();
             if(raviCartModles.size()>0){
 
                 for(int i=0;i<raviCartModles.size();i++){
-
-                    toatl_price+=Double.parseDouble(raviCartModles.get(i).getPrice());
+int quantity= Integer.parseInt(raviCartModles.get(i).getItem_quantity());
+                    toatl_price+=Double.parseDouble(raviCartModles.get(i).getPrice())*quantity;
                     itemId.append(raviCartModles.get(i).getItem_id());
                     itemId.append(",");
                     quant.append(raviCartModles.get(i).getItem_quantity());
@@ -850,7 +850,7 @@ hideProgress();
             List<ComItemList> comItemLists = gson.fromJson(com_list, listType);
             if(comItemLists!=null){
                 for(ComItemList comItemList:comItemLists){
-                    toatl_price+=Double.parseDouble(comItemList.price);
+                    toatl_price+=Double.parseDouble(comItemList.price)*comItemList.quantity;
                     String [] item_ids=comItemList.ItemID.split(",");
                     String [] food_ids=comItemList.FoodItemSizeID.split(",");
                     String [] slot_id=comItemList.comboslot_id.split(",");
