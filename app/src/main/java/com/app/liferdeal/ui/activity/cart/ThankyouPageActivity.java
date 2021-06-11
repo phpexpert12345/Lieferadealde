@@ -319,9 +319,11 @@ public class ThankyouPageActivity extends AppCompatActivity implements View.OnCl
             txt_pizz_price.setText(selectedPizzaItemPrice);
         }
         else {
-            double price = Double.parseDouble(selectedPizzaItemPrice);
+            if(!selectedPizzaItemPrice.isEmpty()) {
+                double price = Double.parseDouble(selectedPizzaItemPrice);
 
-            txt_pizz_price.setText(currencySymbol + dotToCommaClass.changeDot(String.format("%.2f", price)));
+                txt_pizz_price.setText(currencySymbol + dotToCommaClass.changeDot(String.format("%.2f", price)));
+            }
         }
         txt_subtotal_price.setText(currencySymbol+dotToCommaClass.changeDot(String.format("%.2f",Double.parseDouble(oldprice))));
         txt_inclusive_food_text.setText(currencySymbol+dotToCommaClass.changeDot( String.format("%.2f",Double.parseDouble(oldprice))));

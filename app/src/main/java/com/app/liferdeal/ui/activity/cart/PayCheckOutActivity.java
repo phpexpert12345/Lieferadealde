@@ -235,6 +235,7 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
     String extraItemId2, extra_toppings="";
     String rest_address="";
     double exact_offer=0.0;
+    
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -630,7 +631,10 @@ public class PayCheckOutActivity extends AppCompatActivity implements View.OnCli
                             //Toast.makeText(getApplicationContext(),restTime,Toast.LENGTH_LONG).show();
                             Intent ii = new Intent(PayCheckOutActivity.this, ThankyouPageActivity.class);
                             ii.putExtra("restname", restname);
-                            ii.putExtra("restTime", restTime);
+                            if(delivery_time.contains("%20")){
+                                delivery_time=delivery_time.replaceAll("%20", " ");
+                            }
+                            ii.putExtra("restTime", delivery_time);
                             ii.putExtra("deliveryDate", deliveryDate);
                             ii.putExtra("customeName", customeName);
                             ii.putExtra("orderNumber", orderNumber);
