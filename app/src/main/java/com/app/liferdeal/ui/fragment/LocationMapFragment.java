@@ -123,7 +123,9 @@ public class LocationMapFragment extends AppCompatActivity implements OnMapReady
         setContentView(R.layout.location_map_layout);
         ButterKnife.bind(this);
         intializingView();
-
+        SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        assert supportMapFragment != null;
+        supportMapFragment.getMapAsync(LocationMapFragment.this);
         if (App.retrieveLangFromGson(LocationMapFragment.this) != null) {
             model = App.retrieveLangFromGson(LocationMapFragment.this);
         }
@@ -216,10 +218,10 @@ public class LocationMapFragment extends AppCompatActivity implements OnMapReady
                     currentLocation = location;
                     LatLng latLng=new LatLng(location.getLatitude(),location.getLongitude());
                     latLongSelected=latLng;
+                    if(googleMap!=null) {
 //                    Toast.makeText(getApplicationContext(), currentLocation.getLatitude() + "" + currentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
-                    SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-                    assert supportMapFragment != null;
-                    supportMapFragment.getMapAsync(LocationMapFragment.this);
+                        onMapReady(googleMap);
+                    }
                 }
             }
         });
@@ -274,25 +276,16 @@ public class LocationMapFragment extends AppCompatActivity implements OnMapReady
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
-        LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-        markerOptions = new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location));
-        googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17.0f));
+        if(currentLocation!=null) {
+            LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+            markerOptions = new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location));
+            googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17.0f));
 
-        googleMap.addMarker(markerOptions);
-        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-               /* Toast.makeText(getApplicationContext(),
-                        latLng.latitude + ", " + latLng.longitude,
-                        Toast.LENGTH_SHORT).show();*/
-                googleMap.clear();
-                markerOptions.position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location));
-                googleMap.addMarker(markerOptions);
-                latLongSelected = latLng;
-                getAddressFromCurrentLatLong(latLng.latitude + "", latLng.longitude + "");
-            }
-        });
+            googleMap.addMarker(markerOptions);
+        }
+
+
     }
 
     @Override
@@ -570,9 +563,16 @@ public class LocationMapFragment extends AppCompatActivity implements OnMapReady
 
 
                 latLongSelected = place.getLatLng();
-                googleMap.clear();
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 12));
-                secondMarker = googleMap.addMarker(new MarkerOptions().position(place.getLatLng()).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location)));//.title((address)));
+                if(googleMap!=null) {
+                    googleMap.clear();
+
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 12));
+                    secondMarker = googleMap.addMarker(new MarkerOptions().position(place.getLatLng()).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location)));
+                }
+                else {
+
+                }
+                //.title((address)));
                 //getAddressFromCurrentLatLong(latLng.latitude + "", latLng.longitude + "");
                 search.setText(place.getAddress());
                 mPICKUP_ADDRESS = place.getAddress();
