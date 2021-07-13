@@ -151,6 +151,7 @@ public class ComExtraActivity extends AppCompatActivity implements RestaurantFoo
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent();
+
               topp_price=  String.format("%.2f", Double.parseDouble(topp_price));
                 intent.putExtra("price", topp_price);
                 StringBuilder stringBuilder=new StringBuilder();
@@ -332,9 +333,10 @@ public class ComExtraActivity extends AppCompatActivity implements RestaurantFoo
                 total = total + Double.parseDouble(extra_item_list_price.get(i));
             }
         }
-        topp_price=String.valueOf(top_price);
+        topp_price=String.valueOf(total);
 
-        txt_add_extra_total.setText(currencySymbol + " " + "" + String.format("%.2f", total));
+
+        txt_add_extra_total.setText(currencySymbol + " " + "" + dotToCommaClass.changeDot(String.format("%.2f", total)));
     }
 
     @Override
@@ -367,7 +369,7 @@ public class ComExtraActivity extends AppCompatActivity implements RestaurantFoo
 
             }
             extra_item_list_name.add(item);
-            extra_item_list_price.add(price);
+            extra_item_list_price.add(price_top);
             extra_item_list_id.add(id);
         }
         double total = Double.parseDouble(price);
@@ -378,6 +380,6 @@ public class ComExtraActivity extends AppCompatActivity implements RestaurantFoo
         }
         topp_price=String.valueOf(top_price);
 //        total_price=String.valueOf(total);
-        txt_add_extra_total.setText(currencySymbol + " " + "" + String.format("%.2f", total));
+        txt_add_extra_total.setText(currencySymbol + " " + "" + dotToCommaClass.changeDot(String.format("%.2f", total)));
     }
 }

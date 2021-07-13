@@ -52,6 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_2"
+                android:layout_marginStart="@dimen/sp_15"
                 android:id="@+id/recyler_com"/>
 
             <TextView

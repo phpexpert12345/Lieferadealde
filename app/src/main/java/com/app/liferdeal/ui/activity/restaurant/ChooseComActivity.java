@@ -182,9 +182,7 @@ public class ChooseComActivity extends AppCompatActivity {
         ComboSectionAdapter comboSectionAdapter=new ComboSectionAdapter(comboSections, new SelectSec() {
             @Override
             public void getClickSec(int pos) {
-if(comValues.size()>0){
-    comValues.clear();
-}
+
 comValues=comboSections.get(pos).getComboSectionValue();
                 setComboSectionValueAdapter(comboSections.get(pos).getComboSectionValue());
             }
@@ -286,7 +284,7 @@ double price_demo= Double.parseDouble(p);
 com_p=com_p+price_demo;
                         }
                         else{
-                          com_p=com_p+pr+price_demo;
+                          com_p=com_p+price_demo;
                         }
                         com_price=String.valueOf(com_p);
                         com_tops.append(item);
@@ -329,7 +327,13 @@ com_p=com_p+price_demo;
             comItemList.comboslot_id=comboslot_ids.toString();
             comItemList.quantity=1;
             comItemList.deal_id= String.valueOf(com_id);
+            if(!com_price.isEmpty()){
                 comItemList.price = com_price;
+            }
+            else{
+                comItemList.price = price;
+            }
+
                 comItemLists.add(comItemList);
                 String com = gson.toJson(comItemLists);
                 DroidPrefs.apply(this, "com_list", com);
