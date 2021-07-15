@@ -310,6 +310,9 @@ public class ThankyouPageActivity extends AppCompatActivity implements View.OnCl
         tvOrderNoText.setText(orderNumber);
         txt_pizza_quantity.setText(pizzaQuantity);
         txt_pizz_name.setText(Pizzaname);
+        if(restTime.contains("%20")){
+            restTime=restTime.replaceAll("%20"," ");
+        }
         txt_time_order.setText(restTime);
         txt_rest_name.setText(restname);
         txt_order_number.setText(model.getOrderNumber() + " # " + " " + orderNumber);

@@ -256,7 +256,7 @@ public class CartCheckout extends AppCompatActivity implements View.OnClickListe
         selectedPizzaItemPrice = getIntent().getStringExtra("selectedPizzaItemPrice");
         instructions = getIntent().getStringExtra("instructions");
         customer_allow_register = "yes";
-        payment_type = "cash";
+        payment_type = "Cash";
         rest_address=getIntent().getStringExtra("rest_address");
         Currency hh = Currency.getInstance("" + prefsHelper.getPref(Constants.APP_CURRENCY));
         currencySymbol = hh.getSymbol();
@@ -329,7 +329,7 @@ public class CartCheckout extends AppCompatActivity implements View.OnClickListe
                 System.out.println("==== zipcode in base64" + zipcode);
                 name_customer = CommonMethods.getStringDataInbase64(edit_full_name.getText().toString().trim());
                 email = edit_mobile_no.getText().toString().trim();
-                phone = CommonMethods.getStringDataInbase64(edit_mobile_no.getText().toString().trim());
+                phone = edit_mobile_no.getText().toString().trim();
                 delivery_time = txt_selected_time.getText().toString();
                 if (edit_full_name.getText().toString().equalsIgnoreCase("")) {
                     edit_full_name.setError(model.getPleaseEnterFullName());
@@ -389,7 +389,7 @@ public class CartCheckout extends AppCompatActivity implements View.OnClickListe
 
             case R.id.rd_cash:
 
-                payment_type = "cash";
+                payment_type = "Cash";
                 rd_cash.setChecked(true);
                 rd_paypal.setChecked(false);
                 rd_card.setChecked(false);
